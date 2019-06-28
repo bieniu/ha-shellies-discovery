@@ -78,14 +78,14 @@ automation:
 key | optional | type | default | description
 -- | -- | -- | -- | --
 `discovery_prefix` | True | string | `homeassistant` | MQTT discovery prefix
-`class` | False | string | | `NightMode`
+`id` | False | template | `{{ trigger.payload_json.id }}` | Shelly ID from `announce` topic
 `light` | True | string || A comma-delimited list of entities you want to automatically control the default brightness of during night mode.
 `night_brighness` | True | number from 1-255 || The default brightness of the lights listed above during night mode.
 
 Arguments:
  - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
                           optional
- - id                   - Shelly ID (required)
+ - id                   -  (required)
  - mac                  - Shelly MAC address (required)
  - sensor               - sensor entity_id (required)
  - fw_ver               - Shelly firmware version (optional)
