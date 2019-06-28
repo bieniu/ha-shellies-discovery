@@ -17,29 +17,62 @@ This script adds MQTT discovery support for Shellies.
 
 ## Minimal configuration
 ```
-automations:
-- id: shellies_announce
-  alias: 'Shellies Announce'
-  trigger:
-    - platform: homeassistant
-      event: start
-  action:
-    service: mqtt.publish
-    data:
-      topic: shellies/command
-      payload: announce
+automation:
+  - id: shellies_announce
+    alias: 'Shellies Announce'
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      service: mqtt.publish
+      data:
+        topic: shellies/command
+        payload: announce
 
-- id: 'shellies_discovery'
-  alias: 'Shellies Discovery'
-  trigger:
-  - platform: mqtt
-    topic: shellies/announce
-  action:
-    service: python_script.shellies_discovery
-    data_template:
-      id: '{{ trigger.payload_json.id }}'
-      mac: '{{ trigger.payload_json.mac }}'
-      fw_ver: '{{ trigger.payload_json.fw_ver }}'
+  - id: 'shellies_discovery'
+    alias: 'Shellies Discovery'
+    trigger:
+      - platform: mqtt
+        topic: shellies/announce
+    action:
+      service: python_script.shellies_discovery
+      data_template:
+        id: '{{ trigger.payload_json.id }}'
+        mac: '{{ trigger.payload_json.mac }}'
+        fw_ver: '{{ trigger.payload_json.fw_ver }}'
+```
+## Custom configuration example
+```
+automation:
+  - id: shellies_announce
+    alias: 'Shellies Announce'
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      service: mqtt.publish
+      data:
+        topic: shellies/command
+        payload: announce
+        
+  - id: 'shellies_discovery'
+    alias: 'Shellies Discovery'
+    trigger:
+      - platform: mqtt
+        topic: shellies/announce
+    action:
+      service: python_script.shellies_discovery
+      data_template:
+        id: '{{ trigger.payload_json.id }}'
+        mac: '{{ trigger.payload_json.mac }}'
+        fw_ver: '{{ trigger.payload_json.fw_ver }}'
+        qos: 2
+        shelly1-001122-relay-0: 'light'
+        shellyswitch-9900AA-relay-0: 'light'
+        shellyswitch-9900AA-relay-1: 'fan'
+        shellyswitch-334455: 'cover'
+        shellyrgbw2-AABB22: 'white'
+        shellyrgbw2-CC2211: 'rgbw'
 ```
 
 
@@ -61,22 +94,7 @@ If you want the relay to be a other component than the switch in the Home
 Assistant, you have to add a description of the relay and its function to the
 script configuration.
 For example:
-- id: 'shellies_discovery'
-  alias: 'Shellies Discovery'
-  trigger:
-  - platform: mqtt
-    topic: shellies/announce
-  action:
-    service: python_script.shellies_discovery
-    data_template:
-      id: '{{ trigger.payload_json.id }}'
-      mac: '{{ trigger.payload_json.mac }}'
-      fw_ver: '{{ trigger.payload_json.fw_ver }}'
-      qos: 2
-      shelly1-001122-relay-0: 'light'
-      shellyswitch-334455: 'cover'
-      shellyrgbw2-AABB22: 'white'
-      shellyrgbw2-CC2211: 'rgbw'
+
 
 qos - maximum QoS level of the topics, this is optional argument, default is 0
       (integer)
