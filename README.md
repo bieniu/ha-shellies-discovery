@@ -78,40 +78,9 @@ automation:
 key | optional | type | default | description
 -- | -- | -- | -- | --
 `discovery_prefix` | True | string | `homeassistant` | MQTT discovery prefix
-`id` | False | template | `{{ trigger.payload_json.id }}` | Shelly ID from `announce` topic
-`light` | True | string || A comma-delimited list of entities you want to automatically control the default brightness of during night mode.
-`night_brighness` | True | number from 1-255 || The default brightness of the lights listed above during night mode.
-
-Arguments:
- - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
-                          optional
- - id                   -  (required)
- - mac                  - Shelly MAC address (required)
- - sensor               - sensor entity_id (required)
- - fw_ver               - Shelly firmware version (optional)
- - temp_unit            - C for Celsius, F for Farenhait, default C (optional)
- - list of shelies relays and components for them, only for devices with relays
-                          (optional), by default all relays are added as
-                          switches.
-
-
-
-If you want the relay to be a other component than the switch in the Home
-Assistant, you have to add a description of the relay and its function to the
-script configuration.
-For example:
-
-
-qos - maximum QoS level of the topics, this is optional argument, default is 0
-      (integer)
-
-shelly1-001122-relay-0: 'light' - means that relay 0 of shelly1-001122 will use
-light component in Home Assistant. You can use switch, light or fan.
-
-shellyswitch-334455: 'cover' - means that Shelly2 works in roller mode and use
-cover component in Home Assistant.
-
-shellyrgbw2-AABB22: 'white' - means that Shelly RGBW2 works in white-mode
-
-shellyrgbw2-CC2211: 'rgbw' - means that Shelly RGBW2 works in color-mode
-(default)
+`id` | False | string | `{{ trigger.payload_json.id }}` | Shelly ID from `announce` topic
+`mac` | False | string | `{{ trigger.payload_json.mac }}` | MAC address from `announce` topic
+`fw_ver` | False | string | `{{ trigger.payload_json.fw_ver }}` | firmware version from `announce` topic
+`temp_unit` | True | string | 'C' | temperature unit for, C for Celsius, F for Farenhait
+`qo2` | True | integer | `0` | MQTT QoS, you can use `0`, `1` or `2`
+`relay_id` | True | string | `switch` | HA component to use with `relay_id`, for example: `shelly1-001122-relay-0: 'light'` means that relay 0 of shelly1-001122 will use light component in HA. You can use `switch`, `light` or `fan`. For Shelly2 and Shelly2.5 you can use `shellyswitch-334455: 'cover'` for roller mode. For ShellyRGBW2 you can use `shellyrgbw2-AABB22: 'white'` for wite mode.
