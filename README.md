@@ -2,6 +2,8 @@
 
 This script adds MQTT discovery support for Shellies.
 
+Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-script/94048) for support and help.
+
 ## Supported devices:
 - Shelly1
 - Shelly1PM
