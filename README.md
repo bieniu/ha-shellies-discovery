@@ -78,9 +78,6 @@ automation:
 key | optional | type | default | description
 -- | -- | -- | -- | --
 `discovery_prefix` | True | string | `homeassistant` | MQTT discovery prefix
-`id` | False | string | `{{ trigger.payload_json.id }}` | Shelly ID from `announce` topic
-`mac` | False | string | `{{ trigger.payload_json.mac }}` | MAC address from `announce` topic
-`fw_ver` | False | string | `{{ trigger.payload_json.fw_ver }}` | firmware version from `announce` topic
-`temp_unit` | True | string | 'C' | temperature unit for, C for Celsius, F for Farenhait
-`qo2` | True | integer | `0` | MQTT QoS, you can use `0`, `1` or `2`
+`temp_unit` | True | string | `C` | temperature unit, `C` for Celsius, `F` for Farenhait
+`qos` | True | integer | `0` | MQTT QoS, you can use `0`, `1` or `2`
 `relay_id` | True | string | `switch` | HA component to use with `relay_id`, for example: `shelly1-001122-relay-0: 'light'` means that relay 0 of shelly1-001122 will use light component in HA. You can use `switch`, `light` or `fan`. For Shelly2 and Shelly2.5 you can use `shellyswitch-334455: 'cover'` for roller mode. For ShellyRGBW2 you can use `shellyrgbw2-AABB22: 'white'` for wite mode.
