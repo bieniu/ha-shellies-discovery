@@ -8,7 +8,6 @@ Arguments:
                           optional
  - id                   - Shelly ID (required)
  - mac                  - Shelly MAC address (required)
- - sensor               - sensor entity_id (required)
  - fw_ver               - Shelly firmware version (optional)
  - temp_unit            - C for Celsius, F for Farenhait, default C (optional)
  - list of shelies relays and components for them, only for devices with relays
@@ -75,7 +74,7 @@ shellyrgbw2-AABB22: 'white' - means that Shelly RGBW2 works in white-mode
 shellyrgbw2-CC2211: 'rgbw' - means that Shelly RGBW2 works in color-mode
 (default)
 
-Script supports custom_updater component. Add this to your configuration and
+Script supports custom_updater and HACS components. Add this to your configuration and
 stay up-to-date.
 
 custom_updater:
