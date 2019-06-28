@@ -2,7 +2,7 @@
 
 This script adds MQTT discovery support for Shellies.
 
-Supported devices:
+## Supported devices:
 - Shelly1
 - Shelly1PM
 - Shelly2 (relays and roller mode)
@@ -15,20 +15,9 @@ Supported devices:
 - Shelly Smoke
 - Shelly Sense
 
-Arguments:
- - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
-                          optional
- - id                   - Shelly ID (required)
- - mac                  - Shelly MAC address (required)
- - sensor               - sensor entity_id (required)
- - fw_ver               - Shelly firmware version (optional)
- - temp_unit            - C for Celsius, F for Farenhait, default C (optional)
- - list of shelies relays and components for them, only for devices with relays
-                          (optional), by default all relays are added as
-                          switches.
-
-Default configuration
-Automations:
+## Minimal configuration
+```
+automations:
 - id: shellies_announce
   alias: 'Shellies Announce'
   trigger:
@@ -51,6 +40,22 @@ Automations:
       id: '{{ trigger.payload_json.id }}'
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
+```
+
+
+Arguments:
+ - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
+                          optional
+ - id                   - Shelly ID (required)
+ - mac                  - Shelly MAC address (required)
+ - sensor               - sensor entity_id (required)
+ - fw_ver               - Shelly firmware version (optional)
+ - temp_unit            - C for Celsius, F for Farenhait, default C (optional)
+ - list of shelies relays and components for them, only for devices with relays
+                          (optional), by default all relays are added as
+                          switches.
+
+
 
 If you want the relay to be a other component than the switch in the Home
 Assistant, you have to add a description of the relay and its function to the
