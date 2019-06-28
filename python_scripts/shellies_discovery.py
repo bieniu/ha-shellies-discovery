@@ -74,8 +74,8 @@ shellyrgbw2-AABB22: 'white' - means that Shelly RGBW2 works in white-mode
 shellyrgbw2-CC2211: 'rgbw' - means that Shelly RGBW2 works in color-mode
 (default)
 
-Script supports custom_updater and HACS components. Add this to your configuration and
-stay up-to-date.
+Script supports custom_updater and HACS components. Add this to your
+configuration and stay up-to-date.
 
 custom_updater:
   track:
