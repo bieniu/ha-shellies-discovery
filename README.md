@@ -16,7 +16,7 @@ This script adds MQTT discovery support for Shellies.
 - Shelly Sense
 
 ## Minimal configuration
-```
+```yaml
 automation:
   - id: shellies_announce
     alias: 'Shellies Announce'
@@ -42,7 +42,7 @@ automation:
         fw_ver: '{{ trigger.payload_json.fw_ver }}'
 ```
 ## Custom configuration example
-```
+```yaml
 automation:
   - id: shellies_announce
     alias: 'Shellies Announce'
@@ -74,7 +74,13 @@ automation:
         shellyrgbw2-AABB22: 'white'
         shellyrgbw2-CC2211: 'rgbw'
 ```
-
+## Script configuration
+key | optional | type | default | description
+-- | -- | -- | -- | --
+`discovery_prefix` | True | string | `homeassistant` | MQTT discovery prefix
+`class` | False | string | | `NightMode`
+`light` | True | string || A comma-delimited list of entities you want to automatically control the default brightness of during night mode.
+`night_brighness` | True | number from 1-255 || The default brightness of the lights listed above during night mode.
 
 Arguments:
  - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
