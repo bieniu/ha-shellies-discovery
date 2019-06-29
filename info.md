@@ -51,6 +51,8 @@ automation:
         id: '{{ trigger.payload_json.id }}'
         mac: '{{ trigger.payload_json.mac }}'
         fw_ver: '{{ trigger.payload_json.fw_ver }}'
+        discovery_prefix: 'hass'
+        temp_unit: 'F'
         qos: 2
         shelly1-001122-relay-0: 'light'
         shellyswitch-9900AA-relay-0: 'light'
