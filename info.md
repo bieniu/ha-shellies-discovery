@@ -1,5 +1,3 @@
-This script adds MQTT discovery support for Shellies.
-
 ## Minimal configuration
 ```yaml
 automation:
