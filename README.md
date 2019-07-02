@@ -6,7 +6,7 @@ This script use Home Assistant [python_script](https://www.home-assistant.io/com
 
 You can install this script via [HACS](https://custom-components.github.io/hacs/) or just download `shellies_discovery.py` file and save it in `/config/python_scripts` folder.
 
-After installing the script and adding automations, run `Shellies Announce` automation or restart Home Assistant. Some times you have to restart Home Assistant twice if your entities are `unavailable`.
+After installing the script and adding automations, run `Shellies Announce` automation or restart Home Assistant twice.
 
 Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-script/94048) for support and help.
 
