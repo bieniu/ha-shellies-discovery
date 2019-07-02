@@ -82,7 +82,7 @@ automation:
         shellyrgbw2-AABB22: 'white'
         shellyrgbw2-CC2211: 'rgbw'
 ```
-## Script configuration
+## Script arguments
 key | optional | type | default | description
 -- | -- | -- | -- | --
 `discovery_prefix` | True | string | `homeassistant` | MQTT discovery prefix
