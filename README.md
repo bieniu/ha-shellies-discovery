@@ -1,6 +1,8 @@
 # Shellies Discovery
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 
+![Screenshot](https://github.com/bieniu/ha-shellies-discovery/blob/master/images/shellies-integration.png?raw=true)
+
 This script adds MQTT discovery support for Shellies in the [Home Assistant](https://home-assistant.io/).
 
 This script use Home Assistant [python_script](https://www.home-assistant.io/components/python_script/) component.
