@@ -1,3 +1,5 @@
+![Screenshot](https://github.com/bieniu/ha-shellies-discovery/blob/master/images/shellies-integration.png?raw=true)
+
 ## Minimal configuration
 ```yaml
 automation:
