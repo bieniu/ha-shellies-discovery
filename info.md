@@ -1,5 +1,25 @@
 ![Screenshot](https://github.com/bieniu/ha-shellies-discovery/blob/master/images/shellies-integration.png?raw=true)
 
+## Supported devices:
+- Shelly1
+- Shelly1PM
+- Shelly2 (relays and roller mode)
+- Shely2.5 (relays and roller mode)
+- Shelly4Pro
+- Shelly Plug
+- Shelly Plug S
+- Shelly RGBW2 (color and white mode)
+- Shelly H&T
+- Shelly Smoke
+- Shelly Sense
+
+## Troubleshooting checklist
+- correct MQTT configuration in Home Assistant with `discovery` enabled
+- same `discovery_prefix` in Home Assistant configuration and in script configuration
+- Shellies firmware updated to current version
+- Home Assistant updated to current version
+- default topics configuration in Shellies
+
 ## Minimal configuration
 ```yaml
 python_script:
