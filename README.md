@@ -28,6 +28,8 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 
 ## Minimal configuration
 ```yaml
+python_script:
+
 automation:
   - id: shellies_announce
     alias: 'Shellies Announce'
@@ -54,6 +56,8 @@ automation:
 ```
 ## Custom configuration example
 ```yaml
+python_script:
+
 automation:
   - id: shellies_announce
     alias: 'Shellies Announce'
