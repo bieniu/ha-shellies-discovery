@@ -2,6 +2,8 @@
 
 ## Minimal configuration
 ```yaml
+python_script:
+
 automation:
   - id: shellies_announce
     alias: 'Shellies Announce'
@@ -28,6 +30,8 @@ automation:
 ```
 ## Custom configuration example
 ```yaml
+python_script:
+
 automation:
   - id: shellies_announce
     alias: 'Shellies Announce'
