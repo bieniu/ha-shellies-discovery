@@ -26,6 +26,13 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Smoke
 - Shelly Sense
 
+## Troubleshooting checklist
+- correct MQTT configuration in Home Assistant with `discovery` enabled
+- same `discovery_prefix` in Home Assistant configuration and in script configuration
+- Shellies firmware updated to current version
+- Home Assistant updated to current version
+- default topics configuration in Shellies
+
 ## Minimal configuration
 ```yaml
 python_script:
