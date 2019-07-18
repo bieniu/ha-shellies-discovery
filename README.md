@@ -17,7 +17,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly1
 - Shelly1PM
 - Shelly2 (relays and roller mode)
-- Shely2.5 (relays and roller mode)
+- Shelly2.5 (relays and roller mode)
 - Shelly4Pro
 - Shelly Plug
 - Shelly Plug S
@@ -94,6 +94,7 @@ automation:
         shelly1-001122-relay-0: 'light'
         shellyswitch-9900AA-relay-0: 'light'
         shellyswitch-9900AA-relay-1: 'fan'
+        shellyswitch25-445566: 'light'
         shellyswitch-334455: 'cover'
         shellyrgbw2-AABB22: 'white'
         shellyrgbw2-CC2211: 'rgbw'
