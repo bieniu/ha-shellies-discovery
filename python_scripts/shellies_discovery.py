@@ -84,7 +84,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.9.7'
+VERSION = '0.10.0'
 
 ATTR_DEVELOP = 'develop'
 
@@ -99,6 +99,8 @@ ATTR_TEMPLATE_TEMPERATURE = '{{ value | float | round(1) }}'
 ATTR_TEMPLATE_HUMIDITY = '{{ value | float | round(1) }}'
 ATTR_TEMPLATE_LUX = '{{ value | float | round }}'
 ATTR_TEMPLATE_POWER = '{{ value | float | round(1) }}'
+ATTR_TEMPLATE_REACTIVE_POWER = '{{ value | float | round(1) }}'
+ATTR_TEMPLATE_VOLTAGE = '{{ value | float | round(1) }}'
 ATTR_TEMPLATE_ENERGY = '{{ (value | float / 60 / 1000) | round(2) }}'
 ATTR_TEMPLATE_BATTERY = '{{ value | float | round }}'
 
@@ -114,6 +116,7 @@ ATTR_MODEL_SHELLYHT = 'Shelly H&T'
 ATTR_MODEL_SHELLYSMOKE = 'Shelly Smoke'
 ATTR_MODEL_SHELLYSENSE = 'Shelly Sense'
 ATTR_MODEL_SHELLYRGBW2 = 'Shelly RGBW2'
+ATTR_MODEL_SHELLYEM = 'ShellyEM'
 ATTR_SHELLY = 'Shelly'
 ATTR_TEMPERATURE = 'temperature'
 ATTR_HUMIDITY = 'humidity'
@@ -121,6 +124,8 @@ ATTR_BATTERY = 'battery'
 ATTR_LUX = 'lux'
 ATTR_ILLUMINANCE = 'illuminance'
 ATTR_POWER = 'power'
+ATTR_REACTIVE_POWER = 'reactive_power'
+ATTR_VOLTAGE = 'voltage'
 ATTR_ENERGY = 'energy'
 ATTR_SWITCH = 'switch'
 ATTR_LIGHT = 'light'
@@ -137,6 +142,7 @@ ATTR_HEAT = 'heat'
 ATTR_COVER = 'cover'
 ATTR_UNIT_W = 'W'
 ATTR_UNIT_KWH = 'kWh'
+ATTR_UNIT_V = 'V'
 ATTR_UNIT_PERCENT = '%'
 ATTR_UNIT_LUX = 'lx'
 ATTR_UNIT_CELSIUS = '°C'
@@ -184,6 +190,7 @@ if id == '' or mac == '':
 else:
     relays = 0
     rollers = 0
+    meters = 0
     relay_components = [ATTR_SWITCH, ATTR_LIGHT, ATTR_FAN]
     config_component = ATTR_SWITCH
     config_light = ATTR_RGBW
@@ -355,6 +362,18 @@ else:
         model = ATTR_MODEL_SHELLYRGBW2
         rgbw_lights = 1
         white_lights = 4
+
+    if id[:-7] == 'shellyem':
+        model = ATTR_MODEL_SHELLYEM
+        meters = 2
+        meters_sensors = [ATTR_POWER, ATTR_REACTIVE_POWER, ATTR_VOLTAGE]
+        meters_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_W, ATTR_UNIT_V]
+        meters_sensors_classes = [ATTR_POWER, ATTR_POWER, '']
+        meters_sensors_templates = [
+            ATTR_TEMPLATE_POWER,
+            ATTR_TEMPLATE_REACTIVE_POWER,
+            ATTR_TEMPLATE_VOLTAGE
+        ]
 
     for roller_id in range(0, rollers):
         device_name = '{} {}'.format(model, id.split('-')[-1])
@@ -759,3 +778,54 @@ else:
             'qos': qos
         }
         hass.services.call('mqtt', 'publish', service_data, False)
+
+    for meter_id in range(0, meters):
+        device_name = '{} {}'.format(model, id.split('-')[-1])
+        meter_name = '{} Meter {}'.format(device_name, meter_id)
+        default_topic = 'shellies/{}/'.format(id)
+        state_topic = '~emeter/{}'.format(meter_id)
+        availability_topic = '~online'
+        for sensor_id in range(0, len(meters_sensors)):
+            unique_id = '{}-emeter-{}-{}'.format(
+                id,
+                meters_sensors[sensor_id],
+                meter_id
+            )
+            config_topic = '{}/sensor/{}-{}-{}/config'.format(
+                disc_prefix,
+                id,
+                meters_sensors[sensor_id],
+                meter_id
+            )
+            sensor_name = '{} {} {}'.format(
+                device_name,
+                meters_sensors[sensor_id].capitalize(),
+                meter_id
+            )
+            state_topic = '~emeter/{}/{}'.format(
+                meter_id,
+                meters_sensors[sensor_id]
+            )
+            payload = '{\"name\":\"' + sensor_name + '\",' \
+                '\"stat_t\":\"' + state_topic + '\",' \
+                '\"unit_of_meas\":\"' + meters_sensors_units[sensor_id] + '\",' \
+                '\"val_tpl\":\"' + meters_sensors_templates[sensor_id] + '\",' \
+                '\"dev_cla\":\"' + meters_sensors_classes[sensor_id] + '\",' \
+                '\"avty_t\":\"' + availability_topic + '\",' \
+                '\"pl_avail\":\"true\",' \
+                '\"pl_not_avail\":\"false\",' \
+                '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"qos\":\"' + str(qos) + '\",' \
+                '\"dev\": {\"ids\": [\"' + mac + '\"],' \
+                '\"name\":\"' + device_name + '\",' \
+                '\"mdl\":\"' + model + '\",' \
+                '\"sw\":\"' + fw_ver + '\",' \
+                '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
+                '\"~\":\"' + default_topic + '\"}'
+            service_data = {
+                'topic': config_topic,
+                'payload': payload,
+                'retain': retain,
+                'qos': qos
+            }
+            hass.services.call('mqtt', 'publish', service_data, False)
