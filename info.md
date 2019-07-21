@@ -12,6 +12,7 @@
 - Shelly H&T
 - Shelly Smoke
 - Shelly Sense
+- ShellyEM
 
 ## Troubleshooting checklist
 - correct MQTT configuration in Home Assistant with `discovery` enabled
