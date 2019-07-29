@@ -85,7 +85,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.10.1'
+VERSION = '0.10.2'
 
 ATTR_DEVELOP = 'develop'
 
@@ -711,7 +711,6 @@ else:
                 '\"pl_on\":\"' + bin_sensors_payload[bin_sensor_id][ATTR_ON] + '\",' \
                 '\"pl_off\":\"' + bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '\",' \
                 '\"dev_cla\":\"' + bin_sensors_classes[bin_sensor_id] + '\",' \
-                '\"exp_aft\":\"' + ATTR_EXPIRE_AFTER + '\",' \
                 '\"uniq_id\":\"' + unique_id + '\",' \
                 '\"qos\":\"' + str(qos) + '\",' \
                 '\"dev\": {\"ids\": [\"' + mac + '\"],' \
