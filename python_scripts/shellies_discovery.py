@@ -1,7 +1,9 @@
 """
 This script adds MQTT discovery support for Shellies. Shelly1, Shelly1PM,
+
 Shelly2, Shelly2.5, Shelly4Pro, Shelly Plug, Shelly Plug S, Shelly RGBW2 (color
-and white mode), Shelly H&T, Shelly Smoke and Shelly Sense are supported.
+and white mode), Shelly H&T, Shelly Smoke, ShellyEM and Shelly Sense are
+supported.
 
 Arguments:
  - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
@@ -84,7 +86,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.9.7'
+VERSION = '0.10.2'
 
 ATTR_DEVELOP = 'develop'
 
@@ -99,8 +101,11 @@ ATTR_TEMPLATE_TEMPERATURE = '{{ value | float | round(1) }}'
 ATTR_TEMPLATE_HUMIDITY = '{{ value | float | round(1) }}'
 ATTR_TEMPLATE_LUX = '{{ value | float | round }}'
 ATTR_TEMPLATE_POWER = '{{ value | float | round(1) }}'
+ATTR_TEMPLATE_REACTIVE_POWER = '{{ value | float | round(1) }}'
+ATTR_TEMPLATE_VOLTAGE = '{{ value | float | round(1) }}'
 ATTR_TEMPLATE_ENERGY = '{{ (value | float / 60 / 1000) | round(2) }}'
 ATTR_TEMPLATE_BATTERY = '{{ value | float | round }}'
+ATTR_TEMPALATE_OVERPOWER = '{{ value_json.overpower }}'
 
 ATTR_MANUFACTURER = 'Allterco Robotics'
 ATTR_MODEL_SHELLY1 = 'Shelly1'
@@ -114,6 +119,7 @@ ATTR_MODEL_SHELLYHT = 'Shelly H&T'
 ATTR_MODEL_SHELLYSMOKE = 'Shelly Smoke'
 ATTR_MODEL_SHELLYSENSE = 'Shelly Sense'
 ATTR_MODEL_SHELLYRGBW2 = 'Shelly RGBW2'
+ATTR_MODEL_SHELLYEM = 'ShellyEM'
 ATTR_SHELLY = 'Shelly'
 ATTR_TEMPERATURE = 'temperature'
 ATTR_HUMIDITY = 'humidity'
@@ -121,6 +127,8 @@ ATTR_BATTERY = 'battery'
 ATTR_LUX = 'lux'
 ATTR_ILLUMINANCE = 'illuminance'
 ATTR_POWER = 'power'
+ATTR_REACTIVE_POWER = 'reactive_power'
+ATTR_VOLTAGE = 'voltage'
 ATTR_ENERGY = 'energy'
 ATTR_SWITCH = 'switch'
 ATTR_LIGHT = 'light'
@@ -133,10 +141,13 @@ ATTR_CHARGER = 'charger'
 ATTR_INPUT = 'input'
 ATTR_LONGPUSH = 'longpush'
 ATTR_OVERTEMPERATURE = 'overtemperature'
+ATTR_OVERPOWER = 'overpower'
 ATTR_HEAT = 'heat'
 ATTR_COVER = 'cover'
 ATTR_UNIT_W = 'W'
 ATTR_UNIT_KWH = 'kWh'
+ATTR_UNIT_V = 'V'
+ATTR_UNIT_VAR = 'VAR'
 ATTR_UNIT_PERCENT = '%'
 ATTR_UNIT_LUX = 'lx'
 ATTR_UNIT_CELSIUS = '°C'
@@ -184,6 +195,7 @@ if id == '' or mac == '':
 else:
     relays = 0
     rollers = 0
+    meters = 0
     relay_components = [ATTR_SWITCH, ATTR_LIGHT, ATTR_FAN]
     config_component = ATTR_SWITCH
     config_light = ATTR_RGBW
@@ -193,6 +205,8 @@ else:
     relays_sensors_classes = []
     relays_bin_sensors = []
     relays_bin_sensors_payload = []
+    lights_bin_sensors = []
+    lights_bin_sensors_payload = []
     sensors = []
     sensors_units = []
     sensors_templates = []
@@ -333,10 +347,18 @@ else:
     if id[:-7] == 'shellysense':
         model = ATTR_MODEL_SHELLYSENSE
         sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_LUX, ATTR_BATTERY]
-        sensors_classes = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_ILLUMINANCE,
-                           ATTR_BATTERY]
-        sensors_units = [temp_unit, ATTR_UNIT_PERCENT, ATTR_UNIT_LUX,
-                         ATTR_UNIT_PERCENT]
+        sensors_classes = [
+            ATTR_TEMPERATURE,
+            ATTR_HUMIDITY,
+            ATTR_ILLUMINANCE,
+            ATTR_BATTERY
+        ]
+        sensors_units = [
+            temp_unit,
+            ATTR_UNIT_PERCENT,
+            ATTR_UNIT_LUX,
+            ATTR_UNIT_PERCENT
+        ]
         sensors_templates = [
             ATTR_TEMPLATE_TEMPERATURE,
             ATTR_TEMPLATE_HUMIDITY,
@@ -355,6 +377,22 @@ else:
         model = ATTR_MODEL_SHELLYRGBW2
         rgbw_lights = 1
         white_lights = 4
+        lights_bin_sensors = [ATTR_OVERPOWER]
+        lights_bin_sensors_classes = [ATTR_POWER]
+        lights_bin_sensors_templates = [ATTR_TEMPALATE_OVERPOWER]
+        lights_bin_sensors_payload = [ATTR_TRUE_FALSE_PAYLOAD]
+
+    if id[:-7] == 'shellyem':
+        model = ATTR_MODEL_SHELLYEM
+        meters = 2
+        meters_sensors = [ATTR_POWER, ATTR_REACTIVE_POWER, ATTR_VOLTAGE]
+        meters_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_W, ATTR_UNIT_VAR]
+        meters_sensors_classes = [ATTR_POWER, '', '']
+        meters_sensors_templates = [
+            ATTR_TEMPLATE_POWER,
+            ATTR_TEMPLATE_REACTIVE_POWER,
+            ATTR_TEMPLATE_VOLTAGE
+        ]
 
     for roller_id in range(0, rollers):
         device_name = '{} {}'.format(model, id.split('-')[-1])
@@ -371,9 +409,12 @@ else:
         elif data.get(id.lower()):
             config_component = data.get(id.lower())
         component = ATTR_COVER
-        config_topic = '{}/{}/{}-roller-{}/config'.format(disc_prefix,
-                                                          component, id,
-                                                          roller_id)
+        config_topic = '{}/{}/{}-roller-{}/config'.format(
+            disc_prefix,
+            component,
+            id,
+            roller_id
+        )
         if config_component == component:
             roller_mode = True
             payload = '{\"name\":\"' + roller_name + '\",' \
@@ -418,9 +459,12 @@ else:
         elif data.get(unique_id.lower()):
             config_component = data.get(unique_id.lower())
         for component in relay_components:
-            config_topic = '{}/{}/{}-relay-{}/config'.format(disc_prefix,
-                                                             component, id,
-                                                             relay_id)
+            config_topic = '{}/{}/{}-relay-{}/config'.format(
+                disc_prefix,
+                component,
+                id,
+                relay_id
+            )
             if component == config_component and not roller_mode:
                 payload = '{\"name\":\"' + relay_name + '\",' \
                     '\"cmd_t\":\"' + command_topic + '\",' \
@@ -450,12 +494,19 @@ else:
 
         if relay_id == relays-1:
             for sensor_id in range(0, len(relays_sensors)):
-                unique_id = '{}-relay-{}'.format(id,
-                                                 relays_sensors[sensor_id])
-                config_topic = '{}/sensor/{}-{}/config'.format(disc_prefix, id,
-                                                               relays_sensors[sensor_id])
-                sensor_name = '{} {}'.format(device_name,
-                                             relays_sensors[sensor_id].capitalize())
+                unique_id = '{}-relay-{}'.format(
+                    id,
+                    relays_sensors[sensor_id]
+                )
+                config_topic = '{}/sensor/{}-{}/config'.format(
+                    disc_prefix,
+                    id,
+                    relays_sensors[sensor_id]
+                )
+                sensor_name = '{} {}'.format(
+                    device_name,
+                    relays_sensors[sensor_id].capitalize()
+                )
                 state_topic = '~relay/{}'.format(relays_sensors[sensor_id])
                 if model == ATTR_MODEL_SHELLY2 or roller_mode:
                     payload = '{\"name\":\"' + sensor_name + '\",' \
@@ -483,18 +534,28 @@ else:
                     'qos': qos
                 }
                 hass.services.call('mqtt', 'publish', service_data, False)
+
         for sensor_id in range(0, len(relays_sensors)):
-            unique_id = '{}-relay-{}-{}'.format(id, relays_sensors[sensor_id],
-                                                relay_id)
-            config_topic = '{}/sensor/{}-{}-{}/config'.format(disc_prefix, id,
-                                                              relays_sensors[sensor_id],
-                                                              relay_id)
-            sensor_name = '{} {} {}'.format(device_name,
-                                            relays_sensors[sensor_id].capitalize(
-                                            ),
-                                            relay_id)
-            state_topic = '~relay/{}/{}'.format(relay_id,
-                                                relays_sensors[sensor_id])
+            unique_id = '{}-relay-{}-{}'.format(
+                id,
+                relays_sensors[sensor_id],
+                relay_id
+                )
+            config_topic = '{}/sensor/{}-{}-{}/config'.format(
+                disc_prefix,
+                id,
+                relays_sensors[sensor_id],
+                relay_id
+            )
+            sensor_name = '{} {} {}'.format(
+                device_name,
+                relays_sensors[sensor_id].capitalize(),
+                relay_id
+            )
+            state_topic = '~relay/{}/{}'.format(
+                relay_id,
+                relays_sensors[sensor_id]
+            )
             if model != ATTR_MODEL_SHELLY2 and not roller_mode:
                 payload = '{\"name\":\"' + sensor_name + '\",' \
                     '\"stat_t\":\"' + state_topic + '\",' \
@@ -523,17 +584,26 @@ else:
             hass.services.call('mqtt', 'publish', service_data, False)
 
         for bin_sensor_id in range(0, len(relays_bin_sensors)):
-            unique_id = '{}-{}-{}'.format(id, relays_bin_sensors[bin_sensor_id],
-                                          relay_id)
-            config_topic = '{}/binary_sensor/{}-{}-{}/config'.format(disc_prefix,
-                                            id,
-                                            relays_bin_sensors[bin_sensor_id],
-                                            relay_id)
-            sensor_name = '{} {} {}'.format(device_name,
-                                relays_bin_sensors[bin_sensor_id].capitalize(),
-                                relay_id)
-            state_topic = '~{}/{}'.format(relays_bin_sensors[bin_sensor_id],
-                                          relay_id)
+            unique_id = '{}-{}-{}'.format(
+                id,
+                relays_bin_sensors[bin_sensor_id],
+                relay_id
+            )
+            config_topic = '{}/binary_sensor/{}-{}-{}/config'.format(
+                disc_prefix,
+                id,
+                relays_bin_sensors[bin_sensor_id],
+                relay_id
+            )
+            sensor_name = '{} {} {}'.format(
+                device_name,
+                relays_bin_sensors[bin_sensor_id].capitalize(),
+                relay_id
+            )
+            state_topic = '~{}/{}'.format(
+                relays_bin_sensors[bin_sensor_id],
+                relay_id
+            )
             if not roller_mode:
                 payload = '{\"name\":\"' + sensor_name + '\",' \
                     '\"stat_t\":\"' + state_topic + '\",' \
@@ -563,12 +633,17 @@ else:
     for sensor_id in range(0, len(sensors)):
         device_name = '{} {}'.format(model, id.split('-')[-1])
         unique_id = '{}-{}'.format(id, sensors[sensor_id])
-        config_topic = '{}/sensor/{}-{}/config'.format(disc_prefix, id,
-                                                       sensors[sensor_id])
+        config_topic = '{}/sensor/{}-{}/config'.format(
+            disc_prefix,
+            id,
+            sensors[sensor_id]
+        )
         default_topic = 'shellies/{}/'.format(id)
         availability_topic = '~online'
-        sensor_name = '{} {}'.format(device_name,
-                                     sensors[sensor_id].capitalize())
+        sensor_name = '{} {}'.format(
+            device_name,
+            sensors[sensor_id].capitalize()
+        )
         if relays != 0:
             state_topic = '~{}'.format(sensors[sensor_id])
         else:
@@ -616,12 +691,17 @@ else:
     for bin_sensor_id in range(0, len(bin_sensors)):
         device_name = '{} {}'.format(model, id.split('-')[-1])
         unique_id = '{}-{}'.format(id, bin_sensors[bin_sensor_id])
-        config_topic = '{}/binary_sensor/{}-{}/config'.format(disc_prefix, id,
-                                                              bin_sensors[bin_sensor_id])
+        config_topic = '{}/binary_sensor/{}-{}/config'.format(
+            disc_prefix,
+            id,
+            bin_sensors[bin_sensor_id]
+        )
         default_topic = 'shellies/{}/'.format(id)
         availability_topic = '~online'
-        sensor_name = '{} {}'.format(device_name,
-                                     bin_sensors[bin_sensor_id].capitalize())
+        sensor_name = '{} {}'.format(
+            device_name,
+            bin_sensors[bin_sensor_id].capitalize()
+        )
         if relays != 0:
             state_topic = '~{}'.format(bin_sensors[bin_sensor_id])
         else:
@@ -632,7 +712,6 @@ else:
                 '\"pl_on\":\"' + bin_sensors_payload[bin_sensor_id][ATTR_ON] + '\",' \
                 '\"pl_off\":\"' + bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '\",' \
                 '\"dev_cla\":\"' + bin_sensors_classes[bin_sensor_id] + '\",' \
-                '\"exp_aft\":\"' + ATTR_EXPIRE_AFTER + '\",' \
                 '\"uniq_id\":\"' + unique_id + '\",' \
                 '\"qos\":\"' + str(qos) + '\",' \
                 '\"dev\": {\"ids\": [\"' + mac + '\"],' \
@@ -716,6 +795,52 @@ else:
         }
         hass.services.call('mqtt', 'publish', service_data, False)
 
+        for bin_sensor_id in range(0, len(lights_bin_sensors)):
+            unique_id = '{}-color-{}-{}'.format(
+                id,
+                lights_bin_sensors[bin_sensor_id],
+                light_id
+            )
+            config_topic = '{}/binary_sensor/{}-{}-{}/config'.format(
+                disc_prefix,
+                id,
+                lights_bin_sensors[bin_sensor_id],
+                light_id
+            )
+            sensor_name = '{} {} {}'.format(
+                device_name,
+                lights_bin_sensors[bin_sensor_id].capitalize(),
+                light_id
+            )
+            state_topic = '~color/{}/status'.format(light_id)
+            if config_light == ATTR_RGBW:
+                payload = '{\"name\":\"' + sensor_name + '\",' \
+                    '\"stat_t\":\"' + state_topic + '\",' \
+                    '\"val_tpl\":\"' + lights_bin_sensors_templates[bin_sensor_id] + '\",' \
+                    '\"pl_on\":\"' + lights_bin_sensors_payload[bin_sensor_id][ATTR_ON] + '\",' \
+                    '\"pl_off\":\"' + lights_bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '\",' \
+                    '\"avty_t\":\"' + availability_topic + '\",' \
+                    '\"pl_avail\":\"true\",' \
+                    '\"pl_not_avail\":\"false\",' \
+                    '\"uniq_id\":\"' + unique_id + '\",' \
+                    '\"qos\":\"' + str(qos) + '\",' \
+                    '\"dev\": {\"ids\": [\"' + mac + '\"],' \
+                    '\"name\":\"' + device_name + '\",' \
+                    '\"mdl\":\"' + model + '\",' \
+                    '\"sw\":\"' + fw_ver + '\",' \
+                    '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
+                    '\"~\":\"' + default_topic + '\"}'
+            else:
+                payload = ''
+            service_data = {
+                'topic': config_topic,
+                'payload': payload,
+                'retain': retain,
+                'qos': qos
+            }
+            hass.services.call('mqtt', 'publish', service_data, False)
+
+
     for light_id in range(0, white_lights):
         device_name = '{} {}'.format(model, id.split('-')[-1])
         light_name = '{} Light {}'.format(device_name, light_id)
@@ -759,3 +884,99 @@ else:
             'qos': qos
         }
         hass.services.call('mqtt', 'publish', service_data, False)
+
+        for bin_sensor_id in range(0, len(lights_bin_sensors)):
+            unique_id = '{}-white-{}-{}'.format(
+                id,
+                lights_bin_sensors[bin_sensor_id],
+                light_id
+            )
+            config_topic = '{}/binary_sensor/{}-{}-{}/config'.format(
+                disc_prefix,
+                id,
+                lights_bin_sensors[bin_sensor_id],
+                light_id
+            )
+            sensor_name = '{} {} {}'.format(
+                device_name,
+                lights_bin_sensors[bin_sensor_id].capitalize(),
+                light_id
+            )
+            state_topic = '~white/{}/status'.format(light_id)
+            if config_light != ATTR_RGBW:
+                payload = '{\"name\":\"' + sensor_name + '\",' \
+                    '\"stat_t\":\"' + state_topic + '\",' \
+                    '\"val_tpl\":\"' + lights_bin_sensors_templates[bin_sensor_id] + '\",' \
+                    '\"pl_on\":\"' + lights_bin_sensors_payload[bin_sensor_id][ATTR_ON] + '\",' \
+                    '\"pl_off\":\"' + lights_bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '\",' \
+                    '\"avty_t\":\"' + availability_topic + '\",' \
+                    '\"pl_avail\":\"true\",' \
+                    '\"pl_not_avail\":\"false\",' \
+                    '\"uniq_id\":\"' + unique_id + '\",' \
+                    '\"qos\":\"' + str(qos) + '\",' \
+                    '\"dev\": {\"ids\": [\"' + mac + '\"],' \
+                    '\"name\":\"' + device_name + '\",' \
+                    '\"mdl\":\"' + model + '\",' \
+                    '\"sw\":\"' + fw_ver + '\",' \
+                    '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
+                    '\"~\":\"' + default_topic + '\"}'
+            else:
+                payload = ''
+            service_data = {
+                'topic': config_topic,
+                'payload': payload,
+                'retain': retain,
+                'qos': qos
+            }
+            hass.services.call('mqtt', 'publish', service_data, False)
+
+    for meter_id in range(0, meters):
+        device_name = '{} {}'.format(model, id.split('-')[-1])
+        meter_name = '{} Meter {}'.format(device_name, meter_id)
+        default_topic = 'shellies/{}/'.format(id)
+        state_topic = '~emeter/{}'.format(meter_id)
+        availability_topic = '~online'
+        for sensor_id in range(0, len(meters_sensors)):
+            unique_id = '{}-emeter-{}-{}'.format(
+                id,
+                meters_sensors[sensor_id],
+                meter_id
+            )
+            config_topic = '{}/sensor/{}-{}-{}/config'.format(
+                disc_prefix,
+                id,
+                meters_sensors[sensor_id],
+                meter_id
+            )
+            sensor_name = '{} {} {}'.format(
+                device_name,
+                meters_sensors[sensor_id].capitalize(),
+                meter_id
+            )
+            state_topic = '~emeter/{}/{}'.format(
+                meter_id,
+                meters_sensors[sensor_id]
+            )
+            payload = '{\"name\":\"' + sensor_name + '\",' \
+                '\"stat_t\":\"' + state_topic + '\",' \
+                '\"unit_of_meas\":\"' + meters_sensors_units[sensor_id] + '\",' \
+                '\"val_tpl\":\"' + meters_sensors_templates[sensor_id] + '\",' \
+                '\"dev_cla\":\"' + meters_sensors_classes[sensor_id] + '\",' \
+                '\"avty_t\":\"' + availability_topic + '\",' \
+                '\"pl_avail\":\"true\",' \
+                '\"pl_not_avail\":\"false\",' \
+                '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"qos\":\"' + str(qos) + '\",' \
+                '\"dev\": {\"ids\": [\"' + mac + '\"],' \
+                '\"name\":\"' + device_name + '\",' \
+                '\"mdl\":\"' + model + '\",' \
+                '\"sw\":\"' + fw_ver + '\",' \
+                '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
+                '\"~\":\"' + default_topic + '\"}'
+            service_data = {
+                'topic': config_topic,
+                'payload': payload,
+                'retain': retain,
+                'qos': qos
+            }
+            hass.services.call('mqtt', 'publish', service_data, False)
