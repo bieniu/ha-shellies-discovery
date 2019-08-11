@@ -85,7 +85,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.10.2'
+VERSION = '0.10.3'
 
 ATTR_DEVELOP = 'develop'
 
@@ -385,7 +385,7 @@ else:
         model = ATTR_MODEL_SHELLYEM
         meters = 2
         meters_sensors = [ATTR_POWER, ATTR_REACTIVE_POWER, ATTR_VOLTAGE]
-        meters_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_W, ATTR_UNIT_VAR]
+        meters_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_VAR, ATTR_UNIT_V]
         meters_sensors_classes = [ATTR_POWER, '', '']
         meters_sensors_templates = [
             ATTR_TEMPLATE_POWER,
