@@ -1,0 +1,10 @@
+*.yaml
+*.log
+__pycache__/
+*.db
+*.conf
+.HA_VERSION
+!.gitignore
+.cloud
+.storage
+.vscode

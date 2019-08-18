@@ -85,7 +85,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = "0.10.4"
+VERSION = "0.11.0"
 
 ATTR_DEVELOP = "develop"
 
@@ -119,6 +119,8 @@ ATTR_MODEL_SHELLYSMOKE = "Shelly Smoke"
 ATTR_MODEL_SHELLYSENSE = "Shelly Sense"
 ATTR_MODEL_SHELLYRGBW2 = "Shelly RGBW2"
 ATTR_MODEL_SHELLYEM = "ShellyEM"
+ATTR_MODEL_SHELLYFLOOD = "Shelly Flood"
+
 ATTR_SHELLY = "Shelly"
 ATTR_TEMPERATURE = "temperature"
 ATTR_HUMIDITY = "humidity"
@@ -129,12 +131,15 @@ ATTR_POWER = "power"
 ATTR_REACTIVE_POWER = "reactive_power"
 ATTR_VOLTAGE = "voltage"
 ATTR_ENERGY = "energy"
+ATTR_RETURNED_ENERGY = "returned_energy"
 ATTR_SWITCH = "switch"
 ATTR_LIGHT = "light"
 ATTR_RGBW = "rgbw"
 ATTR_WHITE = "white"
 ATTR_FAN = "fan"
 ATTR_SMOKE = "smoke"
+ATTR_FLOOD = "flood"
+ATTR_MOISTURE = "moisture"
 ATTR_MOTION = "motion"
 ATTR_CHARGER = "charger"
 ATTR_INPUT = "input"
@@ -356,15 +361,33 @@ else:
 
     if id[:-7] == "shellyem":
         model = ATTR_MODEL_SHELLYEM
+        relays = 1
+        relays_sensors = [ATTR_POWER, ATTR_ENERGY]
+        relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
+        relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
+        relays_sensors_templates = [ATTR_TEMPLATE_POWER, ATTR_TEMPLATE_ENERGY]
         meters = 2
-        meters_sensors = [ATTR_POWER, ATTR_REACTIVE_POWER, ATTR_VOLTAGE]
-        meters_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_VAR, ATTR_UNIT_V]
-        meters_sensors_classes = [ATTR_POWER, None, None]
+        meters_sensors = [ATTR_POWER, ATTR_REACTIVE_POWER, ATTR_VOLTAGE, ATTR_ENERGY, ATTR_RETURNED_ENERGY]
+        meters_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_VAR, ATTR_UNIT_V, ATTR_UNIT_KWH, ATTR_UNIT_KWH]
+        meters_sensors_classes = [ATTR_POWER, None, None, ATTR_POWER, ATTR_POWER]
         meters_sensors_templates = [
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_REACTIVE_POWER,
             ATTR_TEMPLATE_VOLTAGE,
+            ATTR_TEMPLATE_ENERGY,
+            ATTR_TEMPLATE_ENERGY,
         ]
+
+    if id[:-7] == "shellyflood":
+        model = ATTR_MODEL_SHELLYFLOOD
+        sensors = [ATTR_TEMPERATURE, ATTR_BATTERY]
+        sensors_classes = sensors
+        sensors_units = [temp_unit, ATTR_UNIT_PERCENT]
+        sensors_templates = [ATTR_TEMPLATE_TEMPERATURE, ATTR_TEMPLATE_BATTERY]
+        bin_sensors = [ATTR_FLOOD]
+        bin_sensors_classes = [ATTR_MOISTURE]
+        bin_sensors_payload = [ATTR_TRUE_FALSE_PAYLOAD]
+        battery_powered = True
 
     for roller_id in range(0, rollers):
         device_name = "{} {}".format(model, id.split("-")[-1])
