@@ -74,7 +74,7 @@ shellyrgbw2-CC2211: 'rgbw' - means that Shelly RGBW2 works in color-mode
 You can install script manually or via HACS.
 """
 
-VERSION = "0.11.0"
+VERSION = "0.11.1"
 
 ATTR_DEVELOP = "develop"
 
