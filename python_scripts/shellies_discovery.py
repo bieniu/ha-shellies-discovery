@@ -1,8 +1,7 @@
 """
-This script adds MQTT discovery support for Shellies. Shelly1, Shelly1PM,
-Shelly2, Shely2.5, Shelly4Pro, Shelly Plug, Shelly Plug S, Shelly RGBW2 (color
-and white mode), Shelly H&T, Shelly Smoke, ShellyEM and Shelly Sense are
-supported.
+This script adds MQTT discovery support for Shellies. Shelly1, Shelly1PM, Shelly2,
+Shely2.5, Shelly4Pro, Shelly Plug, Shelly Plug S, Shelly RGBW2 (color and white mode),
+Shelly H&T, Shelly Smoke, ShellyEM, Shelly Flood and Shelly Sense are supported.
 
 Arguments:
  - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
@@ -12,8 +11,7 @@ Arguments:
  - fw_ver               - Shelly firmware version (optional)
  - temp_unit            - C for Celsius, F for Farenhait, default C (optional)
  - list of shelies relays and components for them, only for devices with relays
-                          (optional), by default all relays are added as
-                          switches.
+                          (optional), by default all relays are added as switches.
 
 Default configuration
 Automations:
@@ -40,9 +38,8 @@ Automations:
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
 
-If you want the relay to be a other component than the switch in the Home
-Assistant, you have to add a description of the relay and its function to the
-script configuration.
+If you want the relay to be a other component than the switch in the Home Assistant,
+you have to add a description of the relay and its function to the script configuration.
 For example:
 - id: 'shellies_discovery'
   alias: 'Shellies Discovery'
@@ -61,28 +58,20 @@ For example:
       shellyrgbw2-AABB22: 'white'
       shellyrgbw2-CC2211: 'rgbw'
 
-qos - maximum QoS level of the topics, this is optional argument, default is 0
-      (integer)
+qos - maximum QoS level of the topics, this is optional argument, default is 0 (integer)
 
-shelly1-001122-relay-0: 'light' - means that relay 0 of shelly1-001122 will use
-light component in Home Assistant. You can use switch, light or fan.
+shelly1-001122-relay-0: 'light' - means that relay 0 of shelly1-001122 will use light
+component in Home Assistant. You can use switch, light or fan.
 
-shellyswitch-334455: 'cover' - means that Shelly2 works in roller mode and use
-cover component in Home Assistant.
+shellyswitch-334455: 'cover' - means that Shelly2 works in roller mode and use cover
+component in Home Assistant.
 
 shellyrgbw2-AABB22: 'white' - means that Shelly RGBW2 works in white-mode
 
 shellyrgbw2-CC2211: 'rgbw' - means that Shelly RGBW2 works in color-mode
 (default)
 
-Script supports custom_updater and HACS components. Add this to your
-configuration and stay up-to-date.
-
-custom_updater:
-  track:
-    - python_scripts
-  python_script_urls:
-    - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
+You can install script manually or via HACS.
 """
 
 VERSION = "0.11.0"
@@ -367,8 +356,20 @@ else:
         relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [ATTR_TEMPLATE_POWER, ATTR_TEMPLATE_ENERGY]
         meters = 2
-        meters_sensors = [ATTR_POWER, ATTR_REACTIVE_POWER, ATTR_VOLTAGE, ATTR_ENERGY, ATTR_RETURNED_ENERGY]
-        meters_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_VAR, ATTR_UNIT_V, ATTR_UNIT_KWH, ATTR_UNIT_KWH]
+        meters_sensors = [
+            ATTR_POWER,
+            ATTR_REACTIVE_POWER,
+            ATTR_VOLTAGE,
+            ATTR_ENERGY,
+            ATTR_RETURNED_ENERGY,
+        ]
+        meters_sensors_units = [
+            ATTR_UNIT_W,
+            ATTR_UNIT_VAR,
+            ATTR_UNIT_V,
+            ATTR_UNIT_KWH,
+            ATTR_UNIT_KWH,
+        ]
         meters_sensors_classes = [ATTR_POWER, None, None, ATTR_POWER, ATTR_POWER]
         meters_sensors_templates = [
             ATTR_TEMPLATE_POWER,

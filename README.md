@@ -28,6 +28,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Smoke
 - Shelly Sense
 - ShellyEM
+- Shelly Flood
 
 ## Troubleshooting checklist
 - correct MQTT configuration in Home Assistant with `discovery` enabled
@@ -79,7 +80,7 @@ automation:
       data:
         topic: shellies/command
         payload: announce
-        
+
   - id: 'shellies_discovery'
     alias: 'Shellies Discovery'
     trigger:
