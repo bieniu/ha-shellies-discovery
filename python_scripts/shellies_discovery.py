@@ -1,6 +1,6 @@
 """
 This script adds MQTT discovery support for Shellies. Shelly1, Shelly1PM, Shelly2,
-Shely2.5, Shelly4Pro, Shelly Plug, Shelly Plug S, Shelly RGBW2 (color and white mode),
+Shelly2.5, Shelly4Pro, Shelly Plug, Shelly Plug S, Shelly RGBW2 (color and white mode),
 Shelly H&T, Shelly Smoke, ShellyEM, Shelly Flood and Shelly Sense are supported.
 
 Arguments:
