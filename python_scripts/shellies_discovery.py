@@ -74,7 +74,7 @@ shellyrgbw2-CC2211: 'rgbw' - means that Shelly RGBW2 works in color-mode
 You can install script manually or via HACS.
 """
 
-VERSION = "0.11.1"
+VERSION = "0.11.2"
 
 ATTR_DEVELOP = "develop"
 
@@ -149,7 +149,7 @@ ATTR_ON = "on"
 ATTR_OFF = "off"
 ATTR_TRUE_FALSE_PAYLOAD = {ATTR_ON: "true", ATTR_OFF: "false"}
 ATTR_1_0_PAYLOAD = {ATTR_ON: "1", ATTR_OFF: "0"}
-ATTR_EXPIRE_AFTER = "7200"
+ATTR_EXPIRE_AFTER = "43200"
 
 develop = False
 retain = True
