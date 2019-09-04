@@ -167,8 +167,7 @@ try:
             raise ValueError
 except ValueError:
     logger.error(
-        "Wrong qos argument! Should be 0, 1 or 2. The default \
-                        value 0 was used."
+        "Wrong qos argument! Should be 0, 1 or 2. The default value 0 was used."
     )
 temp_unit = ATTR_UNIT_CELSIUS
 if data.get(ATTR_TEMP_UNIT) is not None:
