@@ -57,6 +57,7 @@ For example:
       shellyswitch-334455: 'cover'
       shellyrgbw2-AABB22: 'white'
       shellyrgbw2-CC2211: 'rgbw'
+      shellyht-2200AA: 'ac_power'
 
 qos - maximum QoS level of the topics, this is optional argument, default is 0 (integer)
 
@@ -70,6 +71,8 @@ shellyrgbw2-AABB22: 'white' - means that Shelly RGBW2 works in white-mode
 
 shellyrgbw2-CC2211: 'rgbw' - means that Shelly RGBW2 works in color-mode
 (default)
+
+shellyht-2200AA: 'ac_power' - means that ShellyH&T is AC powered via USB adapter
 
 You can install script manually or via HACS.
 """
@@ -149,7 +152,9 @@ ATTR_ON = "on"
 ATTR_OFF = "off"
 ATTR_TRUE_FALSE_PAYLOAD = {ATTR_ON: "true", ATTR_OFF: "false"}
 ATTR_1_0_PAYLOAD = {ATTR_ON: "1", ATTR_OFF: "0"}
-ATTR_EXPIRE_AFTER = "43200"
+ATTR_AC_POWER = "ac_power"
+
+expire_after = "43200"
 
 develop = False
 retain = True
@@ -618,6 +623,12 @@ else:
             state_topic = "~{}".format(sensors[sensor_id])
         else:
             state_topic = "~sensor/{}".format(sensors[sensor_id])
+        if data.get(id):
+            if data.get(id) == ATTR_AC_POWER:
+                expire_after = "7200"
+        elif data.get(id.lower()):
+            if data.get(id.lower()) == ATTR_AC_POWER:
+                expire_after = "7200"
         if battery_powered:
             payload = (
                 '{"name":"' + sensor_name + '",'
@@ -625,7 +636,7 @@ else:
                 '"unit_of_meas":"' + sensors_units[sensor_id] + '",'
                 '"dev_cla":"' + sensors_classes[sensor_id] + '",'
                 '"val_tpl":"' + sensors_templates[sensor_id] + '",'
-                '"exp_aft":"' + ATTR_EXPIRE_AFTER + '",'
+                '"exp_aft":"' + expire_after + '",'
                 '"uniq_id":"' + unique_id + '",'
                 '"qos":"' + str(qos) + '",'
                 '"dev": {"ids": ["' + mac + '"],'

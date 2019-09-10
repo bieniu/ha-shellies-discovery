@@ -24,7 +24,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Plug
 - Shelly Plug S
 - Shelly RGBW2 (color and white mode)
-- Shelly H&T
+- Shelly H&T (with or without USB adapter)
 - Shelly Smoke
 - Shelly Sense
 - ShellyEM
@@ -102,6 +102,7 @@ automation:
         shellyswitch-334455: 'cover'
         shellyrgbw2-AABB22: 'white'
         shellyrgbw2-CC2211: 'rgbw'
+        shellyht-2200AA: 'ac_power'
 ```
 ## Script arguments
 key | optional | type | default | description

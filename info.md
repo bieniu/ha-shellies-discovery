@@ -9,7 +9,7 @@
 - Shelly Plug
 - Shelly Plug S
 - Shelly RGBW2 (color and white mode)
-- Shelly H&T
+- Shelly H&T (with or without USB adapter)
 - Shelly Smoke
 - Shelly Sense
 - ShellyEM
@@ -64,7 +64,7 @@ automation:
       data:
         topic: shellies/command
         payload: announce
-        
+
   - id: 'shellies_discovery'
     alias: 'Shellies Discovery'
     trigger:
@@ -85,6 +85,7 @@ automation:
         shellyswitch-334455: 'cover'
         shellyrgbw2-AABB22: 'white'
         shellyrgbw2-CC2211: 'rgbw'
+        shellyht-2200AA: 'ac_power'
 ```
 ## Script arguments
 key | optional | type | default | description
