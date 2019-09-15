@@ -7,7 +7,10 @@
 
 This script adds MQTT discovery support for Shellies in the [Home Assistant](https://home-assistant.io/).
 
-This script use Home Assistant [python_script](https://www.home-assistant.io/components/python_script/) component.
+This script use Home Assistant [python_script](https://www.home-assistant.io/components/python_script/) component and you have to add it to your `configuration.yaml` file:
+```yaml
+python_script:
+```
 
 You can install this script via [HACS](https://custom-components.github.io/hacs/) or just download `shellies_discovery.py` file and save it in `/config/python_scripts` folder.
 
