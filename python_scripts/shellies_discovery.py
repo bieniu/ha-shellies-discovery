@@ -110,6 +110,7 @@ ATTR_MODEL_SHELLYHT = "Shelly H&T"
 ATTR_MODEL_SHELLYSMOKE = "Shelly Smoke"
 ATTR_MODEL_SHELLYSENSE = "Shelly Sense"
 ATTR_MODEL_SHELLYRGBW2 = "Shelly RGBW2"
+ATTR_MODEL_SHELLYBULB = "Shelly Bulb"
 ATTR_MODEL_SHELLYEM = "ShellyEM"
 ATTR_MODEL_SHELLYFLOOD = "Shelly Flood"
 
@@ -351,6 +352,10 @@ else:
         lights_bin_sensors_classes = [ATTR_POWER]
         lights_bin_sensors_templates = [ATTR_TEMPALATE_OVERPOWER]
         lights_bin_sensors_payload = [ATTR_TRUE_FALSE_PAYLOAD]
+
+    if id[:-7] == "shellybulb":
+        model = ATTR_MODEL_SHELLYBULB
+        rgbw_lights = 1
 
     if id[:-7] == "shellyem":
         model = ATTR_MODEL_SHELLYEM
@@ -745,35 +750,63 @@ else:
         elif data.get(id.lower()):
             config_light = data.get(id.lower())
         if config_light == ATTR_RGBW:
-            payload = (
-                '{"schema":"template",'
-                '"name":"' + light_name + '",'
-                '"cmd_t":"' + command_topic + '",'
-                '"stat_t":"' + state_topic + '",'
-                '"avty_t":"' + availability_topic + '",'
-                '"pl_avail":"true",'
-                '"pl_not_avail":"false",'
-                '"fx_list":[0, 1, 2, 3, 4, 5, 5],'
-                '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"gain\\":{{ brightness | float | multiply(0.3922) | round(0) }}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}",'
-                '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
-                '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
-                '"bri_tpl":"{{ value_json.gain | float | multiply(2.55) | round(0) }}",'
-                '"r_tpl":"{{ value_json.red }}",'
-                '"g_tpl":"{{ value_json.green }}",'
-                '"b_tpl":"{{ value_json.blue }}",'
-                '"whit_val_tpl":"{{ value_json.white }}",'
-                '"fx_tpl":"{{ value_json.effect }}",'
-                '"uniq_id":"' + unique_id + '",'
-                '"qos":"' + str(qos) + '",'
-                '"dev": {"ids": ["' + mac + '"],'
-                '"name":"' + device_name + '",'
-                '"mdl":"' + model + '",'
-                '"sw":"' + fw_ver + '",'
-                '"mf":"' + ATTR_MANUFACTURER + '"},'
-                '"~":"' + default_topic + '"}'
-            )
-        else:
             payload = ""
+            if model == ATTR_MODEL_SHELLYRGBW2:
+                payload = (
+                    '{"schema":"template",'
+                    '"name":"' + light_name + '",'
+                    '"cmd_t":"' + command_topic + '",'
+                    '"stat_t":"' + state_topic + '",'
+                    '"avty_t":"' + availability_topic + '",'
+                    '"pl_avail":"true",'
+                    '"pl_not_avail":"false",'
+                    '"fx_list":[0, 1, 2, 3, 4, 5, 6],'
+                    '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"gain\\":{{ brightness | float | multiply(0.3922) | round(0) }}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}",'
+                    '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
+                    '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
+                    '"bri_tpl":"{{ value_json.gain | float | multiply(2.55) | round(0) }}",'
+                    '"r_tpl":"{{ value_json.red }}",'
+                    '"g_tpl":"{{ value_json.green }}",'
+                    '"b_tpl":"{{ value_json.blue }}",'
+                    '"whit_val_tpl":"{{ value_json.white }}",'
+                    '"fx_tpl":"{{ value_json.effect }}",'
+                    '"uniq_id":"' + unique_id + '",'
+                    '"qos":"' + str(qos) + '",'
+                    '"dev": {"ids": ["' + mac + '"],'
+                    '"name":"' + device_name + '",'
+                    '"mdl":"' + model + '",'
+                    '"sw":"' + fw_ver + '",'
+                    '"mf":"' + ATTR_MANUFACTURER + '"},'
+                    '"~":"' + default_topic + '"}'
+                )
+            elif model == ATTR_MODEL_SHELLYBULB:
+                payload = (
+                    '{"schema":"template",'
+                    '"name":"' + light_name + '",'
+                    '"cmd_t":"' + command_topic + '",'
+                    '"stat_t":"' + state_topic + '",'
+                    '"avty_t":"' + availability_topic + '",'
+                    '"pl_avail":"true",'
+                    '"pl_not_avail":"false",'
+                    '"fx_list":["Off", "Meteor Shower", "Gradual Change", "Breath", "Flash", "On/Off Gradual", "Red/Green Change"],'
+                    '"cmd_on_tpl":"{\\"turn\\":\\"on\\",\\"mode\\":\\"color\\",{% if red is defined and green is defined and blue is defined %}\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }},{% endif %}{% if white_value is defined %}\\"white\\":{{ white_value }},{% endif %}{% if brightness is defined %}\\"gain\\":{{ brightness | float | multiply(0.3922) | round(0) }},{% endif %}{% if effect is defined %}{% if effect == \\"Meteor Shower\\" %}\\"effect\\":1{% elif effect == \\"Gradual Change\\" %}\\"effect\\":2{% elif effect == \\"Breath\\" %}\\"effect\\":3{% elif effect == \\"Flash\\" %}\\"effect\\":4{% elif effect == \\"On/Off Gradual\\" %}\\"effect\\":5{% elif effect == \\"Red/Green Change\\" %}\\"effect\\":6{% else %}\\"effect\\":0{% endif %}{% else %}\\"effect\\":0{% endif %}}",'
+                    '"cmd_off_tpl":"{\\"turn\\":\\"off\\",\\"mode\\":\\"color\\",\\"effect\\": 0}",'
+                    '"stat_tpl":"{% if value_json.ison == true and value_json.mode == \\"color\\" %}on{% else %}off{% endif %}",'
+                    '"bri_tpl":"{{ value_json.gain | float | multiply(2.55) | round(0) }}",'
+                    '"r_tpl":"{{ value_json.red }}",'
+                    '"g_tpl":"{{ value_json.green }}",'
+                    '"b_tpl":"{{ value_json.blue }}",'
+                    '"whit_val_tpl":"{{ value_json.white }}",'
+                    '"fx_tpl":"{% if value_json.effect == 1 %}Meteor Shower{% elif value_json.effect == 2 %}Gradual Change{% elif value_json.effect == 3 %}Breath{% elif value_json.effect == 4 %}Flash{% elif value_json.effect == 5 %}On/Off Gradual{% elif value_json.effect == 6 %}Red/Green Change{% else %}Off{% endif %}",'
+                    '"uniq_id":"' + unique_id + '",'
+                    '"qos":"' + str(qos) + '",'
+                    '"dev": {"ids": ["' + mac + '"],'
+                    '"name":"' + device_name + '",'
+                    '"mdl":"' + model + '",'
+                    '"sw":"' + fw_ver + '",'
+                    '"mf":"' + ATTR_MANUFACTURER + '"},'
+                    '"~":"' + default_topic + '"}'
+                )
         service_data = {
             "topic": config_topic,
             "payload": payload,
