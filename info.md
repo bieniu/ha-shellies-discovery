@@ -14,6 +14,7 @@ python_script:
 - Shelly Plug
 - Shelly Plug S
 - Shelly RGBW2 (color and white mode)
+- Shelly Bulb
 - Shelly H&T (with or without USB adapter)
 - Shelly Smoke
 - Shelly Sense

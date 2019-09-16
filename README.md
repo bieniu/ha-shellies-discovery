@@ -27,6 +27,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Plug
 - Shelly Plug S
 - Shelly RGBW2 (color and white mode)
+- Shelly Bulb
 - Shelly H&T (with or without USB adapter)
 - Shelly Smoke
 - Shelly Sense
