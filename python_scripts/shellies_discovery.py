@@ -76,9 +76,6 @@ shellyht-2200AA: 'ac_power' - means that ShellyH&T is AC powered via USB adapter
 
 You can install script manually or via HACS.
 """
-
-VERSION = "0.11.2"
-
 ATTR_DEVELOP = "develop"
 
 ATTR_ID = "id"
