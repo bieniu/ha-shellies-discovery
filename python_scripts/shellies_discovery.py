@@ -152,9 +152,10 @@ ATTR_TRUE_FALSE_PAYLOAD = {ATTR_ON: "true", ATTR_OFF: "false"}
 ATTR_1_0_PAYLOAD = {ATTR_ON: "1", ATTR_OFF: "0"}
 ATTR_AC_POWER = "ac_power"
 
+DEFAULT_DISC_PREFIX = "homeassistant"
+
 expire_after = "43200"
 
-develop = False
 retain = True
 qos = 0
 roller_mode = False
@@ -163,7 +164,7 @@ id = data.get(ATTR_ID)
 mac = data.get(ATTR_MAC)
 fw_ver = data.get(ATTR_FW_VER)
 
-if id is None or mac is None or fw_ver is None:
+if not id or not mac or not fw_ver:
     logger.error("Wrong arguments! Please read the script documentation.")
 else:
     try:
@@ -178,16 +179,12 @@ else:
         )
 
     temp_unit = ATTR_UNIT_CELSIUS
-    if data.get(ATTR_TEMP_UNIT) is not None:
-        if data.get(ATTR_TEMP_UNIT) == "F":
-            temp_unit = ATTR_UNIT_FARENHEIT
+    if data.get(ATTR_TEMP_UNIT, "C") == "F":
+        temp_unit = ATTR_UNIT_FARENHEIT
 
-    disc_prefix = "homeassistant"
-    if data.get(ATTR_DISCOVERY_PREFIX) is not None:
-        disc_prefix = data.get(ATTR_DISCOVERY_PREFIX)
+    disc_prefix = data.get(ATTR_DISCOVERY_PREFIX, DEFAULT_DISC_PREFIX)
 
-    if data.get(ATTR_DEVELOP) is not None:
-        develop = data.get(ATTR_DEVELOP)
+    develop = data.get(ATTR_DEVELOP, False)
     if develop:
         disc_prefix = "develop"
         retain = False
