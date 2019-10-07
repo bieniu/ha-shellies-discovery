@@ -116,6 +116,8 @@ key | optional | type | default | description
 `qos` | True | integer | `0` | MQTT QoS, you can use `0`, `1` or `2`
 `relay_id`/`shelly_id` | True | string | `switch` | HA component to use with `relay_id`, for example: `shelly1-001122-relay-0: 'light'` means that relay 0 of shelly1-001122 will use light component in HA. You can use `switch`, `light` or `fan`. For Shelly2 and Shelly2.5 you can use `shellyswitch-334455: 'cover'` for roller mode. For ShellyRGBW2 you can use `shellyrgbw2-AABB22: 'white'` for wite mode.
 
+<a href="https://www.buymeacoffee.com/QnLdxeaqO" target="_blank"><img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+
 [releases]: https://github.com/bieniu/ha-shellies-discovery/releases
 [releases-shield]: https://img.shields.io/github/release/bieniu/ha-shellies-discovery.svg?style=popout
 [forum]: https://community.home-assistant.io/t/shellies-discovery-script/94048
