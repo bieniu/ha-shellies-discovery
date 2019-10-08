@@ -909,9 +909,7 @@ else:
                     payload = (
                         '{"name":"' + sensor_name + '",'
                         '"stat_t":"' + state_topic + '",'
-                        '"val_tpl":"' + lights_bin_sensors_templates[bin_sensor_id] + '",'
-                        '"pl_on":"' + lights_bin_sensors_payload[bin_sensor_id][ATTR_ON] + '",'
-                        '"pl_off":"' + lights_bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '",'
+                        '"val_tpl":"{% if ' + lights_bin_sensors_templates[bin_sensor_id] + ' == true %}ON{% else %}OFF{% endif %}",'
                         '"avty_t":"' + availability_topic + '",'
                         '"pl_avail":"true",'
                         '"pl_not_avail":"false",'
