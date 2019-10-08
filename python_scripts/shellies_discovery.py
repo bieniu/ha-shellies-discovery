@@ -819,7 +819,7 @@ else:
                 unique_id = "{}-color-{}-{}".format(
                     id, lights_bin_sensors[bin_sensor_id], light_id
                 )
-                config_topic = "{}/binary_sensor/{}-{}-{}/config".format(
+                config_topic = "{}/binary_sensor/{}-color-{}-{}/config".format(
                     disc_prefix, id, lights_bin_sensors[bin_sensor_id], light_id
                 )
                 sensor_name = "{} {} {}".format(
@@ -908,7 +908,7 @@ else:
                 unique_id = "{}-white-{}-{}".format(
                     id, lights_bin_sensors[bin_sensor_id], light_id
                 )
-                config_topic = "{}/binary_sensor/{}-{}-{}/config".format(
+                config_topic = "{}/binary_sensor/{}-white-{}-{}/config".format(
                     disc_prefix, id, lights_bin_sensors[bin_sensor_id], light_id
                 )
                 sensor_name = "{} {} {}".format(
