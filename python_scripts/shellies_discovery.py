@@ -93,7 +93,7 @@ ATTR_TEMPLATE_REACTIVE_POWER = "{{ value | float | round(1) }}"
 ATTR_TEMPLATE_VOLTAGE = "{{ value | float | round(1) }}"
 ATTR_TEMPLATE_ENERGY = "{{ (value | float / 60 / 1000) | round(2) }}"
 ATTR_TEMPLATE_BATTERY = "{{ value | float | round }}"
-ATTR_TEMPLATE_OVERPOWER = "{{ value_json.overpower }}"
+ATTR_TEMPLATE_OVERPOWER = "value_json.overpower"
 
 ATTR_MANUFACTURER = "Allterco Robotics"
 ATTR_MODEL_SHELLY1 = "Shelly1"
@@ -587,12 +587,8 @@ else:
                     payload = (
                         '{"name":"' + sensor_name + '",'
                         '"stat_t":"' + state_topic + '",'
-                        '"pl_on":"'
-                        + relays_bin_sensors_payload[bin_sensor_id][ATTR_ON]
-                        + '",'
-                        '"pl_off":"'
-                        + relays_bin_sensors_payload[bin_sensor_id][ATTR_OFF]
-                        + '",'
+                        '"pl_on":"' + relays_bin_sensors_payload[bin_sensor_id][ATTR_ON] + '",'
+                        '"pl_off":"' + relays_bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '",'
                         '"avty_t":"' + availability_topic + '",'
                         '"pl_avail":"true",'
                         '"pl_not_avail":"false",'
@@ -830,13 +826,7 @@ else:
                     payload = (
                         '{"name":"' + sensor_name + '",'
                         '"stat_t":"' + state_topic + '",'
-                        '"val_tpl":"' + lights_bin_sensors_templates[bin_sensor_id] + '",'
-                        '"pl_on":"'
-                        + lights_bin_sensors_payload[bin_sensor_id][ATTR_ON]
-                        + '",'
-                        '"pl_off":"'
-                        + lights_bin_sensors_payload[bin_sensor_id][ATTR_OFF]
-                        + '",'
+                        '"val_tpl":"{% if ' + lights_bin_sensors_templates[bin_sensor_id] + ' == true %}ON{% else %}OFF{% endif %}",'
                         '"avty_t":"' + availability_topic + '",'
                         '"pl_avail":"true",'
                         '"pl_not_avail":"false",'
@@ -920,12 +910,8 @@ else:
                         '{"name":"' + sensor_name + '",'
                         '"stat_t":"' + state_topic + '",'
                         '"val_tpl":"' + lights_bin_sensors_templates[bin_sensor_id] + '",'
-                        '"pl_on":"'
-                        + lights_bin_sensors_payload[bin_sensor_id][ATTR_ON]
-                        + '",'
-                        '"pl_off":"'
-                        + lights_bin_sensors_payload[bin_sensor_id][ATTR_OFF]
-                        + '",'
+                        '"pl_on":"' + lights_bin_sensors_payload[bin_sensor_id][ATTR_ON] + '",'
+                        '"pl_off":"' + lights_bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '",'
                         '"avty_t":"' + availability_topic + '",'
                         '"pl_avail":"true",'
                         '"pl_not_avail":"false",'
