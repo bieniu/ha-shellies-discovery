@@ -148,8 +148,8 @@ ATTR_UNIT_CELSIUS = "°C"
 ATTR_UNIT_FARENHEIT = "°F"
 ATTR_ON = "on"
 ATTR_OFF = "off"
-ATTR_TRUE_FALSE_PAYLOAD = {ATTR_ON: "true", ATTR_OFF: "false"}
-ATTR_1_0_PAYLOAD = {ATTR_ON: "1", ATTR_OFF: "0"}
+ATTR_TRUE_FALSE_PL = {ATTR_ON: "true", ATTR_OFF: "false"}
+ATTR_1_0_PL = {ATTR_ON: "1", ATTR_OFF: "0"}
 ATTR_AC_POWER = "ac_power"
 
 DEFAULT_DISC_PREFIX = "homeassistant"
@@ -204,9 +204,9 @@ else:
         relays_sensors_tpls = []
         relays_sensors_classes = []
         relays_bin_sensors = []
-        relays_bin_sensors_payload = []
+        relays_bin_sensors_pl = []
         lights_bin_sensors = []
-        lights_bin_sensors_payload = []
+        lights_bin_sensors_pl = []
         sensors = []
         sensors_units = []
         sensors_tpls = []
@@ -221,7 +221,7 @@ else:
             model = ATTR_MODEL_SHELLY1
             relays = 1
             relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
-            relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD, ATTR_1_0_PAYLOAD]
+            relays_bin_sensors_pl = [ATTR_1_0_PL, ATTR_1_0_PL]
 
         if id[:-7] == "shelly1pm":
             model = ATTR_MODEL_SHELLY1PM
@@ -231,14 +231,14 @@ else:
             relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
             relays_sensors_tpls = [ATTR_TPL_POWER, ATTR_TPL_ENERGY]
             relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
-            relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD, ATTR_1_0_PAYLOAD]
+            relays_bin_sensors_pl = [ATTR_1_0_PL, ATTR_1_0_PL]
             sensors = [ATTR_TEMPERATURE]
             sensors_classes = sensors
             sensors_units = [temp_unit]
             sensors_tpls = [ATTR_TPL_TEMPERATURE]
             bin_sensors = [ATTR_OVERTEMPERATURE]
             bin_sensors_classes = [ATTR_HEAT]
-            bin_sensors_payload = [ATTR_1_0_PAYLOAD]
+            bin_sensors_pl = [ATTR_1_0_PL]
 
         if id[:-7] == "shellyswitch":
             model = ATTR_MODEL_SHELLY2
@@ -249,7 +249,7 @@ else:
             relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
             relays_sensors_tpls = [ATTR_TPL_POWER, ATTR_TPL_ENERGY]
             relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
-            relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD, ATTR_1_0_PAYLOAD]
+            relays_bin_sensors_pl = [ATTR_1_0_PL, ATTR_1_0_PL]
 
         if id[:-7] == "shellyswitch25":
             model = ATTR_MODEL_SHELLY25
@@ -260,14 +260,14 @@ else:
             relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
             relays_sensors_tpls = [ATTR_TPL_POWER, ATTR_TPL_ENERGY]
             relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
-            relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD, ATTR_1_0_PAYLOAD]
+            relays_bin_sensors_pl = [ATTR_1_0_PL, ATTR_1_0_PL]
             sensors = [ATTR_TEMPERATURE]
             sensors_classes = sensors
             sensors_units = [temp_unit]
             sensors_tpls = [ATTR_TPL_TEMPERATURE]
             bin_sensors = [ATTR_OVERTEMPERATURE]
             bin_sensors_classes = [ATTR_HEAT]
-            bin_sensors_payload = [ATTR_1_0_PAYLOAD]
+            bin_sensors_pl = [ATTR_1_0_PL]
 
         if id[:-7] == "shellyplug":
             model = ATTR_MODEL_SHELLYPLUG
@@ -290,7 +290,7 @@ else:
             sensors_tpls = [ATTR_TPL_TEMPERATURE]
             bin_sensors = [ATTR_OVERTEMPERATURE]
             bin_sensors_classes = [ATTR_HEAT]
-            bin_sensors_payload = [ATTR_1_0_PAYLOAD]
+            bin_sensors_pl = [ATTR_1_0_PL]
 
         if id[:-7] == "shelly4pro":
             model = ATTR_MODEL_SHELLY4PRO
@@ -320,7 +320,7 @@ else:
             sensors_tpls = [ATTR_TPL_TEMPERATURE, ATTR_TPL_BATTERY]
             bin_sensors = [ATTR_SMOKE]
             bin_sensors_classes = bin_sensors
-            bin_sensors_payload = [ATTR_TRUE_FALSE_PAYLOAD]
+            bin_sensors_pl = [ATTR_TRUE_FALSE_PL]
             battery_powered = True
 
         if id[:-7] == "shellysense":
@@ -341,7 +341,7 @@ else:
             ]
             bin_sensors = [ATTR_MOTION, ATTR_CHARGER]
             bin_sensors_classes = [ATTR_MOTION, ATTR_POWER]
-            bin_sensors_payload = [ATTR_TRUE_FALSE_PAYLOAD, ATTR_TRUE_FALSE_PAYLOAD]
+            bin_sensors_pl = [ATTR_TRUE_FALSE_PL, ATTR_TRUE_FALSE_PL]
             battery_powered = True
 
         if id[:-7] == "shellyrgbw2":
@@ -351,7 +351,7 @@ else:
             lights_bin_sensors = [ATTR_OVERPOWER]
             lights_bin_sensors_classes = [ATTR_POWER]
             lights_bin_sensors_tpls = [ATTR_TPL_OVERPOWER]
-            lights_bin_sensors_payload = [ATTR_TRUE_FALSE_PAYLOAD]
+            lights_bin_sensors_pl = [ATTR_TRUE_FALSE_PL]
 
         if id[:-7] == "shellybulb":
             model = ATTR_MODEL_SHELLYBULB
@@ -396,7 +396,7 @@ else:
             sensors_tpls = [ATTR_TPL_TEMPERATURE, ATTR_TPL_BATTERY]
             bin_sensors = [ATTR_FLOOD]
             bin_sensors_classes = [ATTR_MOISTURE]
-            bin_sensors_payload = [ATTR_TRUE_FALSE_PAYLOAD]
+            bin_sensors_pl = [ATTR_TRUE_FALSE_PL]
             battery_powered = True
 
         for roller_id in range(0, rollers):
@@ -587,8 +587,8 @@ else:
                     payload = (
                         '{"name":"' + sensor_name + '",'
                         '"stat_t":"' + state_topic + '",'
-                        '"pl_on":"' + relays_bin_sensors_payload[bin_sensor_id][ATTR_ON] + '",'
-                        '"pl_off":"' + relays_bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '",'
+                        '"pl_on":"' + relays_bin_sensors_pl[bin_sensor_id][ATTR_ON] + '",'
+                        '"pl_off":"' + relays_bin_sensors_pl[bin_sensor_id][ATTR_OFF] + '",'
                         '"avty_t":"' + availability_topic + '",'
                         '"pl_avail":"true",'
                         '"pl_not_avail":"false",'
@@ -693,8 +693,8 @@ else:
                 payload = (
                     '{"name":"' + sensor_name + '",'
                     '"stat_t":"' + state_topic + '",'
-                    '"pl_on":"' + bin_sensors_payload[bin_sensor_id][ATTR_ON] + '",'
-                    '"pl_off":"' + bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '",'
+                    '"pl_on":"' + bin_sensors_pl[bin_sensor_id][ATTR_ON] + '",'
+                    '"pl_off":"' + bin_sensors_pl[bin_sensor_id][ATTR_OFF] + '",'
                     '"dev_cla":"' + bin_sensors_classes[bin_sensor_id] + '",'
                     '"uniq_id":"' + unique_id + '",'
                     '"qos":"' + str(qos) + '",'
@@ -709,8 +709,8 @@ else:
                 payload = (
                     '{"name":"' + sensor_name + '",'
                     '"stat_t":"' + state_topic + '",'
-                    '"pl_on":"' + bin_sensors_payload[bin_sensor_id][ATTR_ON] + '",'
-                    '"pl_off":"' + bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '",'
+                    '"pl_on":"' + bin_sensors_pl[bin_sensor_id][ATTR_ON] + '",'
+                    '"pl_off":"' + bin_sensors_pl[bin_sensor_id][ATTR_OFF] + '",'
                     '"avty_t":"' + availability_topic + '",'
                     '"pl_avail":"true",'
                     '"pl_not_avail":"false",'
