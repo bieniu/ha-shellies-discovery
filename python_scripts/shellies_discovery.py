@@ -93,7 +93,7 @@ ATTR_TEMPLATE_REACTIVE_POWER = "{{ value | float | round(1) }}"
 ATTR_TEMPLATE_VOLTAGE = "{{ value | float | round(1) }}"
 ATTR_TEMPLATE_ENERGY = "{{ (value | float / 60 / 1000) | round(2) }}"
 ATTR_TEMPLATE_BATTERY = "{{ value | float | round }}"
-ATTR_TEMPLATE_OVERPOWER = "value_json.overpower"
+ATTR_TPL_OVERPOWER = "{% if value_json.overpower == true %}ON{% else %}OFF{% endif %}"
 
 ATTR_MANUFACTURER = "Allterco Robotics"
 ATTR_MODEL_SHELLY1 = "Shelly1"
@@ -350,7 +350,7 @@ else:
             white_lights = 4
             lights_bin_sensors = [ATTR_OVERPOWER]
             lights_bin_sensors_classes = [ATTR_POWER]
-            lights_bin_sensors_templates = [ATTR_TEMPLATE_OVERPOWER]
+            lights_bin_sensors_templates = [ATTR_TPL_OVERPOWER]
             lights_bin_sensors_payload = [ATTR_TRUE_FALSE_PAYLOAD]
 
         if id[:-7] == "shellybulb":
@@ -826,7 +826,7 @@ else:
                     payload = (
                         '{"name":"' + sensor_name + '",'
                         '"stat_t":"' + state_topic + '",'
-                        '"val_tpl":"{% if ' + lights_bin_sensors_templates[bin_sensor_id] + ' == true %}ON{% else %}OFF{% endif %}",'
+                        '"val_tpl":"' + lights_bin_sensors_templates[bin_sensor_id] + '",'
                         '"avty_t":"' + availability_topic + '",'
                         '"pl_avail":"true",'
                         '"pl_not_avail":"false",'
@@ -909,7 +909,7 @@ else:
                     payload = (
                         '{"name":"' + sensor_name + '",'
                         '"stat_t":"' + state_topic + '",'
-                        '"val_tpl":"{% if ' + lights_bin_sensors_templates[bin_sensor_id] + ' == true %}ON{% else %}OFF{% endif %}",'
+                        '"val_tpl":"' + lights_bin_sensors_templates[bin_sensor_id] + '",'
                         '"avty_t":"' + availability_topic + '",'
                         '"pl_avail":"true",'
                         '"pl_not_avail":"false",'
