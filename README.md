@@ -39,6 +39,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - same `discovery_prefix` in Home Assistant configuration and in script configuration
 - Shellies firmware updated to current version
 - Home Assistant updated to current version
+- enabled MQTT in Shellies configuration
 - default topics configuration in Shellies
 
 ## Minimal configuration
