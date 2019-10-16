@@ -25,6 +25,7 @@ python_script:
 - same `discovery_prefix` in Home Assistant configuration and in script configuration
 - Shellies firmware updated to current version
 - Home Assistant updated to current version
+- enabled MQTT in Shellies configuration
 - default topics configuration in Shellies
 
 ## Minimal configuration
