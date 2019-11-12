@@ -122,4 +122,4 @@ key | optional | type | default | description
 [releases-shield]: https://img.shields.io/github/release/bieniu/ha-shellies-discovery.svg?style=popout
 [forum]: https://community.home-assistant.io/t/shellies-discovery-script/94048
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=popout
-[buy-me-a-coffee]: https://img.shields.io/static/v1.svg?label=Buy%20me%20a%20coffee&message=🥨&color=black&logo=buy%20me%20a%20coffee&logoColor=white&labelColor=6f4e37
+[buy-me-a-coffee]: https://img.shields.io/static/v1.svg?label=%20&message=Buy%20me%20a%20coffee&color=6f4e37&logo=buy%20me%20a%20coffee&logoColor=white
