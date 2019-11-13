@@ -1,8 +1,8 @@
 # Shellies Discovery
 [![GitHub Release][releases-shield]][releases]
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
+[![hacs_badge][hacs-shield]][hacs]
 [![Community Forum][forum-shield]][forum]
-[![Buy me a coffee][buy-me-a-coffee]](https://www.buymeacoffee.com/QnLdxeaqO)
+[![Buy me a coffee][buy-me-a-coffee-shield]][buy-me-a-coffee]
 
 ![Screenshot](https://github.com/bieniu/ha-shellies-discovery/blob/master/images/shellies-integration.png?raw=true)
 
@@ -122,4 +122,7 @@ key | optional | type | default | description
 [releases-shield]: https://img.shields.io/github/release/bieniu/ha-shellies-discovery.svg?style=popout
 [forum]: https://community.home-assistant.io/t/shellies-discovery-script/94048
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=popout
-[buy-me-a-coffee]: https://img.shields.io/static/v1.svg?label=%20&message=Buy%20me%20a%20coffee&color=6f4e37&logo=buy%20me%20a%20coffee&logoColor=white
+[buy-me-a-coffee-shield]: https://img.shields.io/static/v1.svg?label=%20&message=Buy%20me%20a%20coffee&color=6f4e37&logo=buy%20me%20a%20coffee&logoColor=white
+[buy-me-a-coffee]: https://www.buymeacoffee.com/QnLdxeaqO
+[hacs-shield]: https://img.shields.io/badge/HACS-Default-orange.svg
+[hacs]: https://github.com/custom-components/hacs
