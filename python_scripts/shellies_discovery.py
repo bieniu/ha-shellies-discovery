@@ -128,6 +128,7 @@ ATTR_MODEL_SHELLYRGBW2 = "Shelly RGBW2"
 ATTR_MODEL_SHELLYBULB = "Shelly Bulb"
 ATTR_MODEL_SHELLYEM = "ShellyEM"
 ATTR_MODEL_SHELLYFLOOD = "Shelly Flood"
+ATTR_MODEL_SHELLYDIMMER = "Shelly Dimmer"
 
 ATTR_SHELLY = "Shelly"
 ATTR_TEMPERATURE = "temperature"
@@ -378,6 +379,10 @@ else:
             lights_bin_sensors_classes = [ATTR_POWER]
             lights_bin_sensors_tpls = [ATTR_TPL_OVERPOWER]
             lights_bin_sensors_pl = [ATTR_TRUE_FALSE_PL]
+
+        if id[:-7] == "shellydimmer":
+            model = ATTR_MODEL_SHELLYDIMMER
+            white_lights = 1
 
         if id[:-7] == "shellybulb":
             model = ATTR_MODEL_SHELLYBULB
@@ -919,16 +924,22 @@ else:
             device_name = "{} {}".format(model, id.split("-")[-1])
             light_name = "{} Light {}".format(device_name, light_id)
             default_topic = "shellies/{}/".format(id)
-            state_topic = "~white/{}/status".format(light_id)
-            command_topic = "~white/{}/set".format(light_id)
+            if model == ATTR_MODEL_SHELLYDIMMER:
+                state_topic = "~light/{}".format(light_id)
+                command_topic = "~light/{}/set".format(light_id)
+                unique_id = "{}-light-{}".format(id, light_id)
+                config_topic = "{}/light/{}-{}/config".format(disc_prefix, id, light_id)
+            else:
+                state_topic = "~white/{}/status".format(light_id)
+                command_topic = "~white/{}/set".format(light_id)
+                unique_id = "{}-light-white-{}".format(id, light_id)
+                config_topic = "{}/light/{}-white-{}/config".format(disc_prefix, id, light_id)
             availability_topic = "~online"
-            unique_id = "{}-light-white-{}".format(id, light_id)
-            config_topic = "{}/light/{}-white-{}/config".format(disc_prefix, id, light_id)
             if data.get(id):
                 config_light = data.get(id)
             elif data.get(id.lower()):
                 config_light = data.get(id.lower())
-            if config_light == ATTR_WHITE:
+            if config_light == ATTR_WHITE and model == ATTR_MODEL_SHELLYRGBW2:
                 payload = (
                     '{"schema":"template",'
                     '"name":"' + light_name + '",'
@@ -937,10 +948,34 @@ else:
                     '"avty_t":"' + availability_topic + '",'
                     '"pl_avail":"true",'
                     '"pl_not_avail":"false",'
-                    '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness | float | multiply(0.3922) | round(0)}}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}",'
+                    '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness | float | multiply(0.3922) | round(0)}}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}",'
                     '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
                     '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
                     '"bri_tpl":"{{ value_json.brightness | float | multiply(2.55) | round(0) }}",'
+                    '"uniq_id":"' + unique_id + '",'
+                    '"qos":"' + str(qos) + '",'
+                    '"dev": {"ids": ["' + mac + '"],'
+                    '"name":"' + device_name + '",'
+                    '"mdl":"' + model + '",'
+                    '"sw":"' + fw_ver + '",'
+                    '"mf":"' + ATTR_MANUFACTURER + '"},'
+                    '"~":"' + default_topic + '"}'
+                )
+            elif model == ATTR_MODEL_SHELLYDIMMER:
+                payload = (
+                    '{"schema":"template",'
+                    '"name":"' + light_name + '",'
+                    '"cmd_t":"' + command_topic + '",'
+                    '"stat_t":"' + state_topic + '",'
+                    '"avty_t":"' + availability_topic + '",'
+                    '"pl_avail":"true",'
+                    '"pl_not_avail":"false",'
+                    '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness | float | multiply(0.3922) | round(0)}}{% endif %}}",'
+                    '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
+                    '"stat_tpl":"{{ value_json.state }}",'
+                    '"bri_tpl":"{{ value_json.brightness | float | multiply(2.55) | round(0) }}",'
+                    '"pl_on":"on",'
+                    '"pl_off":"off",'
                     '"uniq_id":"' + unique_id + '",'
                     '"qos":"' + str(qos) + '",'
                     '"dev": {"ids": ["' + mac + '"],'
