@@ -575,11 +575,8 @@ else:
                 state_topic = "~{}".format(sensors[sensor_id])
             else:
                 state_topic = "~sensor/{}".format(sensors[sensor_id])
-            if data.get(id):
-                if data.get(id) == ATTR_AC_POWER:
-                    expire_after = "7200"
-            elif data.get(id.lower()):
-                if data.get(id.lower()) == ATTR_AC_POWER:
+            if data.get(id) or data.get(id.lower()):
+                if (data.get(id) or data.get(id.lower())) == ATTR_AC_POWER:
                     expire_after = "7200"
             if battery_powered:
                 payload = (
