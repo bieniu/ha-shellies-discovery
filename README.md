@@ -34,6 +34,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Sense
 - ShellyEM
 - Shelly Flood
+- Shelly Dimmer
 
 ## Troubleshooting checklist
 - correct MQTT configuration in Home Assistant with `discovery` enabled
