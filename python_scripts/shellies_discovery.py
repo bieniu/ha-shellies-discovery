@@ -1,98 +1,5 @@
 """
-This script adds MQTT discovery support for Shellies. Shelly1, Shelly1PM, Shelly2,
-Shelly2.5, Shelly4Pro, Shelly Plug, Shelly Plug S, Shelly RGBW2 (color and white mode),
-Shelly H&T, Shelly Smoke, ShellyEM, Shelly Flood and Shelly Sense are supported.
-
-Arguments:
- - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
-                          optional
- - id                   - Shelly ID (required)
- - mac                  - Shelly MAC address (required)
- - fw_ver               - Shelly firmware version (optional)
- - temp_unit            - C for Celsius, F for Farenhait, default C (optional)
- - list of shelies relays and components for them, only for devices with relays
-                          (optional), by default all relays are added as switches.
-
-Minimal configuration
-python_script:
-
-automation:
-  - id: shellies_announce
-    alias: 'Shellies Announce'
-    trigger:
-      - platform: homeassistant
-        event: start
-    action:
-      service: mqtt.publish
-      data:
-        topic: shellies/command
-        payload: announce
-
-  - id: 'shellies_discovery'
-    alias: 'Shellies Discovery'
-    trigger:
-      - platform: mqtt
-        topic: shellies/announce
-    action:
-      service: python_script.shellies_discovery
-      data_template:
-        id: '{{ trigger.payload_json.id }}'
-        mac: '{{ trigger.payload_json.mac }}'
-        fw_ver: '{{ trigger.payload_json.fw_ver }}'
-
-If you want the relay to be a other component than the switch in the Home Assistant,
-you have to add a description of the relay and its function to the script configuration.
-Custom configuration
-python_script:
-
-automation:
-  - id: shellies_announce
-    alias: 'Shellies Announce'
-    trigger:
-      - platform: homeassistant
-        event: start
-    action:
-      service: mqtt.publish
-      data:
-        topic: shellies/command
-        payload: announce
-
-  - id: 'shellies_discovery'
-    alias: 'Shellies Discovery'
-    trigger:
-      - platform: mqtt
-        topic: shellies/announce
-    action:
-      service: python_script.shellies_discovery
-      data_template:
-        id: '{{ trigger.payload_json.id }}'
-        mac: '{{ trigger.payload_json.mac }}'
-        fw_ver: '{{ trigger.payload_json.fw_ver }}'
-        discovery_prefix: 'hass'
-        temp_unit: 'F'
-        qos: 2
-        shelly1-001122-relay-0: 'light'
-        shellyswitch-334455: 'cover'
-        shellyrgbw2-AABB22: 'white'
-        shellyrgbw2-CC2211: 'rgbw'
-        shellyht-2200AA: 'ac_power'
-
-qos - maximum QoS level of the topics, this is optional argument, default is 0 (integer)
-
-shelly1-001122-relay-0: 'light' - means that relay 0 of shelly1-001122 will use light
-component in Home Assistant. You can use switch, light or fan.
-
-shellyswitch-334455: 'cover' - means that Shelly2 works in roller mode and use cover
-component in Home Assistant.
-
-shellyrgbw2-AABB22: 'white' - means that Shelly RGBW2 works in white-mode
-
-shellyrgbw2-CC2211: 'rgbw' - means that Shelly RGBW2 works in color-mode
-(default)
-
-shellyht-2200AA: 'ac_power' - means that ShellyH&T is AC powered via USB adapter
-
-You can install script manually or via HACS.
+This script adds MQTT discovery support for Shellies devices.
 """
 ATTR_DEVELOP = "develop"
 
@@ -128,6 +35,7 @@ ATTR_MODEL_SHELLYRGBW2 = "Shelly RGBW2"
 ATTR_MODEL_SHELLYBULB = "Shelly Bulb"
 ATTR_MODEL_SHELLYEM = "ShellyEM"
 ATTR_MODEL_SHELLYFLOOD = "Shelly Flood"
+ATTR_MODEL_SHELLYDIMMER = "Shelly Dimmer"
 
 ATTR_SHELLY = "Shelly"
 ATTR_TEMPERATURE = "temperature"
@@ -379,6 +287,17 @@ else:
             lights_bin_sensors_tpls = [ATTR_TPL_OVERPOWER]
             lights_bin_sensors_pl = [ATTR_TRUE_FALSE_PL]
 
+        if id[:-7] == "shellydimmer":
+            model = ATTR_MODEL_SHELLYDIMMER
+            white_lights = 1
+            sensors = [ATTR_TEMPERATURE]
+            sensors_classes = sensors
+            sensors_units = [temp_unit]
+            sensors_tpls = [ATTR_TPL_TEMPERATURE]
+            bin_sensors = [ATTR_OVERTEMPERATURE]
+            bin_sensors_classes = [ATTR_HEAT]
+            bin_sensors_pl = [ATTR_1_0_PL]
+
         if id[:-7] == "shellybulb":
             model = ATTR_MODEL_SHELLYBULB
             rgbw_lights = 1
@@ -425,6 +344,7 @@ else:
             bin_sensors_pl = [ATTR_TRUE_FALSE_PL]
             battery_powered = True
 
+        # rollers
         for roller_id in range(0, rollers):
             device_name = "{} {}".format(model, id.split("-")[-1])
             roller_name = "{} Roller {}".format(device_name, roller_id)
@@ -476,6 +396,7 @@ else:
             }
             hass.services.call("mqtt", "publish", service_data, False)
 
+        # relays
         for relay_id in range(0, relays):
             device_name = "{} {}".format(model, id.split("-")[-1])
             relay_name = "{} Relay {}".format(device_name, relay_id)
@@ -521,6 +442,7 @@ else:
                 }
                 hass.services.call("mqtt", "publish", service_data, False)
 
+            # relay's sensors
             if relay_id == relays - 1:
                 for sensor_id in range(0, len(relays_sensors)):
                     unique_id = "{}-relay-{}".format(id, relays_sensors[sensor_id])
@@ -560,6 +482,7 @@ else:
                     }
                     hass.services.call("mqtt", "publish", service_data, False)
 
+            # relay's sensors
             for sensor_id in range(0, len(relays_sensors)):
                 unique_id = "{}-relay-{}-{}".format(id, relays_sensors[sensor_id], relay_id)
                 config_topic = "{}/sensor/{}-{}-{}/config".format(
@@ -598,6 +521,7 @@ else:
                 }
                 hass.services.call("mqtt", "publish", service_data, False)
 
+            # relay's binary sensors
             for bin_sensor_id in range(0, len(relays_bin_sensors)):
                 unique_id = "{}-{}-{}".format(
                     id, relays_bin_sensors[bin_sensor_id], relay_id
@@ -637,6 +561,7 @@ else:
                 }
                 hass.services.call("mqtt", "publish", service_data, False)
 
+        # sensors
         for sensor_id in range(0, len(sensors)):
             device_name = "{} {}".format(model, id.split("-")[-1])
             unique_id = "{}-{}".format(id, sensors[sensor_id])
@@ -646,15 +571,12 @@ else:
             default_topic = "shellies/{}/".format(id)
             availability_topic = "~online"
             sensor_name = "{} {}".format(device_name, sensors[sensor_id].capitalize())
-            if relays != 0:
+            if relays > 0 or white_lights > 0:
                 state_topic = "~{}".format(sensors[sensor_id])
             else:
                 state_topic = "~sensor/{}".format(sensors[sensor_id])
-            if data.get(id):
-                if data.get(id) == ATTR_AC_POWER:
-                    expire_after = "7200"
-            elif data.get(id.lower()):
-                if data.get(id.lower()) == ATTR_AC_POWER:
+            if data.get(id) or data.get(id.lower()):
+                if (data.get(id) or data.get(id.lower())) == ATTR_AC_POWER:
                     expire_after = "7200"
             if battery_powered:
                 payload = (
@@ -700,6 +622,7 @@ else:
             }
             hass.services.call("mqtt", "publish", service_data, False)
 
+        # binary sensors
         for bin_sensor_id in range(0, len(bin_sensors)):
             device_name = "{} {}".format(model, id.split("-")[-1])
             unique_id = "{}-{}".format(id, bin_sensors[bin_sensor_id])
@@ -711,7 +634,7 @@ else:
             sensor_name = "{} {}".format(
                 device_name, bin_sensors[bin_sensor_id].capitalize()
             )
-            if relays != 0:
+            if relays > 0 or white_lights > 0:
                 state_topic = "~{}".format(bin_sensors[bin_sensor_id])
             else:
                 state_topic = "~sensor/{}".format(bin_sensors[bin_sensor_id])
@@ -758,6 +681,7 @@ else:
             }
             hass.services.call("mqtt", "publish", service_data, False)
 
+        # color lights
         for light_id in range(0, rgbw_lights):
             device_name = "{} {}".format(model, id.split("-")[-1])
             light_name = "{} Light {}".format(device_name, light_id)
@@ -837,6 +761,7 @@ else:
             }
             hass.services.call("mqtt", "publish", service_data, False)
 
+            # color light's binary sensors
             for bin_sensor_id in range(0, len(lights_bin_sensors)):
                 unique_id = "{}-color-{}-{}".format(
                     id, lights_bin_sensors[bin_sensor_id], light_id
@@ -875,6 +800,7 @@ else:
                 }
                 hass.services.call("mqtt", "publish", service_data, False)
 
+            # color light's sensors
             for sensor_id in range(0, len(lights_sensors)):
                 unique_id = "{}-color-{}-{}".format(
                     id, lights_sensors[sensor_id], light_id
@@ -915,20 +841,27 @@ else:
                 }
                 hass.services.call("mqtt", "publish", service_data, False)
 
+        # white lights
         for light_id in range(0, white_lights):
             device_name = "{} {}".format(model, id.split("-")[-1])
             light_name = "{} Light {}".format(device_name, light_id)
             default_topic = "shellies/{}/".format(id)
-            state_topic = "~white/{}/status".format(light_id)
-            command_topic = "~white/{}/set".format(light_id)
+            if model == ATTR_MODEL_SHELLYDIMMER:
+                state_topic = "~light/{}/status".format(light_id)
+                command_topic = "~light/{}/set".format(light_id)
+                unique_id = "{}-light-{}".format(id, light_id)
+                config_topic = "{}/light/{}-{}/config".format(disc_prefix, id, light_id)
+            else:
+                state_topic = "~white/{}/status".format(light_id)
+                command_topic = "~white/{}/set".format(light_id)
+                unique_id = "{}-light-white-{}".format(id, light_id)
+                config_topic = "{}/light/{}-white-{}/config".format(disc_prefix, id, light_id)
             availability_topic = "~online"
-            unique_id = "{}-light-white-{}".format(id, light_id)
-            config_topic = "{}/light/{}-white-{}/config".format(disc_prefix, id, light_id)
             if data.get(id):
                 config_light = data.get(id)
             elif data.get(id.lower()):
                 config_light = data.get(id.lower())
-            if config_light == ATTR_WHITE:
+            if config_light == ATTR_WHITE and model == ATTR_MODEL_SHELLYRGBW2:
                 payload = (
                     '{"schema":"template",'
                     '"name":"' + light_name + '",'
@@ -937,7 +870,29 @@ else:
                     '"avty_t":"' + availability_topic + '",'
                     '"pl_avail":"true",'
                     '"pl_not_avail":"false",'
-                    '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness | float | multiply(0.3922) | round(0)}}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}",'
+                    '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness | float | multiply(0.3922) | round(0)}}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}",'
+                    '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
+                    '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
+                    '"bri_tpl":"{{ value_json.brightness | float | multiply(2.55) | round(0) }}",'
+                    '"uniq_id":"' + unique_id + '",'
+                    '"qos":"' + str(qos) + '",'
+                    '"dev": {"ids": ["' + mac + '"],'
+                    '"name":"' + device_name + '",'
+                    '"mdl":"' + model + '",'
+                    '"sw":"' + fw_ver + '",'
+                    '"mf":"' + ATTR_MANUFACTURER + '"},'
+                    '"~":"' + default_topic + '"}'
+                )
+            elif model == ATTR_MODEL_SHELLYDIMMER:
+                payload = (
+                    '{"schema":"template",'
+                    '"name":"' + light_name + '",'
+                    '"cmd_t":"' + command_topic + '",'
+                    '"stat_t":"' + state_topic + '",'
+                    '"avty_t":"' + availability_topic + '",'
+                    '"pl_avail":"true",'
+                    '"pl_not_avail":"false",'
+                    '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness | float | multiply(0.3922) | round(0)}}{% endif %}}",'
                     '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
                     '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
                     '"bri_tpl":"{{ value_json.brightness | float | multiply(2.55) | round(0) }}",'
@@ -960,6 +915,7 @@ else:
             }
             hass.services.call("mqtt", "publish", service_data, False)
 
+            # white light's binary sensors
             for bin_sensor_id in range(0, len(lights_bin_sensors)):
                 unique_id = "{}-white-{}-{}".format(
                     id, lights_bin_sensors[bin_sensor_id], light_id
@@ -998,6 +954,7 @@ else:
                 }
                 hass.services.call("mqtt", "publish", service_data, False)
 
+            # white light's sensors
             for sensor_id in range(0, len(lights_sensors)):
                 unique_id = "{}-white-{}-{}".format(
                     id, lights_sensors[sensor_id], light_id
@@ -1038,6 +995,7 @@ else:
                 }
                 hass.services.call("mqtt", "publish", service_data, False)
 
+        # meters
         for meter_id in range(0, meters):
             device_name = "{} {}".format(model, id.split("-")[-1])
             meter_name = "{} Meter {}".format(device_name, meter_id)
