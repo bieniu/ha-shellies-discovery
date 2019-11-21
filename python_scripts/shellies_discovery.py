@@ -1,14 +1,13 @@
 """
 This script adds MQTT discovery support for Shellies devices.
 """
-ATTR_DEVELOP = "develop"
+CONF_DEVELOP = "develop"
 
-ATTR_ID = "id"
-ATTR_MAC = "mac"
-ATTR_FW_VER = "fw_ver"
-ATTR_DISCOVERY_PREFIX = "discovery_prefix"
-ATTR_TEMP_UNIT = "temp_unit"
-ATTR_QOS = "qos"
+CONF_ID = "id"
+CONF_MAC = "mac"
+CONF_FW_VER = "fw_ver"
+CONF_DISCOVERY_PREFIX = "discovery_prefix"
+CONF_QOS = "qos"
 
 ATTR_TPL_TEMPERATURE = "{{ value | float | round(1) }}"
 ATTR_TPL_HUMIDITY = "{{ value | float | round(1) }}"
@@ -39,11 +38,13 @@ ATTR_MODEL_SHELLYDIMMER = "Shelly Dimmer"
 
 ATTR_SHELLY = "Shelly"
 ATTR_TEMPERATURE = "temperature"
+ATTR_TEMPERATURE_F = "temperature_f"
 ATTR_HUMIDITY = "humidity"
 ATTR_BATTERY = "battery"
 ATTR_LUX = "lux"
 ATTR_ILLUMINANCE = "illuminance"
 ATTR_POWER = "power"
+ATTR_PROBLEM = "problem"
 ATTR_REACTIVE_POWER = "reactive_power"
 ATTR_VOLTAGE = "voltage"
 ATTR_ENERGY = "energy"
@@ -62,6 +63,8 @@ ATTR_INPUT = "input"
 ATTR_LONGPUSH = "longpush"
 ATTR_OVERTEMPERATURE = "overtemperature"
 ATTR_OVERPOWER = "overpower"
+ATTR_OVERLOAD = "overload"
+ATTR_LOADERROR = "loaderror"
 ATTR_HEAT = "heat"
 ATTR_COVER = "cover"
 ATTR_UNIT_W = "W"
@@ -86,31 +89,26 @@ retain = True
 qos = 0
 roller_mode = False
 
-id = data.get(ATTR_ID)
-mac = data.get(ATTR_MAC)
-fw_ver = data.get(ATTR_FW_VER)
+id = data.get(CONF_ID)
+mac = data.get(CONF_MAC)
+fw_ver = data.get(CONF_FW_VER)
 
 if not id or not mac or not fw_ver:
     logger.error("Wrong arguments! Please read the script documentation.")
 else:
     try:
-        if data.get(ATTR_QOS):
-            if int(data.get(ATTR_QOS)) in [0, 1, 2]:
-                qos = int(data.get(ATTR_QOS))
-            else:
-                raise ValueError
+        if int(data.get(CONF_QOS, 0)) in [0, 1, 2]:
+            qos = int(data.get(CONF_QOS, 0))
+        else:
+            raise ValueError
     except ValueError:
         logger.error(
             "Wrong qos argument! Should be 0, 1 or 2. The default value 0 was used."
         )
 
-    temp_unit = ATTR_UNIT_CELSIUS
-    if data.get(ATTR_TEMP_UNIT, "C") == "F":
-        temp_unit = ATTR_UNIT_FARENHEIT
+    disc_prefix = data.get(CONF_DISCOVERY_PREFIX, DEFAULT_DISC_PREFIX)
 
-    disc_prefix = data.get(ATTR_DISCOVERY_PREFIX, DEFAULT_DISC_PREFIX)
-
-    develop = data.get(ATTR_DEVELOP, False)
+    develop = data.get(CONF_DEVELOP, False)
     if develop:
         disc_prefix = "develop"
         retain = False
@@ -164,7 +162,7 @@ else:
             relays_bin_sensors_pl = [ATTR_1_0_PL, ATTR_1_0_PL]
             sensors = [ATTR_TEMPERATURE]
             sensors_classes = sensors
-            sensors_units = [temp_unit]
+            sensors_units = [ATTR_UNIT_CELSIUS]
             sensors_tpls = [ATTR_TPL_TEMPERATURE]
             bin_sensors = [ATTR_OVERTEMPERATURE]
             bin_sensors_classes = [ATTR_HEAT]
@@ -193,7 +191,7 @@ else:
             relays_bin_sensors_pl = [ATTR_1_0_PL, ATTR_1_0_PL]
             sensors = [ATTR_TEMPERATURE]
             sensors_classes = sensors
-            sensors_units = [temp_unit]
+            sensors_units = [ATTR_UNIT_CELSIUS]
             sensors_tpls = [ATTR_TPL_TEMPERATURE]
             bin_sensors = [ATTR_OVERTEMPERATURE]
             bin_sensors_classes = [ATTR_HEAT]
@@ -214,10 +212,10 @@ else:
             relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
             relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
             relays_sensors_tpls = [ATTR_TPL_POWER, ATTR_TPL_ENERGY]
-            sensors = [ATTR_TEMPERATURE]
-            sensors_classes = sensors
-            sensors_units = [temp_unit]
-            sensors_tpls = [ATTR_TPL_TEMPERATURE]
+            sensors = [ATTR_TEMPERATURE, ATTR_TEMPERATURE_F]
+            sensors_classes = [ATTR_TEMPERATURE, ATTR_TEMPERATURE]
+            sensors_units = [ATTR_UNIT_CELSIUS, ATTR_UNIT_FARENHEIT]
+            sensors_tpls = [ATTR_TPL_TEMPERATURE, ATTR_TPL_TEMPERATURE]
             bin_sensors = [ATTR_OVERTEMPERATURE]
             bin_sensors_classes = [ATTR_HEAT]
             bin_sensors_pl = [ATTR_1_0_PL]
@@ -234,7 +232,7 @@ else:
             model = ATTR_MODEL_SHELLYHT
             sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_BATTERY]
             sensors_classes = sensors
-            sensors_units = [temp_unit, ATTR_UNIT_PERCENT, ATTR_UNIT_PERCENT]
+            sensors_units = [ATTR_UNIT_CELSIUS, ATTR_UNIT_PERCENT, ATTR_UNIT_PERCENT]
             sensors_tpls = [
                 ATTR_TPL_TEMPERATURE,
                 ATTR_TPL_HUMIDITY,
@@ -246,7 +244,7 @@ else:
             model = ATTR_MODEL_SHELLYSMOKE
             sensors = [ATTR_TEMPERATURE, ATTR_BATTERY]
             sensors_classes = sensors
-            sensors_units = [temp_unit, ATTR_UNIT_PERCENT]
+            sensors_units = [ATTR_UNIT_CELSIUS, ATTR_UNIT_PERCENT]
             sensors_tpls = [ATTR_TPL_TEMPERATURE, ATTR_TPL_BATTERY]
             bin_sensors = [ATTR_SMOKE]
             bin_sensors_classes = bin_sensors
@@ -262,7 +260,7 @@ else:
                 ATTR_ILLUMINANCE,
                 ATTR_BATTERY,
             ]
-            sensors_units = [temp_unit, ATTR_UNIT_PERCENT, ATTR_UNIT_LUX, ATTR_UNIT_PERCENT]
+            sensors_units = [ATTR_UNIT_CELSIUS, ATTR_UNIT_PERCENT, ATTR_UNIT_LUX, ATTR_UNIT_PERCENT]
             sensors_tpls = [
                 ATTR_TPL_TEMPERATURE,
                 ATTR_TPL_HUMIDITY,
@@ -290,13 +288,13 @@ else:
         if id[:-7] == "shellydimmer":
             model = ATTR_MODEL_SHELLYDIMMER
             white_lights = 1
-            sensors = [ATTR_TEMPERATURE]
-            sensors_classes = sensors
-            sensors_units = [temp_unit]
-            sensors_tpls = [ATTR_TPL_TEMPERATURE]
-            bin_sensors = [ATTR_OVERTEMPERATURE]
-            bin_sensors_classes = [ATTR_HEAT]
-            bin_sensors_pl = [ATTR_1_0_PL]
+            sensors = [ATTR_TEMPERATURE, ATTR_TEMPERATURE_F]
+            sensors_classes = [ATTR_TEMPERATURE, ATTR_TEMPERATURE]
+            sensors_units = [ATTR_UNIT_CELSIUS, ATTR_UNIT_FARENHEIT]
+            sensors_tpls = [ATTR_TPL_TEMPERATURE, ATTR_TPL_TEMPERATURE]
+            bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_OVERLOAD, ATTR_LOADERROR]
+            bin_sensors_classes = [ATTR_HEAT, ATTR_POWER, ATTR_PROBLEM]
+            bin_sensors_pl = [ATTR_1_0_PL, ATTR_1_0_PL, ATTR_1_0_PL]
 
         if id[:-7] == "shellybulb":
             model = ATTR_MODEL_SHELLYBULB
@@ -337,7 +335,7 @@ else:
             model = ATTR_MODEL_SHELLYFLOOD
             sensors = [ATTR_TEMPERATURE, ATTR_BATTERY]
             sensors_classes = sensors
-            sensors_units = [temp_unit, ATTR_UNIT_PERCENT]
+            sensors_units = [ATTR_UNIT_CELSIUS, ATTR_UNIT_PERCENT]
             sensors_tpls = [ATTR_TPL_TEMPERATURE, ATTR_TPL_BATTERY]
             bin_sensors = [ATTR_FLOOD]
             bin_sensors_classes = [ATTR_MOISTURE]
