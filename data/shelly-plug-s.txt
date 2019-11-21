@@ -1,4 +1,4 @@
-shellies/announce {"id":"shellyplug-s-7AECF4","mac":"B4E62D7AECF4","ip":"xxx.xxx.xxx.xxx","new_fw":false, "fw_ver":"20190821-095311/v1.5.2@4148d2b7"}
+shellies/announce {"id":"shellyplug-s-7AECF4","mac":"XXXXXXXXXXXX","ip":"xxx.xxx.xxx.xxx","new_fw":false, "fw_ver":"20190821-095311/v1.5.2@4148d2b7"}
 
 shellies/shellyplug-s-7AECF4/relay/0 on
 shellies/shellyplug-s-7AECF4/relay/0/power 37.71
