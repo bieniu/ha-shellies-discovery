@@ -293,6 +293,10 @@ else:
             bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_OVERLOAD, ATTR_LOADERROR]
             bin_sensors_classes = [ATTR_HEAT, ATTR_POWER, ATTR_PROBLEM]
             bin_sensors_pl = [ATTR_1_0_PL, ATTR_1_0_PL, ATTR_1_0_PL]
+            lights_sensors = [ATTR_POWER]
+            lights_sensors_units = [ATTR_UNIT_W]
+            lights_sensors_classes = [ATTR_POWER]
+            lights_sensors_tpls = [ATTR_TPL_POWER]
 
         if id[:-7] == "shellybulb":
             model = ATTR_MODEL_SHELLYBULB
@@ -961,8 +965,13 @@ else:
                 sensor_name = "{} {} {}".format(
                     device_name, lights_sensors[sensor_id].capitalize(), light_id
                 )
-                state_topic = "~white/{}/status".format(light_id)
-                if config_light != ATTR_RGBW:
+                if model == ATTR_MODEL_SHELLYDIMMER:
+                    state_topic = "~light/{}/{}".format(
+                        light_id, lights_sensors[sensor_id]
+                    )
+                else:
+                    state_topic = "~white/{}/status".format(light_id)
+                if config_light != ATTR_RGBW or model == ATTR_MODEL_SHELLYDIMMER:
                     payload = (
                         '{"name":"' + sensor_name + '",'
                         '"stat_t":"' + state_topic + '",'
