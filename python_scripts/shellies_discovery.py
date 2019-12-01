@@ -81,7 +81,8 @@ ATTR_AC_POWER = "ac_power"
 
 DEFAULT_DISC_PREFIX = "homeassistant"
 
-expire_after = "43200"
+expire_after = 43200
+off_delay = 3
 
 retain = True
 qos = 0
@@ -534,23 +535,43 @@ else:
                 )
                 state_topic = "~{}/{}".format(relays_bin_sensors[bin_sensor_id], relay_id)
                 if not roller_mode:
-                    payload = (
-                        '{"name":"' + sensor_name + '",'
-                        '"stat_t":"' + state_topic + '",'
-                        '"pl_on":"' + relays_bin_sensors_pl[bin_sensor_id][ATTR_ON] + '",'
-                        '"pl_off":"' + relays_bin_sensors_pl[bin_sensor_id][ATTR_OFF] + '",'
-                        '"avty_t":"' + availability_topic + '",'
-                        '"pl_avail":"true",'
-                        '"pl_not_avail":"false",'
-                        '"uniq_id":"' + unique_id + '",'
-                        '"qos":"' + str(qos) + '",'
-                        '"dev": {"ids": ["' + mac + '"],'
-                        '"name":"' + device_name + '",'
-                        '"mdl":"' + model + '",'
-                        '"sw":"' + fw_ver + '",'
-                        '"mf":"' + ATTR_MANUFACTURER + '"},'
-                        '"~":"' + default_topic + '"}'
-                    )
+                    if relays_bin_sensors[bin_sensor_id] == ATTR_LONGPUSH:
+                        payload = (
+                            '{"name":"' + sensor_name + '",'
+                            '"stat_t":"' + state_topic + '",'
+                            '"pl_on":"' + relays_bin_sensors_pl[bin_sensor_id][ATTR_ON] + '",'
+                            '"pl_off":"' + relays_bin_sensors_pl[bin_sensor_id][ATTR_OFF] + '",'
+                            '"avty_t":"' + availability_topic + '",'
+                            '"off_delay":"' + str(off_delay) + '",'
+                            '"pl_avail":"true",'
+                            '"pl_not_avail":"false",'
+                            '"uniq_id":"' + unique_id + '",'
+                            '"qos":"' + str(qos) + '",'
+                            '"dev": {"ids": ["' + mac + '"],'
+                            '"name":"' + device_name + '",'
+                            '"mdl":"' + model + '",'
+                            '"sw":"' + fw_ver + '",'
+                            '"mf":"' + ATTR_MANUFACTURER + '"},'
+                            '"~":"' + default_topic + '"}'
+                        )
+                    else:
+                        payload = (
+                            '{"name":"' + sensor_name + '",'
+                            '"stat_t":"' + state_topic + '",'
+                            '"pl_on":"' + relays_bin_sensors_pl[bin_sensor_id][ATTR_ON] + '",'
+                            '"pl_off":"' + relays_bin_sensors_pl[bin_sensor_id][ATTR_OFF] + '",'
+                            '"avty_t":"' + availability_topic + '",'
+                            '"pl_avail":"true",'
+                            '"pl_not_avail":"false",'
+                            '"uniq_id":"' + unique_id + '",'
+                            '"qos":"' + str(qos) + '",'
+                            '"dev": {"ids": ["' + mac + '"],'
+                            '"name":"' + device_name + '",'
+                            '"mdl":"' + model + '",'
+                            '"sw":"' + fw_ver + '",'
+                            '"mf":"' + ATTR_MANUFACTURER + '"},'
+                            '"~":"' + default_topic + '"}'
+                        )
                 else:
                     payload = ""
                 service_data = {
@@ -577,7 +598,7 @@ else:
                 state_topic = "~sensor/{}".format(sensors[sensor_id])
             if data.get(id) or data.get(id.lower()):
                 if (data.get(id) or data.get(id.lower())) == ATTR_AC_POWER:
-                    expire_after = "7200"
+                    expire_after = 7200
             if battery_powered:
                 payload = (
                     '{"name":"' + sensor_name + '",'
@@ -585,7 +606,7 @@ else:
                     '"unit_of_meas":"' + sensors_units[sensor_id] + '",'
                     '"dev_cla":"' + sensors_classes[sensor_id] + '",'
                     '"val_tpl":"' + sensors_tpls[sensor_id] + '",'
-                    '"exp_aft":"' + expire_after + '",'
+                    '"exp_aft":"' + str(expire_after) + '",'
                     '"uniq_id":"' + unique_id + '",'
                     '"qos":"' + str(qos) + '",'
                     '"dev": {"ids": ["' + mac + '"],'
@@ -705,7 +726,7 @@ else:
                     '"pl_avail":"true",'
                     '"pl_not_avail":"false",'
                     '"fx_list":["Off", "Meteor Shower", "Gradual Change", "Flash"],'
-                    '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"gain\\":{{ brightness | float | multiply(0.3922) | round(0) }}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %}{% if effect == \\"Meteor Shower\\" %}\\"effect\\":1{% elif effect == \\"Gradual Change\\" %}\\"effect\\":2{% elif effect == \\"Breath\\" %}\\"effect\\":3{% elif effect == \\"Flash\\" %}\\"effect\\":4{% elif effect == \\"On/Off Gradual\\" %}\\"effect\\":5{% elif effect == \\"Red/Green Change\\" %}\\"effect\\":6{% else %}\\"effect\\":0{% endif %}{% else %}\\"effect\\":0{% endif %}}",'
+                    '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"gain\\":{{ brightness | float | multiply(0.3922) | round(0) }}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %}{% if effect == \\"Meteor Shower\\" %}\\"effect\\":1{% elif effect == \\"Gradual Change\\" %}\\"effect\\":2{% elif effect == \\"Flash\\" %}\\"effect\\":3{% else %}\\"effect\\":0{% endif %}{% else %}\\"effect\\":0{% endif %}}",'
                     '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
                     '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
                     '"bri_tpl":"{{ value_json.gain | float | multiply(2.55) | round(0) }}",'
