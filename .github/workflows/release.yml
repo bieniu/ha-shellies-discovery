@@ -20,7 +20,7 @@ jobs:
 
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: /home/runner/work/shellies-discovery.zip
+          file: /home/runner/work/ha-shellies-discovery/ha-shellies-discovery/shellies-discovery.zip
           asset_name: shellies-discovery.zip
           tag: ${{ github.ref }}
           overwrite: true
