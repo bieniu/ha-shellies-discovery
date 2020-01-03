@@ -13,14 +13,14 @@ jobs:
         uses: actions/checkout@v1
       - name: ZIP files
         run: |
-          cd /home/runner/work/ha-shellies-discovery/ha-shellies-discovery
-          zip shellies-discovery.zip -r ./python_scripts/*
+          cd /home/runner/work/ha-shellies-discovery/ha-shellies-discovery/python_scripts
+          zip shellies-discovery.zip -r ./
       - name: Upload zip to release
         uses: svenstaro/upload-release-action@v1-release
 
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: /home/runner/work/ha-shellies-discovery/ha-shellies-discovery/shellies-discovery.zip
+          file: /home/runner/work/ha-shellies-discovery/ha-shellies-discovery/python_scripts/shellies-discovery.zip
           asset_name: shellies-discovery.zip
           tag: ${{ github.ref }}
           overwrite: true
