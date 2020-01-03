@@ -13,7 +13,8 @@ jobs:
         uses: actions/checkout@v1
       - name: ZIP files
         run: |
-          cd /home/runner/work
+          cd /home/runner/work/ha-shellies-discovery
+          ls
           zip shellies-discovery.zip -r ./python_scripts/*
       - name: Upload zip to release
         uses: svenstaro/upload-release-action@v1-release
