@@ -1,4 +1,4 @@
-[![GitHub Release][releases-shield]][releases]  [![GitHub All Releases][downloads-total-shield]][releases]  [![Community Forum][forum-shield]][forum]  [![Buy me a coffee][buy-me-a-coffee-shield]][buy-me-a-coffee]
+[![Community Forum][forum-shield]][forum]  [![Buy me a coffee][buy-me-a-coffee-shield]][buy-me-a-coffee]
 
 ![Screenshot](https://github.com/bieniu/ha-shellies-discovery/blob/master/images/shellies-integration.png?raw=true)
 
