@@ -1,0 +1,5 @@
+shellies/announce {"id":"shellydw-B88D99","mac":"XXXXXXXXXXXX","ip":"xxx.xxx.xxx.xxx","new_fw":false, "fw_ver":"20190821-095311/v1.5.2@4148d2b7"}
+
+shellies/shellydw-B88D99/sensor/state open
+shellies/shellydw-B88D99/sensor/lux 46
+shellies/shellydw-B88D99/sensor/battery 94

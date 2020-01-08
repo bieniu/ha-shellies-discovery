@@ -28,6 +28,7 @@ ATTR_MODEL_SHELLYPLUG = "Shelly Plug"
 ATTR_MODEL_SHELLYPLUG_S = "Shelly Plug S"
 ATTR_MODEL_SHELLY4PRO = "Shelly4Pro"
 ATTR_MODEL_SHELLYHT = "Shelly H&T"
+ATTR_MODEL_SHELLYDW = "Shelly Door/Window"
 ATTR_MODEL_SHELLYSMOKE = "Shelly Smoke"
 ATTR_MODEL_SHELLYSENSE = "Shelly Sense"
 ATTR_MODEL_SHELLYRGBW2 = "Shelly RGBW2"
@@ -57,6 +58,7 @@ ATTR_SMOKE = "smoke"
 ATTR_FLOOD = "flood"
 ATTR_MOISTURE = "moisture"
 ATTR_MOTION = "motion"
+ATTR_OPENING = "opening"
 ATTR_CHARGER = "charger"
 ATTR_INPUT = "input"
 ATTR_LONGPUSH = "longpush"
@@ -77,6 +79,7 @@ ATTR_ON = "on"
 ATTR_OFF = "off"
 ATTR_TRUE_FALSE_PL = {ATTR_ON: "true", ATTR_OFF: "false"}
 ATTR_1_0_PL = {ATTR_ON: "1", ATTR_OFF: "0"}
+ATTR_OPEN_CLOSE_PL = {ATTR_ON: "open", ATTR_OFF: "close"}
 ATTR_AC_POWER = "ac_power"
 
 DEFAULT_DISC_PREFIX = "homeassistant"
@@ -237,6 +240,17 @@ else:
                 ATTR_TPL_HUMIDITY,
                 ATTR_TPL_BATTERY,
             ]
+            battery_powered = True
+
+        if id[:-7] == "shellydw":
+            model = ATTR_MODEL_SHELLYDW
+            sensors = [ATTR_LUX, ATTR_BATTERY]
+            sensors_classes = [ATTR_ILLUMINANCE, ATTR_BATTERY]
+            sensors_units = [ATTR_UNIT_LUX, ATTR_UNIT_PERCENT]
+            sensors_tpls = [ATTR_TPL_LUX, ATTR_TPL_BATTERY]
+            bin_sensors = [ATTR_OPENING]
+            bin_sensors_classes = bin_sensors
+            bin_sensors_pl = [ATTR_OPEN_CLOSE_PL]
             battery_powered = True
 
         if id[:-7] == "shellysmoke":
@@ -657,6 +671,8 @@ else:
             )
             if relays > 0 or white_lights > 0:
                 state_topic = "~{}".format(bin_sensors[bin_sensor_id])
+            elif bin_sensors[bin_sensor_id] == ATTR_OPENING:
+                state_topic = "~sensor/state"
             else:
                 state_topic = "~sensor/{}".format(bin_sensors[bin_sensor_id])
             if battery_powered:
@@ -666,6 +682,7 @@ else:
                     '"pl_on":"' + bin_sensors_pl[bin_sensor_id][ATTR_ON] + '",'
                     '"pl_off":"' + bin_sensors_pl[bin_sensor_id][ATTR_OFF] + '",'
                     '"dev_cla":"' + bin_sensors_classes[bin_sensor_id] + '",'
+                    '"exp_aft":"' + str(expire_after) + '",'
                     '"uniq_id":"' + unique_id + '",'
                     '"qos":"' + str(qos) + '",'
                     '"dev": {"ids": ["' + mac + '"],'
