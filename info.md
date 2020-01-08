@@ -22,6 +22,7 @@ python_script:
 - Shelly Sense
 - ShellyEM
 - Shelly Dimmer
+- Shelly Door/Window
 
 ## Troubleshooting checklist
 - correct MQTT configuration in Home Assistant with `discovery` enabled
