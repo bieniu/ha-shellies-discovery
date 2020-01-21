@@ -17,14 +17,10 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-#     - name: Check with Black Code Formatter
-#       run: |
-#         pip install black
-#         black python_scripts/shellies_discovery.py -t py38 --check
     - name: Lint with flake8
       run: |
         pip install flake8
         # stop the build if there are Python syntax errors, unused imports or undefined names
         flake8 python_scripts/shellies_discovery.py --count --ignore=F821 --select=E9,F63,F7,F82,F401 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 89 chars wide
-        flake8 python_scripts/shellies_discovery.py --count --ignore=F821 --exit-zero --max-complexity=10 --max-line-length=89 --statistics
+        # exit-zero treats all errors as warnings.
+        flake8 python_scripts/shellies_discovery.py --count --exit-zero --max-complexity=10 --max-line-length=89 --statistics
