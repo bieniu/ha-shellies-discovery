@@ -17,10 +17,10 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Check with Black Code Formatter
-      run: |
-        pip install black
-        black python_scripts/shellies_discovery.py -t py38 --check
+#     - name: Check with Black Code Formatter
+#       run: |
+#         pip install black
+#         black python_scripts/shellies_discovery.py -t py38 --check
     - name: Lint with flake8
       run: |
         pip install flake8
