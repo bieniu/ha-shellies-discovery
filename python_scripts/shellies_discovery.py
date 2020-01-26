@@ -147,13 +147,13 @@ else:
         white_lights = 0
         battery_powered = False
 
-        if id[:-7] == "shelly1":
+        if id.rsplit("-", 1)[0] == "shelly1":
             model = ATTR_MODEL_SHELLY1
             relays = 1
             relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
             relays_bin_sensors_pl = [ATTR_1_0_PL, ATTR_1_0_PL]
 
-        if id[:-7] == "shelly1pm":
+        if id.rsplit("-", 1)[0] == "shelly1pm":
             model = ATTR_MODEL_SHELLY1PM
             relays = 1
             relays_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -170,7 +170,7 @@ else:
             bin_sensors_classes = [ATTR_HEAT]
             bin_sensors_pl = [ATTR_1_0_PL]
 
-        if id[:-7] == "shellyswitch":
+        if id.rsplit("-", 1)[0] == "shellyswitch":
             model = ATTR_MODEL_SHELLY2
             relays = 2
             rollers = 1
@@ -181,7 +181,7 @@ else:
             relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
             relays_bin_sensors_pl = [ATTR_1_0_PL, ATTR_1_0_PL]
 
-        if id[:-7] == "shellyswitch25":
+        if id.rsplit("-", 1)[0] == "shellyswitch25":
             model = ATTR_MODEL_SHELLY25
             relays = 2
             rollers = 1
@@ -199,7 +199,7 @@ else:
             bin_sensors_classes = [ATTR_HEAT]
             bin_sensors_pl = [ATTR_1_0_PL]
 
-        if id[:-7] == "shellyplug":
+        if id.rsplit("-", 1)[0] == "shellyplug":
             model = ATTR_MODEL_SHELLYPLUG
             relays = 1
             relays_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -207,7 +207,7 @@ else:
             relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
             relays_sensors_tpls = [ATTR_TPL_POWER, ATTR_TPL_ENERGY]
 
-        if id[:-7] == "shellyplug-s":
+        if id.rsplit("-", 1)[0] == "shellyplug-s":
             model = ATTR_MODEL_SHELLYPLUG_S
             relays = 1
             relays_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -222,7 +222,7 @@ else:
             bin_sensors_classes = [ATTR_HEAT]
             bin_sensors_pl = [ATTR_1_0_PL]
 
-        if id[:-7] == "shelly4pro":
+        if id.rsplit("-", 1)[0] == "shelly4pro":
             model = ATTR_MODEL_SHELLY4PRO
             relays = 4
             relays_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -230,7 +230,7 @@ else:
             relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
             relays_sensors_tpls = [ATTR_TPL_POWER, ATTR_TPL_ENERGY]
 
-        if id[:-7] == "shellyht":
+        if id.rsplit("-", 1)[0] == "shellyht":
             model = ATTR_MODEL_SHELLYHT
             sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_BATTERY]
             sensors_classes = sensors
@@ -242,7 +242,7 @@ else:
             ]
             battery_powered = True
 
-        if id[:-7] == "shellydw":
+        if id.rsplit("-", 1)[0] == "shellydw":
             model = ATTR_MODEL_SHELLYDW
             sensors = [ATTR_LUX, ATTR_BATTERY]
             sensors_classes = [ATTR_ILLUMINANCE, ATTR_BATTERY]
@@ -253,7 +253,7 @@ else:
             bin_sensors_pl = [ATTR_OPEN_CLOSE_PL]
             battery_powered = True
 
-        if id[:-7] == "shellysmoke":
+        if id.rsplit("-", 1)[0] == "shellysmoke":
             model = ATTR_MODEL_SHELLYSMOKE
             sensors = [ATTR_TEMPERATURE, ATTR_BATTERY]
             sensors_classes = sensors
@@ -264,7 +264,7 @@ else:
             bin_sensors_pl = [ATTR_TRUE_FALSE_PL]
             battery_powered = True
 
-        if id[:-7] == "shellysense":
+        if id.rsplit("-", 1)[0] == "shellysense":
             model = ATTR_MODEL_SHELLYSENSE
             sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_LUX, ATTR_BATTERY]
             sensors_classes = [
@@ -285,7 +285,7 @@ else:
             bin_sensors_pl = [ATTR_TRUE_FALSE_PL, ATTR_TRUE_FALSE_PL]
             battery_powered = True
 
-        if id[:-7] == "shellyrgbw2":
+        if id.rsplit("-", 1)[0] == "shellyrgbw2":
             model = ATTR_MODEL_SHELLYRGBW2
             rgbw_lights = 1
             white_lights = 4
@@ -298,7 +298,7 @@ else:
             lights_bin_sensors_tpls = [ATTR_TPL_OVERPOWER]
             lights_bin_sensors_pl = [ATTR_TRUE_FALSE_PL]
 
-        if id[:-7] == "shellydimmer":
+        if id.rsplit("-", 1)[0] == "shellydimmer":
             model = ATTR_MODEL_SHELLYDIMMER
             white_lights = 1
             sensors = [ATTR_TEMPERATURE]
@@ -313,11 +313,11 @@ else:
             lights_sensors_classes = [ATTR_POWER]
             lights_sensors_tpls = [ATTR_TPL_POWER]
 
-        if id[:-7] == "shellybulb":
+        if id.rsplit("-", 1)[0] == "shellybulb":
             model = ATTR_MODEL_SHELLYBULB
             rgbw_lights = 1
 
-        if id[:-7] == "shellyem":
+        if id.rsplit("-", 1)[0] == "shellyem":
             model = ATTR_MODEL_SHELLYEM
             relays = 1
             relays_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -348,7 +348,7 @@ else:
                 ATTR_TPL_ENERGY,
             ]
 
-        if id[:-7] == "shellyflood":
+        if id.rsplit("-", 1)[0] == "shellyflood":
             model = ATTR_MODEL_SHELLYFLOOD
             sensors = [ATTR_TEMPERATURE, ATTR_BATTERY]
             sensors_classes = sensors
