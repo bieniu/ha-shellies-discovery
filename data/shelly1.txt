@@ -3,3 +3,7 @@ shellies/announce {"id":"shelly1-328900","mac":"XXXXXXXXXXXX","ip":"xxx.xxx.xxx.
 shellies/shelly1-328900/relay/0 off
 shellies/shelly1-328900/input/0 0
 shellies/shelly1-328900/longpush/0 0
+
+shellies/shelly1-328900/ext_temperature/0 :35.38
+shellies/shelly1-328900/ext_temperature/1 :23.56
+shellies/shelly1-328900/ext_temperature/2 :28.19
