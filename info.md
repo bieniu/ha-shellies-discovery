@@ -3,11 +3,13 @@
 ![Screenshot](https://github.com/bieniu/ha-shellies-discovery/blob/master/images/shellies-integration.png?raw=true)
 
 This script use Home Assistant [python_script](https://www.home-assistant.io/components/python_script/) component and you have to add it to your `configuration.yaml` file:
+
 ```yaml
 python_script:
 ```
 
-## Supported devices:
+## Supported devices
+
 - Shelly1 (with external temperature sensors)
 - Shelly1PM (with external temperature sensors)
 - Shelly2 (relays and roller mode)
@@ -25,6 +27,7 @@ python_script:
 - Shelly Door/Window
 
 ## Troubleshooting checklist
+
 - correct MQTT configuration in Home Assistant with `discovery` enabled
 - same `discovery_prefix` in Home Assistant configuration and in script configuration
 - Shellies firmware updated to current version
@@ -33,6 +36,7 @@ python_script:
 - default topics configuration in Shellies
 
 ## Minimal configuration
+
 ```yaml
 python_script:
 
@@ -60,7 +64,9 @@ automation:
         mac: '{{ trigger.payload_json.mac }}'
         fw_ver: '{{ trigger.payload_json.fw_ver }}'
 ```
+
 ## Custom configuration example
+
 ```yaml
 python_script:
 
@@ -102,12 +108,14 @@ automation:
 ```
 
 ## Script arguments
+
 key | optional | type | default | description
 -- | -- | -- | -- | --
 `discovery_prefix` | True | string | `homeassistant` | MQTT discovery prefix
 `qos` | True | integer | `0` | MQTT QoS, you can use `0`, `1` or `2`
 
 ## Arguments for Shelly1
+
 key | optional | type | default | possible values | description
 -- | -- | -- | -- | -- | --
 `shelly1-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay
@@ -116,6 +124,7 @@ key | optional | type | default | possible values | description
 `shelly1-<ID>-ext-2` | True | string | None | `temperature` | type of external sensor 2
 
 ## Arguments for Shelly1PM
+
 key | optional | type | default | possible values | description
 -- | -- | -- | -- | -- | --
 `shelly1pm-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay
@@ -124,6 +133,7 @@ key | optional | type | default | possible values | description
 `shelly1pm-<ID>-ext-2` | True | string | None | `temperature` | type of external sensor 2
 
 ## Arguments for Shelly2
+
 key | optional | type | default | possible values | description
 -- | -- | -- | -- | -- | --
 `shellyswitch-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 0
@@ -131,6 +141,7 @@ key | optional | type | default | possible values | description
 `shellyswitch-<ID>` | True | string | None | `cover` | use `roller mode`
 
 ## Arguments for Shelly2.5
+
 key | optional | type | default | possible values | description
 -- | -- | -- | -- | -- | --
 `shellyswitch25-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 0
@@ -138,6 +149,7 @@ key | optional | type | default | possible values | description
 `shellyswitch25-<ID>` | True | string | None | `cover` | use `roller mode`
 
 ## Arguments for Shelly4Pro
+
 key | optional | type | default | possible values | description
 -- | -- | -- | -- | -- | --
 `shelly4pro-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 0
@@ -146,11 +158,13 @@ key | optional | type | default | possible values | description
 `shelly4pro-<ID>-relay-3` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 3
 
 ## Arguments for Shelly RGBW2
+
 key | optional | type | default | possible values | description
 -- | -- | -- | -- | -- | --
 `shellyrgbw2-<ID>` | True | string | None | `white` | use `white mode`
 
 ## Arguments for Shelly H&T
+
 key | optional | type | default | possible values | description
 -- | -- | -- | -- | -- | --
 `shellyht-<ID>` | True | string | None | `ac_power` | use when your H&T sensor is powered via USB adapter
