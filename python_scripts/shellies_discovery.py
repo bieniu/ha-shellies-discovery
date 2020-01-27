@@ -112,9 +112,7 @@ try:
     else:
         raise ValueError()
 except ValueError:
-    logger.error(
-        "Wrong qos argument, the default value 0 was used"
-    )
+    logger.error("Wrong qos argument, the default value 0 was used")
 
 disc_prefix = data.get(CONF_DISCOVERY_PREFIX, DEFAULT_DISC_PREFIX)
 
@@ -552,10 +550,8 @@ for relay_id in range(0, relays):
     # relay's binary sensors
     for bin_sensor_id in range(0, len(relays_bin_sensors)):
         unique_id = f"{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}"
-        config_topic = (
-            f"{disc_prefix}/binary_sensor/{id}-\
+        config_topic = f"{disc_prefix}/binary_sensor/{id}-\
             {relays_bin_sensors[bin_sensor_id]}-{relay_id}/config"
-        )
         sensor_name = (
             f"{device_name} {relays_bin_sensors[bin_sensor_id].capitalize()} {relay_id}"
         )
@@ -860,10 +856,8 @@ for light_id in range(0, rgbw_lights):
     # color light's binary sensors
     for bin_sensor_id in range(0, len(lights_bin_sensors)):
         unique_id = f"{id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
-        config_topic = (
-            f"{disc_prefix}/binary_sensor/{id}-color-\
+        config_topic = f"{disc_prefix}/binary_sensor/{id}-color-\
             {lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
-        )
         sensor_name = (
             f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
         )
@@ -899,10 +893,8 @@ for light_id in range(0, rgbw_lights):
     # color light's sensors
     for sensor_id in range(0, len(lights_sensors)):
         unique_id = f"{id}-color-{lights_sensors[sensor_id]}-{light_id}"
-        config_topic = (
-            f"{disc_prefix}/sensor/{id}-color-\
+        config_topic = f"{disc_prefix}/sensor/{id}-color-\
             {lights_sensors[sensor_id]}-{light_id}/config"
-        )
         sensor_name = (
             f"{device_name} {lights_sensors[sensor_id].capitalize()} {light_id}"
         )
@@ -1015,10 +1007,8 @@ for light_id in range(0, white_lights):
     # white light's binary sensors
     for bin_sensor_id in range(0, len(lights_bin_sensors)):
         unique_id = f"{id}-white-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
-        config_topic = (
-            f"{disc_prefix}/binary_sensor/{id}-white-\
+        config_topic = f"{disc_prefix}/binary_sensor/{id}-white-\
             {lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
-        )
         sensor_name = (
             f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
         )
@@ -1054,10 +1044,8 @@ for light_id in range(0, white_lights):
     # white light's sensors
     for sensor_id in range(0, len(lights_sensors)):
         unique_id = f"{id}-white-{lights_sensors[sensor_id]}-{light_id}"
-        config_topic = (
-            f"{disc_prefix}/sensor/{id}-white-\
+        config_topic = f"{disc_prefix}/sensor/{id}-white-\
             {lights_sensors[sensor_id]}-{light_id}/config"
-        )
         sensor_name = (
             f"{device_name} {lights_sensors[sensor_id].capitalize()} {light_id}"
         )
