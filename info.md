@@ -8,8 +8,8 @@ python_script:
 ```
 
 ## Supported devices:
-- Shelly1
-- Shelly1PM
+- Shelly1 (with external temperature sensors)
+- Shelly1PM (with external temperature sensors)
 - Shelly2 (relays and roller mode)
 - Shely2.5 (relays and roller mode)
 - Shelly4Pro

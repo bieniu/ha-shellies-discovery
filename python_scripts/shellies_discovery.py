@@ -19,6 +19,8 @@ ATTR_TPL_ENERGY = "{{ (value | float / 60 / 1000) | round(2) }}"
 ATTR_TPL_BATTERY = "{{ value | float | round }}"
 ATTR_TPL_OVERPOWER = "{% if value_json.overpower == true %}ON{% else %}OFF{% endif %}"
 
+ATTR_TPL_EXT_TEMPERATURE = "{{ value[1:] | float | round(1) }}"
+
 ATTR_MANUFACTURER = "Allterco Robotics"
 ATTR_MODEL_SHELLY1 = "Shelly1"
 ATTR_MODEL_SHELLY1PM = "Shelly1PM"
@@ -145,13 +147,16 @@ else:
         bin_sensors_classes = []
         rgbw_lights = 0
         white_lights = 0
+        ext_sensors = 0
         battery_powered = False
+        ext_sensor_type = None
 
         if id.rsplit("-", 1)[0] == "shelly1":
             model = ATTR_MODEL_SHELLY1
             relays = 1
             relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
             relays_bin_sensors_pl = [ATTR_1_0_PL, ATTR_1_0_PL]
+            ext_sensors = 3
 
         if id.rsplit("-", 1)[0] == "shelly1pm":
             model = ATTR_MODEL_SHELLY1PM
@@ -169,6 +174,7 @@ else:
             bin_sensors = [ATTR_OVERTEMPERATURE]
             bin_sensors_classes = [ATTR_HEAT]
             bin_sensors_pl = [ATTR_1_0_PL]
+            ext_sensors = 3
 
         if id.rsplit("-", 1)[0] == "shellyswitch":
             model = ATTR_MODEL_SHELLY2
@@ -361,23 +367,21 @@ else:
 
         # rollers
         for roller_id in range(0, rollers):
-            device_name = "{} {}".format(model, id.split("-")[-1])
-            roller_name = "{} Roller {}".format(device_name, roller_id)
-            default_topic = "shellies/{}/".format(id)
-            state_topic = "~roller/{}".format(roller_id)
-            command_topic = "{}/command".format(state_topic)
-            position_topic = "{}/pos".format(state_topic)
-            set_position_topic = "{}/command/pos".format(state_topic)
+            device_name = f"{model} {id.split('-')[-1]}"
+            roller_name = f"{device_name} Roller {roller_id}"
+            default_topic = f"shellies/{id}/"
+            state_topic = f"~roller/{roller_id}"
+            command_topic = f"{state_topic}/command"
+            position_topic = "{state_topic}/pos"
+            set_position_topic = "{state_topic}/command/pos"
             availability_topic = "~online"
-            unique_id = "{}-roller-{}".format(id, roller_id)
+            unique_id = f"{id}-roller-{roller_id}"
             if data.get(id):
                 config_component = data.get(id)
             elif data.get(id.lower()):
                 config_component = data.get(id.lower())
             component = ATTR_COVER
-            config_topic = "{}/{}/{}-roller-{}/config".format(
-                disc_prefix, component, id, roller_id
-            )
+            config_topic = f"{disc_prefix}/{component}/{id}-roller-{roller_id}/config"
             if config_component == component:
                 roller_mode = True
                 payload = (
@@ -409,6 +413,7 @@ else:
                 "retain": retain,
                 "qos": qos,
             }
+            logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
             hass.services.call("mqtt", "publish", service_data, False)
 
         # relays
@@ -455,6 +460,7 @@ else:
                     "retain": retain,
                     "qos": qos,
                 }
+                logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
                 hass.services.call("mqtt", "publish", service_data, False)
 
             # relay's sensors
@@ -495,6 +501,7 @@ else:
                         "retain": retain,
                         "qos": qos,
                     }
+                    logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
                     hass.services.call("mqtt", "publish", service_data, False)
 
             # relay's sensors
@@ -534,6 +541,7 @@ else:
                     "retain": retain,
                     "qos": qos,
                 }
+                logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
                 hass.services.call("mqtt", "publish", service_data, False)
 
             # relay's binary sensors
@@ -594,6 +602,7 @@ else:
                     "retain": retain,
                     "qos": qos,
                 }
+                logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
                 hass.services.call("mqtt", "publish", service_data, False)
 
         # sensors
@@ -655,7 +664,54 @@ else:
                 "retain": retain,
                 "qos": qos,
             }
+            logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
             hass.services.call("mqtt", "publish", service_data, False)
+
+        # external sensors
+        for sensor_id in range(0, ext_sensors):
+            device_name = f"{model} {id.split('-')[-1]}"
+            unique_id = f"{id}-ext-{sensor_id}"
+            if data.get(unique_id):
+                ext_sensor_type = data.get(unique_id)
+            elif data.get(unique_id.lower()):
+                ext_sensor_type = data.get(unique_id.lower())
+            if ext_sensor_type:
+                config_topic = f"{disc_prefix}/sensor/{id}-ext-{sensor_id}/config"
+                default_topic = f"shellies/{id}/"
+                availability_topic = "~online"
+                sensor_name = (
+                    f"{device_name} External {sensor_id} {ext_sensor_type.capitalize()}"
+                )
+                state_topic = f"~ext_{ext_sensor_type}/{sensor_id}"
+                if ext_sensor_type == ATTR_TEMPERATURE:
+                    payload = (
+                        '{"name":"' + sensor_name + '",'
+                        '"stat_t":"' + state_topic + '",'
+                        '"unit_of_meas":"' + ATTR_UNIT_CELSIUS + '",'
+                        '"dev_cla":"' + ATTR_TEMPERATURE + '",'
+                        '"val_tpl":"' + ATTR_TPL_EXT_TEMPERATURE + '",'
+                        '"avty_t":"' + availability_topic + '",'
+                        '"pl_avail":"true",'
+                        '"pl_not_avail":"false",'
+                        '"uniq_id":"' + unique_id + '",'
+                        '"qos":"' + str(qos) + '",'
+                        '"dev": {"ids": ["' + mac + '"],'
+                        '"name":"' + device_name + '",'
+                        '"mdl":"' + model + '",'
+                        '"sw":"' + fw_ver + '",'
+                        '"mf":"' + ATTR_MANUFACTURER + '"},'
+                        '"~":"' + default_topic + '"}'
+                    )
+                else:
+                    payload = ""
+                service_data = {
+                    "topic": config_topic,
+                    "payload": payload,
+                    "retain": retain,
+                    "qos": qos,
+                }
+                logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
+                hass.services.call("mqtt", "publish", service_data, False)
 
         # binary sensors
         for bin_sensor_id in range(0, len(bin_sensors)):
@@ -717,6 +773,7 @@ else:
                 "retain": retain,
                 "qos": qos,
             }
+            logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
             hass.services.call("mqtt", "publish", service_data, False)
 
         # color lights
@@ -797,6 +854,7 @@ else:
                 "retain": retain,
                 "qos": qos,
             }
+            logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
             hass.services.call("mqtt", "publish", service_data, False)
 
             # color light's binary sensors
@@ -836,6 +894,7 @@ else:
                     "retain": retain,
                     "qos": qos,
                 }
+                logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
                 hass.services.call("mqtt", "publish", service_data, False)
 
             # color light's sensors
@@ -877,6 +936,7 @@ else:
                     "retain": retain,
                     "qos": qos,
                 }
+                logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
                 hass.services.call("mqtt", "publish", service_data, False)
 
         # white lights
@@ -951,6 +1011,7 @@ else:
                 "retain": retain,
                 "qos": qos,
             }
+            logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
             hass.services.call("mqtt", "publish", service_data, False)
 
             # white light's binary sensors
@@ -990,6 +1051,7 @@ else:
                     "retain": retain,
                     "qos": qos,
                 }
+                logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
                 hass.services.call("mqtt", "publish", service_data, False)
 
             # white light's sensors
@@ -1036,6 +1098,7 @@ else:
                     "retain": retain,
                     "qos": qos,
                 }
+                logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
                 hass.services.call("mqtt", "publish", service_data, False)
 
         # meters
@@ -1099,4 +1162,5 @@ else:
                     "retain": retain,
                     "qos": qos,
                 }
+                logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
                 hass.services.call("mqtt", "publish", service_data, False)

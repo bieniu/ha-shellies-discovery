@@ -21,8 +21,8 @@ After installing the script and adding automations, run `Shellies Announce` auto
 Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-script/94048) for support and help.
 
 ## Supported devices:
-- Shelly1
-- Shelly1PM
+- Shelly1 (with external temperature sensors)
+- Shelly1PM (with external temperature sensors)
 - Shelly2 (relays and roller mode)
 - Shelly2.5 (relays and roller mode)
 - Shelly4Pro
@@ -111,6 +111,9 @@ automation:
         shellyrgbw2-AABB22: 'white'
         shellyrgbw2-CC2211: 'rgbw'
         shellyht-2200AA: 'ac_power'
+        shelly1-001122-ext-0: 'temperature'
+        shelly1-001122-ext-1: 'temperature'
+        shelly1-001122-ext-2: 'temperature'
 ```
 ## Script arguments
 key | optional | type | default | description
