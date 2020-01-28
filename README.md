@@ -41,6 +41,16 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Dimmer
 - Shelly Door/Window
 
+## How to debug
+
+To debug the script add this to your `logger` configuration:
+
+```yaml
+logger:
+  logs:
+    homeassistant.components.python_script: debug
+```
+
 ## Troubleshooting checklist
 
 - correct MQTT configuration in Home Assistant with `discovery` enabled
