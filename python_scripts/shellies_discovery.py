@@ -51,6 +51,8 @@ ATTR_REACTIVE_POWER = "reactive_power"
 ATTR_VOLTAGE = "voltage"
 ATTR_ENERGY = "energy"
 ATTR_RETURNED_ENERGY = "returned_energy"
+ATTR_TOTAL = "total"
+ATTR_TOTAL_RETURNED = "total_returned"
 ATTR_SWITCH = "switch"
 ATTR_LIGHT = "light"
 ATTR_RGBW = "rgbw"
@@ -344,6 +346,8 @@ if id.rsplit("-", 1)[0] == "shellyem":
         ATTR_VOLTAGE,
         ATTR_ENERGY,
         ATTR_RETURNED_ENERGY,
+        ATTR_TOTAL,
+        ATTR_TOTAL_RETURNED,
     ]
     meters_sensors_units = [
         ATTR_UNIT_W,
@@ -351,12 +355,24 @@ if id.rsplit("-", 1)[0] == "shellyem":
         ATTR_UNIT_V,
         ATTR_UNIT_KWH,
         ATTR_UNIT_KWH,
+        ATTR_UNIT_KWH,
+        ATTR_UNIT_KWH,
     ]
-    meters_sensors_classes = [ATTR_POWER, None, None, ATTR_POWER, ATTR_POWER]
+    meters_sensors_classes = [
+        ATTR_POWER,
+        None,
+        None,
+        ATTR_POWER,
+        ATTR_POWER,
+        ATTR_POWER,
+        ATTR_POWER,
+    ]
     meters_sensors_tpls = [
         ATTR_TPL_POWER,
         ATTR_TPL_REACTIVE_POWER,
         ATTR_TPL_VOLTAGE,
+        ATTR_TPL_ENERGY,
+        ATTR_TPL_ENERGY,
         ATTR_TPL_ENERGY,
         ATTR_TPL_ENERGY,
     ]
@@ -379,8 +395,8 @@ for roller_id in range(0, rollers):
     default_topic = f"shellies/{id}/"
     state_topic = f"~roller/{roller_id}"
     command_topic = f"{state_topic}/command"
-    position_topic = "{state_topic}/pos"
-    set_position_topic = "{state_topic}/command/pos"
+    position_topic = f"{state_topic}/pos"
+    set_position_topic = f"{state_topic}/command/pos"
     availability_topic = "~online"
     unique_id = f"{id}-roller-{roller_id}"
     if data.get(id):
