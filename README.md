@@ -16,7 +16,7 @@ This script use Home Assistant [python_script](https://www.home-assistant.io/com
 python_script:
 ```
 
-You can install this script via [HACS](https://custom-components.github.io/hacs/) or just download `shellies_discovery.py` file and save it in `/config/python_scripts` folder.
+You can install this script via [HACS](https://hacs.xyz/) or just download `shellies_discovery.py` file and save it in `/config/python_scripts` folder.
 
 After installing the script and adding automations, run `Shellies Announce` automation or restart Home Assistant twice.
 
