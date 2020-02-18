@@ -33,11 +33,12 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Plug S
 - Shelly RGBW2 (color and white mode)
 - Shelly Bulb
-- Shelly DUO
+- Shelly DUO (experimental)
 - Shelly H&T (with or without USB adapter)
 - Shelly Smoke
 - Shelly Sense
-- ShellyEM
+- Shelly EM
+- Shelly 3EM
 - Shelly Flood
 - Shelly Dimmer
 - Shelly Door/Window
