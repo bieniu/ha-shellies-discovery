@@ -18,7 +18,7 @@ ATTR_MODEL_SHELLYSENSE = "Shelly Sense"
 ATTR_MODEL_SHELLYRGBW2 = "Shelly RGBW2"
 ATTR_MODEL_SHELLYBULB = "Shelly Bulb"
 ATTR_MODEL_SHELLYDUO = "Shelly DUO"
-ATTR_MODEL_SHELLYEM = "ShellyEM"
+ATTR_MODEL_SHELLYEM = "Shelly EM"
 ATTR_MODEL_SHELLYFLOOD = "Shelly Flood"
 ATTR_MODEL_SHELLYDIMMER = "Shelly Dimmer"
 
@@ -1008,11 +1008,11 @@ for light_id in range(0, white_lights):
             '"avty_t":"' + availability_topic + '",'
             '"pl_avail":"true",'
             '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if color_temp is defined %},\\"temp\\":{{[([((1000000/(color_temp|int))|round(0,\\"floor\\")),6500]|min),2700]|max}}{% endif %}",'
+            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if white_value is defined %},\\"white\\":{{white_value|float|multiply(0.3922)|round}}{% endif %}",'
             '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
             '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
             '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"color_temp_template":"{{[([((1000000/(value_json.temp|int))|round(0,\\"floor\\")),370]|min),153]|max}}",'
+            '"white_value_template":"{{value_json.white|float|multiply(2.55)|round}}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
             '"dev": {"ids": ["' + mac + '"],'
