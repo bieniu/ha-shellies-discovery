@@ -1128,17 +1128,15 @@ for light_id in range(0, white_lights):
 # meters
 for meter_id in range(0, meters):
     device_name = f"{model} {id.split('-')[-1]}"
-    meter_name = f"{device_name} Meter {meter_id}"
     default_topic = f"shellies/{id}/"
-    state_topic = f"~emeter/{meter_id}"
     availability_topic = "~online"
     for sensor_id in range(0, len(meters_sensors)):
         unique_id = f"{id}-emeter-{meters_sensors[sensor_id]}-{meter_id}"
         config_topic = (
-            f"{disc_prefix}/sensor/{id}-{meters_sensors[sensor_id]}-{meter_id}/config"
+            f"{disc_prefix}/sensor/{id}-emeter-{meters_sensors[sensor_id]}-{meter_id}/config"
         )
         sensor_name = (
-            f"{device_name} {meters_sensors[sensor_id].capitalize()} {meter_id}"
+            f"{device_name} Meter {meters_sensors[sensor_id].capitalize()} {meter_id}"
         )
         state_topic = f"~emeter/{meter_id}/{meters_sensors[sensor_id]}"
         if meters_sensors_classes[sensor_id]:
