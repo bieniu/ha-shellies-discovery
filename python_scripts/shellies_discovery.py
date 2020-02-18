@@ -94,9 +94,9 @@ UNIT_CELSIUS = "°C"
 UNIT_KWH = "kWh"
 UNIT_LUX = "lx"
 UNIT_PERCENT = "%"
-UNIT_V = "V"
+UNIT_VOLT = "V"
 UNIT_VAR = "VAR"
-UNIT_W = "W"
+UNIT_WATT = "W"
 
 expire_after = 43200
 off_delay = 3
@@ -176,7 +176,7 @@ if id.rsplit("-", 1)[0] == "shelly1pm":
     model = ATTR_MODEL_SHELLY1PM
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-    relays_sensors_units = [UNIT_W, UNIT_KWH]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
@@ -195,7 +195,7 @@ if id.rsplit("-", 1)[0] == "shellyswitch":
     relays = 2
     rollers = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-    relays_sensors_units = [UNIT_W, UNIT_KWH]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
@@ -206,7 +206,7 @@ if id.rsplit("-", 1)[0] == "shellyswitch25":
     relays = 2
     rollers = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-    relays_sensors_units = [UNIT_W, UNIT_KWH]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
@@ -223,7 +223,7 @@ if id.rsplit("-", 1)[0] == "shellyplug":
     model = ATTR_MODEL_SHELLYPLUG
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-    relays_sensors_units = [UNIT_W, UNIT_KWH]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
 
@@ -231,7 +231,7 @@ if id.rsplit("-", 1)[0] == "shellyplug-s":
     model = ATTR_MODEL_SHELLYPLUG_S
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-    relays_sensors_units = [UNIT_W, UNIT_KWH]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     sensors = [ATTR_TEMPERATURE]
@@ -246,7 +246,7 @@ if id.rsplit("-", 1)[0] == "shelly4pro":
     model = ATTR_MODEL_SHELLY4PRO
     relays = 4
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-    relays_sensors_units = [UNIT_W, UNIT_KWH]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
 
@@ -297,7 +297,7 @@ if id.rsplit("-", 1)[0] == "shellyrgbw2":
     white_lights = 4
     lights_sensors = [ATTR_POWER]
     lights_sensors_classes = [ATTR_POWER]
-    lights_sensors_units = [UNIT_W]
+    lights_sensors_units = [UNIT_WATT]
     lights_sensors_tpls = ["{{value_json.power|float|round(1)}}"]
     lights_bin_sensors = [ATTR_OVERPOWER]
     lights_bin_sensors_classes = [ATTR_POWER]
@@ -315,7 +315,7 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
     bin_sensors_classes = [ATTR_HEAT, ATTR_POWER, ATTR_PROBLEM]
     bin_sensors_pl = [PL_1_0, PL_1_0, PL_1_0]
     lights_sensors = [ATTR_POWER]
-    lights_sensors_units = [UNIT_W]
+    lights_sensors_units = [UNIT_WATT]
     lights_sensors_classes = [ATTR_POWER]
     lights_sensors_tpls = [TPL_POWER]
 
@@ -331,7 +331,7 @@ if id.rsplit("-", 1)[0] == "shellyem":
     model = ATTR_MODEL_SHELLY_EM
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-    relays_sensors_units = [UNIT_W, UNIT_KWH]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     meters = 2
@@ -345,9 +345,9 @@ if id.rsplit("-", 1)[0] == "shellyem":
         ATTR_TOTAL_RETURNED,
     ]
     meters_sensors_units = [
-        UNIT_W,
+        UNIT_WATT,
         UNIT_VAR,
-        UNIT_V,
+        UNIT_VOLT,
         UNIT_KWH,
         UNIT_KWH,
         UNIT_KWH,
@@ -377,7 +377,7 @@ if id.rsplit("-", 1)[0] == "shellyem3":
     relays = 1
     meters = 3
     meters_sensors = [ATTR_CURRENT, ATTR_POWER, ATTR_POWER_FACTOR, ATTR_VOLTAGE]
-    meters_sensors_units = [UNIT_AMPERE, UNIT_W, UNIT_PERCENT, UNIT_V]
+    meters_sensors_units = [UNIT_AMPERE, UNIT_WATT, UNIT_PERCENT, UNIT_VOLT]
     meters_sensors_classes = [None, ATTR_POWER, None, None]
     meters_sensors_tpls = [TPL_CURRENT, TPL_POWER, TPL_POWER_FACTOR, TPL_VOLTAGE]
 
