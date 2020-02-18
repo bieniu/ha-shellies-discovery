@@ -18,17 +18,20 @@ ATTR_MODEL_SHELLYSENSE = "Shelly Sense"
 ATTR_MODEL_SHELLYRGBW2 = "Shelly RGBW2"
 ATTR_MODEL_SHELLYBULB = "Shelly Bulb"
 ATTR_MODEL_SHELLYDUO = "Shelly DUO"
-ATTR_MODEL_SHELLYEM = "Shelly EM"
+ATTR_MODEL_SHELLY_3EM = "Shelly 3EM"
+ATTR_MODEL_SHELLY_EM = "Shelly EM"
 ATTR_MODEL_SHELLYFLOOD = "Shelly Flood"
 ATTR_MODEL_SHELLYDIMMER = "Shelly Dimmer"
 
 ATTR_TEMPERATURE = "temperature"
 ATTR_HUMIDITY = "humidity"
 ATTR_BATTERY = "battery"
+ATTR_CURRENT = "current"
 ATTR_LUX = "lux"
 ATTR_ILLUMINANCE = "illuminance"
 ATTR_POWER = "power"
 ATTR_PROBLEM = "problem"
+ATTR_POWER_FACTOR = "pf"
 ATTR_REACTIVE_POWER = "reactive_power"
 ATTR_VOLTAGE = "voltage"
 ATTR_ENERGY = "energy"
@@ -73,6 +76,7 @@ PL_1_0 = {STATE_ON: "1", STATE_OFF: "0"}
 PL_OPEN_CLOSE = {STATE_ON: "open", STATE_OFF: "close"}
 PL_TRUE_FALSE = {STATE_ON: "true", STATE_OFF: "false"}
 
+TPL_CURRENT = "{{value|float|round(2)}}"
 TPL_BATTERY = "{{value|float|round}}"
 TPL_ENERGY_WH = "{{(value|float/1000)|round(2)}}"
 TPL_ENERGY_WMIN = "{{(value|float/60/1000)|round(2)}}"
@@ -80,10 +84,12 @@ TPL_HUMIDITY = "{{value|float|round(1)}}"
 TPL_LUX = "{{value|float|round}}"
 TPL_OVERPOWER = "{% if value_json.overpower == true %}ON{% else %}OFF{% endif %}"
 TPL_POWER = "{{value|float|round(1)}}"
+TPL_POWER_FACTOR = "{{value|float*100|round}}"
 TPL_TEMPERATURE = "{{value|float|round(1)}}"
 TPL_TEMPERATURE_EXT = "{{value[1:]|float|round(1)}}"
 TPL_VOLTAGE = "{{value|float|round(1)}}"
 
+UNIT_AMPERE = "A"
 UNIT_CELSIUS = "°C"
 UNIT_KWH = "kWh"
 UNIT_LUX = "lx"
@@ -322,7 +328,7 @@ if id.rsplit("-", 1)[0] == "ShellyBulbDuo":
     white_lights = 1
 
 if id.rsplit("-", 1)[0] == "shellyem":
-    model = ATTR_MODEL_SHELLYEM
+    model = ATTR_MODEL_SHELLY_EM
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_W, UNIT_KWH]
@@ -365,6 +371,15 @@ if id.rsplit("-", 1)[0] == "shellyem":
         TPL_ENERGY_WH,
         TPL_ENERGY_WH,
     ]
+
+if id.rsplit("-", 1)[0] == "shellyem3":
+    model = ATTR_MODEL_SHELLY_3EM
+    relays = 1
+    meters = 3
+    meters_sensors = [ATTR_CURRENT, ATTR_POWER, ATTR_POWER_FACTOR, ATTR_VOLTAGE]
+    meters_sensors_units = [UNIT_AMPERE, UNIT_W, UNIT_PERCENT, UNIT_V]
+    meters_sensors_classes = [None, ATTR_POWER, None, None]
+    meters_sensors_tpls = [TPL_CURRENT, TPL_POWER, TPL_POWER_FACTOR, TPL_VOLTAGE]
 
 if id.rsplit("-", 1)[0] == "shellyflood":
     model = ATTR_MODEL_SHELLYFLOOD
