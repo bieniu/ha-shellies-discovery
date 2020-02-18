@@ -1132,9 +1132,7 @@ for meter_id in range(0, meters):
     availability_topic = "~online"
     for sensor_id in range(0, len(meters_sensors)):
         unique_id = f"{id}-emeter-{meters_sensors[sensor_id]}-{meter_id}"
-        config_topic = (
-            f"{disc_prefix}/sensor/{id}-emeter-{meters_sensors[sensor_id]}-{meter_id}/config"
-        )
+        config_topic = f"{disc_prefix}/sensor/{id}-emeter-{meters_sensors[sensor_id]}-{meter_id}/config"
         sensor_name = (
             f"{device_name} Meter {meters_sensors[sensor_id].capitalize()} {meter_id}"
         )
