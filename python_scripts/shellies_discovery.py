@@ -17,17 +17,21 @@ ATTR_MODEL_SHELLYSMOKE = "Shelly Smoke"
 ATTR_MODEL_SHELLYSENSE = "Shelly Sense"
 ATTR_MODEL_SHELLYRGBW2 = "Shelly RGBW2"
 ATTR_MODEL_SHELLYBULB = "Shelly Bulb"
-ATTR_MODEL_SHELLYEM = "ShellyEM"
+ATTR_MODEL_SHELLYDUO = "Shelly DUO"
+ATTR_MODEL_SHELLY_3EM = "Shelly 3EM"
+ATTR_MODEL_SHELLY_EM = "Shelly EM"
 ATTR_MODEL_SHELLYFLOOD = "Shelly Flood"
 ATTR_MODEL_SHELLYDIMMER = "Shelly Dimmer"
 
 ATTR_TEMPERATURE = "temperature"
 ATTR_HUMIDITY = "humidity"
 ATTR_BATTERY = "battery"
+ATTR_CURRENT = "current"
 ATTR_LUX = "lux"
 ATTR_ILLUMINANCE = "illuminance"
 ATTR_POWER = "power"
 ATTR_PROBLEM = "problem"
+ATTR_POWER_FACTOR = "pf"
 ATTR_REACTIVE_POWER = "reactive_power"
 ATTR_VOLTAGE = "voltage"
 ATTR_ENERGY = "energy"
@@ -72,24 +76,27 @@ PL_1_0 = {STATE_ON: "1", STATE_OFF: "0"}
 PL_OPEN_CLOSE = {STATE_ON: "open", STATE_OFF: "close"}
 PL_TRUE_FALSE = {STATE_ON: "true", STATE_OFF: "false"}
 
-TPL_BATTERY = "{{ value | float | round }}"
-TPL_ENERGY_WH = "{{ (value | float / 1000) | round(2) }}"
-TPL_ENERGY_WMIN = "{{ (value | float / 60 / 1000) | round(2) }}"
-TPL_HUMIDITY = "{{ value | float | round(1) }}"
-TPL_LUX = "{{ value | float | round }}"
+TPL_CURRENT = "{{value|float|round(2)}}"
+TPL_BATTERY = "{{value|float|round}}"
+TPL_ENERGY_WH = "{{(value|float/1000)|round(2)}}"
+TPL_ENERGY_WMIN = "{{(value|float/60/1000)|round(2)}}"
+TPL_HUMIDITY = "{{value|float|round(1)}}"
+TPL_LUX = "{{value|float|round}}"
 TPL_OVERPOWER = "{% if value_json.overpower == true %}ON{% else %}OFF{% endif %}"
-TPL_POWER = "{{ value | float | round(1) }}"
-TPL_TEMPERATURE = "{{ value | float | round(1) }}"
-TPL_TEMPERATURE_EXT = "{{ value[1:] | float | round(1) }}"
-TPL_VOLTAGE = "{{ value | float | round(1) }}"
+TPL_POWER = "{{value|float|round(1)}}"
+TPL_POWER_FACTOR = "{{value|float*100|round}}"
+TPL_TEMPERATURE = "{{value|float|round(1)}}"
+TPL_TEMPERATURE_EXT = "{{value[1:]|float|round(1)}}"
+TPL_VOLTAGE = "{{value|float|round(1)}}"
 
+UNIT_AMPERE = "A"
 UNIT_CELSIUS = "°C"
 UNIT_KWH = "kWh"
 UNIT_LUX = "lx"
 UNIT_PERCENT = "%"
-UNIT_V = "V"
+UNIT_VOLT = "V"
 UNIT_VAR = "VAR"
-UNIT_W = "W"
+UNIT_WATT = "W"
 
 expire_after = 43200
 off_delay = 3
@@ -169,7 +176,7 @@ if id.rsplit("-", 1)[0] == "shelly1pm":
     model = ATTR_MODEL_SHELLY1PM
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-    relays_sensors_units = [UNIT_W, UNIT_KWH]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
@@ -188,7 +195,7 @@ if id.rsplit("-", 1)[0] == "shellyswitch":
     relays = 2
     rollers = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-    relays_sensors_units = [UNIT_W, UNIT_KWH]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
@@ -199,7 +206,7 @@ if id.rsplit("-", 1)[0] == "shellyswitch25":
     relays = 2
     rollers = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-    relays_sensors_units = [UNIT_W, UNIT_KWH]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
@@ -216,7 +223,7 @@ if id.rsplit("-", 1)[0] == "shellyplug":
     model = ATTR_MODEL_SHELLYPLUG
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-    relays_sensors_units = [UNIT_W, UNIT_KWH]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
 
@@ -224,7 +231,7 @@ if id.rsplit("-", 1)[0] == "shellyplug-s":
     model = ATTR_MODEL_SHELLYPLUG_S
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-    relays_sensors_units = [UNIT_W, UNIT_KWH]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     sensors = [ATTR_TEMPERATURE]
@@ -239,7 +246,7 @@ if id.rsplit("-", 1)[0] == "shelly4pro":
     model = ATTR_MODEL_SHELLY4PRO
     relays = 4
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-    relays_sensors_units = [UNIT_W, UNIT_KWH]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
 
@@ -290,8 +297,8 @@ if id.rsplit("-", 1)[0] == "shellyrgbw2":
     white_lights = 4
     lights_sensors = [ATTR_POWER]
     lights_sensors_classes = [ATTR_POWER]
-    lights_sensors_units = [UNIT_W]
-    lights_sensors_tpls = ["{{ value_json.power | float | round(1) }}"]
+    lights_sensors_units = [UNIT_WATT]
+    lights_sensors_tpls = ["{{value_json.power|float|round(1)}}"]
     lights_bin_sensors = [ATTR_OVERPOWER]
     lights_bin_sensors_classes = [ATTR_POWER]
     lights_bin_sensors_tpls = [TPL_OVERPOWER]
@@ -308,7 +315,7 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
     bin_sensors_classes = [ATTR_HEAT, ATTR_POWER, ATTR_PROBLEM]
     bin_sensors_pl = [PL_1_0, PL_1_0, PL_1_0]
     lights_sensors = [ATTR_POWER]
-    lights_sensors_units = [UNIT_W]
+    lights_sensors_units = [UNIT_WATT]
     lights_sensors_classes = [ATTR_POWER]
     lights_sensors_tpls = [TPL_POWER]
 
@@ -316,11 +323,15 @@ if id.rsplit("-", 1)[0] == "shellybulb":
     model = ATTR_MODEL_SHELLYBULB
     rgbw_lights = 1
 
+if id.rsplit("-", 1)[0] == "ShellyBulbDuo":
+    model = ATTR_MODEL_SHELLYDUO
+    white_lights = 1
+
 if id.rsplit("-", 1)[0] == "shellyem":
-    model = ATTR_MODEL_SHELLYEM
+    model = ATTR_MODEL_SHELLY_EM
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-    relays_sensors_units = [UNIT_W, UNIT_KWH]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     meters = 2
@@ -334,9 +345,9 @@ if id.rsplit("-", 1)[0] == "shellyem":
         ATTR_TOTAL_RETURNED,
     ]
     meters_sensors_units = [
-        UNIT_W,
+        UNIT_WATT,
         UNIT_VAR,
-        UNIT_V,
+        UNIT_VOLT,
         UNIT_KWH,
         UNIT_KWH,
         UNIT_KWH,
@@ -360,6 +371,15 @@ if id.rsplit("-", 1)[0] == "shellyem":
         TPL_ENERGY_WH,
         TPL_ENERGY_WH,
     ]
+
+if id.rsplit("-", 1)[0] == "shellyem3":
+    model = ATTR_MODEL_SHELLY_3EM
+    relays = 1
+    meters = 3
+    meters_sensors = [ATTR_CURRENT, ATTR_POWER, ATTR_POWER_FACTOR, ATTR_VOLTAGE]
+    meters_sensors_units = [UNIT_AMPERE, UNIT_WATT, UNIT_PERCENT, UNIT_VOLT]
+    meters_sensors_classes = [None, ATTR_POWER, None, None]
+    meters_sensors_tpls = [TPL_CURRENT, TPL_POWER, TPL_POWER_FACTOR, TPL_VOLTAGE]
 
 if id.rsplit("-", 1)[0] == "shellyflood":
     model = ATTR_MODEL_SHELLYFLOOD
@@ -799,14 +819,14 @@ for light_id in range(0, rgbw_lights):
             '"pl_avail":"true",'
             '"pl_not_avail":"false",'
             '"fx_list":["Off", "Meteor Shower", "Gradual Change", "Flash"],'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"gain\\":{{ brightness | float | multiply(0.3922) | round(0) }}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %}{% if effect == \\"Meteor Shower\\" %}\\"effect\\":1{% elif effect == \\"Gradual Change\\" %}\\"effect\\":2{% elif effect == \\"Flash\\" %}\\"effect\\":3{% else %}\\"effect\\":0{% endif %}{% else %}\\"effect\\":0{% endif %}}",'
+            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"gain\\":{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{red}},\\"green\\":{{green}},\\"blue\\":{{blue}}{% endif %}{% if white_value is defined %},\\"white\\":{{white_value}}{% endif %}{% if effect is defined %}{% if effect == \\"Meteor Shower\\" %}\\"effect\\":1{% elif effect == \\"Gradual Change\\" %}\\"effect\\":2{% elif effect == \\"Flash\\" %}\\"effect\\":3{% else %}\\"effect\\":0{% endif %}{% else %}\\"effect\\":0{% endif %}}",'
             '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
             '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
-            '"bri_tpl":"{{ value_json.gain | float | multiply(2.55) | round(0) }}",'
-            '"r_tpl":"{{ value_json.red }}",'
-            '"g_tpl":"{{ value_json.green }}",'
-            '"b_tpl":"{{ value_json.blue }}",'
-            '"whit_val_tpl":"{{ value_json.white }}",'
+            '"bri_tpl":"{{value_json.gain|float|multiply(2.55)|round}}",'
+            '"r_tpl":"{{value_json.red}}",'
+            '"g_tpl":"{{value_json.green}}",'
+            '"b_tpl":"{{value_json.blue}}",'
+            '"whit_val_tpl":"{{value_json.white}}",'
             '"fx_tpl":"{% if value_json.effect == 1 %}Meteor Shower{% elif value_json.effect == 2 %}Gradual Change{% elif value_json.effect == 3 %}Flash{% else %}Off{% endif %}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
@@ -827,14 +847,14 @@ for light_id in range(0, rgbw_lights):
             '"pl_avail":"true",'
             '"pl_not_avail":"false",'
             '"fx_list":["Off", "Meteor Shower", "Gradual Change", "Breath", "Flash", "On/Off Gradual", "Red/Green Change"],'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\",\\"mode\\":\\"color\\",{% if red is defined and green is defined and blue is defined %}\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }},{% endif %}{% if white_value is defined %}\\"white\\":{{ white_value }},{% endif %}{% if brightness is defined %}\\"gain\\":{{ brightness | float | multiply(0.3922) | round(0) }},{% endif %}{% if effect is defined %}{% if effect == \\"Meteor Shower\\" %}\\"effect\\":1{% elif effect == \\"Gradual Change\\" %}\\"effect\\":2{% elif effect == \\"Breath\\" %}\\"effect\\":3{% elif effect == \\"Flash\\" %}\\"effect\\":4{% elif effect == \\"On/Off Gradual\\" %}\\"effect\\":5{% elif effect == \\"Red/Green Change\\" %}\\"effect\\":6{% else %}\\"effect\\":0{% endif %}{% else %}\\"effect\\":0{% endif %}}",'
+            '"cmd_on_tpl":"{\\"turn\\":\\"on\\",\\"mode\\":\\"color\\",{% if red is defined and green is defined and blue is defined %}\\"red\\":{{red}},\\"green\\":{{green}},\\"blue\\":{{blue}},{% endif %}{% if white_value is defined %}\\"white\\":{{white_value}},{% endif %}{% if brightness is defined %}\\"gain\\":{{brightness|float|multiply(0.3922)|round}},{% endif %}{% if effect is defined %}{% if effect == \\"Meteor Shower\\" %}\\"effect\\":1{% elif effect == \\"Gradual Change\\" %}\\"effect\\":2{% elif effect == \\"Breath\\" %}\\"effect\\":3{% elif effect == \\"Flash\\" %}\\"effect\\":4{% elif effect == \\"On/Off Gradual\\" %}\\"effect\\":5{% elif effect == \\"Red/Green Change\\" %}\\"effect\\":6{% else %}\\"effect\\":0{% endif %}{% else %}\\"effect\\":0{% endif %}}",'
             '"cmd_off_tpl":"{\\"turn\\":\\"off\\",\\"mode\\":\\"color\\",\\"effect\\": 0}",'
             '"stat_tpl":"{% if value_json.ison == true and value_json.mode == \\"color\\" %}on{% else %}off{% endif %}",'
-            '"bri_tpl":"{{ value_json.gain | float | multiply(2.55) | round(0) }}",'
-            '"r_tpl":"{{ value_json.red }}",'
-            '"g_tpl":"{{ value_json.green }}",'
-            '"b_tpl":"{{ value_json.blue }}",'
-            '"whit_val_tpl":"{{ value_json.white }}",'
+            '"bri_tpl":"{{value_json.gain|float|multiply(2.55)|round}}",'
+            '"r_tpl":"{{value_json.red}}",'
+            '"g_tpl":"{{value_json.green}}",'
+            '"b_tpl":"{{value_json.blue}}",'
+            '"whit_val_tpl":"{{value_json.white}}",'
             '"fx_tpl":"{% if value_json.effect == 1 %}Meteor Shower{% elif value_json.effect == 2 %}Gradual Change{% elif value_json.effect == 3 %}Breath{% elif value_json.effect == 4 %}Flash{% elif value_json.effect == 5 %}On/Off Gradual{% elif value_json.effect == 6 %}Red/Green Change{% else %}Off{% endif %}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
@@ -935,7 +955,7 @@ for light_id in range(0, white_lights):
     device_name = f"{model} {id.split('-')[-1]}"
     light_name = f"{device_name} Light {light_id}"
     default_topic = f"shellies/{id}/"
-    if model == ATTR_MODEL_SHELLYDIMMER:
+    if model == ATTR_MODEL_SHELLYDIMMER or model == ATTR_MODEL_SHELLYDUO:
         state_topic = f"~light/{light_id}/status"
         command_topic = f"~light/{light_id}/set"
         unique_id = f"{id}-light-{light_id}"
@@ -959,10 +979,10 @@ for light_id in range(0, white_lights):
             '"avty_t":"' + availability_topic + '",'
             '"pl_avail":"true",'
             '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness | float | multiply(0.3922) | round(0)}}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}",'
+            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if white_value is defined %},\\"white\\":{{white_value}}{% endif %}{% if effect is defined %},\\"effect\\":{{effect}}{% endif %}}",'
             '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
             '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
-            '"bri_tpl":"{{ value_json.brightness | float | multiply(2.55) | round(0) }}",'
+            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
             '"dev": {"ids": ["' + mac + '"],'
@@ -981,10 +1001,33 @@ for light_id in range(0, white_lights):
             '"avty_t":"' + availability_topic + '",'
             '"pl_avail":"true",'
             '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness | float | multiply(0.3922) | round(0)}}{% endif %}}",'
+            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{% endif %}}",'
             '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
             '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
-            '"bri_tpl":"{{ value_json.brightness | float | multiply(2.55) | round(0) }}",'
+            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
+            '"uniq_id":"' + unique_id + '",'
+            '"qos":"' + str(qos) + '",'
+            '"dev": {"ids": ["' + mac + '"],'
+            '"name":"' + device_name + '",'
+            '"mdl":"' + model + '",'
+            '"sw":"' + fw_ver + '",'
+            '"mf":"' + ATTR_MANUFACTURER + '"},'
+            '"~":"' + default_topic + '"}'
+        )
+    elif model == ATTR_MODEL_SHELLYDUO:
+        payload = (
+            '{"schema":"template",'
+            '"name":"' + light_name + '",'
+            '"cmd_t":"' + command_topic + '",'
+            '"stat_t":"' + state_topic + '",'
+            '"avty_t":"' + availability_topic + '",'
+            '"pl_avail":"true",'
+            '"pl_not_avail":"false",'
+            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if white_value is defined %},\\"white\\":{{white_value|float|multiply(0.3922)|round}}{% endif %}",'
+            '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
+            '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
+            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
+            '"white_value_template":"{{value_json.white|float|multiply(2.55)|round}}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
             '"dev": {"ids": ["' + mac + '"],'
@@ -1085,17 +1128,13 @@ for light_id in range(0, white_lights):
 # meters
 for meter_id in range(0, meters):
     device_name = f"{model} {id.split('-')[-1]}"
-    meter_name = f"{device_name} Meter {meter_id}"
     default_topic = f"shellies/{id}/"
-    state_topic = f"~emeter/{meter_id}"
     availability_topic = "~online"
     for sensor_id in range(0, len(meters_sensors)):
         unique_id = f"{id}-emeter-{meters_sensors[sensor_id]}-{meter_id}"
-        config_topic = (
-            f"{disc_prefix}/sensor/{id}-{meters_sensors[sensor_id]}-{meter_id}/config"
-        )
+        config_topic = f"{disc_prefix}/sensor/{id}-emeter-{meters_sensors[sensor_id]}-{meter_id}/config"
         sensor_name = (
-            f"{device_name} {meters_sensors[sensor_id].capitalize()} {meter_id}"
+            f"{device_name} Meter {meters_sensors[sensor_id].capitalize()} {meter_id}"
         )
         state_topic = f"~emeter/{meter_id}/{meters_sensors[sensor_id]}"
         if meters_sensors_classes[sensor_id]:
