@@ -16,7 +16,7 @@ This script use Home Assistant [python_script](https://www.home-assistant.io/com
 python_script:
 ```
 
-You can install this script via [HACS](https://custom-components.github.io/hacs/) or just download `shellies_discovery.py` file and save it in `/config/python_scripts` folder.
+You can install this script via [HACS](https://hacs.xyz/) or just download `shellies_discovery.py` file and save it in `/config/python_scripts` folder.
 
 After installing the script and adding automations, run `Shellies Announce` automation or restart Home Assistant twice.
 
@@ -33,11 +33,12 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Plug S
 - Shelly RGBW2 (color and white mode)
 - Shelly Bulb
-- Shelly DUO
+- Shelly DUO (experimental)
 - Shelly H&T (with or without USB adapter)
 - Shelly Smoke
 - Shelly Sense
-- ShellyEM
+- Shelly EM
+- Shelly 3EM
 - Shelly Flood
 - Shelly Dimmer
 - Shelly Door/Window
@@ -183,11 +184,17 @@ key | optional | type | default | possible values | description
 `shelly4pro-<ID>-relay-2` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 2
 `shelly4pro-<ID>-relay-3` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 3
 
-## Arguments for ShellyEM
+## Arguments for Shelly EM
 
 key | optional | type | default | possible values | description
 -- | -- | -- | -- | -- | --
 `shellyem-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay
+
+## Arguments for Shelly 3EM
+
+key | optional | type | default | possible values | description
+-- | -- | -- | -- | -- | --
+`shellyem3-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay
 
 ## Arguments for Shelly RGBW2
 

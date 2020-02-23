@@ -19,11 +19,12 @@ python_script:
 - Shelly Plug S
 - Shelly RGBW2 (color and white mode)
 - Shelly Bulb
-- Shelly DUO
+- Shelly DUO (experimental)
 - Shelly H&T (with or without USB adapter)
 - Shelly Smoke
 - Shelly Sense
-- ShellyEM
+- Shelly EM
+- Shelly 3EM
 - Shelly Dimmer
 - Shelly Door/Window
 
@@ -168,11 +169,17 @@ key | optional | type | default | possible values | description
 `shelly4pro-<ID>-relay-2` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 2
 `shelly4pro-<ID>-relay-3` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 3
 
-## Arguments for ShellyEM
+## Arguments for Shelly EM
 
 key | optional | type | default | possible values | description
 -- | -- | -- | -- | -- | --
 `shellyem-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay
+
+## Arguments for Shelly 3EM
+
+key | optional | type | default | possible values | description
+-- | -- | -- | -- | -- | --
+`shellyem3-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay
 
 ## Arguments for Shelly RGBW2
 
