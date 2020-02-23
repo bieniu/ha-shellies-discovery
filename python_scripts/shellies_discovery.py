@@ -50,6 +50,8 @@ ATTR_MOTION = "motion"
 ATTR_OPENING = "opening"
 ATTR_CHARGER = "charger"
 ATTR_INPUT = "input"
+ATTR_INPUT_0 = "input/0"
+ATTR_INPUT_1 = "input/1"
 ATTR_LONGPUSH = "longpush"
 ATTR_OVERTEMPERATURE = "overtemperature"
 ATTR_OVERPOWER = "overpower"
@@ -311,9 +313,15 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
     sensors_classes = [ATTR_TEMPERATURE]
     sensors_units = [UNIT_CELSIUS]
     sensors_tpls = [TPL_TEMPERATURE]
-    bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_OVERLOAD, ATTR_LOADERROR]
-    bin_sensors_classes = [ATTR_HEAT, ATTR_POWER, ATTR_PROBLEM]
-    bin_sensors_pl = [PL_1_0, PL_1_0, PL_1_0]
+    bin_sensors = [
+        ATTR_OVERTEMPERATURE,
+        ATTR_OVERLOAD,
+        ATTR_LOADERROR,
+        ATTR_INPUT_0,
+        ATTR_INPUT_1,
+    ]
+    bin_sensors_classes = [ATTR_HEAT, ATTR_POWER, ATTR_PROBLEM, None, None]
+    bin_sensors_pl = [PL_1_0, PL_1_0, PL_1_0, PL_1_0, PL_1_0]
     lights_sensors = [ATTR_POWER]
     lights_sensors_units = [UNIT_WATT]
     lights_sensors_classes = [ATTR_POWER]
@@ -737,13 +745,13 @@ for sensor_id in range(0, ext_sensors):
 # binary sensors
 for bin_sensor_id in range(0, len(bin_sensors)):
     device_name = f"{model} {id.split('-')[-1]}"
-    unique_id = f"{id}-{bin_sensors[bin_sensor_id]}"
-    config_topic = (
-        f"{disc_prefix}/binary_sensor/{id}-{bin_sensors[bin_sensor_id]}/config"
-    )
+    unique_id = f"{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}"
+    config_topic = f"{disc_prefix}/binary_sensor/{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}/config"
     default_topic = f"shellies/{id}/"
     availability_topic = "~online"
-    sensor_name = f"{device_name} {bin_sensors[bin_sensor_id].capitalize()}"
+    sensor_name = (
+        f"{device_name} {bin_sensors[bin_sensor_id].replace('/', ' ').capitalize()}"
+    )
     if relays > 0 or white_lights > 0:
         state_topic = f"~{bin_sensors[bin_sensor_id]}"
     elif bin_sensors[bin_sensor_id] == ATTR_OPENING:
@@ -758,6 +766,24 @@ for bin_sensor_id in range(0, len(bin_sensors)):
             '"pl_off":"' + bin_sensors_pl[bin_sensor_id][STATE_OFF] + '",'
             '"dev_cla":"' + bin_sensors_classes[bin_sensor_id] + '",'
             '"exp_aft":"' + str(expire_after) + '",'
+            '"uniq_id":"' + unique_id + '",'
+            '"qos":"' + str(qos) + '",'
+            '"dev": {"ids": ["' + mac + '"],'
+            '"name":"' + device_name + '",'
+            '"mdl":"' + model + '",'
+            '"sw":"' + fw_ver + '",'
+            '"mf":"' + ATTR_MANUFACTURER + '"},'
+            '"~":"' + default_topic + '"}'
+        )
+    elif not bin_sensors_classes[bin_sensor_id]:
+        payload = (
+            '{"name":"' + sensor_name + '",'
+            '"stat_t":"' + state_topic + '",'
+            '"pl_on":"' + bin_sensors_pl[bin_sensor_id][STATE_ON] + '",'
+            '"pl_off":"' + bin_sensors_pl[bin_sensor_id][STATE_OFF] + '",'
+            '"avty_t":"' + availability_topic + '",'
+            '"pl_avail":"true",'
+            '"pl_not_avail":"false",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
             '"dev": {"ids": ["' + mac + '"],'
