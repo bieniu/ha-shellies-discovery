@@ -8,3 +8,6 @@ shellies/shellydimmer-DB2E7D/temperature 39.18
 shellies/shellydimmer-DB2E7D/temperature_f 102.53
 shellies/shellydimmer-DB2E7D/overtemperature 0
 shellies/shellydimmer-DB2E7D/light/0/power 12.12
+
+shellies/shellydimmer-DB2E7D/input/0 0
+shellies/shellydimmer-DB2E7D/input/1 0
