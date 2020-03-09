@@ -132,6 +132,9 @@ automation:
         shelly1-001122-ext-0: 'temperature'
         shelly1-001122-ext-1: 'temperature'
         shelly1-001122-ext-2: 'temperature'
+        ignored_devices:
+          - shelly1-DD0011
+          - shellyem-EECC22
 ```
 
 ## Script arguments
@@ -140,6 +143,7 @@ key | optional | type | default | description
 -- | -- | -- | -- | --
 `discovery_prefix` | True | string | `homeassistant` | MQTT discovery prefix
 `qos` | True | integer | `0` | MQTT QoS, you can use `0`, `1` or `2`
+`ignored_devices` | True | list | None | list of devices to ignore
 
 ## Arguments for Shelly1
 
