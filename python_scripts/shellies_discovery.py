@@ -66,6 +66,7 @@ CONF_DEVELOP = "develop"
 CONF_DISCOVERY_PREFIX = "discovery_prefix"
 CONF_FW_VER = "fw_ver"
 CONF_ID = "id"
+CONF_IGNORED_DEVICES = "ignored_devices"
 CONF_MAC = "mac"
 CONF_QOS = "qos"
 
@@ -106,10 +107,14 @@ off_delay = 3
 retain = True
 qos = 0
 roller_mode = False
+ignored = []
 
 id = data.get(CONF_ID)
 mac = data.get(CONF_MAC)
 fw_ver = data.get(CONF_FW_VER)
+if data.get(CONF_IGNORED_DEVICES):
+    ignored = [element.lower() for element in data.get(CONF_IGNORED_DEVICES)]
+logger.error(ignored)
 
 if not id:
     raise ValueError(f"{id} is wrong id argument")
@@ -442,6 +447,8 @@ for roller_id in range(0, rollers):
         )
     else:
         payload = ""
+    if id.lower() in ignored:
+        payload = ""
     service_data = {
         "topic": config_topic,
         "payload": payload,
@@ -487,6 +494,8 @@ for relay_id in range(0, relays):
             )
         else:
             payload = ""
+        if id.lower() in ignored:
+            payload = ""
         service_data = {
             "topic": config_topic,
             "payload": payload,
@@ -525,6 +534,8 @@ for relay_id in range(0, relays):
                     '"~":"' + default_topic + '"}'
                 )
             else:
+                payload = ""
+            if id.lower() in ignored:
                 payload = ""
             service_data = {
                 "topic": config_topic,
@@ -565,6 +576,8 @@ for relay_id in range(0, relays):
                 '"~":"' + default_topic + '"}'
             )
         else:
+            payload = ""
+        if id.lower() in ignored:
             payload = ""
         service_data = {
             "topic": config_topic,
@@ -627,6 +640,8 @@ for relay_id in range(0, relays):
                 )
         else:
             payload = ""
+        if id.lower() in ignored:
+            payload = ""
         service_data = {
             "topic": config_topic,
             "payload": payload,
@@ -687,6 +702,8 @@ for sensor_id in range(0, len(sensors)):
             '"mf":"' + ATTR_MANUFACTURER + '"},'
             '"~":"' + default_topic + '"}'
         )
+    if id.lower() in ignored:
+        payload = ""
     service_data = {
         "topic": config_topic,
         "payload": payload,
@@ -732,6 +749,8 @@ for sensor_id in range(0, ext_sensors):
                 '"~":"' + default_topic + '"}'
             )
         else:
+            payload = ""
+        if id.lower() in ignored:
             payload = ""
         service_data = {
             "topic": config_topic,
@@ -812,6 +831,8 @@ for bin_sensor_id in range(0, len(bin_sensors)):
             '"mf":"' + ATTR_MANUFACTURER + '"},'
             '"~":"' + default_topic + '"}'
         )
+    if id.lower() in ignored:
+        payload = ""
     service_data = {
         "topic": config_topic,
         "payload": payload,
@@ -893,6 +914,8 @@ for light_id in range(0, rgbw_lights):
         )
     else:
         payload = ""
+    if id.lower() in ignored:
+        payload = ""
     service_data = {
         "topic": config_topic,
         "payload": payload,
@@ -928,6 +951,8 @@ for light_id in range(0, rgbw_lights):
                 '"~":"' + default_topic + '"}'
             )
         else:
+            payload = ""
+        if id.lower() in ignored:
             payload = ""
         service_data = {
             "topic": config_topic,
@@ -966,6 +991,8 @@ for light_id in range(0, rgbw_lights):
                 '"~":"' + default_topic + '"}'
             )
         else:
+            payload = ""
+        if id.lower() in ignored:
             payload = ""
         service_data = {
             "topic": config_topic,
@@ -1065,6 +1092,8 @@ for light_id in range(0, white_lights):
         )
     else:
         payload = ""
+    if id.lower() in ignored:
+        payload = ""
     service_data = {
         "topic": config_topic,
         "payload": payload,
@@ -1100,6 +1129,8 @@ for light_id in range(0, white_lights):
                 '"~":"' + default_topic + '"}'
             )
         else:
+            payload = ""
+        if id.lower() in ignored:
             payload = ""
         service_data = {
             "topic": config_topic,
@@ -1141,6 +1172,8 @@ for light_id in range(0, white_lights):
                 '"~":"' + default_topic + '"}'
             )
         else:
+            payload = ""
+        if id.lower() in ignored:
             payload = ""
         service_data = {
             "topic": config_topic,
@@ -1200,6 +1233,8 @@ for meter_id in range(0, meters):
                 '"mf":"' + ATTR_MANUFACTURER + '"},'
                 '"~":"' + default_topic + '"}'
             )
+        if id.lower() in ignored:
+            payload = ""
         service_data = {
             "topic": config_topic,
             "payload": payload,
