@@ -978,7 +978,10 @@ for light_id in range(0, rgbw_lights):
             state_topic = f"~color/{light_id}/status"
             unique_id = f"{id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
         if config_light == ATTR_RGBW:
-            if lights_bin_sensors_tpls[bin_sensor_id] and lights_bin_sensors_classes[bin_sensor_id]:
+            if (
+                lights_bin_sensors_tpls[bin_sensor_id]
+                and lights_bin_sensors_classes[bin_sensor_id]
+            ):
                 payload = (
                     '{"name":"' + sensor_name + '",'
                     '"stat_t":"' + state_topic + '",'
@@ -1018,7 +1021,9 @@ for light_id in range(0, rgbw_lights):
                     '{"name":"' + sensor_name + '",'
                     '"stat_t":"' + state_topic + '",'
                     '"pl_on":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_ON] + '",'
-                    '"pl_off":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_OFF] + '",'
+                    '"pl_off":"'
+                    + lights_bin_sensors_pl[bin_sensor_id][STATE_OFF]
+                    + '",'
                     '"avty_t":"' + availability_topic + '",'
                     '"dev_cla":"' + lights_bin_sensors_classes[bin_sensor_id] + '",'
                     '"pl_avail":"true",'
@@ -1037,7 +1042,9 @@ for light_id in range(0, rgbw_lights):
                     '{"name":"' + sensor_name + '",'
                     '"stat_t":"' + state_topic + '",'
                     '"pl_on":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_ON] + '",'
-                    '"pl_off":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_OFF] + '",'
+                    '"pl_off":"'
+                    + lights_bin_sensors_pl[bin_sensor_id][STATE_OFF]
+                    + '",'
                     '"avty_t":"' + availability_topic + '",'
                     '"pl_avail":"true",'
                     '"pl_not_avail":"false",'
@@ -1219,7 +1226,10 @@ for light_id in range(0, white_lights):
             sensor_name = f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
 
             if config_light != ATTR_RGBW:
-                if lights_bin_sensors_tpls[bin_sensor_id] and lights_bin_sensors_classes[bin_sensor_id]:
+                if (
+                    lights_bin_sensors_tpls[bin_sensor_id]
+                    and lights_bin_sensors_classes[bin_sensor_id]
+                ):
                     payload = (
                         '{"name":"' + sensor_name + '",'
                         '"stat_t":"' + state_topic + '",'
@@ -1258,8 +1268,12 @@ for light_id in range(0, white_lights):
                     payload = (
                         '{"name":"' + sensor_name + '",'
                         '"stat_t":"' + state_topic + '",'
-                        '"pl_on":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_ON] + '",'
-                        '"pl_off":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_OFF] + '",'
+                        '"pl_on":"'
+                        + lights_bin_sensors_pl[bin_sensor_id][STATE_ON]
+                        + '",'
+                        '"pl_off":"'
+                        + lights_bin_sensors_pl[bin_sensor_id][STATE_OFF]
+                        + '",'
                         '"dev_cla":"' + lights_bin_sensors_classes[bin_sensor_id] + '",'
                         '"avty_t":"' + availability_topic + '",'
                         '"pl_avail":"true",'
@@ -1277,8 +1291,12 @@ for light_id in range(0, white_lights):
                     payload = (
                         '{"name":"' + sensor_name + '",'
                         '"stat_t":"' + state_topic + '",'
-                        '"pl_on":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_ON] + '",'
-                        '"pl_off":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_OFF] + '",'
+                        '"pl_on":"'
+                        + lights_bin_sensors_pl[bin_sensor_id][STATE_ON]
+                        + '",'
+                        '"pl_off":"'
+                        + lights_bin_sensors_pl[bin_sensor_id][STATE_OFF]
+                        + '",'
                         '"avty_t":"' + availability_topic + '",'
                         '"pl_avail":"true",'
                         '"pl_not_avail":"false",'
