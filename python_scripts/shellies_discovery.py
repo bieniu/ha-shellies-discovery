@@ -1168,7 +1168,11 @@ for light_id in range(0, white_lights):
             state_topic = f"~light/{light_id}/{lights_sensors[sensor_id]}"
         else:
             state_topic = f"~white/{light_id}/status"
-        if config_light != ATTR_RGBW or model == ATTR_MODEL_SHELLYDIMMER or model == ATTR_MODEL_SHELLYDUO:
+        if (
+            config_light != ATTR_RGBW
+            or model == ATTR_MODEL_SHELLYDIMMER
+            or model == ATTR_MODEL_SHELLYDUO
+        ):
             payload = (
                 '{"name":"' + sensor_name + '",'
                 '"stat_t":"' + state_topic + '",'
