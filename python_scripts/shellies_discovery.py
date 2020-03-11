@@ -393,10 +393,46 @@ if id.rsplit("-", 1)[0] == "shellyem3":
     model = ATTR_MODEL_SHELLY_3EM
     relays = 1
     meters = 3
-    meters_sensors = [ATTR_CURRENT, ATTR_POWER, ATTR_POWER_FACTOR, ATTR_VOLTAGE]
-    meters_sensors_units = [UNIT_AMPERE, UNIT_WATT, UNIT_PERCENT, UNIT_VOLT]
-    meters_sensors_classes = [None, ATTR_POWER, None, None]
-    meters_sensors_tpls = [TPL_CURRENT, TPL_POWER, TPL_POWER_FACTOR, TPL_VOLTAGE]
+    meters_sensors = [
+        ATTR_CURRENT,
+        ATTR_POWER,
+        ATTR_POWER_FACTOR,
+        ATTR_VOLTAGE,
+        ATTR_ENERGY,
+        ATTR_RETURNED_ENERGY,
+        ATTR_TOTAL,
+        ATTR_TOTAL_RETURNED,
+    ]
+    meters_sensors_units = [
+        UNIT_AMPERE,
+        UNIT_WATT,
+        UNIT_PERCENT,
+        UNIT_VOLT,
+        UNIT_KWH,
+        UNIT_KWH,
+        UNIT_KWH,
+        UNIT_KWH,
+    ]
+    meters_sensors_classes = [
+        None,
+        ATTR_POWER,
+        None,
+        None,
+        ATTR_POWER,
+        ATTR_POWER,
+        ATTR_POWER,
+        ATTR_POWER,
+    ]
+    meters_sensors_tpls = [
+        TPL_CURRENT,
+        TPL_POWER,
+        TPL_POWER_FACTOR,
+        TPL_VOLTAGE,
+        TPL_ENERGY_WMIN,
+        TPL_ENERGY_WMIN,
+        TPL_ENERGY_WH,
+        TPL_ENERGY_WH,
+    ]
 
 if id.rsplit("-", 1)[0] == "shellyflood":
     model = ATTR_MODEL_SHELLYFLOOD
