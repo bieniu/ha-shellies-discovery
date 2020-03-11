@@ -1110,7 +1110,9 @@ for light_id in range(0, white_lights):
 
     # white light's binary sensors
     for bin_sensor_id in range(0, len(lights_bin_sensors)):
-        if (lights_bin_sensors[bin_sensor_id] == ATTR_INPUT and light_id == 0) or lights_bin_sensors[bin_sensor_id] != ATTR_INPUT:
+        if (
+            lights_bin_sensors[bin_sensor_id] == ATTR_INPUT and light_id == 0
+        ) or lights_bin_sensors[bin_sensor_id] != ATTR_INPUT:
             if lights_bin_sensors[bin_sensor_id] == ATTR_INPUT:
                 unique_id = f"{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
                 config_topic = f"{disc_prefix}/binary_sensor/{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
@@ -1119,9 +1121,7 @@ for light_id in range(0, white_lights):
                 unique_id = f"{id}-white-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
                 config_topic = f"{disc_prefix}/binary_sensor/{id}-white-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
                 state_topic = f"~white/{light_id}/status"
-            sensor_name = (
-                f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
-            )
+            sensor_name = f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
 
             if config_light != ATTR_RGBW:
                 payload = (
