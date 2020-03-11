@@ -46,6 +46,7 @@ logger:
 - Home Assistant updated to current version
 - enabled MQTT in Shellies configuration
 - default topics configuration in Shellies
+- default Shellies IDs
 
 ## Minimal configuration
 
