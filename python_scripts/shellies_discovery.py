@@ -27,7 +27,6 @@ ATTR_BATTERY = "battery"
 ATTR_CHARGER = "charger"
 ATTR_COVER = "cover"
 ATTR_CURRENT = "current"
-ATTR_EMPTY_VALUE = ""
 ATTR_ENERGY = "energy"
 ATTR_FAN = "fan"
 ATTR_FLOOD = "flood"
@@ -307,9 +306,9 @@ if id.rsplit("-", 1)[0] == "shellyrgbw2":
     lights_sensors_units = [UNIT_WATT]
     lights_sensors_tpls = ["{{value_json.power|float|round(1)}}"]
     lights_bin_sensors = [ATTR_OVERPOWER, ATTR_INPUT]
-    lights_bin_sensors_classes = [ATTR_POWER, ATTR_EMPTY_VALUE]
-    lights_bin_sensors_tpls = [TPL_OVERPOWER, ATTR_EMPTY_VALUE]
-    lights_bin_sensors_pl = [PL_TRUE_FALSE, PL_1_0]
+    lights_bin_sensors_classes = [ATTR_POWER, None]
+    lights_bin_sensors_tpls = [TPL_OVERPOWER, None]
+    lights_bin_sensors_pl = [None, PL_1_0]
 
 if id.rsplit("-", 1)[0] == "shellydimmer":
     model = ATTR_MODEL_SHELLYDIMMER
@@ -979,22 +978,78 @@ for light_id in range(0, rgbw_lights):
             state_topic = f"~color/{light_id}/status"
             unique_id = f"{id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
         if config_light == ATTR_RGBW:
-            payload = (
-                '{"name":"' + sensor_name + '",'
-                '"stat_t":"' + state_topic + '",'
-                '"val_tpl":"' + lights_bin_sensors_tpls[bin_sensor_id] + '",'
-                '"avty_t":"' + availability_topic + '",'
-                '"pl_avail":"true",'
-                '"pl_not_avail":"false",'
-                '"uniq_id":"' + unique_id + '",'
-                '"qos":"' + str(qos) + '",'
-                '"dev": {"ids": ["' + mac + '"],'
-                '"name":"' + device_name + '",'
-                '"mdl":"' + model + '",'
-                '"sw":"' + fw_ver + '",'
-                '"mf":"' + ATTR_MANUFACTURER + '"},'
-                '"~":"' + default_topic + '"}'
-            )
+            if lights_bin_sensors_tpls[bin_sensor_id] and lights_bin_sensors_classes[bin_sensor_id]:
+                payload = (
+                    '{"name":"' + sensor_name + '",'
+                    '"stat_t":"' + state_topic + '",'
+                    '"val_tpl":"' + lights_bin_sensors_tpls[bin_sensor_id] + '",'
+                    '"avty_t":"' + availability_topic + '",'
+                    '"dev_cla":"' + lights_bin_sensors_classes[bin_sensor_id] + '",'
+                    '"pl_avail":"true",'
+                    '"pl_not_avail":"false",'
+                    '"uniq_id":"' + unique_id + '",'
+                    '"qos":"' + str(qos) + '",'
+                    '"dev": {"ids": ["' + mac + '"],'
+                    '"name":"' + device_name + '",'
+                    '"mdl":"' + model + '",'
+                    '"sw":"' + fw_ver + '",'
+                    '"mf":"' + ATTR_MANUFACTURER + '"},'
+                    '"~":"' + default_topic + '"}'
+                )
+            elif lights_bin_sensors_tpls[bin_sensor_id]:
+                payload = (
+                    '{"name":"' + sensor_name + '",'
+                    '"stat_t":"' + state_topic + '",'
+                    '"val_tpl":"' + lights_bin_sensors_tpls[bin_sensor_id] + '",'
+                    '"avty_t":"' + availability_topic + '",'
+                    '"pl_avail":"true",'
+                    '"pl_not_avail":"false",'
+                    '"uniq_id":"' + unique_id + '",'
+                    '"qos":"' + str(qos) + '",'
+                    '"dev": {"ids": ["' + mac + '"],'
+                    '"name":"' + device_name + '",'
+                    '"mdl":"' + model + '",'
+                    '"sw":"' + fw_ver + '",'
+                    '"mf":"' + ATTR_MANUFACTURER + '"},'
+                    '"~":"' + default_topic + '"}'
+                )
+            elif lights_bin_sensors_classes[bin_sensor_id]:
+                payload = (
+                    '{"name":"' + sensor_name + '",'
+                    '"stat_t":"' + state_topic + '",'
+                    '"pl_on":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_ON] + '",'
+                    '"pl_off":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_OFF] + '",'
+                    '"avty_t":"' + availability_topic + '",'
+                    '"dev_cla":"' + lights_bin_sensors_classes[bin_sensor_id] + '",'
+                    '"pl_avail":"true",'
+                    '"pl_not_avail":"false",'
+                    '"uniq_id":"' + unique_id + '",'
+                    '"qos":"' + str(qos) + '",'
+                    '"dev": {"ids": ["' + mac + '"],'
+                    '"name":"' + device_name + '",'
+                    '"mdl":"' + model + '",'
+                    '"sw":"' + fw_ver + '",'
+                    '"mf":"' + ATTR_MANUFACTURER + '"},'
+                    '"~":"' + default_topic + '"}'
+                )
+            else:
+                payload = (
+                    '{"name":"' + sensor_name + '",'
+                    '"stat_t":"' + state_topic + '",'
+                    '"pl_on":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_ON] + '",'
+                    '"pl_off":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_OFF] + '",'
+                    '"avty_t":"' + availability_topic + '",'
+                    '"pl_avail":"true",'
+                    '"pl_not_avail":"false",'
+                    '"uniq_id":"' + unique_id + '",'
+                    '"qos":"' + str(qos) + '",'
+                    '"dev": {"ids": ["' + mac + '"],'
+                    '"name":"' + device_name + '",'
+                    '"mdl":"' + model + '",'
+                    '"sw":"' + fw_ver + '",'
+                    '"mf":"' + ATTR_MANUFACTURER + '"},'
+                    '"~":"' + default_topic + '"}'
+                )
         else:
             payload = ""
         if id.lower() in ignored:
@@ -1164,22 +1219,78 @@ for light_id in range(0, white_lights):
             sensor_name = f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
 
             if config_light != ATTR_RGBW:
-                payload = (
-                    '{"name":"' + sensor_name + '",'
-                    '"stat_t":"' + state_topic + '",'
-                    '"val_tpl":"' + lights_bin_sensors_tpls[bin_sensor_id] + '",'
-                    '"avty_t":"' + availability_topic + '",'
-                    '"pl_avail":"true",'
-                    '"pl_not_avail":"false",'
-                    '"uniq_id":"' + unique_id + '",'
-                    '"qos":"' + str(qos) + '",'
-                    '"dev": {"ids": ["' + mac + '"],'
-                    '"name":"' + device_name + '",'
-                    '"mdl":"' + model + '",'
-                    '"sw":"' + fw_ver + '",'
-                    '"mf":"' + ATTR_MANUFACTURER + '"},'
-                    '"~":"' + default_topic + '"}'
-                )
+                if lights_bin_sensors_tpls[bin_sensor_id] and lights_bin_sensors_classes[bin_sensor_id]:
+                    payload = (
+                        '{"name":"' + sensor_name + '",'
+                        '"stat_t":"' + state_topic + '",'
+                        '"val_tpl":"' + lights_bin_sensors_tpls[bin_sensor_id] + '",'
+                        '"dev_cla":"' + lights_bin_sensors_classes[bin_sensor_id] + '",'
+                        '"avty_t":"' + availability_topic + '",'
+                        '"pl_avail":"true",'
+                        '"pl_not_avail":"false",'
+                        '"uniq_id":"' + unique_id + '",'
+                        '"qos":"' + str(qos) + '",'
+                        '"dev": {"ids": ["' + mac + '"],'
+                        '"name":"' + device_name + '",'
+                        '"mdl":"' + model + '",'
+                        '"sw":"' + fw_ver + '",'
+                        '"mf":"' + ATTR_MANUFACTURER + '"},'
+                        '"~":"' + default_topic + '"}'
+                    )
+                elif lights_bin_sensors_tpls[bin_sensor_id]:
+                    payload = (
+                        '{"name":"' + sensor_name + '",'
+                        '"stat_t":"' + state_topic + '",'
+                        '"val_tpl":"' + lights_bin_sensors_tpls[bin_sensor_id] + '",'
+                        '"avty_t":"' + availability_topic + '",'
+                        '"pl_avail":"true",'
+                        '"pl_not_avail":"false",'
+                        '"uniq_id":"' + unique_id + '",'
+                        '"qos":"' + str(qos) + '",'
+                        '"dev": {"ids": ["' + mac + '"],'
+                        '"name":"' + device_name + '",'
+                        '"mdl":"' + model + '",'
+                        '"sw":"' + fw_ver + '",'
+                        '"mf":"' + ATTR_MANUFACTURER + '"},'
+                        '"~":"' + default_topic + '"}'
+                    )
+                elif lights_bin_sensors_classes[bin_sensor_id]:
+                    payload = (
+                        '{"name":"' + sensor_name + '",'
+                        '"stat_t":"' + state_topic + '",'
+                        '"pl_on":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_ON] + '",'
+                        '"pl_off":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_OFF] + '",'
+                        '"dev_cla":"' + lights_bin_sensors_classes[bin_sensor_id] + '",'
+                        '"avty_t":"' + availability_topic + '",'
+                        '"pl_avail":"true",'
+                        '"pl_not_avail":"false",'
+                        '"uniq_id":"' + unique_id + '",'
+                        '"qos":"' + str(qos) + '",'
+                        '"dev": {"ids": ["' + mac + '"],'
+                        '"name":"' + device_name + '",'
+                        '"mdl":"' + model + '",'
+                        '"sw":"' + fw_ver + '",'
+                        '"mf":"' + ATTR_MANUFACTURER + '"},'
+                        '"~":"' + default_topic + '"}'
+                    )
+                else:
+                    payload = (
+                        '{"name":"' + sensor_name + '",'
+                        '"stat_t":"' + state_topic + '",'
+                        '"pl_on":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_ON] + '",'
+                        '"pl_off":"' + lights_bin_sensors_pl[bin_sensor_id][STATE_OFF] + '",'
+                        '"avty_t":"' + availability_topic + '",'
+                        '"pl_avail":"true",'
+                        '"pl_not_avail":"false",'
+                        '"uniq_id":"' + unique_id + '",'
+                        '"qos":"' + str(qos) + '",'
+                        '"dev": {"ids": ["' + mac + '"],'
+                        '"name":"' + device_name + '",'
+                        '"mdl":"' + model + '",'
+                        '"sw":"' + fw_ver + '",'
+                        '"mf":"' + ATTR_MANUFACTURER + '"},'
+                        '"~":"' + default_topic + '"}'
+                    )
             else:
                 payload = ""
             if id.lower() in ignored:
