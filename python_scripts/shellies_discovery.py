@@ -89,7 +89,7 @@ TPL_OVERPOWER = "{% if value_json.overpower == true %}ON{% else %}OFF{% endif %}
 TPL_POWER = "{{value|float|round(1)}}"
 TPL_POWER_FACTOR = "{{value|float*100|round}}"
 TPL_TEMPERATURE = "{{value|float|round(1)}}"
-TPL_TEMPERATURE_EXT = "{{value[1:]|float|round(1)}}"
+TPL_TEMPERATURE_EXT = "{{value|replace(":","")|float|round(1)}}"
 TPL_VOLTAGE = "{{value|float|round(1)}}"
 
 UNIT_AMPERE = "A"
