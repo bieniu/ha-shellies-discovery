@@ -17,3 +17,8 @@ shellies/shellyem3-1234567890AB/emeter/2/power 154.38
 shellies/shellyem3-1234567890AB/emeter/2/pf 0.86
 shellies/shellyem3-1234567890AB/emeter/2/current 0.78
 shellies/shellyem3-1234567890AB/emeter/2/voltage 228.41
+
+shellies/shellyem3-1234567890AB/emeter/1/energy 34.24
+shellies/shellyem3-1234567890AB/emeter/1/returned_energy 12.11
+shellies/shellyem3-1234567890AB/emeter/1/total 12.34
+shellies/shellyem3-1234567890AB/emeter/1/total_returned 34.25
