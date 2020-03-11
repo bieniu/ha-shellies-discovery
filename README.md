@@ -48,6 +48,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 To debug the script add this to your `logger` configuration:
 
 ```yaml
+# configuration.yaml file
 logger:
   logs:
     homeassistant.components.python_script: debug
@@ -66,76 +67,78 @@ logger:
 ## Minimal configuration
 
 ```yaml
+# configuration.yaml file
 python_script:
 
-automation:
-  - id: shellies_announce
-    alias: 'Shellies Announce'
-    trigger:
-      - platform: homeassistant
-        event: start
-    action:
-      service: mqtt.publish
-      data:
-        topic: shellies/command
-        payload: announce
+# automations.yaml file
+- id: shellies_announce
+  alias: 'Shellies Announce'
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    service: mqtt.publish
+    data:
+      topic: shellies/command
+      payload: announce
 
-  - id: 'shellies_discovery'
-    alias: 'Shellies Discovery'
-    trigger:
-      - platform: mqtt
-        topic: shellies/announce
-    action:
-      service: python_script.shellies_discovery
-      data_template:
-        id: '{{ trigger.payload_json.id }}'
-        mac: '{{ trigger.payload_json.mac }}'
-        fw_ver: '{{ trigger.payload_json.fw_ver }}'
+- id: 'shellies_discovery'
+  alias: 'Shellies Discovery'
+  trigger:
+    - platform: mqtt
+      topic: shellies/announce
+  action:
+    service: python_script.shellies_discovery
+    data_template:
+      id: '{{ trigger.payload_json.id }}'
+      mac: '{{ trigger.payload_json.mac }}'
+      fw_ver: '{{ trigger.payload_json.fw_ver }}'
 ```
 
 ## Custom configuration example
 
 ```yaml
+# configuration.yaml file
 python_script:
 
-automation:
-  - id: shellies_announce
-    alias: 'Shellies Announce'
-    trigger:
-      - platform: homeassistant
-        event: start
-    action:
-      service: mqtt.publish
-      data:
-        topic: shellies/command
-        payload: announce
+# automations.yaml file
+- id: shellies_announce
+  alias: 'Shellies Announce'
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    service: mqtt.publish
+    data:
+      topic: shellies/command
+      payload: announce
 
-  - id: 'shellies_discovery'
-    alias: 'Shellies Discovery'
-    trigger:
-      - platform: mqtt
-        topic: shellies/announce
-    action:
-      service: python_script.shellies_discovery
-      data_template:
-        id: '{{ trigger.payload_json.id }}'
-        mac: '{{ trigger.payload_json.mac }}'
-        fw_ver: '{{ trigger.payload_json.fw_ver }}'
-        discovery_prefix: 'hass'
-        qos: 2
-        shelly1-001122-relay-0: 'light'
-        shellyswitch-9900AA-relay-0: 'light'
-        shellyswitch-9900AA-relay-1: 'fan'
-        shellyswitch25-334411-relay-1: 'light'
-        shellyswitch-334455: 'cover'
-        shellyrgbw2-AABB22: 'white'
-        shellyht-2200AA: 'ac_power'
-        shelly1-001122-ext-0: 'temperature'
-        shelly1-001122-ext-1: 'temperature'
-        shelly1-001122-ext-2: 'temperature'
-        ignored_devices:
-          - shelly1-DD0011
-          - shellyem-EECC22
+- id: 'shellies_discovery'
+  alias: 'Shellies Discovery'
+  trigger:
+    - platform: mqtt
+      topic: shellies/announce
+  action:
+    service: python_script.shellies_discovery
+    data_template:
+      id: '{{ trigger.payload_json.id }}'
+      mac: '{{ trigger.payload_json.mac }}'
+      fw_ver: '{{ trigger.payload_json.fw_ver }}'
+      discovery_prefix: 'hass'
+      qos: 2
+      shelly1-001122-relay-0: 'light'
+      shellyswitch-9900AA-relay-0: 'light'
+      shellyswitch-9900AA-relay-1: 'fan'
+      shellyswitch25-334411-relay-1: 'light'
+      shellyswitch-334455: 'cover'
+      shellyrgbw2-AABB22: 'white'
+      shellyht-2200AA: 'ac_power'
+      shelly1-001122-ext-0: 'temperature'
+      shelly1-001122-ext-1: 'temperature'
+      shelly1-001122-ext-2: 'temperature'
+      ignored_devices:
+        - shelly1-DD0011
+        - shellyem-EECC22
 ```
 
 ## Script arguments
