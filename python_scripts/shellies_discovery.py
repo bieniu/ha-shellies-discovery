@@ -339,6 +339,10 @@ if id.rsplit("-", 1)[0] == "shellybulb":
 if id.rsplit("-", 1)[0] == "ShellyBulbDuo":
     model = ATTR_MODEL_SHELLYDUO
     white_lights = 1
+    lights_sensors = [ATTR_ENERGY, ATTR_POWER]
+    lights_sensors_units = [UNIT_KWH, UNIT_WATT]
+    lights_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
 
 if id.rsplit("-", 1)[0] == "shellyem":
     model = ATTR_MODEL_SHELLY_EM
@@ -1160,11 +1164,11 @@ for light_id in range(0, white_lights):
         sensor_name = (
             f"{device_name} {lights_sensors[sensor_id].capitalize()} {light_id}"
         )
-        if model == ATTR_MODEL_SHELLYDIMMER:
+        if model == ATTR_MODEL_SHELLYDIMMER or model == ATTR_MODEL_SHELLYDUO:
             state_topic = f"~light/{light_id}/{lights_sensors[sensor_id]}"
         else:
             state_topic = f"~white/{light_id}/status"
-        if config_light != ATTR_RGBW or model == ATTR_MODEL_SHELLYDIMMER:
+        if config_light != ATTR_RGBW or model == ATTR_MODEL_SHELLYDIMMER or model == ATTR_MODEL_SHELLYDUO:
             payload = (
                 '{"name":"' + sensor_name + '",'
                 '"stat_t":"' + state_topic + '",'

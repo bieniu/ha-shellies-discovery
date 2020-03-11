@@ -5,6 +5,9 @@ shellies/ShellyBulbDuo-123456/light/0/command off
 
 shellies/ShellyBulbDuo-123456/light/0/set {"brightness": 30, "white": 45, "temp": 2738, "turn": "on"}
 
+shellies/ShellyBulbDuo-123456/light/0/power 16.62
+shellies/ShellyBulbDuo-123456/light/0/energy 180522
+
 brightness: 1-100 (optional)
 white: 1-100 (optional)
 temp: 2700-6500
