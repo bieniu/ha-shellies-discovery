@@ -1079,7 +1079,7 @@ for light_id in range(0, white_lights):
             '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
             '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
             '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"color_temp_template":"{{[([((1000000/(value_json.temp|int))|round(0,\\"floor\\")),370]|min),153]|max}}",'
+            '"color_temp_template":"{{((1000000/(value_json.temp|int))|round(0,\\"floor\\"))}}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
             '"dev": {"ids": ["' + mac + '"],'
