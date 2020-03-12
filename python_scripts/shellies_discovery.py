@@ -966,17 +966,33 @@ for light_id in range(0, rgbw_lights):
 
     # color light's binary sensors
     for bin_sensor_id in range(0, len(lights_bin_sensors)):
+
+        # fix for RGBW2 input binary sensor issue
+        if lights_bin_sensors[bin_sensor_id] == ATTR_INPUT and light_id == 0:
+            unique_id = f"{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
+            config_topic = f"{disc_prefix}/binary_sensor/{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
+            state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
+            sensor_name = f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
+            payload = ""
+            service_data = {
+                "topic": config_topic,
+                "payload": payload,
+                "retain": retain,
+                "qos": qos,
+            }
+            logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
+            hass.services.call("mqtt", "publish", service_data, False)
+        # end of fix
+
         sensor_name = (
             f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
         )
+        config_topic = f"{disc_prefix}/binary_sensor/{id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
+        unique_id = f"{id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
         if lights_bin_sensors[bin_sensor_id] == ATTR_INPUT:
-            config_topic = f"{disc_prefix}/binary_sensor/{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
             state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
-            unique_id = f"{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
         else:
-            config_topic = f"{disc_prefix}/binary_sensor/{id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
             state_topic = f"~color/{light_id}/status"
-            unique_id = f"{id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
         if config_light == ATTR_RGBW:
             if (
                 lights_bin_sensors_tpls[bin_sensor_id]
@@ -1212,16 +1228,32 @@ for light_id in range(0, white_lights):
 
     # white light's binary sensors
     for bin_sensor_id in range(0, len(lights_bin_sensors)):
+
+        # fix for RGBW2 input binary sensor issue
+        if lights_bin_sensors[bin_sensor_id] == ATTR_INPUT and light_id == 0:
+            unique_id = f"{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
+            config_topic = f"{disc_prefix}/binary_sensor/{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
+            state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
+            sensor_name = f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
+            payload = ""
+            service_data = {
+                "topic": config_topic,
+                "payload": payload,
+                "retain": retain,
+                "qos": qos,
+            }
+            logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
+            hass.services.call("mqtt", "publish", service_data, False)
+        # end of fix
+
         if (
             lights_bin_sensors[bin_sensor_id] == ATTR_INPUT and light_id == 0
         ) or lights_bin_sensors[bin_sensor_id] != ATTR_INPUT:
+            unique_id = f"{id}-white-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
+            config_topic = f"{disc_prefix}/binary_sensor/{id}-white-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
             if lights_bin_sensors[bin_sensor_id] == ATTR_INPUT:
-                unique_id = f"{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
-                config_topic = f"{disc_prefix}/binary_sensor/{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
                 state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
             else:
-                unique_id = f"{id}-white-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
-                config_topic = f"{disc_prefix}/binary_sensor/{id}-white-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
                 state_topic = f"~white/{light_id}/status"
             sensor_name = f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
 
