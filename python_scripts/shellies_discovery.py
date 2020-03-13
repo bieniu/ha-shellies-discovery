@@ -107,13 +107,11 @@ off_delay = 3
 retain = True
 qos = 0
 roller_mode = False
-ignored = []
 
 id = data.get(CONF_ID)
 mac = data.get(CONF_MAC)
 fw_ver = data.get(CONF_FW_VER)
-if data.get(CONF_IGNORED_DEVICES):
-    ignored = [element.lower() for element in data.get(CONF_IGNORED_DEVICES)]
+ignored = [element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])]
 
 if not id:
     raise ValueError(f"{id} is wrong id argument")
