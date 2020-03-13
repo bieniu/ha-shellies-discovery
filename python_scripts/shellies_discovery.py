@@ -692,9 +692,8 @@ for sensor_id in range(0, len(sensors)):
         state_topic = f"~{sensors[sensor_id]}"
     else:
         state_topic = f"~sensor/{sensors[sensor_id]}"
-    if data.get(id) or data.get(id.lower()):
-        if (data.get(id) or data.get(id.lower())) == ATTR_AC_POWER:
-            expire_after = 7200
+    if data.get(id, data.get(id.lower())) == ATTR_AC_POWER:
+        expire_after = 7200
     if battery_powered:
         payload = (
             '{"name":"' + sensor_name + '",'
