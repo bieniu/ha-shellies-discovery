@@ -143,7 +143,6 @@ relays = 0
 rollers = 0
 meters = 0
 relay_components = [ATTR_SWITCH, ATTR_LIGHT, ATTR_FAN]
-config_light = ATTR_RGBW
 relays_sensors = []
 relays_sensors_units = []
 relays_sensors_tpls = []
@@ -882,10 +881,7 @@ for light_id in range(0, rgbw_lights):
     availability_topic = "~online"
     unique_id = f"{id}-light-{light_id}"
     config_topic = f"{disc_prefix}/light/{id}-{light_id}/config"
-    if data.get(id):
-        config_light = data.get(id)
-    elif data.get(id.lower()):
-        config_light = data.get(id.lower())
+    config_light = data.get(id, data.get(id.lower(), ATTR_RGBW))
     if config_light == ATTR_RGBW and model == ATTR_MODEL_SHELLYRGBW2:
         payload = (
             '{"schema":"template",'
@@ -1133,10 +1129,7 @@ for light_id in range(0, white_lights):
         unique_id = f"{id}-light-white-{light_id}"
         config_topic = f"{disc_prefix}/light/{id}-white-{light_id}/config"
     availability_topic = "~online"
-    if data.get(id):
-        config_light = data.get(id)
-    elif data.get(id.lower()):
-        config_light = data.get(id.lower())
+    config_light = data.get(id, data.get(id.lower(), ATTR_RGBW))
     if config_light == ATTR_WHITE and model == ATTR_MODEL_SHELLYRGBW2:
         payload = (
             '{"schema":"template",'
