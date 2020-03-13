@@ -745,10 +745,7 @@ for sensor_id in range(0, len(sensors)):
 for sensor_id in range(0, ext_sensors):
     device_name = f"{model} {id.split('-')[-1]}"
     unique_id = f"{id}-ext-{sensor_id}"
-    if data.get(unique_id):
-        ext_sensor_type = data.get(unique_id)
-    elif data.get(unique_id.lower()):
-        ext_sensor_type = data.get(unique_id.lower())
+    ext_sensor_type = data.get(unique_id, data.get(unique_id.lower()))
     if ext_sensor_type:
         config_topic = f"{disc_prefix}/sensor/{id}-ext-{sensor_id}/config"
         default_topic = f"shellies/{id}/"
