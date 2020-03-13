@@ -143,7 +143,6 @@ relays = 0
 rollers = 0
 meters = 0
 relay_components = [ATTR_SWITCH, ATTR_LIGHT, ATTR_FAN]
-config_component = ATTR_SWITCH
 config_light = ATTR_RGBW
 relays_sensors = []
 relays_sensors_units = []
@@ -453,10 +452,7 @@ for roller_id in range(0, rollers):
     set_position_topic = f"{state_topic}/command/pos"
     availability_topic = "~online"
     unique_id = f"{id}-roller-{roller_id}"
-    if data.get(id):
-        config_component = data.get(id)
-    elif data.get(id.lower()):
-        config_component = data.get(id.lower())
+    config_component = data.get(id, data.get(id.lower()))
     component = ATTR_COVER
     config_topic = f"{disc_prefix}/{component}/{id}-roller-{roller_id}/config"
     if config_component == component:
@@ -504,10 +500,7 @@ for relay_id in range(0, relays):
     command_topic = f"{state_topic}/command"
     availability_topic = "~online"
     unique_id = f"{id}-relay-{relay_id}"
-    if data.get(unique_id):
-        config_component = data.get(unique_id)
-    elif data.get(unique_id.lower()):
-        config_component = data.get(unique_id.lower())
+    config_component = data.get(unique_id, data.get(unique_id.lower(), ATTR_SWITCH))
     for component in relay_components:
         config_topic = f"{disc_prefix}/{component}/{id}-relay-{relay_id}/config"
         if component == config_component and not roller_mode:
