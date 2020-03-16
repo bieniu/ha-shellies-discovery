@@ -322,10 +322,10 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
     ]
     bin_sensors_classes = [ATTR_HEAT, ATTR_POWER, ATTR_PROBLEM, None, None]
     bin_sensors_pl = [PL_1_0, PL_1_0, PL_1_0, PL_1_0, PL_1_0]
-    lights_sensors = [ATTR_POWER]
-    lights_sensors_units = [UNIT_WATT]
-    lights_sensors_classes = [ATTR_POWER]
-    lights_sensors_tpls = [TPL_POWER]
+    lights_sensors = [ATTR_POWER, ATTR_ENERGY]
+    lights_sensors_units = [UNIT_WATT, UNIT_KWH]
+    lights_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
 
 if id.rsplit("-", 1)[0] == "shellybulb":
     model = ATTR_MODEL_SHELLYBULB
