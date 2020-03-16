@@ -39,6 +39,8 @@ ATTR_INPUT_1 = "input/1"
 ATTR_LIGHT = "light"
 ATTR_LOADERROR = "loaderror"
 ATTR_LONGPUSH = "longpush"
+ATTR_LONGPUSH_0 = "longpush/0"
+ATTR_LONGPUSH_1 = "longpush/1"
 ATTR_LUX = "lux"
 ATTR_MOISTURE = "moisture"
 ATTR_MOTION = "motion"
@@ -319,9 +321,11 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
         ATTR_LOADERROR,
         ATTR_INPUT_0,
         ATTR_INPUT_1,
+        ATTR_LONGPUSH_0,
+        ATTR_LONGPUSH_1,
     ]
-    bin_sensors_classes = [ATTR_HEAT, ATTR_POWER, ATTR_PROBLEM, None, None]
-    bin_sensors_pl = [PL_1_0, PL_1_0, PL_1_0, PL_1_0, PL_1_0]
+    bin_sensors_classes = [ATTR_HEAT, ATTR_POWER, ATTR_PROBLEM, None, None, None, None]
+    bin_sensors_pl = [PL_1_0, PL_1_0, PL_1_0, PL_1_0, PL_1_0, PL_1_0, PL_1_0]
     lights_sensors = [ATTR_POWER, ATTR_ENERGY]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH]
     lights_sensors_classes = [ATTR_POWER, ATTR_POWER]
