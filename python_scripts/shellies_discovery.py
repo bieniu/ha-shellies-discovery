@@ -110,6 +110,8 @@ retain = True
 qos = 0
 roller_mode = False
 
+no_battery_sensor = False
+
 id = data.get(CONF_ID)
 mac = data.get(CONF_MAC)
 fw_ver = data.get(CONF_FW_VER)
@@ -697,8 +699,11 @@ for sensor_id in range(0, len(sensors)):
     else:
         state_topic = f"~sensor/{sensors[sensor_id]}"
     if data.get(id, data.get(id.lower())) == ATTR_AC_POWER:
+        no_battery_sensor = True
         expire_after = 7200
-    if battery_powered:
+    if no_battery_sensor and sensors[sensor_id] == ATTR_BATTERY:
+        payload = ""
+    elif battery_powered:
         payload = (
             '{"name":"' + sensor_name + '",'
             '"stat_t":"' + state_topic + '",'
