@@ -66,6 +66,7 @@ ATTR_AC_POWER = "ac_power"
 
 CONF_DEVELOP = "develop"
 CONF_DISCOVERY_PREFIX = "discovery_prefix"
+CONF_FORCE_UPDATE = "force_update"
 CONF_FW_VER = "fw_ver"
 CONF_ID = "id"
 CONF_IGNORED_DEVICES = "ignored_devices"
@@ -73,6 +74,27 @@ CONF_MAC = "mac"
 CONF_QOS = "qos"
 
 DEFAULT_DISC_PREFIX = "homeassistant"
+
+KEY_AVAILABILITY_TOPIC = "avty_t"
+KEY_DEVICE = "dev"
+KEY_DEVICE_CLASS = "dev_cla"
+KEY_EXPIRE_AFTER = "exp_aft"
+KEY_FORCE_UPDATE = "force_update"
+KEY_IDENTIFIERS = "ids"
+KEY_MANUFACTURER = "mf"
+KEY_MODEL = "mdl"
+KEY_NAME = "name"
+KEY_PAYLOAD = "payload"
+KEY_PAYLOAD_AVAILABLE = "pl_avail"
+KEY_PAYLOAD_NOT_AVAILABLE = "pl_not_avail"
+KEY_QOS = "qos"
+KEY_RETAIN = "retain"
+KEY_STATE_TOPIC = "stat_t"
+KEY_SW_VERSION = "sw"
+KEY_TOPIC = "topic"
+KEY_UNIQUE_ID = "uniq_id"
+KEY_UNIT = "unit_of_meas"
+KEY_VALUE_TEMPLATE = "val_tpl"
 
 STATE_OFF = "off"
 STATE_ON = "on"
@@ -103,8 +125,16 @@ UNIT_VAR = "VAR"
 UNIT_VOLT = "V"
 UNIT_WATT = "W"
 
+VALUE_FALSE = "false"
+VALUE_TRUE = "true"
+
 expire_after = 43200
 off_delay = 3
+
+if data.get(CONF_FORCE_UPDATE, False) in [True, False]:
+    force_update = data.get(CONF_FORCE_UPDATE, False)
+else:
+    logger.error("Wrong force_update argument, the default value false was used")
 
 retain = True
 qos = 0
@@ -701,51 +731,38 @@ for sensor_id in range(0, len(sensors)):
     if data.get(id, data.get(id.lower())) == ATTR_AC_POWER:
         no_battery_sensor = True
         expire_after = 7200
+    payload = {
+        KEY_NAME: sensor_name,
+        KEY_STATE_TOPIC: state_topic,
+        KEY_UNIT: sensors_units[sensor_id],
+        KEY_DEVICE_CLASS: sensors_classes[sensor_id],
+        KEY_VALUE_TEMPLATE: sensors_tpls[sensor_id],
+        KEY_EXPIRE_AFTER: expire_after,
+        KEY_FORCE_UPDATE: str(force_update),
+        KEY_UNIQUE_ID: unique_id,
+        KEY_QOS: qos,
+        KEY_DEVICE: {
+            KEY_IDENTIFIERS: [mac],
+            KEY_NAME: device_name,
+            KEY_MODEL: model,
+            KEY_SW_VERSION: fw_ver,
+            KEY_MANUFACTURER: ATTR_MANUFACTURER,
+        },
+        "~": default_topic,
+    }
+    if not battery_powered:
+        payload[KEY_AVAILABILITY_TOPIC] = availability_topic
+        payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
+        payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
     if no_battery_sensor and sensors[sensor_id] == ATTR_BATTERY:
         payload = ""
-    elif battery_powered:
-        payload = (
-            '{"name":"' + sensor_name + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"unit_of_meas":"' + sensors_units[sensor_id] + '",'
-            '"dev_cla":"' + sensors_classes[sensor_id] + '",'
-            '"val_tpl":"' + sensors_tpls[sensor_id] + '",'
-            '"exp_aft":"' + str(expire_after) + '",'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"ids": ["' + mac + '"],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
-    else:
-        payload = (
-            '{"name":"' + sensor_name + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"unit_of_meas":"' + sensors_units[sensor_id] + '",'
-            '"dev_cla":"' + sensors_classes[sensor_id] + '",'
-            '"val_tpl":"' + sensors_tpls[sensor_id] + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"ids": ["' + mac + '"],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
     if id.lower() in ignored:
         payload = ""
     service_data = {
-        "topic": config_topic,
-        "payload": payload,
-        "retain": retain,
-        "qos": qos,
+        KEY_TOPIC: config_topic,
+        KEY_PAYLOAD: str(payload).replace("\'", "\""),
+        KEY_RETAIN: retain,
+        KEY_QOS: qos,
     }
     logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
     hass.services.call("mqtt", "publish", service_data, False)
