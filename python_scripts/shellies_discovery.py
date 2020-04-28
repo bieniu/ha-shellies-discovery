@@ -760,7 +760,7 @@ for sensor_id in range(0, len(sensors)):
         payload = ""
     service_data = {
         KEY_TOPIC: config_topic,
-        KEY_PAYLOAD: str(payload).replace("\'", "\""),
+        KEY_PAYLOAD: str(payload).replace("'", '"'),
         KEY_RETAIN: retain,
         KEY_QOS: qos,
     }

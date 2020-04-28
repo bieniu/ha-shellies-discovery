@@ -111,6 +111,7 @@ python_script:
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
       discovery_prefix: 'hass'
       qos: 2
+      force_update: true
       shelly1-001122-relay-0: 'light'
       shellyswitch-9900AA-relay-0: 'light'
       shellyswitch-9900AA-relay-1: 'fan'
@@ -133,6 +134,7 @@ key | optional | type | default | description
 `discovery_prefix` | True | string | `homeassistant` | MQTT discovery prefix
 `qos` | True | integer | `0` | MQTT QoS, you can use `0`, `1` or `2`
 `ignored_devices` | True | list | None | list of devices to ignore
+`force_update` | True | boolean | False | force update sensors
 
 ## Arguments for Shelly1
 
