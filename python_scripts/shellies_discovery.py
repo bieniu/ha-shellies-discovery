@@ -143,6 +143,18 @@ PL_TRUE_FALSE = {VALUE_ON: "true", VALUE_OFF: "false"}
 expire_after = 43200
 off_delay = 3
 
+
+def mqtt_publish(topic, payload, retain, qos):
+    service_data = {
+        KEY_TOPIC: topic,
+        KEY_PAYLOAD: payload,
+        KEY_RETAIN: retain,
+        KEY_QOS: qos,
+    }
+    logger.debug("Send to MQTT broker: %s %s", topic, payload)
+    hass.services.call("mqtt", "publish", service_data, False)
+
+
 if data.get(CONF_FORCE_UPDATE, False) in [True, False]:
     force_update = data.get(CONF_FORCE_UPDATE, False)
 else:
@@ -531,14 +543,7 @@ for roller_id in range(0, rollers):
         payload = ""
     if id.lower() in ignored:
         payload = ""
-    service_data = {
-        KEY_TOPIC: config_topic,
-        KEY_PAYLOAD: str(payload).replace("\'", "\""),
-        KEY_RETAIN: retain,
-        KEY_QOS: qos,
-    }
-    logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-    hass.services.call("mqtt", "publish", service_data, False)
+    mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
 # relays
 for relay_id in range(0, relays):
@@ -577,14 +582,7 @@ for relay_id in range(0, relays):
             payload = ""
         if id.lower() in ignored:
             payload = ""
-        service_data = {
-            KEY_TOPIC: config_topic,
-            KEY_PAYLOAD: str(payload).replace("\'", "\""),
-            KEY_RETAIN: retain,
-            KEY_QOS: qos,
-        }
-        logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-        hass.services.call("mqtt", "publish", service_data, False)
+        mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
     # relay's sensors
     if relay_id == relays - 1:
@@ -621,14 +619,7 @@ for relay_id in range(0, relays):
                 payload = ""
             if id.lower() in ignored:
                 payload = ""
-            service_data = {
-                KEY_TOPIC: config_topic,
-                KEY_PAYLOAD: str(payload).replace("'", '"'),
-                KEY_RETAIN: retain,
-                KEY_QOS: qos,
-            }
-            logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-            hass.services.call("mqtt", "publish", service_data, False)
+            mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
     # relay's sensors
     for sensor_id in range(0, len(relays_sensors)):
@@ -666,14 +657,7 @@ for relay_id in range(0, relays):
             payload = ""
         if id.lower() in ignored:
             payload = ""
-        service_data = {
-            KEY_TOPIC: config_topic,
-            KEY_PAYLOAD: str(payload).replace("'", '"'),
-            KEY_RETAIN: retain,
-            KEY_QOS: qos,
-        }
-        logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-        hass.services.call("mqtt", "publish", service_data, False)
+        mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
     # relay's binary sensors
     for bin_sensor_id in range(0, len(relays_bin_sensors)):
@@ -709,14 +693,7 @@ for relay_id in range(0, relays):
             payload = ""
         if id.lower() in ignored:
             payload = ""
-        service_data = {
-            KEY_TOPIC: config_topic,
-            KEY_PAYLOAD: str(payload).replace("\'", "\""),
-            KEY_RETAIN: retain,
-            KEY_QOS: qos,
-        }
-        logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-        hass.services.call("mqtt", "publish", service_data, False)
+        mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
 # sensors
 for sensor_id in range(0, len(sensors)):
@@ -760,14 +737,7 @@ for sensor_id in range(0, len(sensors)):
         payload = ""
     if id.lower() in ignored:
         payload = ""
-    service_data = {
-        KEY_TOPIC: config_topic,
-        KEY_PAYLOAD: str(payload).replace("'", '"'),
-        KEY_RETAIN: retain,
-        KEY_QOS: qos,
-    }
-    logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-    hass.services.call("mqtt", "publish", service_data, False)
+    mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
 # external sensors
 for sensor_id in range(0, ext_sensors):
@@ -806,14 +776,7 @@ for sensor_id in range(0, ext_sensors):
             payload = ""
         if id.lower() in ignored:
             payload = ""
-        service_data = {
-            KEY_TOPIC: config_topic,
-            KEY_PAYLOAD: payload,
-            KEY_RETAIN: retain,
-            KEY_QOS: qos,
-        }
-        logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-        hass.services.call("mqtt", "publish", service_data, False)
+        mqtt_publish(config_topic, payload, retain, qos)
 
 # binary sensors
 for bin_sensor_id in range(0, len(bin_sensors)):
@@ -859,14 +822,7 @@ for bin_sensor_id in range(0, len(bin_sensors)):
         payload[KEY_OFF_DELAY] = off_delay
     if id.lower() in ignored:
         payload = ""
-    service_data = {
-        KEY_TOPIC: config_topic,
-        KEY_PAYLOAD: str(payload).replace("\'", "\""),
-        KEY_RETAIN: retain,
-        KEY_QOS: qos,
-    }
-    logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-    hass.services.call("mqtt", "publish", service_data, False)
+    mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
 # color lights
 for light_id in range(0, rgbw_lights):
@@ -939,14 +895,7 @@ for light_id in range(0, rgbw_lights):
         payload = ""
     if id.lower() in ignored:
         payload = ""
-    service_data = {
-        KEY_TOPIC: config_topic,
-        KEY_PAYLOAD: payload,
-        KEY_RETAIN: retain,
-        KEY_QOS: qos,
-    }
-    logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-    hass.services.call("mqtt", "publish", service_data, False)
+    mqtt_publish(config_topic, payload, retain, qos)
 
     # color light's binary sensors
     for bin_sensor_id in range(0, len(lights_bin_sensors)):
@@ -960,7 +909,7 @@ for light_id in range(0, rgbw_lights):
             payload = ""
             service_data = {
                 KEY_TOPIC: config_topic,
-                KEY_PAYLOAD: str(payload).replace("\'", "\""),
+                KEY_PAYLOAD: str(payload).replace("'", '"'),
                 KEY_RETAIN: retain,
                 KEY_QOS: qos,
             }
@@ -1007,14 +956,7 @@ for light_id in range(0, rgbw_lights):
             payload = ""
         if id.lower() in ignored:
             payload = ""
-        service_data = {
-            KEY_TOPIC: config_topic,
-            KEY_PAYLOAD: str(payload).replace("\'", "\""),
-            KEY_RETAIN: retain,
-            KEY_QOS: qos,
-        }
-        logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-        hass.services.call("mqtt", "publish", service_data, False)
+        mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
     # color light's sensors
     for sensor_id in range(0, len(lights_sensors)):
@@ -1050,14 +992,7 @@ for light_id in range(0, rgbw_lights):
             payload = ""
         if id.lower() in ignored:
             payload = ""
-        service_data = {
-            KEY_TOPIC: config_topic,
-            KEY_PAYLOAD: str(payload).replace("'", '"'),
-            KEY_RETAIN: retain,
-            KEY_QOS: qos,
-        }
-        logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-        hass.services.call("mqtt", "publish", service_data, False)
+        mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
 # white lights
 for light_id in range(0, white_lights):
@@ -1147,14 +1082,7 @@ for light_id in range(0, white_lights):
         payload = ""
     if id.lower() in ignored:
         payload = ""
-    service_data = {
-        KEY_TOPIC: config_topic,
-        KEY_PAYLOAD: payload,
-        KEY_RETAIN: retain,
-        KEY_QOS: qos,
-    }
-    logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-    hass.services.call("mqtt", "publish", service_data, False)
+    mqtt_publish(config_topic, payload, retain, qos)
 
     # white light's binary sensors
     for bin_sensor_id in range(0, len(lights_bin_sensors)):
@@ -1168,7 +1096,7 @@ for light_id in range(0, white_lights):
             payload = ""
             service_data = {
                 KEY_TOPIC: config_topic,
-                KEY_PAYLOAD: str(payload).replace("\'", "\""),
+                KEY_PAYLOAD: str(payload).replace("'", '"'),
                 KEY_RETAIN: retain,
                 KEY_QOS: qos,
             }
@@ -1208,7 +1136,9 @@ for light_id in range(0, white_lights):
                     "~": default_topic,
                 }
                 if lights_bin_sensors_classes[bin_sensor_id]:
-                    payload[KEY_DEVICE_CLASS] = lights_bin_sensors_classes[bin_sensor_id]
+                    payload[KEY_DEVICE_CLASS] = lights_bin_sensors_classes[
+                        bin_sensor_id
+                    ]
                 if lights_bin_sensors_tpls[bin_sensor_id]:
                     payload[KEY_VALUE_TEMPLATE] = lights_bin_sensors_tpls[bin_sensor_id]
                     payload.pop(KEY_PAYLOAD_ON)
@@ -1217,14 +1147,7 @@ for light_id in range(0, white_lights):
                 payload = ""
             if id.lower() in ignored:
                 payload = ""
-            service_data = {
-                KEY_TOPIC: config_topic,
-                KEY_PAYLOAD: str(payload).replace("\'", "\""),
-                KEY_RETAIN: retain,
-                KEY_QOS: qos,
-            }
-            logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-            hass.services.call("mqtt", "publish", service_data, False)
+            mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
     # white light's sensors
     for sensor_id in range(0, len(lights_sensors)):
@@ -1267,14 +1190,7 @@ for light_id in range(0, white_lights):
             payload = ""
         if id.lower() in ignored:
             payload = ""
-        service_data = {
-            KEY_TOPIC: config_topic,
-            KEY_PAYLOAD: str(payload).replace("'", '"'),
-            KEY_RETAIN: retain,
-            KEY_QOS: qos,
-        }
-        logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-        hass.services.call("mqtt", "publish", service_data, False)
+        mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
 # meters
 for meter_id in range(0, meters):
@@ -1312,11 +1228,4 @@ for meter_id in range(0, meters):
             payload[KEY_DEVICE_CLASS] = meters_sensors_classes[sensor_id]
         if id.lower() in ignored:
             payload = ""
-        service_data = {
-            KEY_TOPIC: config_topic,
-            KEY_PAYLOAD: str(payload).replace("'", '"'),
-            KEY_RETAIN: retain,
-            KEY_QOS: qos,
-        }
-        logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-        hass.services.call("mqtt", "publish", service_data, False)
+        mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
