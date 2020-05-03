@@ -80,7 +80,7 @@ KEY_COMMAND_TOPIC = "cmd_t"
 KEY_DEVICE = "dev"
 KEY_DEVICE_CLASS = "dev_cla"
 KEY_EXPIRE_AFTER = "exp_aft"
-KEY_FORCE_UPDATE = "force_update"
+KEY_FORCE_UPDATE = "frc_upd"
 KEY_IDENTIFIERS = "ids"
 KEY_MANUFACTURER = "mf"
 KEY_MODEL = "mdl"
@@ -783,34 +783,32 @@ for sensor_id in range(0, ext_sensors):
         )
         state_topic = f"~ext_{ext_sensor_type}/{sensor_id}"
         if ext_sensor_type == ATTR_TEMPERATURE:
-            payload = {
-                KEY_NAME: sensor_name,
-                KEY_STATE_TOPIC: state_topic,
-                KEY_UNIT: UNIT_CELSIUS,
-                KEY_DEVICE_CLASS: ATTR_TEMPERATURE,
-                KEY_VALUE_TEMPLATE: TPL_TEMPERATURE_EXT,
-                KEY_AVAILABILITY_TOPIC: availability_topic,
-                KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
-                KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-                KEY_FORCE_UPDATE: str(force_update),
-                KEY_UNIQUE_ID: unique_id,
-                KEY_QOS: qos,
-                KEY_DEVICE: {
-                    KEY_IDENTIFIERS: [mac],
-                    KEY_NAME: device_name,
-                    KEY_MODEL: model,
-                    KEY_SW_VERSION: fw_ver,
-                    KEY_MANUFACTURER: ATTR_MANUFACTURER,
-                },
-                "~": default_topic,
-            }
+            payload = (
+                '{"name":"' + sensor_name + '",'
+                '"stat_t":"' + state_topic + '",'
+                '"unit_of_meas":"' + UNIT_CELSIUS + '",'
+                '"dev_cla":"' + ATTR_TEMPERATURE + '",'
+                '"val_tpl":"' + TPL_TEMPERATURE_EXT + '",'
+                '"frc_upd":"' + str(force_update) + '",'
+                '"avty_t":"' + availability_topic + '",'
+                '"pl_avail":"true",'
+                '"pl_not_avail":"false",'
+                '"uniq_id":"' + unique_id + '",'
+                '"qos":"' + str(qos) + '",'
+                '"dev": {"ids": ["' + mac + '"],'
+                '"name":"' + device_name + '",'
+                '"mdl":"' + model + '",'
+                '"sw":"' + fw_ver + '",'
+                '"mf":"' + ATTR_MANUFACTURER + '"},'
+                '"~":"' + default_topic + '"}'
+            )
         else:
             payload = ""
         if id.lower() in ignored:
             payload = ""
         service_data = {
             KEY_TOPIC: config_topic,
-            KEY_PAYLOAD: str(payload).replace("'", '"'),
+            KEY_PAYLOAD: payload,
             KEY_RETAIN: retain,
             KEY_QOS: qos,
         }
