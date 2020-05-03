@@ -76,6 +76,7 @@ CONF_QOS = "qos"
 DEFAULT_DISC_PREFIX = "homeassistant"
 
 KEY_AVAILABILITY_TOPIC = "avty_t"
+KEY_COMMAND_TOPIC = "cmd_t"
 KEY_DEVICE = "dev"
 KEY_DEVICE_CLASS = "dev_cla"
 KEY_EXPIRE_AFTER = "exp_aft"
@@ -85,13 +86,19 @@ KEY_MANUFACTURER = "mf"
 KEY_MODEL = "mdl"
 KEY_NAME = "name"
 KEY_OFF_DELAY = "off_delay"
+KEY_OPTIMISTIC = "opt"
 KEY_PAYLOAD = "payload"
 KEY_PAYLOAD_AVAILABLE = "pl_avail"
+KEY_PAYLOAD_CLOSE = "pl_cls"
 KEY_PAYLOAD_NOT_AVAILABLE = "pl_not_avail"
 KEY_PAYLOAD_OFF = "pl_off"
 KEY_PAYLOAD_ON = "pl_on"
+KEY_PAYLOAD_OPEN = "pl_open"
+KEY_PAYLOAD_STOP = "pl_stop"
+KEY_POSITION_TOPIC = "pos_t"
 KEY_QOS = "qos"
 KEY_RETAIN = "retain"
+KEY_SET_POSITION_TOPIC = "set_pos_t"
 KEY_STATE_TOPIC = "stat_t"
 KEY_SW_VERSION = "sw"
 KEY_TOPIC = "topic"
@@ -121,9 +128,12 @@ UNIT_VAR = "VAR"
 UNIT_VOLT = "V"
 UNIT_WATT = "W"
 
+VALUE_CLOSE = "close"
 VALUE_FALSE = "false"
 VALUE_OFF = "off"
 VALUE_ON = "on"
+VALUE_OPEN = "open"
+VALUE_STOP = "stop"
 VALUE_TRUE = "true"
 
 PL_1_0 = {VALUE_ON: "1", VALUE_OFF: "0"}
@@ -494,36 +504,38 @@ for roller_id in range(0, rollers):
     config_topic = f"{disc_prefix}/{component}/{id}-roller-{roller_id}/config"
     if config_component == component:
         roller_mode = True
-        payload = (
-            '{"name":"' + roller_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"pos_t":"' + position_topic + '",'
-            '"set_pos_t":"' + set_position_topic + '",'
-            '"pl_open":"open",'
-            '"pl_cls":"close",'
-            '"pl_stop":"stop",'
-            '"opt":"false",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"ids": ["' + mac + '"],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
+        payload = {
+            KEY_NAME: roller_name,
+            KEY_COMMAND_TOPIC: command_topic,
+            KEY_POSITION_TOPIC: position_topic,
+            KEY_SET_POSITION_TOPIC: set_position_topic,
+            KEY_PAYLOAD_OPEN: VALUE_OPEN,
+            KEY_PAYLOAD_CLOSE: VALUE_CLOSE,
+            KEY_PAYLOAD_STOP: VALUE_STOP,
+            KEY_OPTIMISTIC: VALUE_FALSE,
+            KEY_AVAILABILITY_TOPIC: availability_topic,
+            KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
+            KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
+            KEY_UNIQUE_ID: unique_id,
+            KEY_QOS: qos,
+            KEY_DEVICE: {
+                KEY_IDENTIFIERS: [mac],
+                KEY_NAME: device_name,
+                KEY_MODEL: model,
+                KEY_SW_VERSION: fw_ver,
+                KEY_MANUFACTURER: ATTR_MANUFACTURER,
+            },
+            "~": default_topic,
+        }
     else:
         payload = ""
     if id.lower() in ignored:
         payload = ""
     service_data = {
-        "topic": config_topic,
-        "payload": payload,
-        "retain": retain,
-        "qos": qos,
+        KEY_TOPIC: config_topic,
+        KEY_PAYLOAD: str(payload).replace("\'", "\""),
+        KEY_RETAIN: retain,
+        KEY_QOS: qos,
     }
     logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
     hass.services.call("mqtt", "publish", service_data, False)
@@ -541,33 +553,35 @@ for relay_id in range(0, relays):
     for component in relay_components:
         config_topic = f"{disc_prefix}/{component}/{id}-relay-{relay_id}/config"
         if component == config_component and not roller_mode:
-            payload = (
-                '{"name":"' + relay_name + '",'
-                '"cmd_t":"' + command_topic + '",'
-                '"stat_t":"' + state_topic + '",'
-                '"pl_off":"off",'
-                '"pl_on":"on",'
-                '"avty_t":"' + availability_topic + '",'
-                '"pl_avail":"true",'
-                '"pl_not_avail":"false",'
-                '"uniq_id":"' + unique_id + '",'
-                '"qos":"' + str(qos) + '",'
-                '"dev": {"ids": ["' + mac + '"],'
-                '"name":"' + device_name + '",'
-                '"mdl":"' + model + '",'
-                '"sw":"' + fw_ver + '",'
-                '"mf":"' + ATTR_MANUFACTURER + '"},'
-                '"~":"' + default_topic + '"}'
-            )
+            payload = {
+                KEY_NAME: relay_name,
+                KEY_COMMAND_TOPIC: command_topic,
+                KEY_STATE_TOPIC: state_topic,
+                KEY_PAYLOAD_OFF: VALUE_OFF,
+                KEY_PAYLOAD_ON: VALUE_ON,
+                KEY_AVAILABILITY_TOPIC: availability_topic,
+                KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
+                KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
+                KEY_UNIQUE_ID: unique_id,
+                KEY_QOS: qos,
+                KEY_DEVICE: {
+                    KEY_IDENTIFIERS: [mac],
+                    KEY_NAME: device_name,
+                    KEY_MODEL: model,
+                    KEY_SW_VERSION: fw_ver,
+                    KEY_MANUFACTURER: ATTR_MANUFACTURER,
+                },
+                "~": default_topic,
+            }
         else:
             payload = ""
         if id.lower() in ignored:
             payload = ""
         service_data = {
-            "topic": config_topic,
-            "payload": payload,
-            "retain": retain,
-            "qos": qos,
+            KEY_TOPIC: config_topic,
+            KEY_PAYLOAD: str(payload).replace("\'", "\""),
+            KEY_RETAIN: retain,
+            KEY_QOS: qos,
         }
         logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
         hass.services.call("mqtt", "publish", service_data, False)
@@ -929,7 +943,7 @@ for light_id in range(0, rgbw_lights):
         payload = ""
     service_data = {
         KEY_TOPIC: config_topic,
-        KEY_PAYLOAD: str(payload).replace("\'", "\""),
+        KEY_PAYLOAD: payload,
         KEY_RETAIN: retain,
         KEY_QOS: qos,
     }
@@ -1136,10 +1150,10 @@ for light_id in range(0, white_lights):
     if id.lower() in ignored:
         payload = ""
     service_data = {
-        "topic": config_topic,
-        "payload": payload,
-        "retain": retain,
-        "qos": qos,
+        KEY_TOPIC: config_topic,
+        KEY_PAYLOAD: payload,
+        KEY_RETAIN: retain,
+        KEY_QOS: qos,
     }
     logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
     hass.services.call("mqtt", "publish", service_data, False)
