@@ -66,7 +66,7 @@ ATTR_AC_POWER = "ac_power"
 
 CONF_DEVELOP = "develop"
 CONF_DISCOVERY_PREFIX = "discovery_prefix"
-CONF_FORCE_UPDATE = "force_update"
+CONF_FORCE_UPDATE_SENSORS = "force_update_sensors"
 CONF_FW_VER = "fw_ver"
 CONF_ID = "id"
 CONF_IGNORED_DEVICES = "ignored_devices"
@@ -144,6 +144,22 @@ expire_after = 43200
 off_delay = 3
 
 
+def get_device_config(id):
+    result = data.get(id, data.get(id.lower(), {}))
+    if not result:
+        result = {}
+    try:
+        if isinstance(result, list):
+            raise TypeError
+        if len(result) > 0:
+            result[0]
+    except TypeError:
+        logger.error("Wrong configuration for %s", id)
+        result = {}
+    finally:
+        return result
+
+
 def mqtt_publish(topic, payload, retain, qos):
     service_data = {
         KEY_TOPIC: topic,
@@ -155,10 +171,10 @@ def mqtt_publish(topic, payload, retain, qos):
     hass.services.call("mqtt", "publish", service_data, False)
 
 
-if data.get(CONF_FORCE_UPDATE, False) in [True, False]:
-    force_update = data.get(CONF_FORCE_UPDATE, False)
-else:
-    logger.error("Wrong force_update argument, the default value false was used")
+# if data.get(CONF_FORCE_UPDATE, False) in [True, False]:
+#     force_update = data.get(CONF_FORCE_UPDATE, False)
+# else:
+#     logger.error("Wrong force_update argument, the default value false was used")
 
 retain = True
 qos = 0
@@ -167,7 +183,7 @@ roller_mode = False
 no_battery_sensor = False
 
 id = data.get(CONF_ID)
-mac = data.get(CONF_MAC)
+mac = data.get(CONF_MAC).lower()
 fw_ver = data.get(CONF_FW_VER)
 ignored = [element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])]
 
@@ -391,7 +407,7 @@ if id.rsplit("-", 1)[0] == "shellybulb":
     model = ATTR_MODEL_SHELLYBULB
     rgbw_lights = 1
 
-if id.rsplit("-", 1)[0] == "ShellyBulbDuo":
+if id.rsplit("-", 1)[0].lower() == "shellybulbduo":
     model = ATTR_MODEL_SHELLYDUO
     white_lights = 1
     lights_sensors = [ATTR_ENERGY, ATTR_POWER]
@@ -510,7 +526,7 @@ for roller_id in range(0, rollers):
     position_topic = f"{state_topic}/pos"
     set_position_topic = f"{state_topic}/command/pos"
     availability_topic = "~online"
-    unique_id = f"{id}-roller-{roller_id}"
+    unique_id = f"{id}-roller-{roller_id}".lower()
     config_component = data.get(id, data.get(id.lower()))
     component = ATTR_COVER
     config_topic = f"{disc_prefix}/{component}/{id}-roller-{roller_id}/config"
@@ -553,8 +569,11 @@ for relay_id in range(0, relays):
     state_topic = f"~relay/{relay_id}"
     command_topic = f"{state_topic}/command"
     availability_topic = "~online"
-    unique_id = f"{id}-relay-{relay_id}"
-    config_component = data.get(unique_id, data.get(unique_id.lower(), ATTR_SWITCH))
+    unique_id = f"{id}-relay-{relay_id}".lower()
+    device_config = get_device_config(id)
+    config_component = ATTR_SWITCH
+    if device_config.get(f"relay-{relay_id}"):
+        config_component = device_config[f"relay-{relay_id}"]
     for component in relay_components:
         config_topic = f"{disc_prefix}/{component}/{id}-relay-{relay_id}/config"
         if component == config_component and not roller_mode:
@@ -587,7 +606,11 @@ for relay_id in range(0, relays):
     # relay's sensors
     if relay_id == relays - 1:
         for sensor_id in range(0, len(relays_sensors)):
-            unique_id = f"{id}-relay-{relays_sensors[sensor_id]}"
+            device_config = get_device_config(id)
+            force_update = False
+            if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
+                force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
+            unique_id = f"{id}-relay-{relays_sensors[sensor_id]}".lower()
             config_topic = (
                 f"{disc_prefix}/sensor/{id}-{relays_sensors[sensor_id]}/config"
             )
@@ -623,7 +646,11 @@ for relay_id in range(0, relays):
 
     # relay's sensors
     for sensor_id in range(0, len(relays_sensors)):
-        unique_id = f"{id}-relay-{relays_sensors[sensor_id]}-{relay_id}"
+        device_config = get_device_config(id)
+        force_update = False
+        if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
+            force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
+        unique_id = f"{id}-relay-{relays_sensors[sensor_id]}-{relay_id}".lower()
         config_topic = (
             f"{disc_prefix}/sensor/{id}-{relays_sensors[sensor_id]}-{relay_id}/config"
         )
@@ -661,7 +688,7 @@ for relay_id in range(0, relays):
 
     # relay's binary sensors
     for bin_sensor_id in range(0, len(relays_bin_sensors)):
-        unique_id = f"{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}"
+        unique_id = f"{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}".lower()
         config_topic = f"{disc_prefix}/binary_sensor/{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}/config"
         sensor_name = (
             f"{device_name} {relays_bin_sensors[bin_sensor_id].capitalize()} {relay_id}"
@@ -697,8 +724,12 @@ for relay_id in range(0, relays):
 
 # sensors
 for sensor_id in range(0, len(sensors)):
+    device_config = get_device_config(id)
+    force_update = False
+    if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
+        force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
     device_name = f"{model} {id.split('-')[-1]}"
-    unique_id = f"{id}-{sensors[sensor_id]}"
+    unique_id = f"{id}-{sensors[sensor_id]}".lower()
     config_topic = f"{disc_prefix}/sensor/{id}-{sensors[sensor_id]}/config"
     default_topic = f"shellies/{id}/"
     availability_topic = "~online"
@@ -741,8 +772,12 @@ for sensor_id in range(0, len(sensors)):
 
 # external sensors
 for sensor_id in range(0, ext_sensors):
+    device_config = get_device_config(id)
+    force_update = False
+    if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
+        force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
     device_name = f"{model} {id.split('-')[-1]}"
-    unique_id = f"{id}-ext-{sensor_id}"
+    unique_id = f"{id}-ext-{sensor_id}".lower()
     ext_sensor_type = data.get(unique_id, data.get(unique_id.lower()))
     if ext_sensor_type:
         config_topic = f"{disc_prefix}/sensor/{id}-ext-{sensor_id}/config"
@@ -781,7 +816,7 @@ for sensor_id in range(0, ext_sensors):
 # binary sensors
 for bin_sensor_id in range(0, len(bin_sensors)):
     device_name = f"{model} {id.split('-')[-1]}"
-    unique_id = f"{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}"
+    unique_id = f"{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}".lower()
     config_topic = f"{disc_prefix}/binary_sensor/{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}/config"
     default_topic = f"shellies/{id}/"
     availability_topic = "~online"
@@ -832,7 +867,7 @@ for light_id in range(0, rgbw_lights):
     state_topic = f"~color/{light_id}/status"
     command_topic = f"~color/{light_id}/set"
     availability_topic = "~online"
-    unique_id = f"{id}-light-{light_id}"
+    unique_id = f"{id}-light-{light_id}".lower()
     config_topic = f"{disc_prefix}/light/{id}-{light_id}/config"
     config_light = data.get(id, data.get(id.lower(), ATTR_RGBW))
     if config_light == ATTR_RGBW and model == ATTR_MODEL_SHELLYRGBW2:
@@ -902,7 +937,7 @@ for light_id in range(0, rgbw_lights):
 
         # fix for RGBW2 input binary sensor issue
         if lights_bin_sensors[bin_sensor_id] == ATTR_INPUT and light_id == 0:
-            unique_id = f"{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
+            unique_id = f"{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}".lower()
             config_topic = f"{disc_prefix}/binary_sensor/{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
             state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
             sensor_name = f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
@@ -921,7 +956,7 @@ for light_id in range(0, rgbw_lights):
             f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
         )
         config_topic = f"{disc_prefix}/binary_sensor/{id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
-        unique_id = f"{id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
+        unique_id = f"{id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}".lower()
         if lights_bin_sensors[bin_sensor_id] == ATTR_INPUT:
             state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
         else:
@@ -961,7 +996,11 @@ for light_id in range(0, rgbw_lights):
 
     # color light's sensors
     for sensor_id in range(0, len(lights_sensors)):
-        unique_id = f"{id}-color-{lights_sensors[sensor_id]}-{light_id}"
+        device_config = get_device_config(id)
+        force_update = False
+        if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
+            force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
+        unique_id = f"{id}-color-{lights_sensors[sensor_id]}-{light_id}".lower()
         config_topic = f"{disc_prefix}/sensor/{id}-color-{lights_sensors[sensor_id]}-{light_id}/config"
         sensor_name = (
             f"{device_name} {lights_sensors[sensor_id].capitalize()} {light_id}"
@@ -1003,12 +1042,12 @@ for light_id in range(0, white_lights):
     if model == ATTR_MODEL_SHELLYDIMMER or model == ATTR_MODEL_SHELLYDUO:
         state_topic = f"~light/{light_id}/status"
         command_topic = f"~light/{light_id}/set"
-        unique_id = f"{id}-light-{light_id}"
+        unique_id = f"{id}-light-{light_id}".lower()
         config_topic = f"{disc_prefix}/light/{id}-{light_id}/config"
     else:
         state_topic = f"~white/{light_id}/status"
         command_topic = f"~white/{light_id}/set"
-        unique_id = f"{id}-light-white-{light_id}"
+        unique_id = f"{id}-light-white-{light_id}".lower()
         config_topic = f"{disc_prefix}/light/{id}-white-{light_id}/config"
     availability_topic = "~online"
     config_light = data.get(id, data.get(id.lower(), ATTR_RGBW))
@@ -1090,7 +1129,7 @@ for light_id in range(0, white_lights):
 
         # fix for RGBW2 input binary sensor issue
         if lights_bin_sensors[bin_sensor_id] == ATTR_INPUT and light_id == 0:
-            unique_id = f"{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
+            unique_id = f"{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}".lower()
             config_topic = f"{disc_prefix}/binary_sensor/{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
             state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
             sensor_name = f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
@@ -1108,7 +1147,9 @@ for light_id in range(0, white_lights):
         if (
             lights_bin_sensors[bin_sensor_id] == ATTR_INPUT and light_id == 0
         ) or lights_bin_sensors[bin_sensor_id] != ATTR_INPUT:
-            unique_id = f"{id}-white-{lights_bin_sensors[bin_sensor_id]}-{light_id}"
+            unique_id = (
+                f"{id}-white-{lights_bin_sensors[bin_sensor_id]}-{light_id}".lower()
+            )
             config_topic = f"{disc_prefix}/binary_sensor/{id}-white-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
             if lights_bin_sensors[bin_sensor_id] == ATTR_INPUT:
                 state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
@@ -1156,7 +1197,11 @@ for light_id in range(0, white_lights):
 
     # white light's sensors
     for sensor_id in range(0, len(lights_sensors)):
-        unique_id = f"{id}-white-{lights_sensors[sensor_id]}-{light_id}"
+        device_config = get_device_config(id)
+        force_update = False
+        if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
+            force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
+        unique_id = f"{id}-white-{lights_sensors[sensor_id]}-{light_id}".lower()
         config_topic = f"{disc_prefix}/sensor/{id}-white-{lights_sensors[sensor_id]}-{light_id}/config"
         sensor_name = (
             f"{device_name} {lights_sensors[sensor_id].capitalize()} {light_id}"
@@ -1199,11 +1244,15 @@ for light_id in range(0, white_lights):
 
 # meters
 for meter_id in range(0, meters):
+    device_config = get_device_config(id)
+    force_update = False
+    if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
+        force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
     device_name = f"{model} {id.split('-')[-1]}"
     default_topic = f"shellies/{id}/"
     availability_topic = "~online"
     for sensor_id in range(0, len(meters_sensors)):
-        unique_id = f"{id}-emeter-{meters_sensors[sensor_id]}-{meter_id}"
+        unique_id = f"{id}-emeter-{meters_sensors[sensor_id]}-{meter_id}".lower()
         config_topic = f"{disc_prefix}/sensor/{id}-emeter-{meters_sensors[sensor_id]}-{meter_id}/config"
         sensor_name = (
             f"{device_name} Meter {meters_sensors[sensor_id].capitalize()} {meter_id}"

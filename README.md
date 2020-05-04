@@ -126,17 +126,18 @@ python_script:
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
       discovery_prefix: 'hass'
       qos: 2
-      force_update: true
-      shelly1-001122-relay-0: 'light'
-      shellyswitch-9900AA-relay-0: 'light'
-      shellyswitch-9900AA-relay-1: 'fan'
-      shellyswitch25-334411-relay-1: 'light'
-      shellyswitch-334455: 'cover'
-      shellyrgbw2-AABB22: 'white'
-      shellyht-2200AA: 'ac_power'
-      shelly1-001122-ext-0: 'temperature'
-      shelly1-001122-ext-1: 'temperature'
-      shelly1-001122-ext-2: 'temperature'
+      # force_update: true
+      # shelly1-001122-relay-0: 'light'
+      shellyswitch-9900AA
+        - relay-0: 'light'
+        - relay-1: 'fan'
+      # shellyswitch25-334411-relay-1: 'light'
+      # shellyswitch-334455: 'cover'
+      # shellyrgbw2-AABB22: 'white'
+      # shellyht-2200AA: 'ac_power'
+      # shelly1-001122-ext-0: 'temperature'
+      # shelly1-001122-ext-1: 'temperature'
+      # shelly1-001122-ext-2: 'temperature'
       ignored_devices:
         - shelly1-DD0011
         - shellyem-EECC22
