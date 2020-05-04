@@ -950,7 +950,9 @@ for light_id in range(0, rgbw_lights):
                 payload[KEY_VALUE_TEMPLATE] = lights_bin_sensors_tpls[bin_sensor_id]
             else:
                 payload[KEY_PAYLOAD_ON] = lights_bin_sensors_pl[bin_sensor_id][VALUE_ON]
-                payload[KEY_PAYLOAD_OFF] = lights_bin_sensors_pl[bin_sensor_id][VALUE_OFF]
+                payload[KEY_PAYLOAD_OFF] = lights_bin_sensors_pl[bin_sensor_id][
+                    VALUE_OFF
+                ]
         else:
             payload = ""
         if id.lower() in ignored:
@@ -1139,8 +1141,12 @@ for light_id in range(0, white_lights):
                 if lights_bin_sensors_tpls[bin_sensor_id]:
                     payload[KEY_VALUE_TEMPLATE] = lights_bin_sensors_tpls[bin_sensor_id]
                 else:
-                    payload[KEY_PAYLOAD_ON] = lights_bin_sensors_pl[bin_sensor_id][VALUE_ON]
-                    payload[KEY_PAYLOAD_OFF] = lights_bin_sensors_pl[bin_sensor_id][VALUE_OFF]
+                    payload[KEY_PAYLOAD_ON] = lights_bin_sensors_pl[bin_sensor_id][
+                        VALUE_ON
+                    ]
+                    payload[KEY_PAYLOAD_OFF] = lights_bin_sensors_pl[bin_sensor_id][
+                        VALUE_OFF
+                    ]
 
             else:
                 payload = ""
