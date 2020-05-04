@@ -930,8 +930,6 @@ for light_id in range(0, rgbw_lights):
             payload = {
                 KEY_NAME: sensor_name,
                 KEY_STATE_TOPIC: state_topic,
-                KEY_PAYLOAD_ON: lights_bin_sensors_pl[bin_sensor_id][VALUE_ON],
-                KEY_PAYLOAD_OFF: lights_bin_sensors_pl[bin_sensor_id][VALUE_OFF],
                 KEY_AVAILABILITY_TOPIC: availability_topic,
                 KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
                 KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
@@ -950,8 +948,9 @@ for light_id in range(0, rgbw_lights):
                 payload[KEY_DEVICE_CLASS] = lights_bin_sensors_classes[bin_sensor_id]
             if lights_bin_sensors_tpls[bin_sensor_id]:
                 payload[KEY_VALUE_TEMPLATE] = lights_bin_sensors_tpls[bin_sensor_id]
-                payload.pop(KEY_PAYLOAD_ON)
-                payload.pop(KEY_PAYLOAD_OFF)
+            else:
+                payload[KEY_PAYLOAD_ON] = lights_bin_sensors_pl[bin_sensor_id][VALUE_ON]
+                payload[KEY_PAYLOAD_OFF] = lights_bin_sensors_pl[bin_sensor_id][VALUE_OFF]
         else:
             payload = ""
         if id.lower() in ignored:
@@ -1119,8 +1118,6 @@ for light_id in range(0, white_lights):
                 payload = {
                     KEY_NAME: sensor_name,
                     KEY_STATE_TOPIC: state_topic,
-                    KEY_PAYLOAD_ON: lights_bin_sensors_pl[bin_sensor_id][VALUE_ON],
-                    KEY_PAYLOAD_OFF: lights_bin_sensors_pl[bin_sensor_id][VALUE_OFF],
                     KEY_AVAILABILITY_TOPIC: availability_topic,
                     KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
                     KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
@@ -1141,8 +1138,10 @@ for light_id in range(0, white_lights):
                     ]
                 if lights_bin_sensors_tpls[bin_sensor_id]:
                     payload[KEY_VALUE_TEMPLATE] = lights_bin_sensors_tpls[bin_sensor_id]
-                    payload.pop(KEY_PAYLOAD_ON)
-                    payload.pop(KEY_PAYLOAD_ON)
+                else:
+                    payload[KEY_PAYLOAD_ON] = lights_bin_sensors_pl[bin_sensor_id][VALUE_ON]
+                    payload[KEY_PAYLOAD_OFF] = lights_bin_sensors_pl[bin_sensor_id][VALUE_OFF]
+
             else:
                 payload = ""
             if id.lower() in ignored:
