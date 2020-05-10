@@ -74,7 +74,7 @@ CONF_IGNORED_DEVICES = "ignored_devices"
 CONF_LONGPUSH_OFF_DELAY = "longpush_off_delay"
 CONF_MAC = "mac"
 CONF_MODE = "mode"
-CONF_POWER = "power"
+CONF_POWERED = "powered"
 CONF_QOS = "qos"
 
 DEFAULT_DISC_PREFIX = "homeassistant"
@@ -748,7 +748,7 @@ for sensor_id in range(0, len(sensors)):
         state_topic = f"~sensor/{sensors[sensor_id]}"
 
     config_component = ATTR_SWITCH
-    if device_config.get(CONF_POWER) == ATTR_POWER_AC:
+    if device_config.get(CONF_POWERED) == ATTR_POWER_AC:
         no_battery_sensor = True
         expire_after = 7200
     payload = {

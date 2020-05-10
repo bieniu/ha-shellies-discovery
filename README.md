@@ -176,11 +176,11 @@ key | optional | type | default | description
 key | optional | type | default | possible values | description
 -- | -- | -- | -- | -- | --
 `relay-<NUM>` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay number `NUM`
-`ext-<NUM>` | True | string | None | `temperature` | type of external sensor number `NUM`
-`force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) sensors
-`longpush_off_delay` | True | boolean | true | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (3 sec) for longpush binary sensors
+`ext-<NUM>` | True | string | `None` | `temperature` | type of external sensor number `NUM`
+`force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) for sensors
+`longpush_off_delay` | True | boolean | `true` | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (3 sec) for `longpush` binary sensors
 `mode` | True | string | | `white`, `rgbw`, `relay`, `roller` | `white` or `rgbw` for ShellyRGBW2, `relay` or `roller` for Shelly2/Shelly2.5
-`powered` | True | string | | `ac`, `battery` | `ac` or `battery` powered
+`powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for ShellyHT
 
 
 [releases]: https://github.com/bieniu/ha-shellies-discovery/releases
