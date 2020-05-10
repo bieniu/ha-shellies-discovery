@@ -524,7 +524,7 @@ for roller_id in range(0, rollers):
     device_config = get_device_config(id)
     config_mode = ATTR_RELAY
     if device_config.get(ATTR_MODE):
-        config_component = device_config[ATTR_MODE]
+        config_mode = device_config[ATTR_MODE]
     device_name = f"{model} {id.split('-')[-1]}"
     roller_name = f"{device_name} Roller {roller_id}"
     default_topic = f"shellies/{id}/"
@@ -534,9 +534,8 @@ for roller_id in range(0, rollers):
     set_position_topic = f"{state_topic}/command/pos"
     availability_topic = "~online"
     unique_id = f"{id}-roller-{roller_id}".lower()
-    mode = ATTR_ROLLER
     config_topic = f"{disc_prefix}/cover/{id}-roller-{roller_id}/config"
-    if config_mode == mode:
+    if config_mode == ATTR_ROLLER:
         roller_mode = True
         payload = {
             KEY_NAME: roller_name,
@@ -883,8 +882,11 @@ for light_id in range(0, rgbw_lights):
     availability_topic = "~online"
     unique_id = f"{id}-light-{light_id}".lower()
     config_topic = f"{disc_prefix}/light/{id}-{light_id}/config"
-    config_light = data.get(id, data.get(id.lower(), ATTR_RGBW))
-    if config_light == ATTR_RGBW and model == ATTR_MODEL_SHELLYRGBW2:
+    device_config = get_device_config(id)
+    config_mode = ATTR_RGBW
+    if device_config.get(ATTR_MODE):
+        config_mode = device_config[ATTR_MODE]
+    if config_mode == ATTR_RGBW and model == ATTR_MODEL_SHELLYRGBW2:
         payload = (
             '{"schema":"template",'
             '"name":"' + light_name + '",'
@@ -912,7 +914,7 @@ for light_id in range(0, rgbw_lights):
             '"mf":"' + ATTR_MANUFACTURER + '"},'
             '"~":"' + default_topic + '"}'
         )
-    elif config_light == ATTR_RGBW and model == ATTR_MODEL_SHELLYBULB:
+    elif config_mode == ATTR_RGBW and model == ATTR_MODEL_SHELLYBULB:
         payload = (
             '{"schema":"template",'
             '"name":"' + light_name + '",'
@@ -948,24 +950,6 @@ for light_id in range(0, rgbw_lights):
 
     # color light's binary sensors
     for bin_sensor_id in range(0, len(lights_bin_sensors)):
-
-        # fix for RGBW2 input binary sensor issue
-        if lights_bin_sensors[bin_sensor_id] == ATTR_INPUT and light_id == 0:
-            unique_id = f"{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}".lower()
-            config_topic = f"{disc_prefix}/binary_sensor/{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
-            state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
-            sensor_name = f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
-            payload = ""
-            service_data = {
-                KEY_TOPIC: config_topic,
-                KEY_PAYLOAD: str(payload).replace("'", '"'),
-                KEY_RETAIN: retain,
-                KEY_QOS: qos,
-            }
-            logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-            hass.services.call("mqtt", "publish", service_data, False)
-        # end of fix
-
         sensor_name = (
             f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
         )
@@ -1020,7 +1004,7 @@ for light_id in range(0, rgbw_lights):
             f"{device_name} {lights_sensors[sensor_id].capitalize()} {light_id}"
         )
         state_topic = f"~color/{light_id}/status"
-        if config_light == ATTR_RGBW:
+        if config_mode == ATTR_RGBW:
             payload = {
                 KEY_NAME: sensor_name,
                 KEY_STATE_TOPIC: state_topic,
@@ -1064,8 +1048,11 @@ for light_id in range(0, white_lights):
         unique_id = f"{id}-light-white-{light_id}".lower()
         config_topic = f"{disc_prefix}/light/{id}-white-{light_id}/config"
     availability_topic = "~online"
-    config_light = data.get(id, data.get(id.lower(), ATTR_RGBW))
-    if config_light == ATTR_WHITE and model == ATTR_MODEL_SHELLYRGBW2:
+    device_config = get_device_config(id)
+    config_mode = ATTR_RGBW
+    if device_config.get(ATTR_MODE):
+        config_mode = device_config[ATTR_MODE]
+    if config_mode == ATTR_WHITE and model == ATTR_MODEL_SHELLYRGBW2:
         payload = (
             '{"schema":"template",'
             '"name":"' + light_name + '",'
@@ -1140,24 +1127,6 @@ for light_id in range(0, white_lights):
 
     # white light's binary sensors
     for bin_sensor_id in range(0, len(lights_bin_sensors)):
-
-        # fix for RGBW2 input binary sensor issue
-        if lights_bin_sensors[bin_sensor_id] == ATTR_INPUT and light_id == 0:
-            unique_id = f"{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}".lower()
-            config_topic = f"{disc_prefix}/binary_sensor/{id}-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
-            state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
-            sensor_name = f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
-            payload = ""
-            service_data = {
-                KEY_TOPIC: config_topic,
-                KEY_PAYLOAD: str(payload).replace("'", '"'),
-                KEY_RETAIN: retain,
-                KEY_QOS: qos,
-            }
-            logger.debug("Send to MQTT broker: %s %s", config_topic, payload)
-            hass.services.call("mqtt", "publish", service_data, False)
-        # end of fix
-
         if (
             lights_bin_sensors[bin_sensor_id] == ATTR_INPUT and light_id == 0
         ) or lights_bin_sensors[bin_sensor_id] != ATTR_INPUT:
@@ -1171,7 +1140,7 @@ for light_id in range(0, white_lights):
                 state_topic = f"~white/{light_id}/status"
             sensor_name = f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
 
-            if config_light != ATTR_RGBW:
+            if config_mode != ATTR_RGBW:
                 payload = {
                     KEY_NAME: sensor_name,
                     KEY_STATE_TOPIC: state_topic,
@@ -1225,7 +1194,7 @@ for light_id in range(0, white_lights):
         else:
             state_topic = f"~white/{light_id}/status"
         if (
-            config_light != ATTR_RGBW
+            config_mode != ATTR_RGBW
             or model == ATTR_MODEL_SHELLYDIMMER
             or model == ATTR_MODEL_SHELLYDUO
         ):
