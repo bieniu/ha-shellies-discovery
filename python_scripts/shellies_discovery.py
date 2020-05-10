@@ -25,7 +25,6 @@ ATTR_MODEL_SHELLY_EM = "Shelly EM"
 
 ATTR_BATTERY = "battery"
 ATTR_CHARGER = "charger"
-ATTR_COVER = "cover"
 ATTR_CURRENT = "current"
 ATTR_ENERGY = "energy"
 ATTR_FAN = "fan"
@@ -43,6 +42,7 @@ ATTR_LONGPUSH_0 = "longpush/0"
 ATTR_LONGPUSH_1 = "longpush/1"
 ATTR_LUX = "lux"
 ATTR_MOISTURE = "moisture"
+ATTR_MODE = "mode"
 ATTR_MOTION = "motion"
 ATTR_OPENING = "opening"
 ATTR_OVERLOAD = "overload"
@@ -52,8 +52,10 @@ ATTR_POWER = "power"
 ATTR_POWER_FACTOR = "pf"
 ATTR_PROBLEM = "problem"
 ATTR_REACTIVE_POWER = "reactive_power"
+ATTR_RELAY = "relay"
 ATTR_RETURNED_ENERGY = "returned_energy"
 ATTR_RGBW = "rgbw"
+ATTR_ROLLER = "roller"
 ATTR_SMOKE = "smoke"
 ATTR_SWITCH = "switch"
 ATTR_TEMPERATURE = "temperature"
@@ -70,6 +72,7 @@ CONF_FORCE_UPDATE_SENSORS = "force_update_sensors"
 CONF_FW_VER = "fw_ver"
 CONF_ID = "id"
 CONF_IGNORED_DEVICES = "ignored_devices"
+CONF_LONGPUSH_OFF_DELAY = "longpush_off_delay"
 CONF_MAC = "mac"
 CONF_QOS = "qos"
 
@@ -518,6 +521,10 @@ if id.rsplit("-", 1)[0] == "shellyflood":
 
 # rollers
 for roller_id in range(0, rollers):
+    device_config = get_device_config(id)
+    config_mode = ATTR_RELAY
+    if device_config.get(ATTR_MODE):
+        config_component = device_config[ATTR_MODE]
     device_name = f"{model} {id.split('-')[-1]}"
     roller_name = f"{device_name} Roller {roller_id}"
     default_topic = f"shellies/{id}/"
@@ -527,10 +534,9 @@ for roller_id in range(0, rollers):
     set_position_topic = f"{state_topic}/command/pos"
     availability_topic = "~online"
     unique_id = f"{id}-roller-{roller_id}".lower()
-    config_component = data.get(id, data.get(id.lower()))
-    component = ATTR_COVER
-    config_topic = f"{disc_prefix}/{component}/{id}-roller-{roller_id}/config"
-    if config_component == component:
+    mode = ATTR_ROLLER
+    config_topic = f"{disc_prefix}/cover/{id}-roller-{roller_id}/config"
+    if config_mode == mode:
         roller_mode = True
         payload = {
             KEY_NAME: roller_name,
@@ -688,6 +694,10 @@ for relay_id in range(0, relays):
 
     # relay's binary sensors
     for bin_sensor_id in range(0, len(relays_bin_sensors)):
+        device_config = get_device_config(id)
+        off_delay = True
+        if isinstance(device_config.get(CONF_LONGPUSH_OFF_DELAY), bool):
+            off_delay = device_config.get(CONF_LONGPUSH_OFF_DELAY)
         unique_id = f"{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}".lower()
         config_topic = f"{disc_prefix}/binary_sensor/{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}/config"
         sensor_name = (
@@ -815,6 +825,10 @@ for sensor_id in range(0, ext_sensors):
 
 # binary sensors
 for bin_sensor_id in range(0, len(bin_sensors)):
+    device_config = get_device_config(id)
+    off_delay = True
+    if isinstance(device_config.get(CONF_LONGPUSH_OFF_DELAY), bool):
+        off_delay = device_config.get(CONF_LONGPUSH_OFF_DELAY)
     device_name = f"{model} {id.split('-')[-1]}"
     unique_id = f"{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}".lower()
     config_topic = f"{disc_prefix}/binary_sensor/{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}/config"
