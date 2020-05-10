@@ -175,11 +175,6 @@ def mqtt_publish(topic, payload, retain, qos):
     hass.services.call("mqtt", "publish", service_data, False)
 
 
-# if data.get(CONF_FORCE_UPDATE, False) in [True, False]:
-#     force_update = data.get(CONF_FORCE_UPDATE, False)
-# else:
-#     logger.error("Wrong force_update argument, the default value false was used")
-
 retain = True
 qos = 0
 roller_mode = False
@@ -695,9 +690,9 @@ for relay_id in range(0, relays):
     # relay's binary sensors
     for bin_sensor_id in range(0, len(relays_bin_sensors)):
         device_config = get_device_config(id)
-        off_delay = True
+        longpush_off_delay = True
         if isinstance(device_config.get(CONF_LONGPUSH_OFF_DELAY), bool):
-            off_delay = device_config.get(CONF_LONGPUSH_OFF_DELAY)
+            longpush_off_delay = device_config.get(CONF_LONGPUSH_OFF_DELAY)
         unique_id = f"{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}".lower()
         config_topic = f"{disc_prefix}/binary_sensor/{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}/config"
         sensor_name = (
@@ -724,7 +719,10 @@ for relay_id in range(0, relays):
                 },
                 "~": default_topic,
             }
-            if relays_bin_sensors[bin_sensor_id] == ATTR_LONGPUSH:
+            if (
+                relays_bin_sensors[bin_sensor_id] == ATTR_LONGPUSH
+                and longpush_off_delay
+            ):
                 payload[KEY_OFF_DELAY] = off_delay
         else:
             payload = ""
@@ -828,9 +826,9 @@ for sensor_id in range(0, ext_sensors):
 # binary sensors
 for bin_sensor_id in range(0, len(bin_sensors)):
     device_config = get_device_config(id)
-    off_delay = True
+    longpush_off_delay = True
     if isinstance(device_config.get(CONF_LONGPUSH_OFF_DELAY), bool):
-        off_delay = device_config.get(CONF_LONGPUSH_OFF_DELAY)
+        longpush_off_delay = device_config.get(CONF_LONGPUSH_OFF_DELAY)
     device_name = f"{model} {id.split('-')[-1]}"
     unique_id = f"{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}".lower()
     config_topic = f"{disc_prefix}/binary_sensor/{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}/config"
@@ -869,7 +867,10 @@ for bin_sensor_id in range(0, len(bin_sensors)):
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
     if bin_sensors_classes[bin_sensor_id]:
         payload[KEY_DEVICE_CLASS] = bin_sensors_classes[bin_sensor_id]
-    if bin_sensors[bin_sensor_id] in [ATTR_LONGPUSH_0, ATTR_LONGPUSH_1]:
+    if (
+        bin_sensors[bin_sensor_id] in [ATTR_LONGPUSH_0, ATTR_LONGPUSH_1]
+        and longpush_off_delay
+    ):
         payload[KEY_OFF_DELAY] = off_delay
     if id.lower() in ignored:
         payload = ""
