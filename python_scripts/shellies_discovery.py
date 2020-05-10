@@ -42,7 +42,6 @@ ATTR_LONGPUSH_0 = "longpush/0"
 ATTR_LONGPUSH_1 = "longpush/1"
 ATTR_LUX = "lux"
 ATTR_MOISTURE = "moisture"
-ATTR_MODE = "mode"
 ATTR_MOTION = "motion"
 ATTR_OPENING = "opening"
 ATTR_OVERLOAD = "overload"
@@ -64,7 +63,7 @@ ATTR_TOTAL_RETURNED = "total_returned"
 ATTR_VOLTAGE = "voltage"
 ATTR_WHITE = "white"
 
-ATTR_AC_POWER = "ac_power"
+ATTR_POWER_AC = "ac"
 
 CONF_DEVELOP = "develop"
 CONF_DISCOVERY_PREFIX = "discovery_prefix"
@@ -74,6 +73,8 @@ CONF_ID = "id"
 CONF_IGNORED_DEVICES = "ignored_devices"
 CONF_LONGPUSH_OFF_DELAY = "longpush_off_delay"
 CONF_MAC = "mac"
+CONF_MODE = "mode"
+CONF_POWER = "power"
 CONF_QOS = "qos"
 
 DEFAULT_DISC_PREFIX = "homeassistant"
@@ -523,8 +524,8 @@ if id.rsplit("-", 1)[0] == "shellyflood":
 for roller_id in range(0, rollers):
     device_config = get_device_config(id)
     config_mode = ATTR_RELAY
-    if device_config.get(ATTR_MODE):
-        config_mode = device_config[ATTR_MODE]
+    if device_config.get(CONF_MODE):
+        config_mode = device_config[CONF_MODE]
     device_name = f"{model} {id.split('-')[-1]}"
     roller_name = f"{device_name} Roller {roller_id}"
     default_topic = f"shellies/{id}/"
@@ -747,7 +748,9 @@ for sensor_id in range(0, len(sensors)):
         state_topic = f"~{sensors[sensor_id]}"
     else:
         state_topic = f"~sensor/{sensors[sensor_id]}"
-    if data.get(id, data.get(id.lower())) == ATTR_AC_POWER:
+
+    config_component = ATTR_SWITCH
+    if device_config.get(CONF_POWER) == ATTR_POWER_AC:
         no_battery_sensor = True
         expire_after = 7200
     payload = {
@@ -787,7 +790,7 @@ for sensor_id in range(0, ext_sensors):
         force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
     device_name = f"{model} {id.split('-')[-1]}"
     unique_id = f"{id}-ext-{sensor_id}".lower()
-    ext_sensor_type = data.get(unique_id, data.get(unique_id.lower()))
+    ext_sensor_type = device_config.get(f"ext-{sensor_id}")
     if ext_sensor_type:
         config_topic = f"{disc_prefix}/sensor/{id}-ext-{sensor_id}/config"
         default_topic = f"shellies/{id}/"
@@ -884,8 +887,8 @@ for light_id in range(0, rgbw_lights):
     config_topic = f"{disc_prefix}/light/{id}-{light_id}/config"
     device_config = get_device_config(id)
     config_mode = ATTR_RGBW
-    if device_config.get(ATTR_MODE):
-        config_mode = device_config[ATTR_MODE]
+    if device_config.get(CONF_MODE):
+        config_mode = device_config[CONF_MODE]
     if config_mode == ATTR_RGBW and model == ATTR_MODEL_SHELLYRGBW2:
         payload = (
             '{"schema":"template",'
@@ -959,7 +962,7 @@ for light_id in range(0, rgbw_lights):
             state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
         else:
             state_topic = f"~color/{light_id}/status"
-        if config_light == ATTR_RGBW:
+        if config_mode == ATTR_RGBW:
             payload = {
                 KEY_NAME: sensor_name,
                 KEY_STATE_TOPIC: state_topic,
@@ -1050,8 +1053,8 @@ for light_id in range(0, white_lights):
     availability_topic = "~online"
     device_config = get_device_config(id)
     config_mode = ATTR_RGBW
-    if device_config.get(ATTR_MODE):
-        config_mode = device_config[ATTR_MODE]
+    if device_config.get(CONF_MODE):
+        config_mode = device_config[CONF_MODE]
     if config_mode == ATTR_WHITE and model == ATTR_MODEL_SHELLYRGBW2:
         payload = (
             '{"schema":"template",'
