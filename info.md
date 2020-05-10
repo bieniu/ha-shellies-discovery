@@ -154,7 +154,7 @@ key | optional | type | default | description
 -- | -- | -- | -- | --
 `discovery_prefix` | True | string | `homeassistant` | MQTT discovery prefix
 `qos` | True | integer | `0` | MQTT QoS, you can use `0`, `1` or `2`
-`ignored_devices` | True | list | None | list of devices to ignore
+`ignored_devices` | True | list | `None` | list of devices to ignore
 
 ## Device arguments
 
