@@ -126,18 +126,38 @@ python_script:
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
       discovery_prefix: 'hass'
       qos: 2
-      # force_update: true
-      # shelly1-001122-relay-0: 'light'
-      shellyswitch-9900AA
-        - relay-0: 'light'
-        - relay-1: 'fan'
-      # shellyswitch25-334411-relay-1: 'light'
-      # shellyswitch-334455: 'cover'
-      # shellyrgbw2-AABB22: 'white'
-      # shellyht-2200AA: 'ac_power'
-      # shelly1-001122-ext-0: 'temperature'
-      # shelly1-001122-ext-1: 'temperature'
-      # shelly1-001122-ext-2: 'temperature'
+      shelly1-AABB9900:
+        relay-0: "light"
+        ext-0: "temperature"
+        ext-1: "temperature"
+        ext-2: "temperature"
+        force_update_sensors: true
+      shelly1pm-aabb9911:
+        ext-0: "temperature"
+        longpush_off_delay: false
+        force_update_sensors: true
+      shellyswitch-123409FF:
+        relay-0: "fan"
+        relay-1: "light"
+      shellyswitch-123409cc:
+        relay-1: "fan"
+      shellyswitch25-334455AA:
+        mode: "roller"
+      shellyplug-s-CCBBCCAA:
+        relay-0: "light"
+        force_update_sensors: true
+      shellyht-11AA00CCDD:
+        force_update_sensors: true
+      shellyht-11AA00CCEE:
+        power: "battery"
+      shellyht-11AA00CCFF:
+        power: "ac"
+      shellyrgbw2-AA123FF32:
+        mode: "white"
+      shellyrgbw2-AA123FF84:
+        mode: "rgbw"
+      shellyem-BB23CC45:
+        force_update_sensors: true
       ignored_devices:
         - shelly1-DD0011
         - shellyem-EECC22
@@ -150,74 +170,18 @@ key | optional | type | default | description
 `discovery_prefix` | True | string | `homeassistant` | MQTT discovery prefix
 `qos` | True | integer | `0` | MQTT QoS, you can use `0`, `1` or `2`
 `ignored_devices` | True | list | None | list of devices to ignore
-`force_update` | True | boolean | False | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) sensors
 
-## Arguments for Shelly1
-
-key | optional | type | default | possible values | description
--- | -- | -- | -- | -- | --
-`shelly1-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay
-`shelly1-<ID>-ext-0` | True | string | None | `temperature` | type of external sensor 0
-`shelly1-<ID>-ext-1` | True | string | None | `temperature` | type of external sensor 1
-`shelly1-<ID>-ext-2` | True | string | None | `temperature` | type of external sensor 2
-
-## Arguments for Shelly1PM
+## Device arguments
 
 key | optional | type | default | possible values | description
 -- | -- | -- | -- | -- | --
-`shelly1pm-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay
-`shelly1pm-<ID>-ext-0` | True | string | None | `temperature` | type of external sensor 0
-`shelly1pm-<ID>-ext-1` | True | string | None | `temperature` | type of external sensor 1
-`shelly1pm-<ID>-ext-2` | True | string | None | `temperature` | type of external sensor 2
+`relay-<NUM>` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay number <NUM>
+`ext-<NUM>` | True | string | None | `temperature` | type of external sensor number <NUM>
+`force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) sensors
+`longpush_off_delay` | True | boolean | true | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (3 sec) for longpush binary sensors
+`mode` | True | string | | `white`, `rgbw`, `relay`, `roller` | `white` or `rgbw` for ShellyRGBW2, `relay` or `roller` for Shelly2/Shelly2.5
+`powered` | True | string | | `ac`, `battery` | `ac` or `battery` powered
 
-## Arguments for Shelly2
-
-key | optional | type | default | possible values | description
--- | -- | -- | -- | -- | --
-`shellyswitch-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 0
-`shellyswitch-<ID>-relay-1` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 1
-`shellyswitch-<ID>` | True | string | None | `cover` | use `roller mode`
-
-## Arguments for Shelly2.5
-
-key | optional | type | default | possible values | description
--- | -- | -- | -- | -- | --
-`shellyswitch25-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 0
-`shellyswitch25-<ID>-relay-1` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 1
-`shellyswitch25-<ID>` | True | string | None | `cover` | use `roller mode`
-
-## Arguments for Shelly4Pro
-
-key | optional | type | default | possible values | description
--- | -- | -- | -- | -- | --
-`shelly4pro-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 0
-`shelly4pro-<ID>-relay-1` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 1
-`shelly4pro-<ID>-relay-2` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 2
-`shelly4pro-<ID>-relay-3` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay 3
-
-## Arguments for Shelly EM
-
-key | optional | type | default | possible values | description
--- | -- | -- | -- | -- | --
-`shellyem-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay
-
-## Arguments for Shelly 3EM
-
-key | optional | type | default | possible values | description
--- | -- | -- | -- | -- | --
-`shellyem3-<ID>-relay-0` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay
-
-## Arguments for Shelly RGBW2
-
-key | optional | type | default | possible values | description
--- | -- | -- | -- | -- | --
-`shellyrgbw2-<ID>` | True | string | None | `white` | use `white mode`
-
-## Arguments for Shelly H&T
-
-key | optional | type | default | possible values | description
--- | -- | -- | -- | -- | --
-`shellyht-<ID>` | True | string | None | `ac_power` | use when your H&T sensor is powered via USB adapter
 
 [releases]: https://github.com/bieniu/ha-shellies-discovery/releases
 [releases-shield]: https://img.shields.io/github/release/bieniu/ha-shellies-discovery.svg?style=popout
