@@ -1162,7 +1162,10 @@ for light_id in range(0, white_lights):
                     },
                     "~": default_topic,
                 }
-                if lights_bin_sensors_classes and lights_bin_sensors_classes[bin_sensor_id]:
+                if (
+                    lights_bin_sensors_classes
+                    and lights_bin_sensors_classes[bin_sensor_id]
+                ):
                     payload[KEY_DEVICE_CLASS] = lights_bin_sensors_classes[
                         bin_sensor_id
                     ]
