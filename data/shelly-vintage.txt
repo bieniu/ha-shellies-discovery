@@ -1,0 +1,17 @@
+shellies/ShellyVintage-<deviceid>/light/0/command on
+shellies/ShellyVintage-<deviceid>/light/0/command off
+
+shellies/ShellyVintage-<deviceid>/light/0/set   {
+                                                    "brightness": 100,  /* brightness, 0..100 */
+                                                    "turn": "on"        /* "on", "off" or "toggle" */
+                                                }
+
+shellies/ShellyVintage-<deviceid>/light/0/status    {
+                                                        "ison": false,        /* whether the bulb is on */
+                                                        "has_timer": false,   /* whether a timer is currently armed */
+                                                        "timer_remaining": 0, /* if there is an active timer, shows seconds until timer elapses; 0 otherwise */
+                                                        "brightness": 90      /* brightness, 0..100 */
+                                                    }
+
+shellies/ShellyVintage-<deviceid>/light/0/power 12 /* Watt */
+shellies/ShellyVintage-<deviceid>/light/0/energy 30 /* Watt-minute */
