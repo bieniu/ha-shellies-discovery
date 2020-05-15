@@ -1050,7 +1050,11 @@ for light_id in range(0, white_lights):
     device_name = f"{model} {id.split('-')[-1]}"
     light_name = f"{device_name} Light {light_id}"
     default_topic = f"shellies/{id}/"
-    if model in [ATTR_MODEL_SHELLYDIMMER, ATTR_MODEL_SHELLYDUO, ATTR_MODEL_SHELLYVINTAGE]:
+    if model in [
+        ATTR_MODEL_SHELLYDIMMER,
+        ATTR_MODEL_SHELLYDUO,
+        ATTR_MODEL_SHELLYVINTAGE,
+    ]:
         state_topic = f"~light/{light_id}/status"
         command_topic = f"~light/{light_id}/set"
         unique_id = f"{id}-light-{light_id}".lower()
@@ -1227,7 +1231,11 @@ for light_id in range(0, white_lights):
         sensor_name = (
             f"{device_name} {lights_sensors[sensor_id].capitalize()} {light_id}"
         )
-        if model in [ATTR_MODEL_SHELLYDIMMER, ATTR_MODEL_SHELLYDUO, ATTR_MODEL_SHELLYVINTAGE]:
+        if model in [
+            ATTR_MODEL_SHELLYDIMMER,
+            ATTR_MODEL_SHELLYDUO,
+            ATTR_MODEL_SHELLYVINTAGE,
+        ]:
             state_topic = f"~light/{light_id}/{lights_sensors[sensor_id]}"
         else:
             state_topic = f"~white/{light_id}/status"
