@@ -20,6 +20,7 @@ python_script:
 - Shelly RGBW2 (color and white mode)
 - Shelly Bulb
 - Shelly DUO (experimental)
+- Shelly Vintage
 - Shelly H&T (with or without USB adapter)
 - Shelly Smoke
 - Shelly Sense
