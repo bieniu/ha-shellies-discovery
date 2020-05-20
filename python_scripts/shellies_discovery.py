@@ -59,9 +59,11 @@ ATTR_ROLLER = "roller"
 ATTR_SMOKE = "smoke"
 ATTR_SWITCH = "switch"
 ATTR_TEMPERATURE = "temperature"
+ATTR_TILT = "tilt"
 ATTR_TOTAL = "total"
 ATTR_TOTAL_RETURNED = "total_returned"
 ATTR_VOLTAGE = "voltage"
+ATTR_VIBRATION = "vibration"
 ATTR_WHITE = "white"
 
 ATTR_POWER_AC = "ac"
@@ -122,10 +124,12 @@ TPL_POWER = "{{value|float|round(1)}}"
 TPL_POWER_FACTOR = "{{value|float*100|round}}"
 TPL_TEMPERATURE = "{{value|float|round(1)}}"
 TPL_TEMPERATURE_EXT = "{{value|replace(':','')|float|round(1)}}"
+TPL_TILT = "{{value|float}}"
 TPL_VOLTAGE = "{{value|float|round(1)}}"
 
 UNIT_AMPERE = "A"
 UNIT_CELSIUS = "°C"
+UNIT_DEGREE = "°"
 UNIT_KWH = "kWh"
 UNIT_LUX = "lx"
 UNIT_PERCENT = "%"
@@ -336,13 +340,13 @@ if id.rsplit("-", 1)[0] == "shellyht":
 
 if id.rsplit("-", 1)[0] == "shellydw":
     model = ATTR_MODEL_SHELLYDW
-    sensors = [ATTR_LUX, ATTR_BATTERY]
-    sensors_classes = [ATTR_ILLUMINANCE, ATTR_BATTERY]
-    sensors_units = [UNIT_LUX, UNIT_PERCENT]
-    sensors_tpls = [TPL_LUX, TPL_BATTERY]
-    bin_sensors = [ATTR_OPENING]
+    sensors = [ATTR_LUX, ATTR_BATTERY, ATTR_TILT]
+    sensors_classes = [ATTR_ILLUMINANCE, ATTR_BATTERY, None]
+    sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DEGREE]
+    sensors_tpls = [TPL_LUX, TPL_BATTERY, TPL_TILT]
+    bin_sensors = [ATTR_OPENING, ATTR_VIBRATION]
     bin_sensors_classes = bin_sensors
-    bin_sensors_pl = [PL_OPEN_CLOSE]
+    bin_sensors_pl = [PL_OPEN_CLOSE, PL_1_0]
     battery_powered = True
 
 if id.rsplit("-", 1)[0] == "shellysmoke":
@@ -764,7 +768,6 @@ for sensor_id in range(0, len(sensors)):
         KEY_NAME: sensor_name,
         KEY_STATE_TOPIC: state_topic,
         KEY_UNIT: sensors_units[sensor_id],
-        KEY_DEVICE_CLASS: sensors_classes[sensor_id],
         KEY_VALUE_TEMPLATE: sensors_tpls[sensor_id],
         KEY_EXPIRE_AFTER: expire_after,
         KEY_FORCE_UPDATE: str(force_update),
@@ -779,6 +782,8 @@ for sensor_id in range(0, len(sensors)):
         },
         "~": default_topic,
     }
+    if sensors_classes[sensor_id]:
+        payload[KEY_DEVICE_CLASS] = sensors_classes[sensor_id]
     if not battery_powered:
         payload[KEY_AVAILABILITY_TOPIC] = availability_topic
         payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
