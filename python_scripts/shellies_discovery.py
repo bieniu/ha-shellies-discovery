@@ -826,6 +826,26 @@ for sensor_id in range(0, ext_sensors):
                 '"mf":"' + ATTR_MANUFACTURER + '"},'
                 '"~":"' + default_topic + '"}'
             )
+        elif ext_sensor_type == ATTR_HUMIDITY:
+            payload = (
+                '{"name":"' + sensor_name + '",'
+                '"stat_t":"' + state_topic + '",'
+                '"unit_of_meas":"' + UNIT_PERCENT + '",'
+                '"dev_cla":"' + ATTR_HUMIDITY + '",'
+                '"val_tpl":"' + TPL_HUMIDITY + '",'
+                '"frc_upd":"' + str(force_update) + '",'
+                '"avty_t":"' + availability_topic + '",'
+                '"pl_avail":"true",'
+                '"pl_not_avail":"false",'
+                '"uniq_id":"' + unique_id + '",'
+                '"qos":"' + str(qos) + '",'
+                '"dev": {"ids": ["' + mac + '"],'
+                '"name":"' + device_name + '",'
+                '"mdl":"' + model + '",'
+                '"sw":"' + fw_ver + '",'
+                '"mf":"' + ATTR_MANUFACTURER + '"},'
+                '"~":"' + default_topic + '"}'
+            )
         else:
             payload = ""
         if id.lower() in ignored:
