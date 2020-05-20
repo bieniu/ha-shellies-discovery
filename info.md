@@ -135,9 +135,9 @@ python_script:
       shellyht-11AA00CCDD:
         force_update_sensors: true
       shellyht-11AA00CCEE:
-        power: "battery"
+        powered: "battery"
       shellyht-11AA00CCFF:
-        power: "ac"
+        powered: "ac"
       shellyrgbw2-AA123FF32:
         mode: "white"
       shellyrgbw2-AA123FF84:
