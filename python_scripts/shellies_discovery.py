@@ -176,7 +176,7 @@ def mqtt_publish(topic, payload, retain, qos):
         KEY_RETAIN: retain,
         KEY_QOS: qos,
     }
-    logger.debug("Send to MQTT broker: %s %s", topic, payload)
+    logger.debug("Sending to MQTT broker: %s %s", topic, payload)
     hass.services.call("mqtt", "publish", service_data, False)
 
 
