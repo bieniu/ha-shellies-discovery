@@ -9,6 +9,7 @@ ATTR_MODEL_SHELLY1PM = "Shelly1PM"
 ATTR_MODEL_SHELLY2 = "Shelly2"
 ATTR_MODEL_SHELLY25 = "Shelly2.5"
 ATTR_MODEL_SHELLY4PRO = "Shelly4Pro"
+ATTR_MODEL_SHELLYAIR = "Shelly Air"
 ATTR_MODEL_SHELLYBULB = "Shelly Bulb"
 ATTR_MODEL_SHELLYDIMMER = "Shelly Dimmer"
 ATTR_MODEL_SHELLYDUO = "Shelly DUO"
@@ -28,6 +29,7 @@ ATTR_BATTERY = "battery"
 ATTR_CHARGER = "charger"
 ATTR_CURRENT = "current"
 ATTR_ENERGY = "energy"
+ATTR_EXT_TEMPERATURE = "ext_temperature"
 ATTR_FAN = "fan"
 ATTR_FLOOD = "flood"
 ATTR_HEAT = "heat"
@@ -61,6 +63,7 @@ ATTR_SWITCH = "switch"
 ATTR_TEMPERATURE = "temperature"
 ATTR_TILT = "tilt"
 ATTR_TOTAL = "total"
+ATTR_TOTALWORKTIME = "totalworktime"
 ATTR_TOTAL_RETURNED = "total_returned"
 ATTR_VOLTAGE = "voltage"
 ATTR_VIBRATION = "vibration"
@@ -113,6 +116,8 @@ KEY_UNIQUE_ID = "uniq_id"
 KEY_UNIT = "unit_of_meas"
 KEY_VALUE_TEMPLATE = "val_tpl"
 
+TOPIC_EXT_TEMPERATURE = "~totalworktime/ext_temperature"
+
 TPL_BATTERY = "{{value|float|round}}"
 TPL_CURRENT = "{{value|float|round(2)}}"
 TPL_ENERGY_WH = "{{(value|float/1000)|round(2)}}"
@@ -133,6 +138,7 @@ UNIT_DEGREE = "°"
 UNIT_KWH = "kWh"
 UNIT_LUX = "lx"
 UNIT_PERCENT = "%"
+UNIT_SECONDS = "s"
 UNIT_VAR = "VAR"
 UNIT_VOLT = "V"
 UNIT_WATT = "W"
@@ -237,6 +243,7 @@ sensors = []
 sensors_units = []
 sensors_tpls = []
 sensors_classes = []
+sensors_topics = []
 bin_sensors = []
 bin_sensors_classes = []
 rgbw_lights = 0
@@ -269,6 +276,24 @@ if id.rsplit("-", 1)[0] == "shelly1pm":
     bin_sensors_classes = [ATTR_HEAT]
     bin_sensors_pl = [PL_1_0]
     ext_sensors = 3
+
+if id.rsplit("-", 1)[0] == "shellyair":
+    model = ATTR_MODEL_SHELLYAIR
+    relays = 1
+    relays_sensors = [ATTR_POWER, ATTR_ENERGY]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
+    relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
+    relays_bin_sensors = [ATTR_INPUT]
+    relays_bin_sensors_pl = [PL_1_0]
+    sensors = [ATTR_TEMPERATURE, ATTR_TOTALWORKTIME, ATTR_EXT_TEMPERATURE]
+    sensors_classes = [ATTR_TEMPERATURE, None, ATTR_TEMPERATURE]
+    sensors_units = [UNIT_CELSIUS, UNIT_SECONDS, UNIT_CELSIUS]
+    sensors_tpls = [TPL_TEMPERATURE, None, TPL_TEMPERATURE]
+    sensors_topics = [None, None, TOPIC_EXT_TEMPERATURE]
+    bin_sensors = [ATTR_OVERTEMPERATURE]
+    bin_sensors_classes = [ATTR_HEAT]
+    bin_sensors_pl = [PL_1_0]
 
 if id.rsplit("-", 1)[0] == "shellyswitch":
     model = ATTR_MODEL_SHELLY2
@@ -755,7 +780,9 @@ for sensor_id in range(0, len(sensors)):
     default_topic = f"shellies/{id}/"
     availability_topic = "~online"
     sensor_name = f"{device_name} {sensors[sensor_id].capitalize()}"
-    if relays > 0 or white_lights > 0:
+    if sensors_topics[sensor_id]:
+        state_topic = sensors_topics[sensor_id]
+    elif relays > 0 or white_lights > 0:
         state_topic = f"~{sensors[sensor_id]}"
     else:
         state_topic = f"~sensor/{sensors[sensor_id]}"
@@ -768,7 +795,6 @@ for sensor_id in range(0, len(sensors)):
         KEY_NAME: sensor_name,
         KEY_STATE_TOPIC: state_topic,
         KEY_UNIT: sensors_units[sensor_id],
-        KEY_VALUE_TEMPLATE: sensors_tpls[sensor_id],
         KEY_EXPIRE_AFTER: expire_after,
         KEY_FORCE_UPDATE: str(force_update),
         KEY_UNIQUE_ID: unique_id,
@@ -788,6 +814,8 @@ for sensor_id in range(0, len(sensors)):
         payload[KEY_AVAILABILITY_TOPIC] = availability_topic
         payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
+    if sensors_tpls[sensor_id]:
+        payload[KEY_VALUE_TEMPLATE] = sensors_tpls[sensor_id]
     if no_battery_sensor and sensors[sensor_id] == ATTR_BATTERY:
         payload = ""
     if id.lower() in ignored:
