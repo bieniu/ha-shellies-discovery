@@ -33,7 +33,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Plug S
 - Shelly RGBW2 (color and white mode)
 - Shelly Bulb
-- Shelly DUO (experimental)
+- Shelly DUO
 - Shelly Vintage
 - Shelly H&T (with or without USB adapter)
 - Shelly Smoke
@@ -43,6 +43,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Flood
 - Shelly Dimmer
 - Shelly Door/Window
+- Shelly Air
 
 ## How to debug
 

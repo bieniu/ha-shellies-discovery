@@ -19,7 +19,7 @@ python_script:
 - Shelly Plug S
 - Shelly RGBW2 (color and white mode)
 - Shelly Bulb
-- Shelly DUO (experimental)
+- Shelly DUO
 - Shelly Vintage
 - Shelly H&T (with or without USB adapter)
 - Shelly Smoke
@@ -28,6 +28,7 @@ python_script:
 - Shelly 3EM
 - Shelly Dimmer
 - Shelly Door/Window
+- Shelly Air
 
 ## How to debug
 
