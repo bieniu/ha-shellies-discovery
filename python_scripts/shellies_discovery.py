@@ -780,7 +780,7 @@ for sensor_id in range(0, len(sensors)):
     default_topic = f"shellies/{id}/"
     availability_topic = "~online"
     sensor_name = f"{device_name} {sensors[sensor_id].capitalize()}"
-    if sensors_topics[sensor_id]:
+    if sensors_topics:
         state_topic = sensors_topics[sensor_id]
     elif relays > 0 or white_lights > 0:
         state_topic = f"~{sensors[sensor_id]}"
