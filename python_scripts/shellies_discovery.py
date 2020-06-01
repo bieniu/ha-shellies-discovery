@@ -116,8 +116,6 @@ KEY_UNIQUE_ID = "uniq_id"
 KEY_UNIT = "unit_of_meas"
 KEY_VALUE_TEMPLATE = "val_tpl"
 
-TOPIC_EXT_TEMPERATURE = "~totalworktime/ext_temperature"
-
 TPL_BATTERY = "{{value|float|round}}"
 TPL_CURRENT = "{{value|float|round(2)}}"
 TPL_ENERGY_WH = "{{(value|float/1000)|round(2)}}"
@@ -243,7 +241,6 @@ sensors = []
 sensors_units = []
 sensors_tpls = []
 sensors_classes = []
-sensors_topics = []
 bin_sensors = []
 bin_sensors_classes = []
 rgbw_lights = 0
@@ -286,14 +283,14 @@ if id.rsplit("-", 1)[0] == "shellyair":
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT]
     relays_bin_sensors_pl = [PL_1_0]
-    sensors = [ATTR_TEMPERATURE, ATTR_TOTALWORKTIME, ATTR_EXT_TEMPERATURE]
-    sensors_classes = [ATTR_TEMPERATURE, None, ATTR_TEMPERATURE]
-    sensors_units = [UNIT_CELSIUS, UNIT_SECONDS, UNIT_CELSIUS]
-    sensors_tpls = [TPL_TEMPERATURE, None, TPL_TEMPERATURE]
-    sensors_topics = [None, None, TOPIC_EXT_TEMPERATURE]
+    sensors = [ATTR_TEMPERATURE, ATTR_TOTALWORKTIME]
+    sensors_classes = [ATTR_TEMPERATURE, None]
+    sensors_units = [UNIT_CELSIUS, UNIT_SECONDS]
+    sensors_tpls = [TPL_TEMPERATURE, None]
     bin_sensors = [ATTR_OVERTEMPERATURE]
     bin_sensors_classes = [ATTR_HEAT]
     bin_sensors_pl = [PL_1_0]
+    ext_sensors = 1
 
 if id.rsplit("-", 1)[0] == "shellyswitch":
     model = ATTR_MODEL_SHELLY2
@@ -780,9 +777,7 @@ for sensor_id in range(0, len(sensors)):
     default_topic = f"shellies/{id}/"
     availability_topic = "~online"
     sensor_name = f"{device_name} {sensors[sensor_id].capitalize()}"
-    if sensors_topics:
-        state_topic = sensors_topics[sensor_id]
-    elif relays > 0 or white_lights > 0:
+    if relays > 0 or white_lights > 0:
         state_topic = f"~{sensors[sensor_id]}"
     else:
         state_topic = f"~sensor/{sensors[sensor_id]}"
@@ -830,7 +825,10 @@ for sensor_id in range(0, ext_sensors):
         force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
     device_name = f"{model} {id.split('-')[-1]}"
     unique_id = f"{id}-ext-{sensor_id}".lower()
-    ext_sensor_type = device_config.get(f"ext-{sensor_id}")
+    if model == ATTR_MODEL_SHELLYAIR:
+        ext_sensor_type = ATTR_TEMPERATURE
+    else:
+        ext_sensor_type = device_config.get(f"ext-{sensor_id}")
     if ext_sensor_type:
         config_topic = f"{disc_prefix}/sensor/{id}-ext-{sensor_id}/config"
         default_topic = f"shellies/{id}/"
