@@ -58,6 +58,7 @@ ATTR_RELAY = "relay"
 ATTR_RETURNED_ENERGY = "returned_energy"
 ATTR_RGBW = "rgbw"
 ATTR_ROLLER = "roller"
+ATTR_SHORTPUSH = "shortpush"
 ATTR_SMOKE = "smoke"
 ATTR_SWITCH = "switch"
 ATTR_TEMPERATURE = "temperature"
@@ -77,7 +78,7 @@ CONF_FORCE_UPDATE_SENSORS = "force_update_sensors"
 CONF_FW_VER = "fw_ver"
 CONF_ID = "id"
 CONF_IGNORED_DEVICES = "ignored_devices"
-CONF_LONGPUSH_OFF_DELAY = "longpush_off_delay"
+CONF_PUSH_OFF_DELAY = "push_off_delay"
 CONF_MAC = "mac"
 CONF_MODE = "mode"
 CONF_POWERED = "powered"
@@ -148,12 +149,13 @@ VALUE_OPEN = "open"
 VALUE_STOP = "stop"
 VALUE_TRUE = "true"
 
+PL_0_1 = {VALUE_ON: "0", VALUE_OFF: "1"}
 PL_1_0 = {VALUE_ON: "1", VALUE_OFF: "0"}
 PL_OPEN_CLOSE = {VALUE_ON: VALUE_OPEN, VALUE_OFF: VALUE_CLOSE}
 PL_TRUE_FALSE = {VALUE_ON: VALUE_TRUE, VALUE_OFF: VALUE_FALSE}
 
 expire_after = 43200
-off_delay = 3
+off_delay = 2
 
 
 def get_device_config(id):
@@ -251,8 +253,9 @@ ext_sensor_type = None
 if id.rsplit("-", 1)[0] == "shelly1":
     model = ATTR_MODEL_SHELLY1
     relays = 1
-    relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
-    relays_bin_sensors_pl = [PL_1_0, PL_1_0]
+    relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH]
+    relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1]
+    relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH]
     ext_sensors = 3
 
 if id.rsplit("-", 1)[0] == "shelly1pm":
@@ -262,8 +265,9 @@ if id.rsplit("-", 1)[0] == "shelly1pm":
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
-    relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
-    relays_bin_sensors_pl = [PL_1_0, PL_1_0]
+    relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH]
+    relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1]
+    relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH]
     sensors = [ATTR_TEMPERATURE]
     sensors_classes = sensors
     sensors_units = [UNIT_CELSIUS]
@@ -299,8 +303,9 @@ if id.rsplit("-", 1)[0] == "shellyswitch":
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
-    relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
-    relays_bin_sensors_pl = [PL_1_0, PL_1_0]
+    relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH]
+    relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1]
+    relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH]
 
 if id.rsplit("-", 1)[0] == "shellyswitch25":
     model = ATTR_MODEL_SHELLY25
@@ -310,8 +315,9 @@ if id.rsplit("-", 1)[0] == "shellyswitch25":
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
-    relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
-    relays_bin_sensors_pl = [PL_1_0, PL_1_0]
+    relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH]
+    relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1]
+    relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH]
     sensors = [ATTR_TEMPERATURE]
     sensors_classes = sensors
     sensors_units = [UNIT_CELSIUS]
@@ -724,15 +730,18 @@ for relay_id in range(0, relays):
     # relay's binary sensors
     for bin_sensor_id in range(0, len(relays_bin_sensors)):
         device_config = get_device_config(id)
-        longpush_off_delay = True
-        if isinstance(device_config.get(CONF_LONGPUSH_OFF_DELAY), bool):
-            longpush_off_delay = device_config.get(CONF_LONGPUSH_OFF_DELAY)
+        push_off_delay = True
+        if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
+            push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
         unique_id = f"{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}".lower()
         config_topic = f"{disc_prefix}/binary_sensor/{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}/config"
         sensor_name = (
             f"{device_name} {relays_bin_sensors[bin_sensor_id].capitalize()} {relay_id}"
         )
-        state_topic = f"~{relays_bin_sensors[bin_sensor_id]}/{relay_id}"
+        if relays_bin_sensors_topics and relays_bin_sensors_topics[bin_sensor_id]:
+            state_topic = f"~{relays_bin_sensors_topics[bin_sensor_id]}/{relay_id}"
+        else:
+            state_topic = f"~{relays_bin_sensors[bin_sensor_id]}/{relay_id}"
         if not roller_mode:
             payload = {
                 KEY_NAME: sensor_name,
@@ -753,7 +762,7 @@ for relay_id in range(0, relays):
                 },
                 "~": default_topic,
             }
-            if relays_bin_sensors[bin_sensor_id] == ATTR_LONGPUSH:
+            if relays_bin_sensors[bin_sensor_id] in [ATTR_LONGPUSH, ATTR_SHORTPUSH]:
                 payload[KEY_OFF_DELAY] = off_delay
         else:
             payload = ""
@@ -867,9 +876,9 @@ for sensor_id in range(0, ext_sensors):
 # binary sensors
 for bin_sensor_id in range(0, len(bin_sensors)):
     device_config = get_device_config(id)
-    longpush_off_delay = True
-    if isinstance(device_config.get(CONF_LONGPUSH_OFF_DELAY), bool):
-        longpush_off_delay = device_config.get(CONF_LONGPUSH_OFF_DELAY)
+    push_off_delay = True
+    if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
+        push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
     device_name = f"{model} {id.split('-')[-1]}"
     unique_id = f"{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}".lower()
     config_topic = f"{disc_prefix}/binary_sensor/{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}/config"

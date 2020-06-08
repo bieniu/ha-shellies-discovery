@@ -121,7 +121,7 @@ python_script:
         force_update_sensors: true
       shelly1pm-aabb9911:
         ext-0: "temperature"
-        longpush_off_delay: false
+        push_off_delay: false
         force_update_sensors: true
       shellyswitch-123409FF:
         relay-0: "fan"
@@ -165,7 +165,7 @@ key | optional | type | default | possible values | description
 `relay-<NUM>` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay number `NUM`
 `ext-<NUM>` | True | string | `None` | `temperature` | type of external sensor number `NUM`
 `force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) for sensors
-`longpush_off_delay` | True | boolean | `true` | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (3 sec) for `longpush` binary sensors
+`push_off_delay` | True | boolean | `true` | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (2 sec) for `longpush`/`shortpush` binary sensors
 `mode` | True | string | | `white`, `rgbw`, `relay`, `roller` | `white` or `rgbw` for Shelly RGBW2, `relay` or `roller` for Shelly 2/Shelly 2.5
 `powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for Shelly H&T
 
