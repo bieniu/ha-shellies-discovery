@@ -27,6 +27,7 @@ ATTR_MODEL_SHELLYEM = "Shelly EM"
 
 ATTR_BATTERY = "battery"
 ATTR_CHARGER = "charger"
+ATTR_COLOR_0_STATUS = "color/0/status"
 ATTR_CURRENT = "current"
 ATTR_ENERGY = "energy"
 ATTR_EXT_TEMPERATURE = "ext_temperature"
@@ -59,6 +60,7 @@ ATTR_RETURNED_ENERGY = "returned_energy"
 ATTR_RGBW = "rgbw"
 ATTR_ROLLER = "roller"
 ATTR_SHORTPUSH = "shortpush"
+ATTR_SHORTPUSH_0 = "shortpush/0"
 ATTR_SMOKE = "smoke"
 ATTR_SWITCH = "switch"
 ATTR_TEMPERATURE = "temperature"
@@ -406,6 +408,17 @@ if id.rsplit("-", 1)[0] == "shellyrgbw2":
     lights_sensors_classes = [ATTR_POWER]
     lights_sensors_units = [UNIT_WATT]
     lights_sensors_tpls = ["{{value_json.power|float|round(1)}}"]
+    bin_sensors = [ATTR_OVERPOWER, ATTR_INPUT_0, ATTR_LONGPUSH_0, ATTR_SHORTPUSH_0]
+    bin_sensors_classes = [ATTR_POWER, None, None, None]
+    bin_sensors_tpls = [TPL_OVERPOWER, None, None, None]
+    bin_sensors_pl = [None, PL_1_0, PL_1_0, PL_0_1]
+    bin_sensors_topics = [
+        ATTR_COLOR_0_STATUS,
+        ATTR_INPUT_0,
+        ATTR_LONGPUSH_0,
+        ATTR_LONGPUSH_0,
+    ]
+    # to remove - compatibility
     lights_bin_sensors = [ATTR_OVERPOWER, ATTR_INPUT]
     lights_bin_sensors_classes = [ATTR_POWER, None]
     lights_bin_sensors_tpls = [TPL_OVERPOWER, None]
@@ -762,7 +775,10 @@ for relay_id in range(0, relays):
                 },
                 "~": default_topic,
             }
-            if relays_bin_sensors[bin_sensor_id] in [ATTR_LONGPUSH, ATTR_SHORTPUSH]:
+            if (
+                relays_bin_sensors[bin_sensor_id] in [ATTR_LONGPUSH, ATTR_SHORTPUSH]
+                and push_off_delay
+            ):
                 payload[KEY_OFF_DELAY] = off_delay
         else:
             payload = ""
@@ -879,6 +895,9 @@ for bin_sensor_id in range(0, len(bin_sensors)):
     push_off_delay = True
     if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
         push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
+    config_mode = ATTR_RGBW
+    if device_config.get(CONF_MODE):
+        config_mode = device_config[CONF_MODE]
     device_name = f"{model} {id.split('-')[-1]}"
     unique_id = f"{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}".lower()
     config_topic = f"{disc_prefix}/binary_sensor/{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}/config"
@@ -887,7 +906,9 @@ for bin_sensor_id in range(0, len(bin_sensors)):
     sensor_name = (
         f"{device_name} {bin_sensors[bin_sensor_id].replace('/', ' ').capitalize()}"
     )
-    if relays > 0 or white_lights > 0:
+    if bin_sensors_topics and bin_sensors_topics[bin_sensor_id]:
+        state_topic = f"~{bin_sensors_topics[bin_sensor_id]}"
+    elif relays > 0 or white_lights > 0:
         state_topic = f"~{bin_sensors[bin_sensor_id]}"
     elif bin_sensors[bin_sensor_id] == ATTR_OPENING:
         state_topic = "~sensor/state"
@@ -896,8 +917,6 @@ for bin_sensor_id in range(0, len(bin_sensors)):
     payload = {
         KEY_NAME: sensor_name,
         KEY_STATE_TOPIC: state_topic,
-        KEY_PAYLOAD_ON: bin_sensors_pl[bin_sensor_id][VALUE_ON],
-        KEY_PAYLOAD_OFF: bin_sensors_pl[bin_sensor_id][VALUE_OFF],
         KEY_UNIQUE_ID: unique_id,
         KEY_QOS: qos,
         KEY_DEVICE: {
@@ -909,6 +928,11 @@ for bin_sensor_id in range(0, len(bin_sensors)):
         },
         "~": default_topic,
     }
+    if bin_sensors_tpls and bin_sensors_tpls[bin_sensor_id]:
+        payload[KEY_VALUE_TEMPLATE] = bin_sensors_tpls[bin_sensor_id]
+    else:
+        payload[KEY_PAYLOAD_ON] = bin_sensors_pl[bin_sensor_id][VALUE_ON]
+        payload[KEY_PAYLOAD_OFF] = bin_sensors_pl[bin_sensor_id][VALUE_OFF]
     if battery_powered:
         payload[KEY_EXPIRE_AFTER] = expire_after
     else:
@@ -917,8 +941,18 @@ for bin_sensor_id in range(0, len(bin_sensors)):
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
     if bin_sensors_classes and bin_sensors_classes[bin_sensor_id]:
         payload[KEY_DEVICE_CLASS] = bin_sensors_classes[bin_sensor_id]
-    if bin_sensors[bin_sensor_id] in [ATTR_LONGPUSH_0, ATTR_LONGPUSH_1]:
+    if (
+        bin_sensors[bin_sensor_id]
+        in [ATTR_LONGPUSH_0, ATTR_LONGPUSH_1, ATTR_SHORTPUSH_0]
+        and push_off_delay
+    ):
         payload[KEY_OFF_DELAY] = off_delay
+    if (
+        model == ATTR_MODEL_SHELLYRGBW2
+        and config_mode == ATTR_WHITE
+        and bin_sensors[bin_sensor_id] == ATTR_OVERPOWER
+    ):
+        payload = ""
     if id.lower() in ignored:
         payload = ""
     mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
@@ -1010,7 +1044,19 @@ for light_id in range(0, rgbw_lights):
             state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
         else:
             state_topic = f"~color/{light_id}/status"
-        if config_mode == ATTR_RGBW:
+        # to remove - compatibility
+        if (
+            model == ATTR_MODEL_SHELLYRGBW2
+            and lights_bin_sensors[bin_sensor_id] == ATTR_INPUT
+        ):
+            payload = ""
+        # to remove - compatibility
+        elif (
+            model == ATTR_MODEL_SHELLYRGBW2
+            and lights_bin_sensors[bin_sensor_id] == ATTR_OVERPOWER
+        ):
+            payload = ""
+        elif config_mode == ATTR_RGBW:
             payload = {
                 KEY_NAME: sensor_name,
                 KEY_STATE_TOPIC: state_topic,
@@ -1218,8 +1264,19 @@ for light_id in range(0, white_lights):
             else:
                 state_topic = f"~white/{light_id}/status"
             sensor_name = f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
-
-            if config_mode != ATTR_RGBW:
+            # to remove - compatibility
+            if (
+                model == ATTR_MODEL_SHELLYRGBW2
+                and lights_bin_sensors[bin_sensor_id] == ATTR_INPUT
+            ):
+                payload = ""
+            # to remove - compatibility
+            elif (
+                model == ATTR_MODEL_SHELLYRGBW2
+                and lights_bin_sensors[bin_sensor_id] == ATTR_OVERPOWER
+            ):
+                payload = ""
+            elif config_mode != ATTR_RGBW:
                 payload = {
                     KEY_NAME: sensor_name,
                     KEY_STATE_TOPIC: state_topic,
