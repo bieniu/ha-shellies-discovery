@@ -753,10 +753,7 @@ for relay_id in range(0, relays):
                 },
                 "~": default_topic,
             }
-            if (
-                relays_bin_sensors[bin_sensor_id] == ATTR_LONGPUSH
-                and longpush_off_delay
-            ):
+            if relays_bin_sensors[bin_sensor_id] == ATTR_LONGPUSH:
                 payload[KEY_OFF_DELAY] = off_delay
         else:
             payload = ""
@@ -911,10 +908,7 @@ for bin_sensor_id in range(0, len(bin_sensors)):
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
     if bin_sensors_classes and bin_sensors_classes[bin_sensor_id]:
         payload[KEY_DEVICE_CLASS] = bin_sensors_classes[bin_sensor_id]
-    if (
-        bin_sensors[bin_sensor_id] in [ATTR_LONGPUSH_0, ATTR_LONGPUSH_1]
-        and longpush_off_delay
-    ):
+    if bin_sensors[bin_sensor_id] in [ATTR_LONGPUSH_0, ATTR_LONGPUSH_1]:
         payload[KEY_OFF_DELAY] = off_delay
     if id.lower() in ignored:
         payload = ""
