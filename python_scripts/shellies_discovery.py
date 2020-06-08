@@ -4,11 +4,11 @@ This script adds MQTT discovery support for Shellies devices.
 ATTR_MANUFACTURER = "Allterco Robotics"
 ATTR_SHELLY = "Shelly"
 
-ATTR_MODEL_SHELLY1 = "Shelly1"
-ATTR_MODEL_SHELLY1PM = "Shelly1PM"
-ATTR_MODEL_SHELLY2 = "Shelly2"
-ATTR_MODEL_SHELLY25 = "Shelly2.5"
-ATTR_MODEL_SHELLY4PRO = "Shelly4Pro"
+ATTR_MODEL_SHELLY1 = "Shelly 1"
+ATTR_MODEL_SHELLY1PM = "Shelly 1PM"
+ATTR_MODEL_SHELLY2 = "Shelly 2"
+ATTR_MODEL_SHELLY25 = "Shelly 2.5"
+ATTR_MODEL_SHELLY4PRO = "Shelly 4Pro"
 ATTR_MODEL_SHELLYAIR = "Shelly Air"
 ATTR_MODEL_SHELLYBULB = "Shelly Bulb"
 ATTR_MODEL_SHELLYDIMMER = "Shelly Dimmer"
@@ -22,8 +22,8 @@ ATTR_MODEL_SHELLYRGBW2 = "Shelly RGBW2"
 ATTR_MODEL_SHELLYSENSE = "Shelly Sense"
 ATTR_MODEL_SHELLYSMOKE = "Shelly Smoke"
 ATTR_MODEL_SHELLYVINTAGE = "Shelly Vintage"
-ATTR_MODEL_SHELLY_3EM = "Shelly 3EM"
-ATTR_MODEL_SHELLY_EM = "Shelly EM"
+ATTR_MODEL_SHELLY3EM = "Shelly 3EM"
+ATTR_MODEL_SHELLYEM = "Shelly EM"
 
 ATTR_BATTERY = "battery"
 ATTR_CHARGER = "charger"
@@ -450,7 +450,7 @@ if id.rsplit("-", 1)[0].lower() == "shellyvintage":
     lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
 
 if id.rsplit("-", 1)[0] == "shellyem":
-    model = ATTR_MODEL_SHELLY_EM
+    model = ATTR_MODEL_SHELLYEM
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
@@ -495,7 +495,7 @@ if id.rsplit("-", 1)[0] == "shellyem":
     ]
 
 if id.rsplit("-", 1)[0] == "shellyem3":
-    model = ATTR_MODEL_SHELLY_3EM
+    model = ATTR_MODEL_SHELLY3EM
     relays = 1
     meters = 3
     meters_sensors = [
