@@ -25,11 +25,11 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 
 ## Supported devices
 
-- Shelly1 (with external temperature sensors)
-- Shelly1PM (with external temperature sensors)
-- Shelly2 (relays and roller mode)
-- Shelly2.5 (relays and roller mode)
-- Shelly4Pro
+- Shelly 1 (with external sensors)
+- Shelly 1PM (with external sensors)
+- Shelly 2 (relays and roller mode)
+- Shelly 2.5 (relays and roller mode)
+- Shelly 4Pro
 - Shelly Plug
 - Shelly Plug S
 - Shelly RGBW2 (color and white mode)
@@ -182,8 +182,8 @@ key | optional | type | default | possible values | description
 `ext-<NUM>` | True | string | `None` | `temperature` | type of external sensor number `NUM`
 `force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) for sensors
 `longpush_off_delay` | True | boolean | `true` | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (3 sec) for `longpush` binary sensors
-`mode` | True | string | | `white`, `rgbw`, `relay`, `roller` | `white` or `rgbw` for ShellyRGBW2, `relay` or `roller` for Shelly2/Shelly2.5
-`powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for ShellyHT
+`mode` | True | string | | `white`, `rgbw`, `relay`, `roller` | `white` or `rgbw` for Shelly RGBW2, `relay` or `roller` for Shelly 2/Shelly 2.5
+`powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for Shelly H&T
 
 
 [releases]: https://github.com/bieniu/ha-shellies-discovery/releases
