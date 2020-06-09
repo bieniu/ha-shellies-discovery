@@ -1337,8 +1337,7 @@ for light_id in range(0, white_lights):
         else:
             state_topic = f"~white/{light_id}/status"
         if (
-            config_mode != ATTR_RGBW
-            or model == ATTR_MODEL_SHELLYDIMMER
+            model == ATTR_MODEL_SHELLYDIMMER
             or model == ATTR_MODEL_SHELLYDUO
             or model == ATTR_MODEL_SHELLYVINTAGE
         ):
