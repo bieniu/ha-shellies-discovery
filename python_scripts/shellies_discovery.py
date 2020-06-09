@@ -246,6 +246,7 @@ sensors_tpls = []
 sensors_classes = []
 bin_sensors = []
 bin_sensors_classes = []
+bin_sensors_topics = []
 rgbw_lights = 0
 white_lights = 0
 ext_sensors = 0
