@@ -61,6 +61,7 @@ ATTR_RGBW = "rgbw"
 ATTR_ROLLER = "roller"
 ATTR_SHORTPUSH = "shortpush"
 ATTR_SHORTPUSH_0 = "shortpush/0"
+ATTR_SHORTPUSH_1 = "shortpush/1"
 ATTR_SMOKE = "smoke"
 ATTR_SWITCH = "switch"
 ATTR_TEMPERATURE = "temperature"
@@ -441,9 +442,42 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
         ATTR_INPUT_1,
         ATTR_LONGPUSH_0,
         ATTR_LONGPUSH_1,
+        ATTR_SHORTPUSH_0,
+        ATTR_SHORTPUSH_1,
     ]
-    bin_sensors_classes = [ATTR_HEAT, ATTR_POWER, ATTR_PROBLEM, None, None, None, None]
-    bin_sensors_pl = [PL_1_0, PL_1_0, PL_1_0, PL_1_0, PL_1_0, PL_1_0, PL_1_0]
+    bin_sensors_classes = [
+        ATTR_HEAT,
+        ATTR_POWER,
+        ATTR_PROBLEM,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+    ]
+    bin_sensors_pl = [
+        PL_1_0,
+        PL_1_0,
+        PL_1_0,
+        PL_1_0,
+        PL_1_0,
+        PL_1_0,
+        PL_1_0,
+        PL_0_1,
+        PL_0_1,
+    ]
+    bin_sensors_topics = [
+        None,
+        None,
+        None,
+        ATTR_INPUT_0,
+        ATTR_INPUT_1,
+        ATTR_LONGPUSH_0,
+        ATTR_LONGPUSH_1,
+        ATTR_LONGPUSH_0,
+        ATTR_LONGPUSH_1,
+    ]
     lights_sensors = [ATTR_POWER, ATTR_ENERGY]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH]
     lights_sensors_classes = [ATTR_POWER, ATTR_POWER]
