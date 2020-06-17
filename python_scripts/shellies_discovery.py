@@ -12,12 +12,14 @@ ATTR_MODEL_SHELLY3EM = "Shelly 3EM"
 ATTR_MODEL_SHELLY4PRO = "Shelly 4Pro"
 ATTR_MODEL_SHELLYAIR = "Shelly Air"
 ATTR_MODEL_SHELLYBULB = "Shelly Bulb"
+ATTR_MODEL_SHELLYBUTTON1 = "Shelly Button1"
 ATTR_MODEL_SHELLYDIMMER = "Shelly Dimmer"
 ATTR_MODEL_SHELLYDUO = "Shelly DUO"
 ATTR_MODEL_SHELLYDW = "Shelly Door/Window"
 ATTR_MODEL_SHELLYEM = "Shelly EM"
 ATTR_MODEL_SHELLYFLOOD = "Shelly Flood"
 ATTR_MODEL_SHELLYHT = "Shelly H&T"
+ATTR_MODEL_SHELLYI3 = "Shelly i3"
 ATTR_MODEL_SHELLYPLUG = "Shelly Plug"
 ATTR_MODEL_SHELLYPLUG_S = "Shelly Plug S"
 ATTR_MODEL_SHELLYRGBW2 = "Shelly RGBW2"
@@ -39,6 +41,7 @@ ATTR_ILLUMINANCE = "illuminance"
 ATTR_INPUT = "input"
 ATTR_INPUT_0 = "input/0"
 ATTR_INPUT_1 = "input/1"
+ATTR_INPUT_2 = "input/2"
 ATTR_LIGHT = "light"
 ATTR_LOADERROR = "loaderror"
 ATTR_LONGPUSH = "longpush"
@@ -370,6 +373,18 @@ if id.rsplit("-", 1)[0] == "shellyht":
     sensors_tpls = [TPL_TEMPERATURE, TPL_HUMIDITY, TPL_BATTERY]
     battery_powered = True
 
+if id.rsplit("-", 1)[0] == "shellybutton1":
+    model = ATTR_MODEL_SHELLYBUTTON1
+    sensors = [ATTR_BATTERY]
+    sensors_classes = sensors
+    sensors_units = [UNIT_PERCENT]
+    sensors_tpls = [TPL_BATTERY]
+    bin_sensors = [ATTR_INPUT_0]
+    bin_sensors_classes = [None]
+    bin_sensors_tpls = [None]
+    bin_sensors_pl = [PL_1_0]
+    battery_powered = True
+
 if id.rsplit("-", 1)[0] == "shellydw":
     model = ATTR_MODEL_SHELLYDW
     sensors = [ATTR_LUX, ATTR_BATTERY, ATTR_TILT]
@@ -603,6 +618,13 @@ if id.rsplit("-", 1)[0] == "shellyflood":
     bin_sensors_classes = [ATTR_MOISTURE]
     bin_sensors_pl = [PL_TRUE_FALSE]
     battery_powered = True
+
+if id.rsplit("-", 1)[0] == "shellyix3":
+    model = ATTR_MODEL_SHELLYI3
+    bin_sensors = [ATTR_INPUT_0, ATTR_INPUT_1, ATTR_INPUT_2]
+    bin_sensors_classes = [None, None, None]
+    bin_sensors_tpls = [None, None, None]
+    bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1]
 
 # rollers
 for roller_id in range(0, rollers):
