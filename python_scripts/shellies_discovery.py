@@ -18,6 +18,7 @@ ATTR_MODEL_SHELLYDUO = "Shelly DUO"
 ATTR_MODEL_SHELLYDW = "Shelly Door/Window"
 ATTR_MODEL_SHELLYEM = "Shelly EM"
 ATTR_MODEL_SHELLYFLOOD = "Shelly Flood"
+ATTR_MODEL_SHELLYGAS = "Shelly Gas"
 ATTR_MODEL_SHELLYHT = "Shelly H&T"
 ATTR_MODEL_SHELLYI3 = "Shelly i3"
 ATTR_MODEL_SHELLYPLUG = "Shelly Plug"
@@ -30,11 +31,13 @@ ATTR_MODEL_SHELLYVINTAGE = "Shelly Vintage"
 ATTR_BATTERY = "battery"
 ATTR_CHARGER = "charger"
 ATTR_COLOR_0_STATUS = "color/0/status"
+ATTR_CONCENTRATION = "concentration"
 ATTR_CURRENT = "current"
 ATTR_ENERGY = "energy"
 ATTR_EXT_TEMPERATURE = "ext_temperature"
 ATTR_FAN = "fan"
 ATTR_FLOOD = "flood"
+ATTR_GAS = "gas"
 ATTR_HEAT = "heat"
 ATTR_HUMIDITY = "humidity"
 ATTR_ILLUMINANCE = "illuminance"
@@ -51,6 +54,7 @@ ATTR_LUX = "lux"
 ATTR_MOISTURE = "moisture"
 ATTR_MOTION = "motion"
 ATTR_OPENING = "opening"
+ATTR_OPERATION = "operation"
 ATTR_OVERLOAD = "overload"
 ATTR_OVERPOWER = "overpower"
 ATTR_OVERTEMPERATURE = "overtemperature"
@@ -62,6 +66,7 @@ ATTR_RELAY = "relay"
 ATTR_RETURNED_ENERGY = "returned_energy"
 ATTR_RGBW = "rgbw"
 ATTR_ROLLER = "roller"
+ATTR_SELF_TEST = "self_test"
 ATTR_SHORTPUSH = "shortpush"
 ATTR_SHORTPUSH_0 = "shortpush/0"
 ATTR_SHORTPUSH_1 = "shortpush/1"
@@ -372,6 +377,13 @@ if id.rsplit("-", 1)[0] == "shellyht":
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_PERCENT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_HUMIDITY, TPL_BATTERY]
     battery_powered = True
+
+if id.rsplit("-", 1)[0] == "shellygas":
+    model = ATTR_MODEL_SHELLYGAS
+    sensors = [ATTR_OPERATION, ATTR_GAS, ATTR_SELF_TEST, ATTR_CONCENTRATION]
+    sensors_classes = [None, None, None, None]
+    sensors_tpls = [None, None, None, None]
+    sensors_units = [None, None, None, None]
 
 if id.rsplit("-", 1)[0] == "shellybutton1":
     model = ATTR_MODEL_SHELLYBUTTON1
@@ -868,7 +880,6 @@ for sensor_id in range(0, len(sensors)):
     payload = {
         KEY_NAME: sensor_name,
         KEY_STATE_TOPIC: state_topic,
-        KEY_UNIT: sensors_units[sensor_id],
         KEY_EXPIRE_AFTER: expire_after,
         KEY_FORCE_UPDATE: str(force_update),
         KEY_UNIQUE_ID: unique_id,
@@ -882,6 +893,8 @@ for sensor_id in range(0, len(sensors)):
         },
         "~": default_topic,
     }
+    if sensors_units[sensor_id]:
+        payload[KEY_UNIT] = sensors_units[sensor_id]
     if sensors_classes[sensor_id]:
         payload[KEY_DEVICE_CLASS] = sensors_classes[sensor_id]
     if not battery_powered:

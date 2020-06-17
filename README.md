@@ -39,6 +39,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly DUO
 - Shelly EM
 - Shelly Flood
+- Shelly Gas
 - Shelly H&T (with or without USB adapter)
 - Shelly i3
 - Shelly Plug

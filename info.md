@@ -23,6 +23,7 @@ python_script:
 - Shelly Door/Window
 - Shelly DUO
 - Shelly EM
+- Shelly Gas
 - Shelly H&T (with or without USB adapter)
 - Shelly i3
 - Shelly Plug
