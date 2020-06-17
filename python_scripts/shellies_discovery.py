@@ -67,6 +67,8 @@ ATTR_RETURNED_ENERGY = "returned_energy"
 ATTR_RGBW = "rgbw"
 ATTR_ROLLER = "roller"
 ATTR_SELF_TEST = "self_test"
+ATTR_DOUBLE_SHORTPUSH = "double shortpush"
+ATTR_TRIPLE_SHORTPUSH = "triple shortpush"
 ATTR_SHORTPUSH = "shortpush"
 ATTR_SHORTPUSH_0 = "shortpush/0"
 ATTR_SHORTPUSH_1 = "shortpush/1"
@@ -128,6 +130,8 @@ KEY_UNIQUE_ID = "uniq_id"
 KEY_UNIT = "unit_of_meas"
 KEY_VALUE_TEMPLATE = "val_tpl"
 
+TOPIC_INPUT_EVENT_0 = "input_event/0"
+
 TPL_BATTERY = "{{value|float|round}}"
 TPL_CURRENT = "{{value|float|round(2)}}"
 TPL_ENERGY_WH = "{{(value|float/1000)|round(2)}}"
@@ -140,6 +144,10 @@ TPL_POWER_FACTOR = "{{value|float*100|round}}"
 TPL_TEMPERATURE = "{{value|float|round(1)}}"
 TPL_TILT = "{{value|float}}"
 TPL_VOLTAGE = "{{value|float|round(1)}}"
+TPL_SHORTPUSH = "{{value_json.event == ^S^}}"
+TPL_DOUBLE_SHORTPUSH = "{{value_json.event == ^SS^}}"
+TPL_TRIPLE_SHORTPUSH = "{{value_json.event == ^SSS^}}"
+TPL_LONGPUSH = "{{value_json.event == ^L^}}"
 
 UNIT_AMPERE = "A"
 UNIT_CELSIUS = "°C"
@@ -391,10 +399,28 @@ if id.rsplit("-", 1)[0] == "shellybutton1":
     sensors_classes = sensors
     sensors_units = [UNIT_PERCENT]
     sensors_tpls = [TPL_BATTERY]
-    bin_sensors = [ATTR_INPUT_0]
-    bin_sensors_classes = [None]
-    bin_sensors_tpls = [None]
-    bin_sensors_pl = [PL_1_0]
+    bin_sensors = [
+        ATTR_INPUT_0,
+        ATTR_SHORTPUSH,
+        ATTR_DOUBLE_SHORTPUSH,
+        ATTR_TRIPLE_SHORTPUSH,
+        ATTR_LONGPUSH,
+    ]
+    bin_sensors_tpls = [
+        None,
+        TPL_SHORTPUSH,
+        TPL_DOUBLE_SHORTPUSH,
+        TPL_TRIPLE_SHORTPUSH,
+        TPL_LONGPUSH,
+    ]
+    bin_sensors_pl = [PL_1_0, None, None, None, None]
+    bin_sensors_topics = [
+        None,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_0,
+    ]
     battery_powered = True
 
 if id.rsplit("-", 1)[0] == "shellydw":
@@ -738,7 +764,7 @@ for relay_id in range(0, relays):
             config_topic = (
                 f"{disc_prefix}/sensor/{id}-{relays_sensors[sensor_id]}/config"
             )
-            sensor_name = f"{device_name} {relays_sensors[sensor_id].capitalize()}"
+            sensor_name = f"{device_name} {relays_sensors[sensor_id].title()}"
             state_topic = f"~relay/{relays_sensors[sensor_id]}"
             if model == ATTR_MODEL_SHELLY2 or roller_mode:
                 payload = {
@@ -778,9 +804,7 @@ for relay_id in range(0, relays):
         config_topic = (
             f"{disc_prefix}/sensor/{id}-{relays_sensors[sensor_id]}-{relay_id}/config"
         )
-        sensor_name = (
-            f"{device_name} {relays_sensors[sensor_id].capitalize()} {relay_id}"
-        )
+        sensor_name = f"{device_name} {relays_sensors[sensor_id].title()} {relay_id}"
         state_topic = f"~relay/{relay_id}/{relays_sensors[sensor_id]}"
         if model != ATTR_MODEL_SHELLY2 and not roller_mode:
             payload = {
@@ -819,7 +843,7 @@ for relay_id in range(0, relays):
         unique_id = f"{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}".lower()
         config_topic = f"{disc_prefix}/binary_sensor/{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}/config"
         sensor_name = (
-            f"{device_name} {relays_bin_sensors[bin_sensor_id].capitalize()} {relay_id}"
+            f"{device_name} {relays_bin_sensors[bin_sensor_id].title()} {relay_id}"
         )
         if relays_bin_sensors_topics and relays_bin_sensors_topics[bin_sensor_id]:
             state_topic = f"~{relays_bin_sensors_topics[bin_sensor_id]}/{relay_id}"
@@ -867,7 +891,7 @@ for sensor_id in range(0, len(sensors)):
     config_topic = f"{disc_prefix}/sensor/{id}-{sensors[sensor_id]}/config"
     default_topic = f"shellies/{id}/"
     availability_topic = "~online"
-    sensor_name = f"{device_name} {sensors[sensor_id].capitalize()}"
+    sensor_name = f"{device_name} {sensors[sensor_id].title()}"
     if relays > 0 or white_lights > 0:
         state_topic = f"~{sensors[sensor_id]}"
     else:
@@ -925,9 +949,7 @@ for sensor_id in range(0, ext_sensors):
         config_topic = f"{disc_prefix}/sensor/{id}-ext-{sensor_id}/config"
         default_topic = f"shellies/{id}/"
         availability_topic = "~online"
-        sensor_name = (
-            f"{device_name} External {sensor_id} {ext_sensor_type.capitalize()}"
-        )
+        sensor_name = f"{device_name} External {sensor_id} {ext_sensor_type.title()}"
         state_topic = f"~ext_{ext_sensor_type}/{sensor_id}"
         payload = {
             KEY_NAME: sensor_name,
@@ -970,12 +992,14 @@ for bin_sensor_id in range(0, len(bin_sensors)):
     if device_config.get(CONF_MODE):
         config_mode = device_config[CONF_MODE]
     device_name = f"{model} {id.split('-')[-1]}"
-    unique_id = f"{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}".lower()
-    config_topic = f"{disc_prefix}/binary_sensor/{id}-{bin_sensors[bin_sensor_id].replace('/', '-')}/config"
+    unique_id = (
+        f"{id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}".lower()
+    )
+    config_topic = f"{disc_prefix}/binary_sensor/{id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}/config"
     default_topic = f"shellies/{id}/"
     availability_topic = "~online"
     sensor_name = (
-        f"{device_name} {bin_sensors[bin_sensor_id].replace('/', ' ').capitalize()}"
+        f"{device_name} {bin_sensors[bin_sensor_id].replace('/', ' ').title()}"
     )
     if bin_sensors_topics and bin_sensors_topics[bin_sensor_id]:
         state_topic = f"~{bin_sensors_topics[bin_sensor_id]}"
@@ -1024,9 +1048,14 @@ for bin_sensor_id in range(0, len(bin_sensors)):
         and bin_sensors[bin_sensor_id] == ATTR_OVERPOWER
     ):
         payload = ""
+    # to remove
+    if model == ATTR_MODEL_SHELLYBUTTON1 and bin_sensors[bin_sensor_id] == ATTR_INPUT_0:
+        payload = ""
     if id.lower() in ignored:
         payload = ""
-    mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
+    mqtt_publish(
+        config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos
+    )
 
 # color lights
 for light_id in range(0, rgbw_lights):
@@ -1107,7 +1136,7 @@ for light_id in range(0, rgbw_lights):
     # color light's binary sensors
     for bin_sensor_id in range(0, len(lights_bin_sensors)):
         sensor_name = (
-            f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
+            f"{device_name} {lights_bin_sensors[bin_sensor_id].title()} {light_id}"
         )
         config_topic = f"{disc_prefix}/binary_sensor/{id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
         unique_id = f"{id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}".lower()
@@ -1168,9 +1197,7 @@ for light_id in range(0, rgbw_lights):
             force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
         unique_id = f"{id}-color-{lights_sensors[sensor_id]}-{light_id}".lower()
         config_topic = f"{disc_prefix}/sensor/{id}-color-{lights_sensors[sensor_id]}-{light_id}/config"
-        sensor_name = (
-            f"{device_name} {lights_sensors[sensor_id].capitalize()} {light_id}"
-        )
+        sensor_name = f"{device_name} {lights_sensors[sensor_id].title()} {light_id}"
         state_topic = f"~color/{light_id}/status"
         if config_mode == ATTR_RGBW:
             payload = {
@@ -1334,7 +1361,9 @@ for light_id in range(0, white_lights):
                 state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
             else:
                 state_topic = f"~white/{light_id}/status"
-            sensor_name = f"{device_name} {lights_bin_sensors[bin_sensor_id].capitalize()} {light_id}"
+            sensor_name = (
+                f"{device_name} {lights_bin_sensors[bin_sensor_id].title()} {light_id}"
+            )
             # to remove - compatibility
             if (
                 model == ATTR_MODEL_SHELLYRGBW2
@@ -1396,9 +1425,7 @@ for light_id in range(0, white_lights):
             force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
         unique_id = f"{id}-white-{lights_sensors[sensor_id]}-{light_id}".lower()
         config_topic = f"{disc_prefix}/sensor/{id}-white-{lights_sensors[sensor_id]}-{light_id}/config"
-        sensor_name = (
-            f"{device_name} {lights_sensors[sensor_id].capitalize()} {light_id}"
-        )
+        sensor_name = f"{device_name} {lights_sensors[sensor_id].title()} {light_id}"
         if model in [
             ATTR_MODEL_SHELLYDIMMER,
             ATTR_MODEL_SHELLYDUO,
@@ -1452,7 +1479,7 @@ for meter_id in range(0, meters):
         unique_id = f"{id}-emeter-{meters_sensors[sensor_id]}-{meter_id}".lower()
         config_topic = f"{disc_prefix}/sensor/{id}-emeter-{meters_sensors[sensor_id]}-{meter_id}/config"
         sensor_name = (
-            f"{device_name} Meter {meters_sensors[sensor_id].capitalize()} {meter_id}"
+            f"{device_name} Meter {meters_sensors[sensor_id].title()} {meter_id}"
         )
         state_topic = f"~emeter/{meter_id}/{meters_sensors[sensor_id]}"
         payload = {
