@@ -817,7 +817,9 @@ for relay_id in range(0, relays):
         if device_config.get(f"relay-{relay_id}-name"):
             sensor_name = f"{device_config[f'relay-{relay_id}-name']} {relays_sensors[sensor_id].title()}"
         else:
-            sensor_name = f"{device_name} {relays_sensors[sensor_id].title()} {relay_id}"
+            sensor_name = (
+                f"{device_name} {relays_sensors[sensor_id].title()} {relay_id}"
+            )
         state_topic = f"~relay/{relay_id}/{relays_sensors[sensor_id]}"
         if model != ATTR_MODEL_SHELLY2 and not roller_mode:
             payload = {
