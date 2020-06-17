@@ -142,6 +142,7 @@ TPL_HUMIDITY = "{{value|float|round(1)}}"
 TPL_LONGPUSH = "{{value_json.event == ^L^}}"
 TPL_LUX = "{{value|float|round}}"
 TPL_OVERPOWER = "{{value_json.overpower}}"
+TPL_OVERPOWER_RELAY = "{% if value == ^overpower^ %}ON{% else %}OFF{% endif %}"
 TPL_POWER = "{{value|float|round(1)}}"
 TPL_POWER_FACTOR = "{{value|float*100|round}}"
 TPL_SHORTPUSH = "{{value_json.event == ^S^}}"
@@ -242,35 +243,37 @@ if develop:
     logger.error("DEVELOP MODE !!!")
 
 
-relays = 0
-rollers = 0
-meters = 0
-relay_components = [ATTR_SWITCH, ATTR_LIGHT, ATTR_FAN]
-relays_sensors = []
-relays_sensors_units = []
-relays_sensors_tpls = []
-relays_sensors_classes = []
-relays_bin_sensors = []
-relays_bin_sensors_pl = []
-lights_bin_sensors = []
-lights_bin_sensors_pl = []
-lights_sensors = []
-lights_sensors_classes = []
-lights_sensors_units = []
-lights_sensors_tpls = []
-sensors = []
-sensors_units = []
-sensors_tpls = []
-sensors_classes = []
+battery_powered = False
 bin_sensors = []
 bin_sensors_classes = []
 bin_sensors_topics = []
 bin_sensors_tpls = []
-rgbw_lights = 0
-white_lights = 0
-ext_sensors = 0
-battery_powered = False
 ext_sensor_type = None
+ext_sensors = 0
+lights_bin_sensors = []
+lights_bin_sensors_pl = []
+lights_sensors = []
+lights_sensors_classes = []
+lights_sensors_tpls = []
+lights_sensors_units = []
+meters = 0
+relay_components = [ATTR_SWITCH, ATTR_LIGHT, ATTR_FAN]
+relays = 0
+relays_bin_sensors = []
+relays_bin_sensors_classes = []
+relays_bin_sensors_pl = []
+relays_bin_sensors_tpls = []
+relays_sensors = []
+relays_sensors_classes = []
+relays_sensors_tpls = []
+relays_sensors_units = []
+rgbw_lights = 0
+rollers = 0
+sensors = []
+sensors_classes = []
+sensors_tpls = []
+sensors_units = []
+white_lights = 0
 
 if id.rsplit("-", 1)[0] == "shelly1":
     model = ATTR_MODEL_SHELLY1
@@ -278,6 +281,8 @@ if id.rsplit("-", 1)[0] == "shelly1":
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1]
     relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH]
+    relays_bin_sensors_tpls = [None, None, None]
+    relays_bin_sensors_classes = [None, None, None]
     ext_sensors = 3
 
 if id.rsplit("-", 1)[0] == "shelly1pm":
@@ -287,9 +292,11 @@ if id.rsplit("-", 1)[0] == "shelly1pm":
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
-    relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH]
-    relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1]
-    relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH]
+    relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH, ATTR_OVERPOWER]
+    relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
+    relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH, ATTR_RELAY]
+    relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
+    relays_bin_sensors_classes = [None, None, None, ATTR_POWER]
     sensors = [ATTR_TEMPERATURE]
     sensors_classes = sensors
     sensors_units = [UNIT_CELSIUS]
@@ -308,6 +315,8 @@ if id.rsplit("-", 1)[0] == "shellyair":
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT]
     relays_bin_sensors_pl = [PL_1_0]
+    relays_bin_sensors_tpls = [None]
+    relays_bin_sensors_classes = [None]
     sensors = [ATTR_TEMPERATURE, ATTR_TOTALWORKTIME]
     sensors_classes = [ATTR_TEMPERATURE, None]
     sensors_units = [UNIT_CELSIUS, UNIT_SECONDS]
@@ -325,9 +334,11 @@ if id.rsplit("-", 1)[0] == "shellyswitch":
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
-    relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH]
-    relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1]
-    relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH]
+    relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH, ATTR_OVERPOWER]
+    relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
+    relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH, ATTR_RELAY]
+    relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
+    relays_bin_sensors_classes = [None, None, None, ATTR_POWER]
 
 if id.rsplit("-", 1)[0] == "shellyswitch25":
     model = ATTR_MODEL_SHELLY25
@@ -337,9 +348,11 @@ if id.rsplit("-", 1)[0] == "shellyswitch25":
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
-    relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH]
-    relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1]
-    relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH]
+    relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH, ATTR_OVERPOWER]
+    relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
+    relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH, ATTR_RELAY]
+    relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
+    relays_bin_sensors_classes = [None, None, None, ATTR_POWER]
     sensors = [ATTR_TEMPERATURE]
     sensors_classes = sensors
     sensors_units = [UNIT_CELSIUS]
@@ -355,6 +368,11 @@ if id.rsplit("-", 1)[0] == "shellyplug":
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
+    relays_bin_sensors = [ATTR_OVERPOWER]
+    relays_bin_sensors_pl = [None]
+    relays_bin_sensors_topics = [ATTR_RELAY]
+    relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
+    relays_bin_sensors_classes = [ATTR_POWER]
 
 if id.rsplit("-", 1)[0] == "shellyplug-s":
     model = ATTR_MODEL_SHELLYPLUG_S
@@ -363,6 +381,11 @@ if id.rsplit("-", 1)[0] == "shellyplug-s":
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
+    relays_bin_sensors = [ATTR_OVERPOWER]
+    relays_bin_sensors_pl = [None]
+    relays_bin_sensors_topics = [ATTR_RELAY]
+    relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
+    relays_bin_sensors_classes = [ATTR_POWER]
     sensors = [ATTR_TEMPERATURE]
     sensors_classes = [ATTR_TEMPERATURE]
     sensors_units = [UNIT_CELSIUS]
@@ -378,6 +401,11 @@ if id.rsplit("-", 1)[0] == "shelly4pro":
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
+    relays_bin_sensors = [ATTR_OVERPOWER]
+    relays_bin_sensors_pl = [None]
+    relays_bin_sensors_topics = [ATTR_RELAY]
+    relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
+    relays_bin_sensors_classes = [ATTR_POWER]
 
 if id.rsplit("-", 1)[0] == "shellyht":
     model = ATTR_MODEL_SHELLYHT
@@ -564,6 +592,11 @@ if id.rsplit("-", 1)[0] == "shellyem":
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
+    relays_bin_sensors = [ATTR_OVERPOWER]
+    relays_bin_sensors_pl = [None]
+    relays_bin_sensors_topics = [ATTR_RELAY]
+    relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
+    relays_bin_sensors_classes = [ATTR_POWER]
     meters = 2
     meters_sensors = [
         ATTR_POWER,
@@ -606,6 +639,11 @@ if id.rsplit("-", 1)[0] == "shellyem3":
     model = ATTR_MODEL_SHELLY3EM
     relays = 1
     meters = 3
+    relays_bin_sensors = [ATTR_OVERPOWER]
+    relays_bin_sensors_pl = [None]
+    relays_bin_sensors_topics = [ATTR_RELAY]
+    relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
+    relays_bin_sensors_classes = [ATTR_POWER]
     meters_sensors = [
         ATTR_CURRENT,
         ATTR_POWER,
@@ -871,8 +909,6 @@ for relay_id in range(0, relays):
             payload = {
                 KEY_NAME: sensor_name,
                 KEY_STATE_TOPIC: state_topic,
-                KEY_PAYLOAD_ON: relays_bin_sensors_pl[bin_sensor_id][VALUE_ON],
-                KEY_PAYLOAD_OFF: relays_bin_sensors_pl[bin_sensor_id][VALUE_OFF],
                 KEY_AVAILABILITY_TOPIC: availability_topic,
                 KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
                 KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
@@ -892,11 +928,22 @@ for relay_id in range(0, relays):
                 and push_off_delay
             ):
                 payload[KEY_OFF_DELAY] = off_delay
+            if relays_bin_sensors_tpls[bin_sensor_id]:
+                payload[KEY_VALUE_TEMPLATE] = relays_bin_sensors_tpls[bin_sensor_id]
+            else:
+                payload[KEY_PAYLOAD_ON] = relays_bin_sensors_pl[bin_sensor_id][VALUE_ON]
+                payload[KEY_PAYLOAD_OFF] = relays_bin_sensors_pl[bin_sensor_id][
+                    VALUE_OFF
+                ]
+            if relays_bin_sensors_classes[bin_sensor_id]:
+                payload[KEY_DEVICE_CLASS] = relays_bin_sensors_classes[bin_sensor_id]
         else:
             payload = ""
         if id.lower() in ignored:
             payload = ""
-        mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
+        mqtt_publish(
+            config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos
+        )
 
 # sensors
 for sensor_id in range(0, len(sensors)):
