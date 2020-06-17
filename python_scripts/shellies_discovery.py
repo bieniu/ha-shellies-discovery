@@ -858,7 +858,7 @@ for relay_id in range(0, relays):
         unique_id = f"{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}".lower()
         config_topic = f"{disc_prefix}/binary_sensor/{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}/config"
         if device_config.get(f"relay-{relay_id}-name"):
-            sensor_name = f"{device_config[f'relay-{relay_id}-name']} {relays_sensors[sensor_id].title()}"
+            sensor_name = f"{device_config[f'relay-{relay_id}-name']} {relays_bin_sensors[bin_sensor_id].title()}"
         else:
             sensor_name = (
                 f"{device_name} {relays_bin_sensors[bin_sensor_id].title()} {relay_id}"
