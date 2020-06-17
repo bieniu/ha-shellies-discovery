@@ -13,22 +13,24 @@ python_script:
 - Shelly 1 (with external sensors)
 - Shelly 1PM (with external sensors)
 - Shelly 2 (relays and roller mode)
-- Shely 2.5 (relays and roller mode)
+- Shelly 2.5 (relays and roller mode)
+- Shelly 3EM
 - Shelly 4Pro
+- Shelly Air
+- Shelly Bulb
+- Shelly Button1
+- Shelly Dimmer
+- Shelly Door/Window
+- Shelly DUO
+- Shelly EM
+- Shelly H&T (with or without USB adapter)
+- Shelly i3
 - Shelly Plug
 - Shelly Plug S
 - Shelly RGBW2 (color and white mode)
-- Shelly Bulb
-- Shelly DUO
-- Shelly Vintage
-- Shelly H&T (with or without USB adapter)
-- Shelly Smoke
 - Shelly Sense
-- Shelly EM
-- Shelly 3EM
-- Shelly Dimmer
-- Shelly Door/Window
-- Shelly Air
+- Shelly Smoke
+- Shelly Vintage
 
 ## How to debug
 
