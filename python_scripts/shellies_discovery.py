@@ -88,6 +88,7 @@ ATTR_POWER_AC = "ac"
 CONF_DEVELOP = "develop"
 CONF_DISCOVERY_PREFIX = "discovery_prefix"
 CONF_FORCE_UPDATE_SENSORS = "force_update_sensors"
+CONF_FRIENDLY_NAME = "friendly_name"
 CONF_FW_VER = "fw_ver"
 CONF_ID = "id"
 CONF_IGNORED_DEVICES = "ignored_devices"
@@ -671,7 +672,10 @@ for roller_id in range(0, rollers):
     if device_config.get(CONF_MODE):
         config_mode = device_config[CONF_MODE]
     device_name = f"{model} {id.split('-')[-1]}"
-    roller_name = f"{device_name} Roller {roller_id}"
+    if device_config.get(f"roller-{roller_id}-name"):
+        roller_name = device_config[f"roller-{roller_id}-name"]
+    else:
+        roller_name = f"{device_name} Roller {roller_id}"
     default_topic = f"shellies/{id}/"
     state_topic = f"~roller/{roller_id}"
     command_topic = f"{state_topic}/command"
@@ -713,14 +717,17 @@ for roller_id in range(0, rollers):
 
 # relays
 for relay_id in range(0, relays):
+    device_config = get_device_config(id)
     device_name = f"{model} {id.split('-')[-1]}"
-    relay_name = f"{device_name} Relay {relay_id}"
+    if device_config.get(f"relay-{relay_id}-name"):
+        relay_name = device_config[f"relay-{relay_id}-name"]
+    else:
+        relay_name = f"{device_name} Relay {relay_id}"
     default_topic = f"shellies/{id}/"
     state_topic = f"~relay/{relay_id}"
     command_topic = f"{state_topic}/command"
     availability_topic = "~online"
     unique_id = f"{id}-relay-{relay_id}".lower()
-    device_config = get_device_config(id)
     config_component = ATTR_SWITCH
     if device_config.get(f"relay-{relay_id}"):
         config_component = device_config[f"relay-{relay_id}"]
@@ -764,7 +771,10 @@ for relay_id in range(0, relays):
             config_topic = (
                 f"{disc_prefix}/sensor/{id}-{relays_sensors[sensor_id]}/config"
             )
-            sensor_name = f"{device_name} {relays_sensors[sensor_id].title()}"
+            if device_config.get(f"relay-{relay_id}-name"):
+                sensor_name = f"{device_config[f'relay-{relay_id}-name']} {relays_sensors[sensor_id].title()}"
+            else:
+                sensor_name = f"{device_name} {relays_sensors[sensor_id].title()}"
             state_topic = f"~relay/{relays_sensors[sensor_id]}"
             if model == ATTR_MODEL_SHELLY2 or roller_mode:
                 payload = {
@@ -804,7 +814,10 @@ for relay_id in range(0, relays):
         config_topic = (
             f"{disc_prefix}/sensor/{id}-{relays_sensors[sensor_id]}-{relay_id}/config"
         )
-        sensor_name = f"{device_name} {relays_sensors[sensor_id].title()} {relay_id}"
+        if device_config.get(f"relay-{relay_id}-name"):
+            sensor_name = f"{device_config[f'relay-{relay_id}-name']} {relays_sensors[sensor_id].title()}"
+        else:
+            sensor_name = f"{device_name} {relays_sensors[sensor_id].title()} {relay_id}"
         state_topic = f"~relay/{relay_id}/{relays_sensors[sensor_id]}"
         if model != ATTR_MODEL_SHELLY2 and not roller_mode:
             payload = {
@@ -842,9 +855,12 @@ for relay_id in range(0, relays):
             push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
         unique_id = f"{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}".lower()
         config_topic = f"{disc_prefix}/binary_sensor/{id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}/config"
-        sensor_name = (
-            f"{device_name} {relays_bin_sensors[bin_sensor_id].title()} {relay_id}"
-        )
+        if device_config.get(f"relay-{relay_id}-name"):
+            sensor_name = f"{device_config[f'relay-{relay_id}-name']} {relays_sensors[sensor_id].title()}"
+        else:
+            sensor_name = (
+                f"{device_name} {relays_bin_sensors[bin_sensor_id].title()} {relay_id}"
+            )
         if relays_bin_sensors_topics and relays_bin_sensors_topics[bin_sensor_id]:
             state_topic = f"~{relays_bin_sensors_topics[bin_sensor_id]}/{relay_id}"
         else:

@@ -144,7 +144,9 @@ python_script:
         force_update_sensors: true
       shellyswitch-123409FF:
         relay-0: "fan"
+        relay-0-name: "Bathroom Fan"
         relay-1: "light"
+        relay-1-name: "Livingroom Light"
       shellyswitch-123409cc:
         relay-1: "fan"
       shellyswitch25-334455AA:
@@ -182,6 +184,8 @@ key | optional | type | default | description
 key | optional | type | default | possible values | description
 -- | -- | -- | -- | -- | --
 `relay-<NUM>` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay number `NUM`
+`relay-<NUM>-name` | True | string | None | string | friendly name of the relay number `NUM`
+`roller-<NUM>-name` | True | string | None | string | friendly name of the roller number `NUM`
 `ext-<NUM>` | True | string | `None` | `temperature` | type of external sensor number `NUM`
 `force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) for sensors
 `push_off_delay` | True | boolean | `true` | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (2 sec) for `longpush`/`shortpush` binary sensors
