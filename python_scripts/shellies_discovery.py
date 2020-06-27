@@ -808,6 +808,9 @@ if id.rsplit("-", 1)[0] == "shellyix3":
         TOPIC_INPUT_EVENT_0,
         TOPIC_INPUT_EVENT_1,
         TOPIC_INPUT_EVENT_2,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_1,
+        TOPIC_INPUT_EVENT_2,
     ]
     bin_sensors_pl = [
         PL_1_0,
