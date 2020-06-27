@@ -51,6 +51,9 @@ ATTR_LONGPUSH = "longpush"
 ATTR_LONGPUSH_0 = "longpush/0"
 ATTR_LONGPUSH_1 = "longpush/1"
 ATTR_LONGPUSH_2 = "longpush/2"
+ATTR_LONGPUSH_SHORTPUSH_0 = "longpush shortpush 0"
+ATTR_LONGPUSH_SHORTPUSH_1 = "longpush shortpush 1"
+ATTR_LONGPUSH_SHORTPUSH_2 = "longpush shortpush 2"
 ATTR_LUX = "lux"
 ATTR_MOISTURE = "moisture"
 ATTR_MOTION = "motion"
@@ -80,6 +83,9 @@ ATTR_SHORTPUSH = "shortpush"
 ATTR_SHORTPUSH_0 = "shortpush/0"
 ATTR_SHORTPUSH_1 = "shortpush/1"
 ATTR_SHORTPUSH_2 = "shortpush/2"
+ATTR_SHORTPUSH_LONGPUSH_0 = "shortpush longpush 0"
+ATTR_SHORTPUSH_LONGPUSH_1 = "shortpush longpush 1"
+ATTR_SHORTPUSH_LONGPUSH_2 = "shortpush longpush 2"
 ATTR_SMOKE = "smoke"
 ATTR_SWITCH = "switch"
 ATTR_TEMPERATURE = "temperature"
@@ -153,12 +159,14 @@ TPL_ENERGY_WH = "{{(value|float/1000)|round(2)}}"
 TPL_ENERGY_WMIN = "{{(value|float/60/1000)|round(2)}}"
 TPL_HUMIDITY = "{{value|float|round(1)}}"
 TPL_LONGPUSH = "{% if value_json.event == ^L^ %}ON{% else %}OFF{% endif %}"
+TPL_LONGPUSH_SHORTPUSH = "{% if value_json.event == ^LS^ %}ON{% else %}OFF{% endif %}"
 TPL_LUX = "{{value|float|round}}"
 TPL_OVERPOWER = "{% if value_json.overpower == true %}ON{% else %}OFF{% endif %}"
 TPL_OVERPOWER_RELAY = "{% if value == ^overpower^ %}ON{% else %}OFF{% endif %}"
 TPL_POWER = "{{value|float|round(1)}}"
 TPL_POWER_FACTOR = "{{value|float*100|round}}"
 TPL_SHORTPUSH = "{% if value_json.event == ^S^ %}ON{% else %}OFF{% endif %}"
+TPL_SHORTPUSH_LONGPUSH = "{% if value_json.event == ^SL^ %}ON{% else %}OFF{% endif %}"
 TPL_TEMPERATURE = "{{value|float|round(1)}}"
 TPL_TILT = "{{value|float}}"
 TPL_TRIPLE_SHORTPUSH = "{% if value_json.event == ^SSS^ %}ON{% else %}OFF{% endif %}"
@@ -728,8 +736,20 @@ if id.rsplit("-", 1)[0] == "shellyix3":
         ATTR_DOUBLE_SHORTPUSH_2,
         ATTR_TRIPLE_SHORTPUSH_2,
         ATTR_LONGPUSH_2,
+        ATTR_SHORTPUSH_LONGPUSH_0,
+        ATTR_SHORTPUSH_LONGPUSH_1,
+        ATTR_SHORTPUSH_LONGPUSH_2,
+        ATTR_LONGPUSH_SHORTPUSH_0,
+        ATTR_LONGPUSH_SHORTPUSH_1,
+        ATTR_LONGPUSH_SHORTPUSH_2,
     ]
     bin_sensors_classes = [
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
         None,
         None,
         None,
@@ -762,6 +782,12 @@ if id.rsplit("-", 1)[0] == "shellyix3":
         TPL_DOUBLE_SHORTPUSH,
         TPL_TRIPLE_SHORTPUSH,
         TPL_LONGPUSH,
+        TPL_SHORTPUSH_LONGPUSH,
+        TPL_SHORTPUSH_LONGPUSH,
+        TPL_SHORTPUSH_LONGPUSH,
+        TPL_LONGPUSH_SHORTPUSH,
+        TPL_LONGPUSH_SHORTPUSH,
+        TPL_LONGPUSH_SHORTPUSH,
     ]
     bin_sensors_topics = [
         TOPIC_INPUT_0,
@@ -779,11 +805,20 @@ if id.rsplit("-", 1)[0] == "shellyix3":
         TOPIC_INPUT_EVENT_2,
         TOPIC_INPUT_EVENT_2,
         TOPIC_INPUT_EVENT_2,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_1,
+        TOPIC_INPUT_EVENT_2,
     ]
     bin_sensors_pl = [
         PL_1_0,
         PL_1_0,
         PL_0_1,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
         None,
         None,
         None,
