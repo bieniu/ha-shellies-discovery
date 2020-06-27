@@ -170,6 +170,7 @@ UNIT_DEGREE = "°"
 UNIT_KWH = "kWh"
 UNIT_LUX = "lx"
 UNIT_PERCENT = "%"
+UNIT_PPM = "ppm"
 UNIT_SECONDS = "s"
 UNIT_VAR = "VAR"
 UNIT_VOLT = "V"
@@ -433,7 +434,7 @@ if id.rsplit("-", 1)[0] == "shellygas":
     sensors = [ATTR_OPERATION, ATTR_GAS, ATTR_SELF_TEST, ATTR_CONCENTRATION]
     sensors_classes = [None, None, None, None]
     sensors_tpls = [None, None, None, None]
-    sensors_units = [None, None, None, None]
+    sensors_units = [None, None, None, UNIT_PPM]
 
 if id.rsplit("-", 1)[0] == "shellybutton1":
     model = ATTR_MODEL_SHELLYBUTTON1
