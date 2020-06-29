@@ -1257,15 +1257,18 @@ for bin_sensor_id in range(0, len(bin_sensors)):
 
 # color lights
 for light_id in range(0, rgbw_lights):
+    device_config = get_device_config(id)
     device_name = f"{model} {id.split('-')[-1]}"
-    light_name = f"{device_name} Light {light_id}"
+    if device_config.get(f"light-{light_id}-name"):
+        relay_name = device_config[f"light-{light_id}-name"]
+    else:
+        light_name = f"{device_name} Light {light_id}"
     default_topic = f"shellies/{id}/"
     state_topic = f"~color/{light_id}/status"
     command_topic = f"~color/{light_id}/set"
     availability_topic = "~online"
     unique_id = f"{id}-light-{light_id}".lower()
     config_topic = f"{disc_prefix}/light/{id}-{light_id}/config"
-    device_config = get_device_config(id)
     config_mode = ATTR_RGBW
     if device_config.get(CONF_MODE):
         config_mode = device_config[CONF_MODE]
@@ -1427,8 +1430,12 @@ for light_id in range(0, rgbw_lights):
 
 # white lights
 for light_id in range(0, white_lights):
+    device_config = get_device_config(id)
     device_name = f"{model} {id.split('-')[-1]}"
-    light_name = f"{device_name} Light {light_id}"
+    if device_config.get(f"light-{light_id}-name"):
+        relay_name = device_config[f"light-{light_id}-name"]
+    else:
+        light_name = f"{device_name} Light {light_id}"
     default_topic = f"shellies/{id}/"
     if model in [
         ATTR_MODEL_SHELLYDIMMER,
@@ -1445,7 +1452,6 @@ for light_id in range(0, white_lights):
         unique_id = f"{id}-light-white-{light_id}".lower()
         config_topic = f"{disc_prefix}/light/{id}-white-{light_id}/config"
     availability_topic = "~online"
-    device_config = get_device_config(id)
     config_mode = ATTR_RGBW
     if device_config.get(CONF_MODE):
         config_mode = device_config[CONF_MODE]
