@@ -1260,7 +1260,7 @@ for light_id in range(0, rgbw_lights):
     device_config = get_device_config(id)
     device_name = f"{model} {id.split('-')[-1]}"
     if device_config.get(f"light-{light_id}-name"):
-        relay_name = device_config[f"light-{light_id}-name"]
+        light_name = device_config[f"light-{light_id}-name"]
     else:
         light_name = f"{device_name} Light {light_id}"
     default_topic = f"shellies/{id}/"
@@ -1433,7 +1433,7 @@ for light_id in range(0, white_lights):
     device_config = get_device_config(id)
     device_name = f"{model} {id.split('-')[-1]}"
     if device_config.get(f"light-{light_id}-name"):
-        relay_name = device_config[f"light-{light_id}-name"]
+        light_name = device_config[f"light-{light_id}-name"]
     else:
         light_name = f"{device_name} Light {light_id}"
     default_topic = f"shellies/{id}/"
