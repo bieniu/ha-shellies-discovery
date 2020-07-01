@@ -59,6 +59,7 @@ logger:
   default: warning
   logs:
     homeassistant.components.python_script: debug
+    homeassistant.components.automation: info
 ```
 
 ## Troubleshooting checklist
