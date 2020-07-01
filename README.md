@@ -56,6 +56,7 @@ To debug the script add this to your `logger` configuration:
 ```yaml
 # configuration.yaml file
 logger:
+  default: warning
   logs:
     homeassistant.components.python_script: debug
 ```
