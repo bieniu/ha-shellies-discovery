@@ -20,6 +20,7 @@ python_script:
 - Shelly Bulb
 - Shelly Button1
 - Shelly Dimmer
+- Shelly Dimmer 2
 - Shelly Door/Window
 - Shelly DUO
 - Shelly EM
