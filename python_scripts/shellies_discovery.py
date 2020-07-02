@@ -1534,7 +1534,7 @@ for light_id in range(0, white_lights):
             '"mf":"' + ATTR_MANUFACTURER + '"},'
             '"~":"' + default_topic + '"}'
         )
-    elif model == ATTR_MODEL_SHELLYDIMMER:
+    elif model in [ATTR_MODEL_SHELLYDIMMER, ATTR_MODEL_SHELLYDIMMER2]:
         payload = (
             '{"schema":"template",'
             '"name":"' + light_name + '",'
