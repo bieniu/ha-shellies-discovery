@@ -14,6 +14,7 @@ ATTR_MODEL_SHELLYAIR = "Shelly Air"
 ATTR_MODEL_SHELLYBULB = "Shelly Bulb"
 ATTR_MODEL_SHELLYBUTTON1 = "Shelly Button1"
 ATTR_MODEL_SHELLYDIMMER = "Shelly Dimmer"
+ATTR_MODEL_SHELLYDIMMER2 = "Shelly Dimmer 2"
 ATTR_MODEL_SHELLYDUO = "Shelly DUO"
 ATTR_MODEL_SHELLYDW = "Shelly Door/Window"
 ATTR_MODEL_SHELLYEM = "Shelly EM"
@@ -533,6 +534,62 @@ if id.rsplit("-", 1)[0] == "shellyrgbw2":
 
 if id.rsplit("-", 1)[0] == "shellydimmer":
     model = ATTR_MODEL_SHELLYDIMMER
+    white_lights = 1
+    sensors = [ATTR_TEMPERATURE]
+    sensors_classes = [ATTR_TEMPERATURE]
+    sensors_units = [UNIT_CELSIUS]
+    sensors_tpls = [TPL_TEMPERATURE]
+    bin_sensors = [
+        ATTR_OVERTEMPERATURE,
+        ATTR_OVERLOAD,
+        ATTR_LOADERROR,
+        ATTR_INPUT_0,
+        ATTR_INPUT_1,
+        ATTR_LONGPUSH_0,
+        ATTR_LONGPUSH_1,
+        ATTR_SHORTPUSH_0,
+        ATTR_SHORTPUSH_1,
+    ]
+    bin_sensors_classes = [
+        ATTR_HEAT,
+        ATTR_POWER,
+        ATTR_PROBLEM,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+    ]
+    bin_sensors_pl = [
+        PL_1_0,
+        PL_1_0,
+        PL_1_0,
+        PL_1_0,
+        PL_1_0,
+        PL_1_0,
+        PL_1_0,
+        PL_0_1,
+        PL_0_1,
+    ]
+    bin_sensors_topics = [
+        None,
+        None,
+        None,
+        ATTR_INPUT_0,
+        ATTR_INPUT_1,
+        ATTR_LONGPUSH_0,
+        ATTR_LONGPUSH_1,
+        ATTR_LONGPUSH_0,
+        ATTR_LONGPUSH_1,
+    ]
+    lights_sensors = [ATTR_POWER, ATTR_ENERGY]
+    lights_sensors_units = [UNIT_WATT, UNIT_KWH]
+    lights_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
+
+if id.rsplit("-", 1)[0] == "shellydimmer2":
+    model = ATTR_MODEL_SHELLYDIMMER2
     white_lights = 1
     sensors = [ATTR_TEMPERATURE]
     sensors_classes = [ATTR_TEMPERATURE]
