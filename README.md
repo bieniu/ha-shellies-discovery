@@ -156,6 +156,8 @@ python_script:
         light-0-name: "Bedroom Lamp"
       shellyswitch25-334455AA:
         mode: "roller"
+        roller-0-name: "Garage"
+        roller-0-class: "garage"
       shellyplug-s-CCBBCCAA:
         relay-0: "light"
         force_update_sensors: true
@@ -191,6 +193,7 @@ key | optional | type | default | possible values | description
 `relay-<NUM>` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay number `NUM`
 `relay-<NUM>-name` | True | string | None | string | friendly name of the relay number `NUM`
 `roller-<NUM>-name` | True | string | None | string | friendly name of the roller number `NUM`
+`roller-<NUM>-class` | True | string | None | string | [device_class](https://www.home-assistant.io/integrations/cover/#device-class) of the roller number `NUM`
 `light-<NUM>-name` | True | string | None | string | friendly name of the light number `NUM`
 `ext-<NUM>` | True | string | `None` | `temperature` | type of external sensor number `NUM`
 `force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) for sensors

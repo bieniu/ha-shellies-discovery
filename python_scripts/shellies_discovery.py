@@ -146,6 +146,19 @@ KEY_UNIQUE_ID = "uniq_id"
 KEY_UNIT = "unit_of_meas"
 KEY_VALUE_TEMPLATE = "val_tpl"
 
+ROLLER_DEVICE_CLASSES = [
+    "awning",
+    "blind",
+    "curtain",
+    "damper",
+    "door",
+    "garage",
+    "gate",
+    "shade",
+    "shutter",
+    "window",
+]
+
 TOPIC_INPUT_0 = "input/0"
 TOPIC_INPUT_1 = "input/1"
 TOPIC_INPUT_2 = "input/2"
@@ -904,6 +917,12 @@ for roller_id in range(0, rollers):
         roller_name = device_config[f"roller-{roller_id}-name"]
     else:
         roller_name = f"{device_name} Roller {roller_id}"
+    device_class = None
+    if device_config.get(f"roller-{roller_id}-class"):
+        if device_config[f"roller-{roller_id}-class"] in ROLLER_DEVICE_CLASSES:
+            device_class = device_config[f"roller-{roller_id}-class"]
+        else:
+            logger.error("Wrong roller class, the default value None was used")
     default_topic = f"shellies/{id}/"
     state_topic = f"~roller/{roller_id}"
     command_topic = f"{state_topic}/command"
@@ -939,6 +958,8 @@ for roller_id in range(0, rollers):
         }
     else:
         payload = ""
+    if device_class:
+        payload[KEY_DEVICE_CLASS] = device_class
     if id.lower() in ignored:
         payload = ""
     mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
