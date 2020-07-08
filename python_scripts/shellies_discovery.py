@@ -328,6 +328,7 @@ if id.rsplit("-", 1)[0] == "shelly1":
     relays_bin_sensors_tpls = [None, None, None]
     relays_bin_sensors_classes = [None, None, None]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
     ext_sensors = 3
@@ -391,6 +392,7 @@ if id.rsplit("-", 1)[0] == "shellyswitch":
     relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [None, None, None, ATTR_POWER]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
 
@@ -430,6 +432,7 @@ if id.rsplit("-", 1)[0] == "shellyplug":
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [ATTR_POWER]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
 
@@ -468,6 +471,7 @@ if id.rsplit("-", 1)[0] == "shelly4pro":
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [ATTR_POWER]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
 
@@ -478,6 +482,7 @@ if id.rsplit("-", 1)[0] == "shellyht":
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_PERCENT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_HUMIDITY, TPL_BATTERY]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
     battery_powered = True
@@ -489,6 +494,7 @@ if id.rsplit("-", 1)[0] == "shellygas":
     sensors_tpls = [None, None, None, None]
     sensors_units = [None, None, None, UNIT_PPM]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
 
@@ -506,6 +512,7 @@ if id.rsplit("-", 1)[0] == "shellybutton1":
         ATTR_LONGPUSH,
         ATTR_FIRMWARE_UPDATE,
     ]
+    bin_sensors_classes = [None, None, None, None, None, None]
     bin_sensors_tpls = [
         None,
         TPL_SHORTPUSH,
@@ -743,6 +750,7 @@ if id.rsplit("-", 1)[0] == "shellybulb":
     model = ATTR_MODEL_SHELLYBULB
     rgbw_lights = 1
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
 
@@ -754,6 +762,7 @@ if id.rsplit("-", 1)[0].lower() == "shellybulbduo":
     lights_sensors_classes = [ATTR_POWER, ATTR_POWER]
     lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
 
@@ -765,6 +774,7 @@ if id.rsplit("-", 1)[0].lower() == "shellyvintage":
     lights_sensors_classes = [ATTR_POWER, ATTR_POWER]
     lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
 
@@ -818,6 +828,7 @@ if id.rsplit("-", 1)[0] == "shellyem":
         TPL_ENERGY_WH,
     ]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
 
@@ -871,6 +882,7 @@ if id.rsplit("-", 1)[0] == "shellyem3":
         TPL_ENERGY_WH,
     ]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
 
