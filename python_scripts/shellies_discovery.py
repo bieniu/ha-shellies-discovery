@@ -37,6 +37,7 @@ ATTR_CURRENT = "current"
 ATTR_ENERGY = "energy"
 ATTR_EXT_TEMPERATURE = "ext_temperature"
 ATTR_FAN = "fan"
+ATTR_FIRMWARE_UPDATE = "firmware update"
 ATTR_FLOOD = "flood"
 ATTR_GAS = "gas"
 ATTR_HEAT = "heat"
@@ -159,6 +160,7 @@ ROLLER_DEVICE_CLASSES = [
     "window",
 ]
 
+TOPIC_ANNOUNCE = "announce"
 TOPIC_INPUT_0 = "input/0"
 TOPIC_INPUT_1 = "input/1"
 TOPIC_INPUT_2 = "input/2"
@@ -175,6 +177,7 @@ TPL_HUMIDITY = "{{value|float|round(1)}}"
 TPL_LONGPUSH = "{% if value_json.event == ^L^ %}ON{% else %}OFF{% endif %}"
 TPL_LONGPUSH_SHORTPUSH = "{% if value_json.event == ^LS^ %}ON{% else %}OFF{% endif %}"
 TPL_LUX = "{{value|float|round}}"
+TPL_NEW_FIRMWARE = "{{% if value_json.id == ^{0}^ and value_json.new_fw == true %}}ON{{% else %}}OFF{{% endif %}}"
 TPL_OVERPOWER = "{% if value_json.overpower == true %}ON{% else %}OFF{% endif %}"
 TPL_OVERPOWER_RELAY = "{% if value == ^overpower^ %}ON{% else %}OFF{% endif %}"
 TPL_POWER = "{{value|float|round(1)}}"
@@ -319,6 +322,9 @@ if id.rsplit("-", 1)[0] == "shelly1":
     relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH]
     relays_bin_sensors_tpls = [None, None, None]
     relays_bin_sensors_classes = [None, None, None]
+    bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [TOPIC_ANNOUNCE]
     ext_sensors = 3
 
 if id.rsplit("-", 1)[0] == "shelly1pm":
@@ -337,9 +343,11 @@ if id.rsplit("-", 1)[0] == "shelly1pm":
     sensors_classes = sensors
     sensors_units = [UNIT_CELSIUS]
     sensors_tpls = [TPL_TEMPERATURE]
-    bin_sensors = [ATTR_OVERTEMPERATURE]
-    bin_sensors_classes = [ATTR_HEAT]
-    bin_sensors_pl = [PL_1_0]
+    bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [ATTR_HEAT, None]
+    bin_sensors_pl = [PL_1_0, None]
+    bin_sensors_tpls = [None, TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [None, TOPIC_ANNOUNCE]
     ext_sensors = 3
 
 if id.rsplit("-", 1)[0] == "shellyair":
@@ -357,9 +365,11 @@ if id.rsplit("-", 1)[0] == "shellyair":
     sensors_classes = [ATTR_TEMPERATURE, None]
     sensors_units = [UNIT_CELSIUS, UNIT_SECONDS]
     sensors_tpls = [TPL_TEMPERATURE, None]
-    bin_sensors = [ATTR_OVERTEMPERATURE]
-    bin_sensors_classes = [ATTR_HEAT]
-    bin_sensors_pl = [PL_1_0]
+    bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [ATTR_HEAT, None]
+    bin_sensors_pl = [PL_1_0, None]
+    bin_sensors_tpls = [None, TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [None, TOPIC_ANNOUNCE]
     ext_sensors = 1
 
 if id.rsplit("-", 1)[0] == "shellyswitch":
@@ -375,6 +385,9 @@ if id.rsplit("-", 1)[0] == "shellyswitch":
     relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH, ATTR_RELAY]
     relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [None, None, None, ATTR_POWER]
+    bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [TOPIC_ANNOUNCE]
 
 if id.rsplit("-", 1)[0] == "shellyswitch25":
     model = ATTR_MODEL_SHELLY25
@@ -393,9 +406,11 @@ if id.rsplit("-", 1)[0] == "shellyswitch25":
     sensors_classes = sensors
     sensors_units = [UNIT_CELSIUS]
     sensors_tpls = [TPL_TEMPERATURE]
-    bin_sensors = [ATTR_OVERTEMPERATURE]
-    bin_sensors_classes = [ATTR_HEAT]
-    bin_sensors_pl = [PL_1_0]
+    bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [ATTR_HEAT, None]
+    bin_sensors_pl = [PL_1_0, None]
+    bin_sensors_tpls = [None, TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [None, TOPIC_ANNOUNCE]
 
 if id.rsplit("-", 1)[0] == "shellyplug":
     model = ATTR_MODEL_SHELLYPLUG
@@ -409,6 +424,9 @@ if id.rsplit("-", 1)[0] == "shellyplug":
     relays_bin_sensors_topics = [ATTR_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [ATTR_POWER]
+    bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [TOPIC_ANNOUNCE]
 
 if id.rsplit("-", 1)[0] == "shellyplug-s":
     model = ATTR_MODEL_SHELLYPLUG_S
@@ -426,9 +444,11 @@ if id.rsplit("-", 1)[0] == "shellyplug-s":
     sensors_classes = [ATTR_TEMPERATURE]
     sensors_units = [UNIT_CELSIUS]
     sensors_tpls = [TPL_TEMPERATURE]
-    bin_sensors = [ATTR_OVERTEMPERATURE]
-    bin_sensors_classes = [ATTR_HEAT]
-    bin_sensors_pl = [PL_1_0]
+    bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [ATTR_HEAT, None]
+    bin_sensors_pl = [PL_1_0, None]
+    bin_sensors_tpls = [None, TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [None, TOPIC_ANNOUNCE]
 
 if id.rsplit("-", 1)[0] == "shelly4pro":
     model = ATTR_MODEL_SHELLY4PRO
@@ -442,6 +462,9 @@ if id.rsplit("-", 1)[0] == "shelly4pro":
     relays_bin_sensors_topics = [ATTR_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [ATTR_POWER]
+    bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [TOPIC_ANNOUNCE]
 
 if id.rsplit("-", 1)[0] == "shellyht":
     model = ATTR_MODEL_SHELLYHT
@@ -449,6 +472,9 @@ if id.rsplit("-", 1)[0] == "shellyht":
     sensors_classes = sensors
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_PERCENT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_HUMIDITY, TPL_BATTERY]
+    bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [TOPIC_ANNOUNCE]
     battery_powered = True
 
 if id.rsplit("-", 1)[0] == "shellygas":
@@ -457,6 +483,9 @@ if id.rsplit("-", 1)[0] == "shellygas":
     sensors_classes = [None, None, None, None]
     sensors_tpls = [None, None, None, None]
     sensors_units = [None, None, None, UNIT_PPM]
+    bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [TOPIC_ANNOUNCE]
 
 if id.rsplit("-", 1)[0] == "shellybutton1":
     model = ATTR_MODEL_SHELLYBUTTON1
@@ -470,6 +499,7 @@ if id.rsplit("-", 1)[0] == "shellybutton1":
         ATTR_DOUBLE_SHORTPUSH,
         ATTR_TRIPLE_SHORTPUSH,
         ATTR_LONGPUSH,
+        ATTR_FIRMWARE_UPDATE,
     ]
     bin_sensors_tpls = [
         None,
@@ -477,14 +507,16 @@ if id.rsplit("-", 1)[0] == "shellybutton1":
         TPL_DOUBLE_SHORTPUSH,
         TPL_TRIPLE_SHORTPUSH,
         TPL_LONGPUSH,
+        TPL_NEW_FIRMWARE,
     ]
-    bin_sensors_pl = [PL_1_0, None, None, None, None]
+    bin_sensors_pl = [PL_1_0, None, None, None, None, None]
     bin_sensors_topics = [
         None,
         TOPIC_INPUT_EVENT_0,
         TOPIC_INPUT_EVENT_0,
         TOPIC_INPUT_EVENT_0,
         TOPIC_INPUT_EVENT_0,
+        TOPIC_ANNOUNCE,
     ]
     battery_powered = True
 
@@ -494,9 +526,11 @@ if id.rsplit("-", 1)[0] == "shellydw":
     sensors_classes = [ATTR_ILLUMINANCE, ATTR_BATTERY, None]
     sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DEGREE]
     sensors_tpls = [TPL_LUX, TPL_BATTERY, TPL_TILT]
-    bin_sensors = [ATTR_OPENING, ATTR_VIBRATION]
-    bin_sensors_classes = bin_sensors
-    bin_sensors_pl = [PL_OPEN_CLOSE, PL_1_0]
+    bin_sensors = [ATTR_OPENING, ATTR_VIBRATION, ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [ATTR_OPENING, ATTR_VIBRATION, None]
+    bin_sensors_pl = [PL_OPEN_CLOSE, PL_1_0, None]
+    bin_sensors_tpls = [None, TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [None, TOPIC_ANNOUNCE]
     battery_powered = True
 
 if id.rsplit("-", 1)[0] == "shellysmoke":
@@ -505,9 +539,11 @@ if id.rsplit("-", 1)[0] == "shellysmoke":
     sensors_classes = sensors
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_BATTERY]
-    bin_sensors = [ATTR_SMOKE]
-    bin_sensors_classes = bin_sensors
-    bin_sensors_pl = [PL_TRUE_FALSE]
+    bin_sensors = [ATTR_SMOKE, ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [ATTR_SMOKE, None]
+    bin_sensors_pl = [PL_TRUE_FALSE, None]
+    bin_sensors_tpls = [None, TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [None, TOPIC_ANNOUNCE]
     battery_powered = True
 
 if id.rsplit("-", 1)[0] == "shellysense":
@@ -516,9 +552,11 @@ if id.rsplit("-", 1)[0] == "shellysense":
     sensors_classes = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_ILLUMINANCE, ATTR_BATTERY]
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_LUX, UNIT_PERCENT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_HUMIDITY, TPL_LUX, TPL_BATTERY]
-    bin_sensors = [ATTR_MOTION, ATTR_CHARGER]
-    bin_sensors_classes = [ATTR_MOTION, ATTR_POWER]
-    bin_sensors_pl = [PL_TRUE_FALSE, PL_TRUE_FALSE]
+    bin_sensors = [ATTR_MOTION, ATTR_CHARGER, ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [ATTR_MOTION, ATTR_POWER, None]
+    bin_sensors_pl = [PL_TRUE_FALSE, PL_TRUE_FALSE, None]
+    bin_sensors_tpls = [None, None, TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [None, None, TOPIC_ANNOUNCE]
     battery_powered = True
 
 if id.rsplit("-", 1)[0] == "shellyrgbw2":
@@ -529,15 +567,22 @@ if id.rsplit("-", 1)[0] == "shellyrgbw2":
     lights_sensors_classes = [ATTR_POWER]
     lights_sensors_units = [UNIT_WATT]
     lights_sensors_tpls = ["{{value_json.power|float|round(1)}}"]
-    bin_sensors = [ATTR_OVERPOWER, ATTR_INPUT_0, ATTR_LONGPUSH_0, ATTR_SHORTPUSH_0]
-    bin_sensors_classes = [ATTR_POWER, None, None, None]
-    bin_sensors_tpls = [TPL_OVERPOWER, None, None, None]
-    bin_sensors_pl = [None, PL_1_0, PL_1_0, PL_0_1]
+    bin_sensors = [
+        ATTR_OVERPOWER,
+        ATTR_INPUT_0,
+        ATTR_LONGPUSH_0,
+        ATTR_SHORTPUSH_0,
+        ATTR_FIRMWARE_UPDATE,
+    ]
+    bin_sensors_classes = [ATTR_POWER, None, None, None, None]
+    bin_sensors_tpls = [TPL_OVERPOWER, None, None, None, TPL_NEW_FIRMWARE]
+    bin_sensors_pl = [None, PL_1_0, PL_1_0, PL_0_1, None]
     bin_sensors_topics = [
         ATTR_COLOR_0_STATUS,
         ATTR_INPUT_0,
         ATTR_LONGPUSH_0,
         ATTR_LONGPUSH_0,
+        TOPIC_ANNOUNCE,
     ]
     # to remove - compatibility
     lights_bin_sensors = [ATTR_OVERPOWER, ATTR_INPUT]
@@ -562,11 +607,13 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
         ATTR_LONGPUSH_1,
         ATTR_SHORTPUSH_0,
         ATTR_SHORTPUSH_1,
+        ATTR_FIRMWARE_UPDATE,
     ]
     bin_sensors_classes = [
         ATTR_HEAT,
         ATTR_POWER,
         ATTR_PROBLEM,
+        None,
         None,
         None,
         None,
@@ -584,6 +631,19 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
         PL_1_0,
         PL_0_1,
         PL_0_1,
+        None,
+    ]
+    bin_sensors_tpls = [
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        TPL_NEW_FIRMWARE,
     ]
     bin_sensors_topics = [
         None,
@@ -595,6 +655,7 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
         ATTR_LONGPUSH_1,
         ATTR_LONGPUSH_0,
         ATTR_LONGPUSH_1,
+        TOPIC_ANNOUNCE,
     ]
     lights_sensors = [ATTR_POWER, ATTR_ENERGY]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH]
@@ -618,11 +679,13 @@ if id.rsplit("-", 1)[0] == "shellydimmer2":
         ATTR_LONGPUSH_1,
         ATTR_SHORTPUSH_0,
         ATTR_SHORTPUSH_1,
+        ATTR_FIRMWARE_UPDATE,
     ]
     bin_sensors_classes = [
         ATTR_HEAT,
         ATTR_POWER,
         ATTR_PROBLEM,
+        None,
         None,
         None,
         None,
@@ -640,6 +703,19 @@ if id.rsplit("-", 1)[0] == "shellydimmer2":
         PL_1_0,
         PL_0_1,
         PL_0_1,
+        None,
+    ]
+    bin_sensors_tpls = [
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        TPL_NEW_FIRMWARE,
     ]
     bin_sensors_topics = [
         None,
@@ -651,6 +727,7 @@ if id.rsplit("-", 1)[0] == "shellydimmer2":
         ATTR_LONGPUSH_1,
         ATTR_LONGPUSH_0,
         ATTR_LONGPUSH_1,
+        TOPIC_ANNOUNCE,
     ]
     lights_sensors = [ATTR_POWER, ATTR_ENERGY]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH]
@@ -660,6 +737,9 @@ if id.rsplit("-", 1)[0] == "shellydimmer2":
 if id.rsplit("-", 1)[0] == "shellybulb":
     model = ATTR_MODEL_SHELLYBULB
     rgbw_lights = 1
+    bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [TOPIC_ANNOUNCE]
 
 if id.rsplit("-", 1)[0].lower() == "shellybulbduo":
     model = ATTR_MODEL_SHELLYDUO
@@ -668,6 +748,9 @@ if id.rsplit("-", 1)[0].lower() == "shellybulbduo":
     lights_sensors_units = [UNIT_KWH, UNIT_WATT]
     lights_sensors_classes = [ATTR_POWER, ATTR_POWER]
     lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
+    bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [TOPIC_ANNOUNCE]
 
 if id.rsplit("-", 1)[0].lower() == "shellyvintage":
     model = ATTR_MODEL_SHELLYVINTAGE
@@ -676,6 +759,9 @@ if id.rsplit("-", 1)[0].lower() == "shellyvintage":
     lights_sensors_units = [UNIT_KWH, UNIT_WATT]
     lights_sensors_classes = [ATTR_POWER, ATTR_POWER]
     lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
+    bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [TOPIC_ANNOUNCE]
 
 if id.rsplit("-", 1)[0] == "shellyem":
     model = ATTR_MODEL_SHELLYEM
@@ -726,6 +812,9 @@ if id.rsplit("-", 1)[0] == "shellyem":
         TPL_ENERGY_WH,
         TPL_ENERGY_WH,
     ]
+    bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [TOPIC_ANNOUNCE]
 
 if id.rsplit("-", 1)[0] == "shellyem3":
     model = ATTR_MODEL_SHELLY3EM
@@ -776,6 +865,9 @@ if id.rsplit("-", 1)[0] == "shellyem3":
         TPL_ENERGY_WH,
         TPL_ENERGY_WH,
     ]
+    bin_sensors = [ATTR_FIRMWARE_UPDATE]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [TOPIC_ANNOUNCE]
 
 if id.rsplit("-", 1)[0] == "shellyflood":
     model = ATTR_MODEL_SHELLYFLOOD
@@ -783,9 +875,11 @@ if id.rsplit("-", 1)[0] == "shellyflood":
     sensors_classes = sensors
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_BATTERY]
-    bin_sensors = [ATTR_FLOOD]
-    bin_sensors_classes = [ATTR_MOISTURE]
-    bin_sensors_pl = [PL_TRUE_FALSE]
+    bin_sensors = [ATTR_FLOOD, ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [ATTR_MOISTURE, None]
+    bin_sensors_pl = [PL_TRUE_FALSE, None]
+    bin_sensors_tpls = [None, TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [None, TOPIC_ANNOUNCE]
     battery_powered = True
 
 if id.rsplit("-", 1)[0] == "shellyix3":
@@ -812,8 +906,10 @@ if id.rsplit("-", 1)[0] == "shellyix3":
         ATTR_LONGPUSH_SHORTPUSH_0,
         ATTR_LONGPUSH_SHORTPUSH_1,
         ATTR_LONGPUSH_SHORTPUSH_2,
+        ATTR_FIRMWARE_UPDATE,
     ]
     bin_sensors_classes = [
+        None,
         None,
         None,
         None,
@@ -858,6 +954,7 @@ if id.rsplit("-", 1)[0] == "shellyix3":
         TPL_LONGPUSH_SHORTPUSH,
         TPL_LONGPUSH_SHORTPUSH,
         TPL_LONGPUSH_SHORTPUSH,
+        TPL_NEW_FIRMWARE,
     ]
     bin_sensors_topics = [
         TOPIC_INPUT_0,
@@ -881,11 +978,13 @@ if id.rsplit("-", 1)[0] == "shellyix3":
         TOPIC_INPUT_EVENT_0,
         TOPIC_INPUT_EVENT_1,
         TOPIC_INPUT_EVENT_2,
+        TOPIC_ANNOUNCE,
     ]
     bin_sensors_pl = [
         PL_1_0,
         PL_1_0,
         PL_0_1,
+        None,
         None,
         None,
         None,
@@ -1272,7 +1371,10 @@ for bin_sensor_id in range(0, len(bin_sensors)):
         f"{id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}".lower()
     )
     config_topic = f"{disc_prefix}/binary_sensor/{id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}/config"
-    default_topic = f"shellies/{id}/"
+    if bin_sensors[bin_sensor_id] == ATTR_FIRMWARE_UPDATE:
+        default_topic = f"shellies/"
+    else:
+        default_topic = f"shellies/{id}/"
     availability_topic = "~online"
     sensor_name = (
         f"{device_name} {bin_sensors[bin_sensor_id].replace('/', ' ').title()}"
@@ -1299,18 +1401,29 @@ for bin_sensor_id in range(0, len(bin_sensors)):
         },
         "~": default_topic,
     }
-    if bin_sensors_tpls and bin_sensors_tpls[bin_sensor_id]:
+    if (
+        bin_sensors_tpls[bin_sensor_id]
+        and bin_sensors[bin_sensor_id] == ATTR_FIRMWARE_UPDATE
+    ):
+        payload[KEY_VALUE_TEMPLATE] = bin_sensors_tpls[bin_sensor_id].format(id)
+    elif bin_sensors_tpls[bin_sensor_id]:
         payload[KEY_VALUE_TEMPLATE] = bin_sensors_tpls[bin_sensor_id]
     else:
         payload[KEY_PAYLOAD_ON] = bin_sensors_pl[bin_sensor_id][VALUE_ON]
         payload[KEY_PAYLOAD_OFF] = bin_sensors_pl[bin_sensor_id][VALUE_OFF]
     if battery_powered:
         payload[KEY_EXPIRE_AFTER] = expire_after
+    elif bin_sensors[bin_sensor_id] == ATTR_FIRMWARE_UPDATE:
+        payload[KEY_AVAILABILITY_TOPIC] = (
+            default_topic + id + "/" + availability_topic[1:]
+        )
+        payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
+        payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
     else:
         payload[KEY_AVAILABILITY_TOPIC] = availability_topic
         payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
-    if bin_sensors_classes and bin_sensors_classes[bin_sensor_id]:
+    if bin_sensors_classes[bin_sensor_id]:
         payload[KEY_DEVICE_CLASS] = bin_sensors_classes[bin_sensor_id]
     if (
         bin_sensors[bin_sensor_id]
