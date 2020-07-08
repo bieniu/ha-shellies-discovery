@@ -541,8 +541,8 @@ if id.rsplit("-", 1)[0] == "shellydw":
     bin_sensors = [ATTR_OPENING, ATTR_VIBRATION, ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [ATTR_OPENING, ATTR_VIBRATION, None]
     bin_sensors_pl = [PL_OPEN_CLOSE, PL_1_0, None]
-    bin_sensors_tpls = [None, TPL_NEW_FIRMWARE]
-    bin_sensors_topics = [None, TOPIC_ANNOUNCE]
+    bin_sensors_tpls = [None, None, TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [None, None, TOPIC_ANNOUNCE]
     battery_powered = True
 
 if id.rsplit("-", 1)[0] == "shellysmoke":
