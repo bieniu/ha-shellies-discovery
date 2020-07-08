@@ -31,7 +31,6 @@ ATTR_MODEL_SHELLYVINTAGE = "Shelly Vintage"
 
 ATTR_BATTERY = "battery"
 ATTR_CHARGER = "charger"
-ATTR_COLOR_0_STATUS = "color/0/status"
 ATTR_CONCENTRATION = "concentration"
 ATTR_CURRENT = "current"
 ATTR_ENERGY = "energy"
@@ -44,15 +43,15 @@ ATTR_HEAT = "heat"
 ATTR_HUMIDITY = "humidity"
 ATTR_ILLUMINANCE = "illuminance"
 ATTR_INPUT = "input"
-ATTR_INPUT_0 = "input/0"
-ATTR_INPUT_1 = "input/1"
-ATTR_INPUT_2 = "input/2"
+ATTR_INPUT_0 = "input 0"
+ATTR_INPUT_1 = "input 1"
+ATTR_INPUT_2 = "input 2"
 ATTR_LIGHT = "light"
 ATTR_LOADERROR = "loaderror"
 ATTR_LONGPUSH = "longpush"
-ATTR_LONGPUSH_0 = "longpush/0"
-ATTR_LONGPUSH_1 = "longpush/1"
-ATTR_LONGPUSH_2 = "longpush/2"
+ATTR_LONGPUSH_0 = "longpush 0"
+ATTR_LONGPUSH_1 = "longpush 1"
+ATTR_LONGPUSH_2 = "longpush 2"
 ATTR_LONGPUSH_SHORTPUSH_0 = "longpush shortpush 0"
 ATTR_LONGPUSH_SHORTPUSH_1 = "longpush shortpush 1"
 ATTR_LONGPUSH_SHORTPUSH_2 = "longpush shortpush 2"
@@ -161,12 +160,18 @@ ROLLER_DEVICE_CLASSES = [
 ]
 
 TOPIC_ANNOUNCE = "announce"
+TOPIC_COLOR_0_STATUS = "color/0/status"
 TOPIC_INPUT_0 = "input/0"
 TOPIC_INPUT_1 = "input/1"
 TOPIC_INPUT_2 = "input/2"
 TOPIC_INPUT_EVENT_0 = "input_event/0"
 TOPIC_INPUT_EVENT_1 = "input_event/1"
 TOPIC_INPUT_EVENT_2 = "input_event/2"
+TOPIC_LONGPUSH = "longpush"
+TOPIC_LONGPUSH_0 = "longpush/0"
+TOPIC_LONGPUSH_1 = "longpush/1"
+TOPIC_LONGPUSH_2 = "longpush/2"
+TOPIC_RELAY = "relay"
 
 TPL_BATTERY = "{{value|float|round}}"
 TPL_CURRENT = "{{value|float|round(2)}}"
@@ -319,7 +324,7 @@ if id.rsplit("-", 1)[0] == "shelly1":
     relays = 1
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1]
-    relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH]
+    relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH]
     relays_bin_sensors_tpls = [None, None, None]
     relays_bin_sensors_classes = [None, None, None]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
@@ -336,7 +341,7 @@ if id.rsplit("-", 1)[0] == "shelly1pm":
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH, ATTR_OVERPOWER]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
-    relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH, ATTR_RELAY]
+    relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
     relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [None, None, None, ATTR_POWER]
     sensors = [ATTR_TEMPERATURE]
@@ -382,7 +387,7 @@ if id.rsplit("-", 1)[0] == "shellyswitch":
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH, ATTR_OVERPOWER]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
-    relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH, ATTR_RELAY]
+    relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
     relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [None, None, None, ATTR_POWER]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
@@ -399,7 +404,7 @@ if id.rsplit("-", 1)[0] == "shellyswitch25":
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH, ATTR_OVERPOWER]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
-    relays_bin_sensors_topics = [None, ATTR_LONGPUSH, ATTR_LONGPUSH, ATTR_RELAY]
+    relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
     relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [None, None, None, ATTR_POWER]
     sensors = [ATTR_TEMPERATURE]
@@ -421,7 +426,7 @@ if id.rsplit("-", 1)[0] == "shellyplug":
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_OVERPOWER]
     relays_bin_sensors_pl = [None]
-    relays_bin_sensors_topics = [ATTR_RELAY]
+    relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [ATTR_POWER]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
@@ -437,7 +442,7 @@ if id.rsplit("-", 1)[0] == "shellyplug-s":
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_OVERPOWER]
     relays_bin_sensors_pl = [None]
-    relays_bin_sensors_topics = [ATTR_RELAY]
+    relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [ATTR_POWER]
     sensors = [ATTR_TEMPERATURE]
@@ -459,7 +464,7 @@ if id.rsplit("-", 1)[0] == "shelly4pro":
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_OVERPOWER]
     relays_bin_sensors_pl = [None]
-    relays_bin_sensors_topics = [ATTR_RELAY]
+    relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [ATTR_POWER]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
@@ -578,10 +583,10 @@ if id.rsplit("-", 1)[0] == "shellyrgbw2":
     bin_sensors_tpls = [TPL_OVERPOWER, None, None, None, TPL_NEW_FIRMWARE]
     bin_sensors_pl = [None, PL_1_0, PL_1_0, PL_0_1, None]
     bin_sensors_topics = [
-        ATTR_COLOR_0_STATUS,
-        ATTR_INPUT_0,
-        ATTR_LONGPUSH_0,
-        ATTR_LONGPUSH_0,
+        TOPIC_COLOR_0_STATUS,
+        TOPIC_INPUT_0,
+        TOPIC_LONGPUSH_0,
+        TOPIC_LONGPUSH_0,
         TOPIC_ANNOUNCE,
     ]
     # to remove - compatibility
@@ -649,12 +654,12 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
         None,
         None,
         None,
-        ATTR_INPUT_0,
-        ATTR_INPUT_1,
-        ATTR_LONGPUSH_0,
-        ATTR_LONGPUSH_1,
-        ATTR_LONGPUSH_0,
-        ATTR_LONGPUSH_1,
+        TOPIC_INPUT_0,
+        TOPIC_INPUT_1,
+        TOPIC_LONGPUSH_0,
+        TOPIC_LONGPUSH_1,
+        TOPIC_LONGPUSH_0,
+        TOPIC_LONGPUSH_1,
         TOPIC_ANNOUNCE,
     ]
     lights_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -721,12 +726,12 @@ if id.rsplit("-", 1)[0] == "shellydimmer2":
         None,
         None,
         None,
-        ATTR_INPUT_0,
-        ATTR_INPUT_1,
-        ATTR_LONGPUSH_0,
-        ATTR_LONGPUSH_1,
-        ATTR_LONGPUSH_0,
-        ATTR_LONGPUSH_1,
+        TOPIC_INPUT_0,
+        TOPIC_INPUT_1,
+        TOPIC_LONGPUSH_0,
+        TOPIC_LONGPUSH_1,
+        TOPIC_LONGPUSH_0,
+        TOPIC_LONGPUSH_1,
         TOPIC_ANNOUNCE,
     ]
     lights_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -772,7 +777,7 @@ if id.rsplit("-", 1)[0] == "shellyem":
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_OVERPOWER]
     relays_bin_sensors_pl = [None]
-    relays_bin_sensors_topics = [ATTR_RELAY]
+    relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [ATTR_POWER]
     meters = 2
@@ -822,7 +827,7 @@ if id.rsplit("-", 1)[0] == "shellyem3":
     meters = 3
     relays_bin_sensors = [ATTR_OVERPOWER]
     relays_bin_sensors_pl = [None]
-    relays_bin_sensors_topics = [ATTR_RELAY]
+    relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [ATTR_POWER]
     meters_sensors = [
