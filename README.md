@@ -85,6 +85,8 @@ python_script:
   trigger:
     - platform: homeassistant
       event: start
+    - platform: time_pattern
+      hours: "/6"
   action:
     service: mqtt.publish
     data:
@@ -116,6 +118,8 @@ python_script:
   trigger:
     - platform: homeassistant
       event: start
+    - platform: time_pattern
+      hours: "/6"
   action:
     service: mqtt.publish
     data:
