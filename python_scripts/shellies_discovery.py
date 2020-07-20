@@ -1251,7 +1251,25 @@ for relay_id in range(0, relays):
                 "~": default_topic,
             }
             if (
-                relays_bin_sensors[bin_sensor_id] in [ATTR_LONGPUSH, ATTR_SHORTPUSH]
+                relays_bin_sensors[bin_sensor_id]
+                in [
+                    ATTR_LONGPUSH,
+                    ATTR_LONGPUSH_0,
+                    ATTR_LONGPUSH_1,
+                    ATTR_LONGPUSH_2,
+                    ATTR_SHORTPUSH,
+                    ATTR_SHORTPUSH_0,
+                    ATTR_SHORTPUSH_1,
+                    ATTR_SHORTPUSH_2,
+                    ATTR_DOUBLE_SHORTPUSH,
+                    ATTR_DOUBLE_SHORTPUSH_0,
+                    ATTR_DOUBLE_SHORTPUSH_1,
+                    ATTR_DOUBLE_SHORTPUSH_2,
+                    ATTR_TRIPLE_SHORTPUSH,
+                    ATTR_TRIPLE_SHORTPUSH_0,
+                    ATTR_TRIPLE_SHORTPUSH_1,
+                    ATTR_TRIPLE_SHORTPUSH_2,
+                ]
                 and push_off_delay
             ):
                 payload[KEY_OFF_DELAY] = off_delay
@@ -1444,7 +1462,24 @@ for bin_sensor_id in range(0, len(bin_sensors)):
         payload[KEY_DEVICE_CLASS] = bin_sensors_classes[bin_sensor_id]
     if (
         bin_sensors[bin_sensor_id]
-        in [ATTR_LONGPUSH_0, ATTR_LONGPUSH_1, ATTR_SHORTPUSH_0]
+        in [
+            ATTR_LONGPUSH,
+            ATTR_LONGPUSH_0,
+            ATTR_LONGPUSH_1,
+            ATTR_LONGPUSH_2,
+            ATTR_SHORTPUSH,
+            ATTR_SHORTPUSH_0,
+            ATTR_SHORTPUSH_1,
+            ATTR_SHORTPUSH_2,
+            ATTR_DOUBLE_SHORTPUSH,
+            ATTR_DOUBLE_SHORTPUSH_0,
+            ATTR_DOUBLE_SHORTPUSH_1,
+            ATTR_DOUBLE_SHORTPUSH_2,
+            ATTR_TRIPLE_SHORTPUSH,
+            ATTR_TRIPLE_SHORTPUSH_0,
+            ATTR_TRIPLE_SHORTPUSH_1,
+            ATTR_TRIPLE_SHORTPUSH_2,
+        ]
         and push_off_delay
     ):
         payload[KEY_OFF_DELAY] = off_delay
