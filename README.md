@@ -201,7 +201,7 @@ key | optional | type | default | possible values | description
 `light-<NUM>-name` | True | string | None | string | friendly name of the light number `NUM`
 `ext-<NUM>` | True | string | `None` | `temperature` | type of external sensor number `NUM`
 `force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) for sensors
-`push_off_delay` | True | boolean | `true` | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (2 sec) for `longpush`/`shortpush` binary sensors
+`push_off_delay` | True | boolean | `true` | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (2 sec) for `longpush`/`shortpush`/`double shortpush`/`triple shortpush` binary sensors
 `mode` | True | string | | `white`, `rgbw`, `relay`, `roller` | `white` or `rgbw` for Shelly RGBW2, `relay` or `roller` for Shelly 2/Shelly 2.5
 `powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for Shelly H&T
 
