@@ -98,6 +98,8 @@ python_script:
   trigger:
     - platform: mqtt
       topic: shellies/announce
+  mode: queue
+  max: 999
   action:
     service: python_script.shellies_discovery
     data_template:
@@ -131,6 +133,8 @@ python_script:
   trigger:
     - platform: mqtt
       topic: shellies/announce
+  mode: queue
+  max: 999
   action:
     service: python_script.shellies_discovery
     data_template:
