@@ -79,11 +79,11 @@ python_script:
 
 - id: 'shellies_discovery'
   alias: 'Shellies Discovery'
-  trigger:
-    - platform: mqtt
-      topic: shellies/announce
-  mode: queue
+  mode: queued
   max: 999
+  trigger:
+    platform: mqtt
+    topic: shellies/announce
   action:
     service: python_script.shellies_discovery
     data_template:
@@ -114,11 +114,11 @@ python_script:
 
 - id: 'shellies_discovery'
   alias: 'Shellies Discovery'
-  trigger:
-    - platform: mqtt
-      topic: shellies/announce
-  mode: queue
+  mode: queued
   max: 999
+  trigger:
+    platform: mqtt
+    topic: shellies/announce
   action:
     service: python_script.shellies_discovery
     data_template:
