@@ -22,6 +22,7 @@ python_script:
 - Shelly Dimmer
 - Shelly Dimmer 2
 - Shelly Door/Window
+- Shelly Door/Window 2
 - Shelly DUO
 - Shelly EM
 - Shelly Gas

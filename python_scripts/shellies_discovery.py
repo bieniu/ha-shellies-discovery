@@ -17,6 +17,7 @@ ATTR_MODEL_SHELLYDIMMER = "Shelly Dimmer"
 ATTR_MODEL_SHELLYDIMMER2 = "Shelly Dimmer 2"
 ATTR_MODEL_SHELLYDUO = "Shelly DUO"
 ATTR_MODEL_SHELLYDW = "Shelly Door/Window"
+ATTR_MODEL_SHELLYDW2 = "Shelly Door/Window 2"
 ATTR_MODEL_SHELLYEM = "Shelly EM"
 ATTR_MODEL_SHELLYFLOOD = "Shelly Flood"
 ATTR_MODEL_SHELLYGAS = "Shelly Gas"
@@ -42,6 +43,7 @@ ATTR_GAS = "gas"
 ATTR_HEAT = "heat"
 ATTR_HUMIDITY = "humidity"
 ATTR_ILLUMINANCE = "illuminance"
+ATTR_ILLUMINATION = "illumination"
 ATTR_INPUT = "input"
 ATTR_INPUT_0 = "input 0"
 ATTR_INPUT_1 = "input 1"
@@ -122,6 +124,8 @@ KEY_DEVICE_CLASS = "dev_cla"
 KEY_EXPIRE_AFTER = "exp_aft"
 KEY_FORCE_UPDATE = "frc_upd"
 KEY_IDENTIFIERS = "ids"
+KEY_JSON_ATTRIBUTES_TEMPLATE = "json_attr_tpl"
+KEY_JSON_ATTRIBUTE_TOPIC = "json_attr_t"
 KEY_MANUFACTURER = "mf"
 KEY_MODEL = "mdl"
 KEY_NAME = "name"
@@ -179,6 +183,7 @@ TPL_DOUBLE_SHORTPUSH = "{% if value_json.event == ^SS^ %}ON{% else %}OFF{% endif
 TPL_ENERGY_WH = "{{(value|float/1000)|round(2)}}"
 TPL_ENERGY_WMIN = "{{(value|float/60/1000)|round(2)}}"
 TPL_HUMIDITY = "{{value|float|round(1)}}"
+TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
 TPL_LONGPUSH = "{% if value_json.event == ^L^ %}ON{% else %}OFF{% endif %}"
 TPL_LONGPUSH_SHORTPUSH = "{% if value_json.event == ^LS^ %}ON{% else %}OFF{% endif %}"
 TPL_LUX = "{{value|float|round}}"
@@ -538,6 +543,19 @@ if id.rsplit("-", 1)[0] == "shellydw":
     sensors_classes = [ATTR_ILLUMINANCE, ATTR_BATTERY, None]
     sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DEGREE]
     sensors_tpls = [TPL_LUX, TPL_BATTERY, TPL_TILT]
+    bin_sensors = [ATTR_OPENING, ATTR_VIBRATION, ATTR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [ATTR_OPENING, ATTR_VIBRATION, None]
+    bin_sensors_pl = [PL_OPEN_CLOSE, PL_1_0, None]
+    bin_sensors_tpls = [None, None, TPL_NEW_FIRMWARE]
+    bin_sensors_topics = [None, None, TOPIC_ANNOUNCE]
+    battery_powered = True
+
+if id.rsplit("-", 1)[0] == "shellydw2":
+    model = ATTR_MODEL_SHELLYDW2
+    sensors = [ATTR_LUX, ATTR_BATTERY, ATTR_TILT, ATTR_TEMPERATURE]
+    sensors_classes = [ATTR_ILLUMINANCE, ATTR_BATTERY, None, ATTR_TEMPERATURE]
+    sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DEGREE, UNIT_CELSIUS]
+    sensors_tpls = [TPL_LUX, TPL_BATTERY, TPL_TILT, TPL_TEMPERATURE]
     bin_sensors = [ATTR_OPENING, ATTR_VIBRATION, ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [ATTR_OPENING, ATTR_VIBRATION, None]
     bin_sensors_pl = [PL_OPEN_CLOSE, PL_1_0, None]
@@ -1327,6 +1345,9 @@ for sensor_id in range(0, len(sensors)):
         },
         "~": default_topic,
     }
+    if model == ATTR_MODEL_SHELLYDW2 and sensors[sensor_id] == ATTR_LUX:
+        payload[KEY_JSON_ATTRIBUTE_TOPIC] = f"~sensor/{ATTR_ILLUMINATION}"
+        payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_ILLUMINATION_TO_JSON
     if sensors_units[sensor_id]:
         payload[KEY_UNIT] = sensors_units[sensor_id]
     if sensors_classes[sensor_id]:
@@ -1341,7 +1362,9 @@ for sensor_id in range(0, len(sensors)):
         payload = ""
     if id.lower() in ignored:
         payload = ""
-    mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
+    mqtt_publish(
+        config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos
+    )
 
 # external sensors
 for sensor_id in range(0, ext_sensors):
