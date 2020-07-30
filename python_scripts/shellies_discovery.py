@@ -621,11 +621,6 @@ if id.rsplit("-", 1)[0] == "shellyrgbw2":
         TOPIC_LONGPUSH_0,
         TOPIC_ANNOUNCE,
     ]
-    # to remove - compatibility
-    lights_bin_sensors = [ATTR_OVERPOWER, ATTR_INPUT]
-    lights_bin_sensors_classes = [ATTR_POWER, None]
-    lights_bin_sensors_tpls = [TPL_OVERPOWER, None]
-    lights_bin_sensors_pl = [None, PL_1_0]
 
 if id.rsplit("-", 1)[0] == "shellydimmer":
     model = ATTR_MODEL_SHELLYDIMMER
@@ -1558,9 +1553,6 @@ for bin_sensor_id in range(0, len(bin_sensors)):
         and bin_sensors[bin_sensor_id] == ATTR_OVERPOWER
     ):
         payload = ""
-    # to remove
-    if model == ATTR_MODEL_SHELLYBUTTON1 and bin_sensors[bin_sensor_id] == ATTR_INPUT_0:
-        payload = ""
     if id.lower() in ignored:
         payload = ""
     mqtt_publish(
@@ -1657,19 +1649,7 @@ for light_id in range(0, rgbw_lights):
             state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
         else:
             state_topic = f"~color/{light_id}/status"
-        # to remove - compatibility
-        if (
-            model == ATTR_MODEL_SHELLYRGBW2
-            and lights_bin_sensors[bin_sensor_id] == ATTR_INPUT
-        ):
-            payload = ""
-        # to remove - compatibility
-        elif (
-            model == ATTR_MODEL_SHELLYRGBW2
-            and lights_bin_sensors[bin_sensor_id] == ATTR_OVERPOWER
-        ):
-            payload = ""
-        elif config_mode == ATTR_RGBW:
+        if config_mode == ATTR_RGBW:
             payload = {
                 KEY_NAME: sensor_name,
                 KEY_STATE_TOPIC: state_topic,
@@ -1881,19 +1861,7 @@ for light_id in range(0, white_lights):
             sensor_name = (
                 f"{device_name} {lights_bin_sensors[bin_sensor_id].title()} {light_id}"
             )
-            # to remove - compatibility
-            if (
-                model == ATTR_MODEL_SHELLYRGBW2
-                and lights_bin_sensors[bin_sensor_id] == ATTR_INPUT
-            ):
-                payload = ""
-            # to remove - compatibility
-            elif (
-                model == ATTR_MODEL_SHELLYRGBW2
-                and lights_bin_sensors[bin_sensor_id] == ATTR_OVERPOWER
-            ):
-                payload = ""
-            elif config_mode != ATTR_RGBW:
+            if config_mode != ATTR_RGBW:
                 payload = {
                     KEY_NAME: sensor_name,
                     KEY_STATE_TOPIC: state_topic,
