@@ -205,7 +205,8 @@ key | optional | type | default | possible values | description
 `roller-<NUM>-name` | True | string | None | string | friendly name of the roller number `NUM`
 `roller-<NUM>-class` | True | string | None | string | [device_class](https://www.home-assistant.io/integrations/cover/#device-class) of the roller number `NUM`
 `light-<NUM>-name` | True | string | None | string | friendly name of the light number `NUM`
-`ext-<NUM>` | True | string | `None` | `temperature` | type of external sensor number `NUM`
+`ext-temperature-<NUM>` | True | boolean | `false` | `true`, `false` | presence of temperature sensor number `NUM`
+`ext-humidity-<NUM>` | True | boolean | `false` | `true`, `false` | presence of humidity sensor number `NUM`
 `force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) for sensors
 `push_off_delay` | True | boolean | `true` | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (2 sec) for `longpush`/`shortpush`/`double shortpush`/`triple shortpush` binary sensors
 `mode` | True | string | | `white`, `rgbw`, `relay`, `roller` | `white` or `rgbw` for Shelly RGBW2, `relay` or `roller` for Shelly 2/Shelly 2.5
