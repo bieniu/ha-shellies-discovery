@@ -130,12 +130,13 @@ python_script:
       qos: 2
       shelly1-AABB9900:
         relay-0: "light"
-        ext-0: "temperature"
-        ext-1: "temperature"
-        ext-2: "temperature"
+        ext-temperature-0: true
+        ext-temperature-1: true
+        ext-temperature-2: true
         force_update_sensors: true
       shelly1pm-aabb9911:
-        ext-0: "temperature"
+        ext-temperature-0: true
+        ext-humidity-0: true
         push_off_delay: false
         force_update_sensors: true
       shellyswitch-123409FF:
