@@ -293,9 +293,7 @@ no_battery_sensor = False
 
 fw_ver = data.get(CONF_FW_VER)  # noqa: F821
 id = data.get(CONF_ID)  # noqa: F821
-ignored = [
-    element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])
-]  # noqa: F821
+ignored = [element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])]  # noqa: F821
 mac = data.get(CONF_MAC).lower()  # noqa: F821
 
 if not id:
