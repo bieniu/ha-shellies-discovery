@@ -1098,7 +1098,7 @@ if id.rsplit("-", 1)[0] == "shellyix3":
     ]
 
 # rollers
-for roller_id in range(0, rollers):
+for roller_id in range(rollers):
     device_config = get_device_config(id)
     config_mode = ATTR_RELAY
     if device_config.get(CONF_MODE):
@@ -1156,7 +1156,7 @@ for roller_id in range(0, rollers):
     mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
 # relays
-for relay_id in range(0, relays):
+for relay_id in range(relays):
     device_config = get_device_config(id)
     device_name = f"{model} {id.split('-')[-1]}"
     if device_config.get(f"relay-{relay_id}-name"):
@@ -1418,13 +1418,13 @@ for sensor_id, sensor in enumerate(sensors):
     )
 
 # external sensors, to remove
-for sensor_id in range(0, ext_sensors):
+for sensor_id in range(ext_sensors):
     config_topic = f"{disc_prefix}/sensor/{id}-ext-{sensor_id}/config"
     payload = ""
     mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
 # external temperature sensors
-for sensor_id in range(0, ext_temp_sensors):
+for sensor_id in range(ext_temp_sensors):
     device_config = get_device_config(id)
     force_update = False
     if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
@@ -1465,7 +1465,7 @@ for sensor_id in range(0, ext_temp_sensors):
     mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
 # external humidity sensors
-for sensor_id in range(0, ext_humi_sensors):
+for sensor_id in range(ext_humi_sensors):
     device_config = get_device_config(id)
     force_update = False
     if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
@@ -1602,7 +1602,7 @@ for bin_sensor_id, sensor in enumerate(bin_sensors):
     )
 
 # color lights
-for light_id in range(0, rgbw_lights):
+for light_id in range(rgbw_lights):
     device_config = get_device_config(id)
     device_name = f"{model} {id.split('-')[-1]}"
     if device_config.get(f"light-{light_id}-name"):
@@ -1763,7 +1763,7 @@ for light_id in range(0, rgbw_lights):
         mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
 # white lights
-for light_id in range(0, white_lights):
+for light_id in range(white_lights):
     device_config = get_device_config(id)
     device_name = f"{model} {id.split('-')[-1]}"
     if device_config.get(f"light-{light_id}-name"):
@@ -1992,7 +1992,7 @@ for light_id in range(0, white_lights):
         mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
 # meters
-for meter_id in range(0, meters):
+for meter_id in range(meters):
     device_config = get_device_config(id)
     force_update = False
     if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
