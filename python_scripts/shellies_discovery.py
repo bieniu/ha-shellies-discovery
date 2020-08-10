@@ -259,6 +259,7 @@ off_delay = 2
 
 
 def get_device_config(id):
+    """Get device configuration."""
     result = data.get(id, data.get(id.lower(), {}))  # noqa: F821
     if not result:
         result = {}
@@ -275,6 +276,7 @@ def get_device_config(id):
 
 
 def mqtt_publish(topic, payload, retain, qos):
+    """Publish data to MQTT broker."""
     service_data = {
         KEY_TOPIC: topic,
         KEY_PAYLOAD: payload,
