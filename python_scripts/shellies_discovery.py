@@ -122,9 +122,9 @@ DEVICE_CLASS_BATTERY = "battery"
 DEVICE_CLASS_BATTERY_CHARGING = "battery_charging"
 DEVICE_CLASS_COLD = "cold"
 DEVICE_CLASS_CONNECTIVITY = "connectivity"
-DEVICE_CLASS_CURRENT = "current"
+# DEVICE_CLASS_CURRENT = "current"  # Home Assistant 0.115
 DEVICE_CLASS_DOOR = "door"
-DEVICE_CLASS_ENERGY = "energy"
+# DEVICE_CLASS_ENERGY = "energy"  # Home Assistant 0.115
 DEVICE_CLASS_GARAGE_DOOR = "garage_door"
 DEVICE_CLASS_GAS = "gas"
 DEVICE_CLASS_HEAT = "heat"
@@ -139,7 +139,7 @@ DEVICE_CLASS_OCCUPANCY = "occupancy"
 DEVICE_CLASS_OPENING = "opening"
 DEVICE_CLASS_PLUG = "plug"
 DEVICE_CLASS_POWER = "power"
-DEVICE_CLASS_POWER_FACTOR = "power_factor"
+# DEVICE_CLASS_POWER_FACTOR = "power_factor"  # Home Assistant 0.115
 DEVICE_CLASS_PRESENCE = "presence"
 DEVICE_CLASS_PRESSURE = "pressure"
 DEVICE_CLASS_PROBLEM = "problem"
@@ -148,7 +148,7 @@ DEVICE_CLASS_SMOKE = "smoke"
 DEVICE_CLASS_SOUND = "sound"
 DEVICE_CLASS_TEMPERATURE = "temperature"
 DEVICE_CLASS_VIBRATION = "vibration"
-DEVICE_CLASS_VOLTAGE = "voltage"
+# DEVICE_CLASS_VOLTAGE = "voltage"  # Home Assistant 0.115
 DEVICE_CLASS_WINDOW = "window"
 
 KEY_AVAILABILITY_TOPIC = "avty_t"
@@ -289,16 +289,16 @@ def mqtt_publish(topic, payload, retain, qos):
     hass.services.call("mqtt", "publish", service_data, False)
 
 
-retain = True
 qos = 0
+retain = True
 roller_mode = False
 
 no_battery_sensor = False
 
-id = data.get(CONF_ID)
-mac = data.get(CONF_MAC).lower()
 fw_ver = data.get(CONF_FW_VER)
+id = data.get(CONF_ID)
 ignored = [element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])]
+mac = data.get(CONF_MAC).lower()
 
 if not id:
     raise ValueError(f"{id} is wrong id argument")
@@ -331,23 +331,26 @@ bin_sensors = []
 bin_sensors_classes = []
 bin_sensors_topics = []
 bin_sensors_tpls = []
-ext_sensors = 0  # to remove
 ext_humi_sensors = 0
+ext_sensors = 0  # to remove
 ext_temp_sensors = 0
 lights_bin_sensors = []
+lights_bin_sensors_classes = []
 lights_bin_sensors_pl = []
 lights_bin_sensors_tpls = []
-lights_bin_sensors_classes = []
 lights_sensors = []
 lights_sensors_classes = []
 lights_sensors_tpls = []
 lights_sensors_units = []
 meters = 0
+meters_sensors = []
+model = None
 relay_components = [ATTR_SWITCH, ATTR_LIGHT, ATTR_FAN]
 relays = 0
 relays_bin_sensors = []
 relays_bin_sensors_classes = []
 relays_bin_sensors_pl = []
+relays_bin_sensors_topics = []
 relays_bin_sensors_tpls = []
 relays_sensors = []
 relays_sensors_classes = []
@@ -382,7 +385,7 @@ if id.rsplit("-", 1)[0] == "shelly1pm":
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH, ATTR_OVERPOWER]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
@@ -407,7 +410,7 @@ if id.rsplit("-", 1)[0] == "shellyair":
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT]
     relays_bin_sensors_pl = [PL_1_0]
@@ -431,7 +434,7 @@ if id.rsplit("-", 1)[0] == "shellyswitch":
     rollers = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH, ATTR_OVERPOWER]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
@@ -449,7 +452,7 @@ if id.rsplit("-", 1)[0] == "shellyswitch25":
     rollers = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH, ATTR_OVERPOWER]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
@@ -471,7 +474,7 @@ if id.rsplit("-", 1)[0] == "shellyplug":
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_OVERPOWER]
     relays_bin_sensors_pl = [None]
@@ -488,7 +491,7 @@ if id.rsplit("-", 1)[0] == "shellyplug-s":
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_OVERPOWER]
     relays_bin_sensors_pl = [None]
@@ -510,7 +513,7 @@ if id.rsplit("-", 1)[0] == "shelly4pro":
     relays = 4
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_OVERPOWER]
     relays_bin_sensors_pl = [None]
@@ -726,7 +729,7 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
     ]
     lights_sensors = [ATTR_POWER, ATTR_ENERGY]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH]
-    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
 
 if id.rsplit("-", 1)[0] == "shellydimmer2":
@@ -798,7 +801,7 @@ if id.rsplit("-", 1)[0] == "shellydimmer2":
     ]
     lights_sensors = [ATTR_POWER, ATTR_ENERGY]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH]
-    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
 
 if id.rsplit("-", 1)[0] == "shellybulb":
@@ -814,7 +817,7 @@ if id.rsplit("-", 1)[0].lower() == "shellybulbduo":
     white_lights = 1
     lights_sensors = [ATTR_ENERGY, ATTR_POWER]
     lights_sensors_units = [UNIT_KWH, UNIT_WATT]
-    lights_sensors_classes = [DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
+    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [None]
@@ -826,7 +829,7 @@ if id.rsplit("-", 1)[0].lower() == "shellyvintage":
     white_lights = 1
     lights_sensors = [ATTR_ENERGY, ATTR_POWER]
     lights_sensors_units = [UNIT_KWH, UNIT_WATT]
-    lights_sensors_classes = [DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
+    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [None]
@@ -838,7 +841,7 @@ if id.rsplit("-", 1)[0] == "shellyem":
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_OVERPOWER]
     relays_bin_sensors_pl = [None]
@@ -867,11 +870,11 @@ if id.rsplit("-", 1)[0] == "shellyem":
     meters_sensors_classes = [
         DEVICE_CLASS_POWER,
         None,
-        DEVICE_CLASS_VOLTAGE,
-        DEVICE_CLASS_ENERGY,
-        DEVICE_CLASS_ENERGY,
-        DEVICE_CLASS_ENERGY,
-        DEVICE_CLASS_ENERGY,
+        None,
+        DEVICE_CLASS_POWER,
+        DEVICE_CLASS_POWER,
+        DEVICE_CLASS_POWER,
+        DEVICE_CLASS_POWER,
     ]
     meters_sensors_tpls = [
         TPL_POWER,
@@ -917,14 +920,14 @@ if id.rsplit("-", 1)[0] == "shellyem3":
         UNIT_KWH,
     ]
     meters_sensors_classes = [
-        DEVICE_CLASS_CURRENT,
+        None,
         DEVICE_CLASS_POWER,
-        DEVICE_CLASS_POWER_FACTOR,
-        DEVICE_CLASS_VOLTAGE,
-        DEVICE_CLASS_ENERGY,
-        DEVICE_CLASS_ENERGY,
-        DEVICE_CLASS_ENERGY,
-        DEVICE_CLASS_ENERGY,
+        None,
+        None,
+        DEVICE_CLASS_POWER,
+        DEVICE_CLASS_POWER,
+        DEVICE_CLASS_POWER,
+        DEVICE_CLASS_POWER,
     ]
     meters_sensors_tpls = [
         TPL_CURRENT,
@@ -1182,7 +1185,7 @@ for relay_id in range(0, relays):
 
     # relay's sensors
     if relay_id == relays - 1:
-        for sensor_id in range(0, len(relays_sensors)):
+        for sensor_id in range(len(relays_sensors)):
             device_config = get_device_config(id)
             force_update = False
             if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
@@ -1225,7 +1228,7 @@ for relay_id in range(0, relays):
             mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
     # relay's sensors
-    for sensor_id in range(0, len(relays_sensors)):
+    for sensor_id in range(len(relays_sensors)):
         device_config = get_device_config(id)
         force_update = False
         if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
@@ -1270,7 +1273,7 @@ for relay_id in range(0, relays):
         mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
     # relay's binary sensors
-    for bin_sensor_id in range(0, len(relays_bin_sensors)):
+    for bin_sensor_id in range(len(relays_bin_sensors)):
         device_config = get_device_config(id)
         push_off_delay = True
         if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
@@ -1346,7 +1349,7 @@ for relay_id in range(0, relays):
         )
 
 # sensors
-for sensor_id in range(0, len(sensors)):
+for sensor_id in range(len(sensors)):
     device_config = get_device_config(id)
     force_update = False
     if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
@@ -1492,7 +1495,7 @@ for sensor_id in range(0, ext_humi_sensors):
     mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
 # binary sensors
-for bin_sensor_id in range(0, len(bin_sensors)):
+for bin_sensor_id in range(len(bin_sensors)):
     device_config = get_device_config(id)
     push_off_delay = True
     if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
@@ -1674,7 +1677,7 @@ for light_id in range(0, rgbw_lights):
     mqtt_publish(config_topic, payload, retain, qos)
 
     # color light's binary sensors
-    for bin_sensor_id in range(0, len(lights_bin_sensors)):
+    for bin_sensor_id in range(len(lights_bin_sensors)):
         sensor_name = (
             f"{device_name} {lights_bin_sensors[bin_sensor_id].title()} {light_id}"
         )
@@ -1718,7 +1721,7 @@ for light_id in range(0, rgbw_lights):
         mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
     # color light's sensors
-    for sensor_id in range(0, len(lights_sensors)):
+    for sensor_id in range(len(lights_sensors)):
         device_config = get_device_config(id)
         force_update = False
         if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
@@ -1881,7 +1884,7 @@ for light_id in range(0, white_lights):
     mqtt_publish(config_topic, payload, retain, qos)
 
     # white light's binary sensors
-    for bin_sensor_id in range(0, len(lights_bin_sensors)):
+    for bin_sensor_id in range(len(lights_bin_sensors)):
         if (
             lights_bin_sensors[bin_sensor_id] == ATTR_INPUT and light_id == 0
         ) or lights_bin_sensors[bin_sensor_id] != ATTR_INPUT:
@@ -1938,7 +1941,7 @@ for light_id in range(0, white_lights):
             mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
     # white light's sensors
-    for sensor_id in range(0, len(lights_sensors)):
+    for sensor_id in range(len(lights_sensors)):
         device_config = get_device_config(id)
         force_update = False
         if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
@@ -1997,7 +2000,7 @@ for meter_id in range(0, meters):
     device_name = f"{model} {id.split('-')[-1]}"
     default_topic = f"shellies/{id}/"
     availability_topic = "~online"
-    for sensor_id in range(0, len(meters_sensors)):
+    for sensor_id in range(len(meters_sensors)):
         unique_id = f"{id}-emeter-{meters_sensors[sensor_id]}-{meter_id}".lower()
         config_topic = f"{disc_prefix}/sensor/{id}-emeter-{meters_sensors[sensor_id]}-{meter_id}/config"
         sensor_name = (
