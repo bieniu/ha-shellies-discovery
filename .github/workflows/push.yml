@@ -25,6 +25,6 @@ jobs:
       run: |
         pip install flake8
         # stop the build if there are Python syntax errors, unused imports or undefined names
-        flake8 python_scripts/shellies_discovery.py --count --ignore=F821,E501,W503 --show-source --statistics
+        flake8 python_scripts/shellies_discovery.py --count --ignore=F821,E501,W503,E203,D202,W504 --show-source --statistics
         # exit-zero treats all errors as warnings.
-        flake8 python_scripts/shellies_discovery.py --count --exit-zero --max-complexity=10 --max-line-length=89 --statistics
+        flake8 python_scripts/shellies_discovery.py --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
