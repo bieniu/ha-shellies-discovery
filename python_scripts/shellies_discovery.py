@@ -114,15 +114,24 @@ CONF_QOS = "qos"
 
 DEFAULT_DISC_PREFIX = "homeassistant"
 
+# DEVICE_CLASS_CURRENT = "current"  # Home Assistant 0.115
+# DEVICE_CLASS_ENERGY = "energy"  # Home Assistant 0.115
+# DEVICE_CLASS_POWER_FACTOR = "power_factor"  # Home Assistant 0.115
+# DEVICE_CLASS_VOLTAGE = "voltage"  # Home Assistant 0.115
+DEVICE_CLASS_AWNING = "awning"
 DEVICE_CLASS_BATTERY = "battery"
 DEVICE_CLASS_BATTERY_CHARGING = "battery_charging"
+DEVICE_CLASS_BLIND = "blind"
 DEVICE_CLASS_COLD = "cold"
 DEVICE_CLASS_CONNECTIVITY = "connectivity"
-# DEVICE_CLASS_CURRENT = "current"  # Home Assistant 0.115
+DEVICE_CLASS_CURTAIN = "curtain"
+DEVICE_CLASS_DAMPER = "damper"
 DEVICE_CLASS_DOOR = "door"
-# DEVICE_CLASS_ENERGY = "energy"  # Home Assistant 0.115
+DEVICE_CLASS_DOOR = "door"
+DEVICE_CLASS_GARAGE = "garage"
 DEVICE_CLASS_GARAGE_DOOR = "garage_door"
 DEVICE_CLASS_GAS = "gas"
+DEVICE_CLASS_GATE = "gate"
 DEVICE_CLASS_HEAT = "heat"
 DEVICE_CLASS_HUMIDITY = "humidity"
 DEVICE_CLASS_ILLUMINANCE = "illuminance"
@@ -135,16 +144,16 @@ DEVICE_CLASS_OCCUPANCY = "occupancy"
 DEVICE_CLASS_OPENING = "opening"
 DEVICE_CLASS_PLUG = "plug"
 DEVICE_CLASS_POWER = "power"
-# DEVICE_CLASS_POWER_FACTOR = "power_factor"  # Home Assistant 0.115
 DEVICE_CLASS_PRESENCE = "presence"
 DEVICE_CLASS_PRESSURE = "pressure"
 DEVICE_CLASS_PROBLEM = "problem"
 DEVICE_CLASS_SAFETY = "safety"
+DEVICE_CLASS_SHADE = "shade"
+DEVICE_CLASS_SHUTTER = "shutter"
 DEVICE_CLASS_SMOKE = "smoke"
 DEVICE_CLASS_SOUND = "sound"
 DEVICE_CLASS_TEMPERATURE = "temperature"
 DEVICE_CLASS_VIBRATION = "vibration"
-# DEVICE_CLASS_VOLTAGE = "voltage"  # Home Assistant 0.115
 DEVICE_CLASS_WINDOW = "window"
 
 KEY_AVAILABILITY_TOPIC = "avty_t"
@@ -181,16 +190,16 @@ KEY_UNIT = "unit_of_meas"
 KEY_VALUE_TEMPLATE = "val_tpl"
 
 ROLLER_DEVICE_CLASSES = [
-    "awning",
-    "blind",
-    "curtain",
-    "damper",
-    "door",
-    "garage",
-    "gate",
-    "shade",
-    "shutter",
-    "window",
+    DEVICE_CLASS_AWNING,
+    DEVICE_CLASS_BLIND,
+    DEVICE_CLASS_CURTAIN,
+    DEVICE_CLASS_DAMPER,
+    DEVICE_CLASS_DOOR,
+    DEVICE_CLASS_GARAGE,
+    DEVICE_CLASS_GATE,
+    DEVICE_CLASS_SHADE,
+    DEVICE_CLASS_SHUTTER,
+    DEVICE_CLASS_WINDOW,
 ]
 
 TOPIC_ANNOUNCE = "announce"
@@ -646,7 +655,7 @@ if id.rsplit("-", 1)[0] == "shellysense":
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_LUX, UNIT_PERCENT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_HUMIDITY, TPL_LUX, TPL_BATTERY]
     bin_sensors = [ATTR_MOTION, ATTR_CHARGER, ATTR_FIRMWARE_UPDATE]
-    bin_sensors_classes = [DEVICE_CLASS_MOTION, DEVICE_CLASS_POWER, None]
+    bin_sensors_classes = [DEVICE_CLASS_MOTION, DEVICE_CLASS_BATTERY_CHARGING, None]
     bin_sensors_pl = [PL_TRUE_FALSE, PL_TRUE_FALSE, None]
     bin_sensors_tpls = [None, None, TPL_NEW_FIRMWARE]
     bin_sensors_topics = [None, None, TOPIC_ANNOUNCE]
@@ -1098,7 +1107,7 @@ if id.rsplit("-", 1)[0] == "shellyix3":
         None,
     ]
 
-# rollersrange(0
+# rollers
 for roller_id in range(rollers):
     device_config = get_device_config(id)
     config_mode = ATTR_RELAY
