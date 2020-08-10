@@ -532,7 +532,11 @@ if id.rsplit("-", 1)[0] == "shelly4pro":
 if id.rsplit("-", 1)[0] == "shellyht":
     model = ATTR_MODEL_SHELLYHT
     sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_BATTERY]
-    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_HUMIDITY, DEVICE_CLASS_BATTERY]
+    sensors_classes = [
+        DEVICE_CLASS_TEMPERATURE,
+        DEVICE_CLASS_HUMIDITY,
+        DEVICE_CLASS_BATTERY,
+    ]
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_PERCENT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_HUMIDITY, TPL_BATTERY]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
@@ -602,7 +606,12 @@ if id.rsplit("-", 1)[0] == "shellydw":
 if id.rsplit("-", 1)[0] == "shellydw2":
     model = ATTR_MODEL_SHELLYDW2
     sensors = [ATTR_LUX, ATTR_BATTERY, ATTR_TILT, ATTR_TEMPERATURE]
-    sensors_classes = [DEVICE_CLASS_ILLUMINANCE, DEVICE_CLASS_BATTERY, None, DEVICE_CLASS_TEMPERATURE]
+    sensors_classes = [
+        DEVICE_CLASS_ILLUMINANCE,
+        DEVICE_CLASS_BATTERY,
+        None,
+        DEVICE_CLASS_TEMPERATURE,
+    ]
     sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DEGREE, UNIT_CELSIUS]
     sensors_tpls = [TPL_LUX, TPL_BATTERY, TPL_TILT, TPL_TEMPERATURE]
     bin_sensors = [ATTR_OPENING, ATTR_VIBRATION, ATTR_FIRMWARE_UPDATE]
@@ -628,7 +637,12 @@ if id.rsplit("-", 1)[0] == "shellysmoke":
 if id.rsplit("-", 1)[0] == "shellysense":
     model = ATTR_MODEL_SHELLYSENSE
     sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_LUX, ATTR_BATTERY]
-    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_HUMIDITY, DEVICE_CLASS_ILLUMINANCE, DEVICE_CLASS_BATTERY]
+    sensors_classes = [
+        DEVICE_CLASS_TEMPERATURE,
+        DEVICE_CLASS_HUMIDITY,
+        DEVICE_CLASS_ILLUMINANCE,
+        DEVICE_CLASS_BATTERY,
+    ]
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_LUX, UNIT_PERCENT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_HUMIDITY, TPL_LUX, TPL_BATTERY]
     bin_sensors = [ATTR_MOTION, ATTR_CHARGER, ATTR_FIRMWARE_UPDATE]
