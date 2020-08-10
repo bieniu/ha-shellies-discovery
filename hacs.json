@@ -1,6 +1,6 @@
 {
   "name": "Shellies Discovery",
-  "homeassistant": "0.110.0",
+  "homeassistant": "0.114.0",
   "zip_release": true,
   "filename": "shellies-discovery.zip"
 }

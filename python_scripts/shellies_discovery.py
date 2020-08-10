@@ -118,6 +118,39 @@ CONF_QOS = "qos"
 
 DEFAULT_DISC_PREFIX = "homeassistant"
 
+DEVICE_CLASS_BATTERY = "battery"
+DEVICE_CLASS_BATTERY_CHARGING = "battery_charging"
+DEVICE_CLASS_COLD = "cold"
+DEVICE_CLASS_CONNECTIVITY = "connectivity"
+DEVICE_CLASS_CURRENT = "current"
+DEVICE_CLASS_DOOR = "door"
+DEVICE_CLASS_ENERGY = "energy"
+DEVICE_CLASS_GARAGE_DOOR = "garage_door"
+DEVICE_CLASS_GAS = "gas"
+DEVICE_CLASS_HEAT = "heat"
+DEVICE_CLASS_HUMIDITY = "humidity"
+DEVICE_CLASS_ILLUMINANCE = "illuminance"
+DEVICE_CLASS_LIGHT = "light"
+DEVICE_CLASS_LOCK = "lock"
+DEVICE_CLASS_MOISTURE = "moisture"
+DEVICE_CLASS_MOTION = "motion"
+DEVICE_CLASS_MOVING = "moving"
+DEVICE_CLASS_OCCUPANCY = "occupancy"
+DEVICE_CLASS_OPENING = "opening"
+DEVICE_CLASS_PLUG = "plug"
+DEVICE_CLASS_POWER = "power"
+DEVICE_CLASS_POWER_FACTOR = "power_factor"
+DEVICE_CLASS_PRESENCE = "presence"
+DEVICE_CLASS_PRESSURE = "pressure"
+DEVICE_CLASS_PROBLEM = "problem"
+DEVICE_CLASS_SAFETY = "safety"
+DEVICE_CLASS_SMOKE = "smoke"
+DEVICE_CLASS_SOUND = "sound"
+DEVICE_CLASS_TEMPERATURE = "temperature"
+DEVICE_CLASS_VIBRATION = "vibration"
+DEVICE_CLASS_VOLTAGE = "voltage"
+DEVICE_CLASS_WINDOW = "window"
+
 KEY_AVAILABILITY_TOPIC = "avty_t"
 KEY_COMMAND_TOPIC = "cmd_t"
 KEY_DEVICE = "dev"
@@ -303,6 +336,8 @@ ext_humi_sensors = 0
 ext_temp_sensors = 0
 lights_bin_sensors = []
 lights_bin_sensors_pl = []
+lights_bin_sensors_tpls = []
+lights_bin_sensors_classes = []
 lights_sensors = []
 lights_sensors_classes = []
 lights_sensors_tpls = []
@@ -347,19 +382,19 @@ if id.rsplit("-", 1)[0] == "shelly1pm":
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH, ATTR_OVERPOWER]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
     relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
     relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_classes = [None, None, None, ATTR_PROBLEM]
+    relays_bin_sensors_classes = [None, None, None, DEVICE_CLASS_PROBLEM]
     sensors = [ATTR_TEMPERATURE]
-    sensors_classes = sensors
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE]
     sensors_units = [UNIT_CELSIUS]
     sensors_tpls = [TPL_TEMPERATURE]
     bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_FIRMWARE_UPDATE]
-    bin_sensors_classes = [ATTR_HEAT, None]
+    bin_sensors_classes = [DEVICE_CLASS_HEAT, None]
     bin_sensors_pl = [PL_1_0, None]
     bin_sensors_tpls = [None, TPL_NEW_FIRMWARE]
     bin_sensors_topics = [None, TOPIC_ANNOUNCE]
@@ -372,18 +407,18 @@ if id.rsplit("-", 1)[0] == "shellyair":
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT]
     relays_bin_sensors_pl = [PL_1_0]
     relays_bin_sensors_tpls = [None]
     relays_bin_sensors_classes = [None]
     sensors = [ATTR_TEMPERATURE, ATTR_TOTALWORKTIME]
-    sensors_classes = [ATTR_TEMPERATURE, None]
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE, None]
     sensors_units = [UNIT_CELSIUS, UNIT_SECONDS]
     sensors_tpls = [TPL_TEMPERATURE, None]
     bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_FIRMWARE_UPDATE]
-    bin_sensors_classes = [ATTR_HEAT, None]
+    bin_sensors_classes = [DEVICE_CLASS_HEAT, None]
     bin_sensors_pl = [PL_1_0, None]
     bin_sensors_tpls = [None, TPL_NEW_FIRMWARE]
     bin_sensors_topics = [None, TOPIC_ANNOUNCE]
@@ -396,13 +431,13 @@ if id.rsplit("-", 1)[0] == "shellyswitch":
     rollers = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH, ATTR_OVERPOWER]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
     relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
     relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_classes = [None, None, None, ATTR_PROBLEM]
+    relays_bin_sensors_classes = [None, None, None, DEVICE_CLASS_PROBLEM]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
@@ -414,19 +449,19 @@ if id.rsplit("-", 1)[0] == "shellyswitch25":
     rollers = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH, ATTR_SHORTPUSH, ATTR_OVERPOWER]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
     relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
     relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_classes = [None, None, None, ATTR_PROBLEM]
+    relays_bin_sensors_classes = [None, None, None, DEVICE_CLASS_PROBLEM]
     sensors = [ATTR_TEMPERATURE]
-    sensors_classes = sensors
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE]
     sensors_units = [UNIT_CELSIUS]
     sensors_tpls = [TPL_TEMPERATURE]
     bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_FIRMWARE_UPDATE]
-    bin_sensors_classes = [ATTR_HEAT, None]
+    bin_sensors_classes = [DEVICE_CLASS_HEAT, None]
     bin_sensors_pl = [PL_1_0, None]
     bin_sensors_tpls = [None, TPL_NEW_FIRMWARE]
     bin_sensors_topics = [None, TOPIC_ANNOUNCE]
@@ -436,13 +471,13 @@ if id.rsplit("-", 1)[0] == "shellyplug":
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_OVERPOWER]
     relays_bin_sensors_pl = [None]
     relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_classes = [ATTR_PROBLEM]
+    relays_bin_sensors_classes = [DEVICE_CLASS_PROBLEM]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
@@ -453,19 +488,19 @@ if id.rsplit("-", 1)[0] == "shellyplug-s":
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_OVERPOWER]
     relays_bin_sensors_pl = [None]
     relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_classes = [ATTR_PROBLEM]
+    relays_bin_sensors_classes = [DEVICE_CLASS_PROBLEM]
     sensors = [ATTR_TEMPERATURE]
-    sensors_classes = [ATTR_TEMPERATURE]
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE]
     sensors_units = [UNIT_CELSIUS]
     sensors_tpls = [TPL_TEMPERATURE]
     bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_FIRMWARE_UPDATE]
-    bin_sensors_classes = [ATTR_HEAT, None]
+    bin_sensors_classes = [DEVICE_CLASS_HEAT, None]
     bin_sensors_pl = [PL_1_0, None]
     bin_sensors_tpls = [None, TPL_NEW_FIRMWARE]
     bin_sensors_topics = [None, TOPIC_ANNOUNCE]
@@ -475,13 +510,13 @@ if id.rsplit("-", 1)[0] == "shelly4pro":
     relays = 4
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_OVERPOWER]
     relays_bin_sensors_pl = [None]
     relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_classes = [ATTR_PROBLEM]
+    relays_bin_sensors_classes = [DEVICE_CLASS_PROBLEM]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
@@ -490,7 +525,7 @@ if id.rsplit("-", 1)[0] == "shelly4pro":
 if id.rsplit("-", 1)[0] == "shellyht":
     model = ATTR_MODEL_SHELLYHT
     sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_BATTERY]
-    sensors_classes = sensors
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_HUMIDITY, DEVICE_CLASS_BATTERY]
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_PERCENT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_HUMIDITY, TPL_BATTERY]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
@@ -513,7 +548,7 @@ if id.rsplit("-", 1)[0] == "shellygas":
 if id.rsplit("-", 1)[0] == "shellybutton1":
     model = ATTR_MODEL_SHELLYBUTTON1
     sensors = [ATTR_BATTERY]
-    sensors_classes = sensors
+    sensors_classes = [DEVICE_CLASS_BATTERY]
     sensors_units = [UNIT_PERCENT]
     sensors_tpls = [TPL_BATTERY]
     bin_sensors = [
@@ -547,11 +582,11 @@ if id.rsplit("-", 1)[0] == "shellybutton1":
 if id.rsplit("-", 1)[0] == "shellydw":
     model = ATTR_MODEL_SHELLYDW
     sensors = [ATTR_LUX, ATTR_BATTERY, ATTR_TILT]
-    sensors_classes = [ATTR_ILLUMINANCE, ATTR_BATTERY, None]
+    sensors_classes = [DEVICE_CLASS_ILLUMINANCE, DEVICE_CLASS_BATTERY, None]
     sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DEGREE]
     sensors_tpls = [TPL_LUX, TPL_BATTERY, TPL_TILT]
     bin_sensors = [ATTR_OPENING, ATTR_VIBRATION, ATTR_FIRMWARE_UPDATE]
-    bin_sensors_classes = [ATTR_OPENING, ATTR_VIBRATION, None]
+    bin_sensors_classes = [DEVICE_CLASS_OPENING, DEVICE_CLASS_VIBRATION, None]
     bin_sensors_pl = [PL_OPEN_CLOSE, PL_1_0, None]
     bin_sensors_tpls = [None, None, TPL_NEW_FIRMWARE]
     bin_sensors_topics = [None, None, TOPIC_ANNOUNCE]
@@ -560,11 +595,11 @@ if id.rsplit("-", 1)[0] == "shellydw":
 if id.rsplit("-", 1)[0] == "shellydw2":
     model = ATTR_MODEL_SHELLYDW2
     sensors = [ATTR_LUX, ATTR_BATTERY, ATTR_TILT, ATTR_TEMPERATURE]
-    sensors_classes = [ATTR_ILLUMINANCE, ATTR_BATTERY, None, ATTR_TEMPERATURE]
+    sensors_classes = [DEVICE_CLASS_ILLUMINANCE, DEVICE_CLASS_BATTERY, None, DEVICE_CLASS_TEMPERATURE]
     sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DEGREE, UNIT_CELSIUS]
     sensors_tpls = [TPL_LUX, TPL_BATTERY, TPL_TILT, TPL_TEMPERATURE]
     bin_sensors = [ATTR_OPENING, ATTR_VIBRATION, ATTR_FIRMWARE_UPDATE]
-    bin_sensors_classes = [ATTR_OPENING, ATTR_VIBRATION, None]
+    bin_sensors_classes = [DEVICE_CLASS_OPENING, DEVICE_CLASS_VIBRATION, None]
     bin_sensors_pl = [PL_OPEN_CLOSE, PL_1_0, None]
     bin_sensors_tpls = [None, None, TPL_NEW_FIRMWARE]
     bin_sensors_topics = [None, None, TOPIC_ANNOUNCE]
@@ -573,11 +608,11 @@ if id.rsplit("-", 1)[0] == "shellydw2":
 if id.rsplit("-", 1)[0] == "shellysmoke":
     model = ATTR_MODEL_SHELLYSMOKE
     sensors = [ATTR_TEMPERATURE, ATTR_BATTERY]
-    sensors_classes = sensors
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_BATTERY]
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_BATTERY]
     bin_sensors = [ATTR_SMOKE, ATTR_FIRMWARE_UPDATE]
-    bin_sensors_classes = [ATTR_SMOKE, None]
+    bin_sensors_classes = [DEVICE_CLASS_SMOKE, None]
     bin_sensors_pl = [PL_TRUE_FALSE, None]
     bin_sensors_tpls = [None, TPL_NEW_FIRMWARE]
     bin_sensors_topics = [None, TOPIC_ANNOUNCE]
@@ -586,11 +621,11 @@ if id.rsplit("-", 1)[0] == "shellysmoke":
 if id.rsplit("-", 1)[0] == "shellysense":
     model = ATTR_MODEL_SHELLYSENSE
     sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_LUX, ATTR_BATTERY]
-    sensors_classes = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_ILLUMINANCE, ATTR_BATTERY]
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_HUMIDITY, DEVICE_CLASS_ILLUMINANCE, DEVICE_CLASS_BATTERY]
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_LUX, UNIT_PERCENT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_HUMIDITY, TPL_LUX, TPL_BATTERY]
     bin_sensors = [ATTR_MOTION, ATTR_CHARGER, ATTR_FIRMWARE_UPDATE]
-    bin_sensors_classes = [ATTR_MOTION, ATTR_POWER, None]
+    bin_sensors_classes = [DEVICE_CLASS_MOTION, DEVICE_CLASS_POWER, None]
     bin_sensors_pl = [PL_TRUE_FALSE, PL_TRUE_FALSE, None]
     bin_sensors_tpls = [None, None, TPL_NEW_FIRMWARE]
     bin_sensors_topics = [None, None, TOPIC_ANNOUNCE]
@@ -601,7 +636,7 @@ if id.rsplit("-", 1)[0] == "shellyrgbw2":
     rgbw_lights = 1
     white_lights = 4
     lights_sensors = [ATTR_POWER]
-    lights_sensors_classes = [ATTR_POWER]
+    lights_sensors_classes = [DEVICE_CLASS_POWER]
     lights_sensors_units = [UNIT_WATT]
     lights_sensors_tpls = ["{{value_json.power|float|round(1)}}"]
     bin_sensors = [
@@ -611,7 +646,7 @@ if id.rsplit("-", 1)[0] == "shellyrgbw2":
         ATTR_SHORTPUSH_0,
         ATTR_FIRMWARE_UPDATE,
     ]
-    bin_sensors_classes = [ATTR_PROBLEM, None, None, None, None]
+    bin_sensors_classes = [DEVICE_CLASS_PROBLEM, None, None, None, None]
     bin_sensors_tpls = [TPL_OVERPOWER, None, None, None, TPL_NEW_FIRMWARE]
     bin_sensors_pl = [None, PL_1_0, PL_1_0, PL_0_1, None]
     bin_sensors_topics = [
@@ -626,7 +661,7 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
     model = ATTR_MODEL_SHELLYDIMMER
     white_lights = 1
     sensors = [ATTR_TEMPERATURE]
-    sensors_classes = [ATTR_TEMPERATURE]
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE]
     sensors_units = [UNIT_CELSIUS]
     sensors_tpls = [TPL_TEMPERATURE]
     bin_sensors = [
@@ -642,9 +677,9 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
         ATTR_FIRMWARE_UPDATE,
     ]
     bin_sensors_classes = [
-        ATTR_HEAT,
-        ATTR_PROBLEM,
-        ATTR_PROBLEM,
+        DEVICE_CLASS_HEAT,
+        DEVICE_CLASS_PROBLEM,
+        DEVICE_CLASS_PROBLEM,
         None,
         None,
         None,
@@ -691,14 +726,14 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
     ]
     lights_sensors = [ATTR_POWER, ATTR_ENERGY]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH]
-    lights_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
 
 if id.rsplit("-", 1)[0] == "shellydimmer2":
     model = ATTR_MODEL_SHELLYDIMMER2
     white_lights = 1
     sensors = [ATTR_TEMPERATURE]
-    sensors_classes = [ATTR_TEMPERATURE]
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE]
     sensors_units = [UNIT_CELSIUS]
     sensors_tpls = [TPL_TEMPERATURE]
     bin_sensors = [
@@ -714,9 +749,9 @@ if id.rsplit("-", 1)[0] == "shellydimmer2":
         ATTR_FIRMWARE_UPDATE,
     ]
     bin_sensors_classes = [
-        ATTR_HEAT,
-        ATTR_PROBLEM,
-        ATTR_PROBLEM,
+        DEVICE_CLASS_HEAT,
+        DEVICE_CLASS_PROBLEM,
+        DEVICE_CLASS_PROBLEM,
         None,
         None,
         None,
@@ -763,7 +798,7 @@ if id.rsplit("-", 1)[0] == "shellydimmer2":
     ]
     lights_sensors = [ATTR_POWER, ATTR_ENERGY]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH]
-    lights_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
 
 if id.rsplit("-", 1)[0] == "shellybulb":
@@ -779,7 +814,7 @@ if id.rsplit("-", 1)[0].lower() == "shellybulbduo":
     white_lights = 1
     lights_sensors = [ATTR_ENERGY, ATTR_POWER]
     lights_sensors_units = [UNIT_KWH, UNIT_WATT]
-    lights_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    lights_sensors_classes = [DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
     lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [None]
@@ -791,7 +826,7 @@ if id.rsplit("-", 1)[0].lower() == "shellyvintage":
     white_lights = 1
     lights_sensors = [ATTR_ENERGY, ATTR_POWER]
     lights_sensors_units = [UNIT_KWH, UNIT_WATT]
-    lights_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    lights_sensors_classes = [DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
     lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [None]
@@ -803,7 +838,7 @@ if id.rsplit("-", 1)[0] == "shellyem":
     relays = 1
     relays_sensors = [ATTR_POWER, ATTR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [ATTR_OVERPOWER]
     relays_bin_sensors_pl = [None]
@@ -830,13 +865,13 @@ if id.rsplit("-", 1)[0] == "shellyem":
         UNIT_KWH,
     ]
     meters_sensors_classes = [
-        ATTR_POWER,
+        DEVICE_CLASS_POWER,
         None,
-        None,
-        ATTR_POWER,
-        ATTR_POWER,
-        ATTR_POWER,
-        ATTR_POWER,
+        DEVICE_CLASS_VOLTAGE,
+        DEVICE_CLASS_ENERGY,
+        DEVICE_CLASS_ENERGY,
+        DEVICE_CLASS_ENERGY,
+        DEVICE_CLASS_ENERGY,
     ]
     meters_sensors_tpls = [
         TPL_POWER,
@@ -860,7 +895,7 @@ if id.rsplit("-", 1)[0] == "shellyem3":
     relays_bin_sensors_pl = [None]
     relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_classes = [ATTR_PROBLEM]
+    relays_bin_sensors_classes = [DEVICE_CLASS_PROBLEM]
     meters_sensors = [
         ATTR_CURRENT,
         ATTR_POWER,
@@ -882,14 +917,14 @@ if id.rsplit("-", 1)[0] == "shellyem3":
         UNIT_KWH,
     ]
     meters_sensors_classes = [
-        None,
-        ATTR_POWER,
-        None,
-        None,
-        ATTR_POWER,
-        ATTR_POWER,
-        ATTR_POWER,
-        ATTR_POWER,
+        DEVICE_CLASS_CURRENT,
+        DEVICE_CLASS_POWER,
+        DEVICE_CLASS_POWER_FACTOR,
+        DEVICE_CLASS_VOLTAGE,
+        DEVICE_CLASS_ENERGY,
+        DEVICE_CLASS_ENERGY,
+        DEVICE_CLASS_ENERGY,
+        DEVICE_CLASS_ENERGY,
     ]
     meters_sensors_tpls = [
         TPL_CURRENT,
@@ -909,11 +944,11 @@ if id.rsplit("-", 1)[0] == "shellyem3":
 if id.rsplit("-", 1)[0] == "shellyflood":
     model = ATTR_MODEL_SHELLYFLOOD
     sensors = [ATTR_TEMPERATURE, ATTR_BATTERY]
-    sensors_classes = sensors
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_BATTERY]
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_BATTERY]
     bin_sensors = [ATTR_FLOOD, ATTR_FIRMWARE_UPDATE]
-    bin_sensors_classes = [ATTR_MOISTURE, None]
+    bin_sensors_classes = [DEVICE_CLASS_MOISTURE, None]
     bin_sensors_pl = [PL_TRUE_FALSE, None]
     bin_sensors_tpls = [None, TPL_NEW_FIRMWARE]
     bin_sensors_topics = [None, TOPIC_ANNOUNCE]
@@ -1471,7 +1506,7 @@ for bin_sensor_id in range(0, len(bin_sensors)):
     )
     config_topic = f"{disc_prefix}/binary_sensor/{id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}/config"
     if bin_sensors[bin_sensor_id] == ATTR_FIRMWARE_UPDATE:
-        default_topic = f"shellies/"
+        default_topic = "shellies/"
     else:
         default_topic = f"shellies/{id}/"
     availability_topic = "~online"
