@@ -263,7 +263,7 @@ off_delay = 2
 
 
 def get_device_config(id):
-    result = data.get(id, data.get(id.lower(), {}))
+    result = data.get(id, data.get(id.lower(), {}))  # noqa: F821
     if not result:
         result = {}
     try:
@@ -272,7 +272,7 @@ def get_device_config(id):
         if len(result) > 0:
             result[0]
     except TypeError:
-        logger.error("Wrong configuration for %s", id)
+        logger.error("Wrong configuration for %s", id)  # noqa: F821
         result = {}
     finally:
         return result
@@ -285,8 +285,8 @@ def mqtt_publish(topic, payload, retain, qos):
         KEY_RETAIN: retain,
         KEY_QOS: qos,
     }
-    logger.debug("Sending to MQTT broker: %s %s", topic, payload)
-    hass.services.call("mqtt", "publish", service_data, False)
+    logger.debug("Sending to MQTT broker: %s %s", topic, payload)  # noqa: F821
+    hass.services.call("mqtt", "publish", service_data, False)  # noqa: F821
 
 
 qos = 0
@@ -295,10 +295,10 @@ roller_mode = False
 
 no_battery_sensor = False
 
-fw_ver = data.get(CONF_FW_VER)
-id = data.get(CONF_ID)
-ignored = [element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])]
-mac = data.get(CONF_MAC).lower()
+fw_ver = data.get(CONF_FW_VER)  # noqa: F821
+id = data.get(CONF_ID)  # noqa: F821
+ignored = [element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])]  # noqa: F821
+mac = data.get(CONF_MAC).lower()  # noqa: F821
 
 if not id:
     raise ValueError(f"{id} is wrong id argument")
@@ -307,23 +307,23 @@ if not mac:
 if not fw_ver:
     raise ValueError(f"{fw_ver} is wrong mac argument")
 
-logger.debug("id: %s, mac: %s, fw_ver: %s", id, mac, fw_ver)
+logger.debug("id: %s, mac: %s, fw_ver: %s", id, mac, fw_ver)  # noqa: F821
 
 try:
-    if int(data.get(CONF_QOS, 0)) in [0, 1, 2]:
-        qos = int(data.get(CONF_QOS, 0))
+    if int(data.get(CONF_QOS, 0)) in [0, 1, 2]:  # noqa: F821
+        qos = int(data.get(CONF_QOS, 0))  # noqa: F821
     else:
         raise ValueError()
 except ValueError:
-    logger.error("Wrong qos argument, the default value 0 was used")
+    logger.error("Wrong qos argument, the default value 0 was used")  # noqa: F821
 
-disc_prefix = data.get(CONF_DISCOVERY_PREFIX, DEFAULT_DISC_PREFIX)
+disc_prefix = data.get(CONF_DISCOVERY_PREFIX, DEFAULT_DISC_PREFIX)  # noqa: F821
 
-develop = data.get(CONF_DEVELOP, False)
+develop = data.get(CONF_DEVELOP, False)  # noqa: F821
 if develop:
     disc_prefix = "develop"
     retain = False
-    logger.error("DEVELOP MODE !!!")
+    logger.error("DEVELOP MODE !!!")  # noqa: F821
 
 battery_powered = False
 bin_sensors = []
@@ -1114,7 +1114,7 @@ for roller_id in range(rollers):
         if device_config[f"roller-{roller_id}-class"] in ROLLER_DEVICE_CLASSES:
             device_class = device_config[f"roller-{roller_id}-class"]
         else:
-            logger.error("Wrong roller class, the default value None was used")
+            logger.error("Wrong roller class, the default value None was used")  # noqa: F821
     default_topic = f"shellies/{id}/"
     state_topic = f"~roller/{roller_id}"
     command_topic = f"{state_topic}/command"
