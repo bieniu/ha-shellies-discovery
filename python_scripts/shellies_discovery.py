@@ -41,9 +41,7 @@ ATTR_FAN = "fan"
 ATTR_FIRMWARE_UPDATE = "firmware update"
 ATTR_FLOOD = "flood"
 ATTR_GAS = "gas"
-ATTR_HEAT = "heat"
 ATTR_HUMIDITY = "humidity"
-ATTR_ILLUMINANCE = "illuminance"
 ATTR_ILLUMINATION = "illumination"
 ATTR_INPUT = "input"
 ATTR_INPUT_0 = "input 0"
@@ -59,7 +57,6 @@ ATTR_LONGPUSH_SHORTPUSH_0 = "longpush shortpush 0"
 ATTR_LONGPUSH_SHORTPUSH_1 = "longpush shortpush 1"
 ATTR_LONGPUSH_SHORTPUSH_2 = "longpush shortpush 2"
 ATTR_LUX = "lux"
-ATTR_MOISTURE = "moisture"
 ATTR_MOTION = "motion"
 ATTR_OPENING = "opening"
 ATTR_OPERATION = "operation"
@@ -68,7 +65,6 @@ ATTR_OVERPOWER = "overpower"
 ATTR_OVERTEMPERATURE = "overtemperature"
 ATTR_POWER = "power"
 ATTR_POWER_FACTOR = "pf"
-ATTR_PROBLEM = "problem"
 ATTR_REACTIVE_POWER = "reactive_power"
 ATTR_RELAY = "relay"
 ATTR_RETURNED_ENERGY = "returned_energy"
@@ -297,7 +293,9 @@ no_battery_sensor = False
 
 fw_ver = data.get(CONF_FW_VER)  # noqa: F821
 id = data.get(CONF_ID)  # noqa: F821
-ignored = [element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])]  # noqa: F821
+ignored = [
+    element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])
+]  # noqa: F821
 mac = data.get(CONF_MAC).lower()  # noqa: F821
 
 if not id:
@@ -865,7 +863,7 @@ if id.rsplit("-", 1)[0] == "shellyem":
     relays_bin_sensors_pl = [None]
     relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_classes = [ATTR_PROBLEM]
+    relays_bin_sensors_classes = [DEVICE_CLASS_PROBLEM]
     meters = 2
     meters_sensors = [
         ATTR_POWER,
@@ -1114,7 +1112,9 @@ for roller_id in range(rollers):
         if device_config[f"roller-{roller_id}-class"] in ROLLER_DEVICE_CLASSES:
             device_class = device_config[f"roller-{roller_id}-class"]
         else:
-            logger.error("Wrong roller class, the default value None was used")  # noqa: F821
+            logger.error(
+                "Wrong roller class, the default value None was used"
+            )  # noqa: F821
     default_topic = f"shellies/{id}/"
     state_topic = f"~roller/{roller_id}"
     command_topic = f"{state_topic}/command"
