@@ -1420,7 +1420,10 @@ for sensor_id in range(len(sensors)):
     config_topic = f"{disc_prefix}/sensor/{id}-{sensors[sensor_id]}/config"
     default_topic = f"shellies/{id}/"
     availability_topic = "~online"
-    sensor_name = f"{device_name} {sensors[sensor_id].title()}"
+    if sensors[sensor_id] == ATTR_RSSI:
+        sensor_name = f"{device_name} {sensors[sensor_id].upper()}"
+    else:
+        sensor_name = f"{device_name} {sensors[sensor_id].title()}"
     if sensors[sensor_id] == ATTR_RSSI:
         state_topic = "~info"
     elif relays > 0 or white_lights > 0:
