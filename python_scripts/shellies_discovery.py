@@ -225,7 +225,7 @@ TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
 TPL_LONGPUSH = "{% if value_json.event == ^L^ %}ON{% else %}OFF{% endif %}"
 TPL_LONGPUSH_SHORTPUSH = "{% if value_json.event == ^LS^ %}ON{% else %}OFF{% endif %}"
 TPL_LUX = "{{value|float|round}}"
-TPL_NEW_FIRMWARE = "{{% if value_json.id == ^{0}^ and value_json.new_fw == true %}}ON{{% else %}}OFF{{% endif %}}"
+TPL_NEW_FIRMWARE = "{{% if value_json.new_fw == true %}}ON{{% else %}}OFF{{% endif %}}"
 TPL_OVERPOWER = "{% if value_json.overpower == true %}ON{% else %}OFF{% endif %}"
 TPL_OVERPOWER_RELAY = "{% if value == ^overpower^ %}ON{% else %}OFF{% endif %}"
 TPL_POWER = "{{value|float|round(1)}}"
@@ -1536,10 +1536,7 @@ for bin_sensor_id in range(len(bin_sensors)):
         f"{id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}".lower()
     )
     config_topic = f"{disc_prefix}/binary_sensor/{id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}/config"
-    if bin_sensors[bin_sensor_id] == ATTR_FIRMWARE_UPDATE:
-        default_topic = "shellies/"
-    else:
-        default_topic = f"shellies/{id}/"
+    default_topic = f"shellies/{id}/"
     availability_topic = "~online"
     sensor_name = (
         f"{device_name} {bin_sensors[bin_sensor_id].replace('/', ' ').title()}"
@@ -1578,12 +1575,6 @@ for bin_sensor_id in range(len(bin_sensors)):
         payload[KEY_PAYLOAD_OFF] = bin_sensors_pl[bin_sensor_id][VALUE_OFF]
     if battery_powered:
         payload[KEY_EXPIRE_AFTER] = expire_after
-    elif bin_sensors[bin_sensor_id] == ATTR_FIRMWARE_UPDATE:
-        payload[KEY_AVAILABILITY_TOPIC] = (
-            default_topic + id + "/" + availability_topic[1:]
-        )
-        payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
-        payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
     else:
         payload[KEY_AVAILABILITY_TOPIC] = availability_topic
         payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
