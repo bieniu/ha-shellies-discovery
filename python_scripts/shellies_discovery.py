@@ -188,6 +188,8 @@ KEY_UNIQUE_ID = "uniq_id"
 KEY_UNIT = "unit_of_meas"
 KEY_VALUE_TEMPLATE = "val_tpl"
 
+MIN_FIRMWARE_VERSION = "1.8.0"
+
 ROLLER_DEVICE_CLASSES = [
     DEVICE_CLASS_AWNING,
     DEVICE_CLASS_BLIND,
@@ -313,7 +315,18 @@ if not id:
 if not mac:
     raise ValueError(f"{mac} is wrong mac argument")
 if not fw_ver:
-    raise ValueError(f"{fw_ver} is wrong mac argument")
+    raise ValueError(f"{fw_ver} is wrong fvw_ver argument")
+
+cur_ver = fw_ver.split("/v")[1].split("@")[0].rsplit(".", 1)
+cur_ver = float(cur_ver[0]) + float(cur_ver[1]) / 100
+
+min_ver = MIN_FIRMWARE_VERSION.rsplit(".", 1)
+min_ver = float(min_ver[0]) + float(min_ver[1]) / 100
+
+if cur_ver < min_ver:
+    raise ValueError(
+        f"Firmware version {MIN_FIRMWARE_VERSION} is required, please update your device {id}"
+    )
 
 logger.debug("id: %s, mac: %s, fw_ver: %s", id, mac, fw_ver)  # noqa: F821
 
