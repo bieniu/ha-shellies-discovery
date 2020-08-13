@@ -454,10 +454,10 @@ if id.rsplit("-", 1)[0] == "shellyair":
     relays_bin_sensors_pl = [PL_1_0]
     relays_bin_sensors_tpls = [None]
     relays_bin_sensors_classes = [None]
-    sensors = [ATTR_TEMPERATURE, ATTR_TOTALWORKTIME]
-    sensors_classes = [DEVICE_CLASS_TEMPERATURE, None]
-    sensors_units = [UNIT_CELSIUS, UNIT_SECOND]
-    sensors_tpls = [TPL_TEMPERATURE, None]
+    sensors = [ATTR_TEMPERATURE, ATTR_TOTALWORKTIME, ATTR_RSSI, ATTR_SSID]
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE, None, DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_units = [UNIT_CELSIUS, UNIT_SECOND, UNIT_DB, None]
+    sensors_tpls = [TPL_TEMPERATURE, None, TPL_RSSI, TPL_SSID]
     bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [DEVICE_CLASS_HEAT, None]
     bin_sensors_pl = [PL_1_0, None]
@@ -886,6 +886,10 @@ if id.rsplit("-", 1)[0] == "shellybulb":
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
+    sensors = [ATTR_RSSI, ATTR_SSID]
+    sensors_units = [UNIT_DB, None]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_tpls = [TPL_RSSI, TPL_SSID]
 
 if id.rsplit("-", 1)[0].lower() == "shellybulbduo":
     model = ATTR_MODEL_SHELLYDUO
@@ -898,6 +902,10 @@ if id.rsplit("-", 1)[0].lower() == "shellybulbduo":
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
+    sensors = [ATTR_RSSI, ATTR_SSID]
+    sensors_units = [UNIT_DB, None]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_tpls = [TPL_RSSI, TPL_SSID]
 
 if id.rsplit("-", 1)[0].lower() == "shellyvintage":
     model = ATTR_MODEL_SHELLYVINTAGE
@@ -910,6 +918,10 @@ if id.rsplit("-", 1)[0].lower() == "shellyvintage":
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
+    sensors = [ATTR_RSSI, ATTR_SSID]
+    sensors_units = [UNIT_DB, None]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_tpls = [TPL_RSSI, TPL_SSID]
 
 if id.rsplit("-", 1)[0] == "shellyem":
     model = ATTR_MODEL_SHELLYEM
@@ -964,6 +976,10 @@ if id.rsplit("-", 1)[0] == "shellyem":
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
+    sensors = [ATTR_RSSI, ATTR_SSID]
+    sensors_units = [UNIT_DB, None]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_tpls = [TPL_RSSI, TPL_SSID]
 
 if id.rsplit("-", 1)[0] == "shellyem3":
     model = ATTR_MODEL_SHELLY3EM
@@ -1018,6 +1034,10 @@ if id.rsplit("-", 1)[0] == "shellyem3":
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
+    sensors = [ATTR_RSSI, ATTR_SSID]
+    sensors_units = [UNIT_DB, None]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_tpls = [TPL_RSSI, TPL_SSID]
 
 if id.rsplit("-", 1)[0] == "shellyflood":
     model = ATTR_MODEL_SHELLYFLOOD
@@ -1154,6 +1174,10 @@ if id.rsplit("-", 1)[0] == "shellyix3":
         None,
         None,
     ]
+    sensors = [ATTR_RSSI, ATTR_SSID]
+    sensors_units = [UNIT_DB, None]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_tpls = [TPL_RSSI, TPL_SSID]
 
 # rollers
 for roller_id in range(rollers):
