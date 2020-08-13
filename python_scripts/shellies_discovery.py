@@ -449,10 +449,10 @@ if id.rsplit("-", 1)[0] == "shellyair":
     relays_bin_sensors_pl = [PL_1_0]
     relays_bin_sensors_tpls = [None]
     relays_bin_sensors_classes = [None]
-    sensors = [ATTR_TEMPERATURE, ATTR_TOTALWORKTIME, ATTR_RSSI]
-    sensors_classes = [DEVICE_CLASS_TEMPERATURE, None, DEVICE_CLASS_SIGNAL_STRENGTH]
-    sensors_units = [UNIT_CELSIUS, UNIT_SECONDS, UNIT_DB]
-    sensors_tpls = [TPL_TEMPERATURE, None, TPL_RSSI]
+    sensors = [ATTR_TEMPERATURE, ATTR_TOTALWORKTIME]
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE, None]
+    sensors_units = [UNIT_CELSIUS, UNIT_SECOND]
+    sensors_tpls = [TPL_TEMPERATURE, None]
     bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [DEVICE_CLASS_HEAT, None]
     bin_sensors_pl = [PL_1_0, None]
@@ -718,14 +718,18 @@ if id.rsplit("-", 1)[0] == "shellyrgbw2":
         TOPIC_LONGPUSH_0,
         TOPIC_ANNOUNCE,
     ]
+    sensors = [ATTR_RSSI]
+    sensors_units = [UNIT_DB]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH]
+    sensors_tpls = [TPL_RSSI]
 
 if id.rsplit("-", 1)[0] == "shellydimmer":
     model = ATTR_MODEL_SHELLYDIMMER
     white_lights = 1
-    sensors = [ATTR_TEMPERATURE]
-    sensors_classes = [DEVICE_CLASS_TEMPERATURE]
-    sensors_units = [UNIT_CELSIUS]
-    sensors_tpls = [TPL_TEMPERATURE]
+    sensors = [ATTR_TEMPERATURE, ATTR_RSSI]
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_SIGNAL_STRENGTH]
+    sensors_units = [UNIT_CELSIUS, UNIT_DB]
+    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI]
     bin_sensors = [
         ATTR_OVERTEMPERATURE,
         ATTR_OVERLOAD,
@@ -794,10 +798,10 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
 if id.rsplit("-", 1)[0] == "shellydimmer2":
     model = ATTR_MODEL_SHELLYDIMMER2
     white_lights = 1
-    sensors = [ATTR_TEMPERATURE]
-    sensors_classes = [DEVICE_CLASS_TEMPERATURE]
-    sensors_units = [UNIT_CELSIUS]
-    sensors_tpls = [TPL_TEMPERATURE]
+    sensors = [ATTR_TEMPERATURE, ATTR_RSSI]
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_SIGNAL_STRENGTH]
+    sensors_units = [UNIT_CELSIUS, UNIT_DB]
+    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI]
     bin_sensors = [
         ATTR_OVERTEMPERATURE,
         ATTR_OVERLOAD,
