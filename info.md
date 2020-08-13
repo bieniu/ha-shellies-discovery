@@ -64,10 +64,8 @@ python_script:
 - id: shellies_announce
   alias: 'Shellies Announce'
   trigger:
-    - platform: homeassistant
-      event: start
-    - platform: time_pattern
-      hours: "/6"
+    platform: homeassistant
+    event: start
   action:
     service: mqtt.publish
     data:
@@ -99,10 +97,8 @@ python_script:
 - id: shellies_announce
   alias: 'Shellies Announce'
   trigger:
-    - platform: homeassistant
-      event: start
-    - platform: time_pattern
-      hours: "/6"
+    platform: homeassistant
+    event: start
   action:
     service: mqtt.publish
     data:
