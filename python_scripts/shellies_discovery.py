@@ -1652,12 +1652,7 @@ for bin_sensor_id in range(len(bin_sensors)):
         },
         "~": default_topic,
     }
-    if (
-        bin_sensors_tpls[bin_sensor_id]
-        and bin_sensors[bin_sensor_id] == ATTR_FIRMWARE_UPDATE
-    ):
-        payload[KEY_VALUE_TEMPLATE] = bin_sensors_tpls[bin_sensor_id].format(id)
-    elif bin_sensors_tpls[bin_sensor_id]:
+    if bin_sensors_tpls[bin_sensor_id]:
         payload[KEY_VALUE_TEMPLATE] = bin_sensors_tpls[bin_sensor_id]
     else:
         payload[KEY_PAYLOAD_ON] = bin_sensors_pl[bin_sensor_id][VALUE_ON]
