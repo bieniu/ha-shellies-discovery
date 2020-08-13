@@ -232,8 +232,12 @@ TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
 TPL_LONGPUSH = "{% if value_json.event == ^L^ %}ON{% else %}OFF{% endif %}"
 TPL_LONGPUSH_SHORTPUSH = "{% if value_json.event == ^LS^ %}ON{% else %}OFF{% endif %}"
 TPL_LUX = "{{value|float|round}}"
-TPL_NEW_FIRMWARE_FROM_ANNOUNCE = "{% if value_json.new_fw == true %}ON{% else %}OFF{% endif %}"
-TPL_NEW_FIRMWARE_FROM_INFO = "{% if value_json[^update^].has_update == true %}ON{% else %}OFF{% endif %}"
+TPL_NEW_FIRMWARE_FROM_ANNOUNCE = (
+    "{% if value_json.new_fw == true %}ON{% else %}OFF{% endif %}"
+)
+TPL_NEW_FIRMWARE_FROM_INFO = (
+    "{% if value_json[^update^].has_update == true %}ON{% else %}OFF{% endif %}"
+)
 TPL_OVERPOWER = "{% if value_json.overpower == true %}ON{% else %}OFF{% endif %}"
 TPL_OVERPOWER_RELAY = "{% if value == ^overpower^ %}ON{% else %}OFF{% endif %}"
 TPL_POWER = "{{value|float|round(1)}}"
@@ -455,7 +459,12 @@ if id.rsplit("-", 1)[0] == "shellyair":
     relays_bin_sensors_tpls = [None]
     relays_bin_sensors_classes = [None]
     sensors = [ATTR_TEMPERATURE, ATTR_TOTALWORKTIME, ATTR_RSSI, ATTR_SSID]
-    sensors_classes = [DEVICE_CLASS_TEMPERATURE, None, DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_classes = [
+        DEVICE_CLASS_TEMPERATURE,
+        None,
+        DEVICE_CLASS_SIGNAL_STRENGTH,
+        None,
+    ]
     sensors_units = [UNIT_CELSIUS, UNIT_SECOND, UNIT_DB, None]
     sensors_tpls = [TPL_TEMPERATURE, None, TPL_RSSI, TPL_SSID]
     bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_FIRMWARE_UPDATE]
