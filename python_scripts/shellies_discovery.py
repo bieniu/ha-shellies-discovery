@@ -89,6 +89,7 @@ ATTR_SHORTPUSH_LONGPUSH_1 = "shortpush longpush 1"
 ATTR_SHORTPUSH_LONGPUSH_2 = "shortpush longpush 2"
 ATTR_SMOKE = "smoke"
 ATTR_SWITCH = "switch"
+ATTR_SSID = "ssid"
 ATTR_TEMPERATURE = "temperature"
 ATTR_TILT = "tilt"
 ATTR_TOTAL = "total"
@@ -237,6 +238,7 @@ TPL_POWER_FACTOR = "{{value|float*100|round}}"
 TPL_RSSI = "{{value_json[^wifi_sta^].rssi}}"
 TPL_SHORTPUSH = "{% if value_json.event == ^S^ %}ON{% else %}OFF{% endif %}"
 TPL_SHORTPUSH_LONGPUSH = "{% if value_json.event == ^SL^ %}ON{% else %}OFF{% endif %}"
+TPL_SSID = "{{value_json[^wifi_sta^].ssid}}"
 TPL_TEMPERATURE = "{{value|float|round(1)}}"
 TPL_TILT = "{{value|float}}"
 TPL_TRIPLE_SHORTPUSH = "{% if value_json.event == ^SSS^ %}ON{% else %}OFF{% endif %}"
@@ -405,10 +407,10 @@ if id.rsplit("-", 1)[0] == "shelly1":
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
-    sensors = [ATTR_RSSI]
-    sensors_units = [UNIT_DB]
-    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH]
-    sensors_tpls = [TPL_RSSI]
+    sensors = [ATTR_RSSI, ATTR_SSID]
+    sensors_units = [UNIT_DB, None]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_tpls = [TPL_RSSI, TPL_SSID]
     ext_humi_sensors = 1
     ext_temp_sensors = 3
     ext_sensors = 3  # to remove
@@ -425,10 +427,10 @@ if id.rsplit("-", 1)[0] == "shelly1pm":
     relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
     relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [None, None, None, DEVICE_CLASS_PROBLEM]
-    sensors = [ATTR_TEMPERATURE, ATTR_RSSI]
-    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_SIGNAL_STRENGTH]
-    sensors_units = [UNIT_CELSIUS, UNIT_DB]
-    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI]
+    sensors = [ATTR_TEMPERATURE, ATTR_RSSI, ATTR_SSID]
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_units = [UNIT_CELSIUS, UNIT_DB, None]
+    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI, TPL_SSID]
     bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [DEVICE_CLASS_HEAT, None]
     bin_sensors_pl = [PL_1_0, None]
@@ -478,10 +480,10 @@ if id.rsplit("-", 1)[0] == "shellyswitch":
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
-    sensors = [ATTR_RSSI]
-    sensors_units = [UNIT_DB]
-    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH]
-    sensors_tpls = [TPL_RSSI]
+    sensors = [ATTR_RSSI, ATTR_SSID]
+    sensors_units = [UNIT_DB, None]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_tpls = [TPL_RSSI, TPL_SSID]
 
 if id.rsplit("-", 1)[0] == "shellyswitch25":
     model = ATTR_MODEL_SHELLY25
@@ -496,10 +498,10 @@ if id.rsplit("-", 1)[0] == "shellyswitch25":
     relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
     relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [None, None, None, DEVICE_CLASS_PROBLEM]
-    sensors = [ATTR_TEMPERATURE, ATTR_RSSI]
-    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_SIGNAL_STRENGTH]
-    sensors_units = [UNIT_CELSIUS, UNIT_DB]
-    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI]
+    sensors = [ATTR_TEMPERATURE, ATTR_RSSI, ATTR_SSID]
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_units = [UNIT_CELSIUS, UNIT_DB, None]
+    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI, TPL_SSID]
     bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [DEVICE_CLASS_HEAT, None]
     bin_sensors_pl = [PL_1_0, None]
@@ -522,10 +524,10 @@ if id.rsplit("-", 1)[0] == "shellyplug":
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
-    sensors = [ATTR_RSSI]
-    sensors_units = [UNIT_DB]
-    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH]
-    sensors_tpls = [TPL_RSSI]
+    sensors = [ATTR_RSSI, ATTR_SSID]
+    sensors_units = [UNIT_DB, None]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_tpls = [TPL_RSSI, TPL_SSID]
 
 if id.rsplit("-", 1)[0] == "shellyplug-s":
     model = ATTR_MODEL_SHELLYPLUG_S
@@ -539,10 +541,10 @@ if id.rsplit("-", 1)[0] == "shellyplug-s":
     relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [DEVICE_CLASS_PROBLEM]
-    sensors = [ATTR_TEMPERATURE, ATTR_RSSI]
-    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_SIGNAL_STRENGTH]
-    sensors_units = [UNIT_CELSIUS, UNIT_DB]
-    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI]
+    sensors = [ATTR_TEMPERATURE, ATTR_RSSI, ATTR_SSID]
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_units = [UNIT_CELSIUS, UNIT_DB, None]
+    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI, TPL_SSID]
     bin_sensors = [ATTR_OVERTEMPERATURE, ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [DEVICE_CLASS_HEAT, None]
     bin_sensors_pl = [PL_1_0, None]
@@ -565,10 +567,10 @@ if id.rsplit("-", 1)[0] == "shelly4pro":
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
-    sensors = [ATTR_RSSI]
-    sensors_units = [UNIT_DB]
-    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH]
-    sensors_tpls = [TPL_RSSI]
+    sensors = [ATTR_RSSI, ATTR_SSID]
+    sensors_units = [UNIT_DB, None]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_tpls = [TPL_RSSI, TPL_SSID]
 
 if id.rsplit("-", 1)[0] == "shellyht":
     model = ATTR_MODEL_SHELLYHT
@@ -588,10 +590,10 @@ if id.rsplit("-", 1)[0] == "shellyht":
 
 if id.rsplit("-", 1)[0] == "shellygas":
     model = ATTR_MODEL_SHELLYGAS
-    sensors = [ATTR_OPERATION, ATTR_GAS, ATTR_SELF_TEST, ATTR_CONCENTRATION, ATTR_RSSI]
-    sensors_classes = [None, None, None, None, DEVICE_CLASS_SIGNAL_STRENGTH]
-    sensors_tpls = [None, None, None, None, TPL_RSSI]
-    sensors_units = [None, None, None, UNIT_PPM, UNIT_DB]
+    sensors = [ATTR_OPERATION, ATTR_GAS, ATTR_SELF_TEST, ATTR_CONCENTRATION, ATTR_RSSI, ATTR_SSID]
+    sensors_classes = [None, None, None, None, DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_tpls = [None, None, None, None, TPL_RSSI, TPL_SSID]
+    sensors_units = [None, None, None, UNIT_PPM, UNIT_DB, None]
     bin_sensors = [ATTR_FIRMWARE_UPDATE]
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE]
@@ -718,18 +720,18 @@ if id.rsplit("-", 1)[0] == "shellyrgbw2":
         TOPIC_LONGPUSH_0,
         TOPIC_ANNOUNCE,
     ]
-    sensors = [ATTR_RSSI]
-    sensors_units = [UNIT_DB]
-    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH]
-    sensors_tpls = [TPL_RSSI]
+    sensors = [ATTR_RSSI, ATTR_SSID]
+    sensors_units = [UNIT_DB, None]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_tpls = [TPL_RSSI, TPL_SSID]
 
 if id.rsplit("-", 1)[0] == "shellydimmer":
     model = ATTR_MODEL_SHELLYDIMMER
     white_lights = 1
-    sensors = [ATTR_TEMPERATURE, ATTR_RSSI]
-    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_SIGNAL_STRENGTH]
-    sensors_units = [UNIT_CELSIUS, UNIT_DB]
-    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI]
+    sensors = [ATTR_TEMPERATURE, ATTR_RSSI, ATTR_SSID]
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_units = [UNIT_CELSIUS, UNIT_DB, None]
+    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI, TPL_SSID]
     bin_sensors = [
         ATTR_OVERTEMPERATURE,
         ATTR_OVERLOAD,
@@ -798,10 +800,10 @@ if id.rsplit("-", 1)[0] == "shellydimmer":
 if id.rsplit("-", 1)[0] == "shellydimmer2":
     model = ATTR_MODEL_SHELLYDIMMER2
     white_lights = 1
-    sensors = [ATTR_TEMPERATURE, ATTR_RSSI]
-    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_SIGNAL_STRENGTH]
-    sensors_units = [UNIT_CELSIUS, UNIT_DB]
-    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI]
+    sensors = [ATTR_TEMPERATURE, ATTR_RSSI, ATTR_SSID]
+    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_SIGNAL_STRENGTH, None]
+    sensors_units = [UNIT_CELSIUS, UNIT_DB, None]
+    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI, TPL_SSID]
     bin_sensors = [
         ATTR_OVERTEMPERATURE,
         ATTR_OVERLOAD,
@@ -1424,11 +1426,11 @@ for sensor_id in range(len(sensors)):
     config_topic = f"{disc_prefix}/sensor/{id}-{sensors[sensor_id]}/config"
     default_topic = f"shellies/{id}/"
     availability_topic = "~online"
-    if sensors[sensor_id] == ATTR_RSSI:
+    if sensors[sensor_id] in [ATTR_RSSI, ATTR_SSID]:
         sensor_name = f"{device_name} {sensors[sensor_id].upper()}"
     else:
         sensor_name = f"{device_name} {sensors[sensor_id].title()}"
-    if sensors[sensor_id] == ATTR_RSSI:
+    if sensors[sensor_id] in [ATTR_RSSI, ATTR_SSID]:
         state_topic = "~info"
     elif relays > 0 or white_lights > 0:
         state_topic = f"~{sensors[sensor_id]}"
