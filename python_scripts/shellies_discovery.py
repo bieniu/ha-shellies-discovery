@@ -47,6 +47,7 @@ ATTR_INPUT = "input"
 ATTR_INPUT_0 = "input 0"
 ATTR_INPUT_1 = "input 1"
 ATTR_INPUT_2 = "input 2"
+KEY_ICON = "icon"
 ATTR_LIGHT = "light"
 ATTR_LOADERROR = "loaderror"
 ATTR_LONGPUSH = "longpush"
@@ -1477,6 +1478,8 @@ for sensor_id in range(len(sensors)):
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
     if sensors_tpls[sensor_id]:
         payload[KEY_VALUE_TEMPLATE] = sensors_tpls[sensor_id]
+    if sensors[sensor_id] == ATTR_SSID:
+        payload[KEY_ICON] = "mdi:wifi"
     if no_battery_sensor and sensors[sensor_id] == ATTR_BATTERY:
         payload = ""
     if id.lower() in ignored:
