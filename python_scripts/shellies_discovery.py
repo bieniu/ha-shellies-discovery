@@ -590,7 +590,14 @@ if id.rsplit("-", 1)[0] == "shellyht":
 
 if id.rsplit("-", 1)[0] == "shellygas":
     model = ATTR_MODEL_SHELLYGAS
-    sensors = [ATTR_OPERATION, ATTR_GAS, ATTR_SELF_TEST, ATTR_CONCENTRATION, ATTR_RSSI, ATTR_SSID]
+    sensors = [
+        ATTR_OPERATION,
+        ATTR_GAS,
+        ATTR_SELF_TEST,
+        ATTR_CONCENTRATION,
+        ATTR_RSSI,
+        ATTR_SSID,
+    ]
     sensors_classes = [None, None, None, None, DEVICE_CLASS_SIGNAL_STRENGTH, None]
     sensors_tpls = [None, None, None, None, TPL_RSSI, TPL_SSID]
     sensors_units = [None, None, None, UNIT_PPM, UNIT_DB, None]
