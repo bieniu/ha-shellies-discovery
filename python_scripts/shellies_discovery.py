@@ -283,6 +283,7 @@ ROLLER_DEVICE_CLASSES = [
     DEVICE_CLASS_WINDOW,
 ]
 
+
 def get_device_config(id):
     """Get device configuration."""
     result = data.get(id, data.get(id.lower(), {}))  # noqa: F821
@@ -310,6 +311,7 @@ def mqtt_publish(topic, payload, retain, qos):
     }
     logger.debug("Sending to MQTT broker: %s %s", topic, payload)  # noqa: F821
     hass.services.call("mqtt", "publish", service_data, False)  # noqa: F821
+
 
 expire_after = EXPIRE_AFTER_FOR_BATTERY_POWERED
 
@@ -432,7 +434,12 @@ if id.rsplit("-", 1)[0] == "shelly1pm":
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
-    relays_bin_sensors = [SENSOR_INPUT, SENSOR_LONGPUSH, SENSOR_SHORTPUSH, SENSOR_OVERPOWER]
+    relays_bin_sensors = [
+        SENSOR_INPUT,
+        SENSOR_LONGPUSH,
+        SENSOR_SHORTPUSH,
+        SENSOR_OVERPOWER,
+    ]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
     relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
     relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
@@ -486,7 +493,12 @@ if id.rsplit("-", 1)[0] == "shellyswitch":
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
-    relays_bin_sensors = [SENSOR_INPUT, SENSOR_LONGPUSH, SENSOR_SHORTPUSH, SENSOR_OVERPOWER]
+    relays_bin_sensors = [
+        SENSOR_INPUT,
+        SENSOR_LONGPUSH,
+        SENSOR_SHORTPUSH,
+        SENSOR_OVERPOWER,
+    ]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
     relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
     relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
@@ -508,7 +520,12 @@ if id.rsplit("-", 1)[0] == "shellyswitch25":
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
-    relays_bin_sensors = [SENSOR_INPUT, SENSOR_LONGPUSH, SENSOR_SHORTPUSH, SENSOR_OVERPOWER]
+    relays_bin_sensors = [
+        SENSOR_INPUT,
+        SENSOR_LONGPUSH,
+        SENSOR_SHORTPUSH,
+        SENSOR_OVERPOWER,
+    ]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
     relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
     relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
