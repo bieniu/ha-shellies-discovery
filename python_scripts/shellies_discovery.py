@@ -283,8 +283,6 @@ ROLLER_DEVICE_CLASSES = [
     DEVICE_CLASS_WINDOW,
 ]
 
-expire_after = EXPIRE_AFTER_FOR_BATTERY_POWERED
-
 def get_device_config(id):
     """Get device configuration."""
     result = data.get(id, data.get(id.lower(), {}))  # noqa: F821
@@ -313,6 +311,7 @@ def mqtt_publish(topic, payload, retain, qos):
     logger.debug("Sending to MQTT broker: %s %s", topic, payload)  # noqa: F821
     hass.services.call("mqtt", "publish", service_data, False)  # noqa: F821
 
+expire_after = EXPIRE_AFTER_FOR_BATTERY_POWERED
 
 qos = 0
 retain = True
