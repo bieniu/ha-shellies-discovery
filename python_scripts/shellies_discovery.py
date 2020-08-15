@@ -1364,9 +1364,7 @@ for relay_id in range(relays):
         if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
             force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
         unique_id = f"{dev_id}-relay-{relays_sensors[sensor_id]}-{relay_id}".lower()
-        config_topic = (
-            f"{disc_prefix}/sensor/{dev_id}-{relays_sensors[sensor_id]}-{relay_id}/config"
-        )
+        config_topic = f"{disc_prefix}/sensor/{dev_id}-{relays_sensors[sensor_id]}-{relay_id}/config"
         if device_config.get(f"relay-{relay_id}-name"):
             sensor_name = f"{device_config[f'relay-{relay_id}-name']} {relays_sensors[sensor_id].title()}"
         else:
@@ -1641,9 +1639,7 @@ for bin_sensor_id in range(len(bin_sensors)):
     if device_config.get(CONF_MODE):
         config_mode = device_config[CONF_MODE]
     device_name = f"{model} {dev_id.split('-')[-1]}"
-    unique_id = (
-        f"{dev_id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}".lower()
-    )
+    unique_id = f"{dev_id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}".lower()
     config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}/config"
     default_topic = f"shellies/{dev_id}/"
     availability_topic = "~online"
@@ -1805,7 +1801,9 @@ for light_id in range(rgbw_lights):
             f"{device_name} {lights_bin_sensors[bin_sensor_id].title()} {light_id}"
         )
         config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config"
-        unique_id = f"{dev_id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}".lower()
+        unique_id = (
+            f"{dev_id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}".lower()
+        )
         if lights_bin_sensors[bin_sensor_id] == SENSOR_INPUT:
             state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
         else:
