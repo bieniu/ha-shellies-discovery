@@ -75,6 +75,7 @@ EXPIRE_AFTER_FOR_AC_POWERED = 7200
 KEY_AVAILABILITY_TOPIC = "avty_t"
 KEY_BLUE_TEMPLATE = "b_tpl"
 KEY_BRIGHTNESS_TEMPLATE = "bri_tpl"
+KEY_COLOR_TEMP_TEMPLATE = "clr_temp_tpl"
 KEY_COMMAND_OFF_TEMPLATE = "cmd_off_tpl"
 KEY_COMMAND_ON_TEMPLATE = "cmd_on_tpl"
 KEY_COMMAND_TOPIC = "cmd_t"
@@ -90,6 +91,8 @@ KEY_IDENTIFIERS = "ids"
 KEY_JSON_ATTRIBUTES_TEMPLATE = "json_attr_tpl"
 KEY_JSON_ATTRIBUTE_TOPIC = "json_attr_t"
 KEY_MANUFACTURER = "mf"
+KEY_MAX_MIREDS = "max_mireds"
+KEY_MIN_MIREDS = "min_mireds"
 KEY_MODEL = "mdl"
 KEY_NAME = "name"
 KEY_OFF_DELAY = "off_dly"
@@ -1784,7 +1787,7 @@ for light_id in range(rgbw_lights):
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
-    mqtt_publish(config_topic, payload, retain, qos)
+    mqtt_publish(config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos)
 
     # color light's binary sensors
     for bin_sensor_id in range(len(lights_bin_sensors)):
@@ -1898,102 +1901,46 @@ for light_id in range(white_lights):
     config_mode = LIGHT_RGBW
     if device_config.get(CONF_MODE):
         config_mode = device_config[CONF_MODE]
+
+    payload = {
+        KEY_SCHEMA: ATTR_TEMPLATE,
+        KEY_NAME: light_name,
+        KEY_COMMAND_TOPIC: command_topic,
+        KEY_STATE_TOPIC: state_topic,
+        KEY_AVAILABILITY_TOPIC: availability_topic,
+        KEY_PAYLOAD_AVAILABLE:  VALUE_TRUE,
+        KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
+
+        KEY_COMMAND_OFF_TEMPLATE:"{^turn^:^off^}",
+        KEY_STATE_TEMPLATE: "{% if value_json.ison %}on{% else %}off{% endif %}",
+        KEY_BRIGHTNESS_TEMPLATE: "{{value_json.brightness|float|multiply(2.55)|round}}",
+        KEY_UNIQUE_ID: unique_id,
+        KEY_QOS: qos,
+        KEY_DEVICE: {
+            KEY_IDENTIFIERS: [mac],
+            KEY_NAME: device_name,
+            KEY_MODEL: model,
+            KEY_SW_VERSION: fw_ver,
+            KEY_MANUFACTURER: ATTR_MANUFACTURER,
+        },
+        "~": default_topic,
+    }
     if config_mode == LIGHT_WHITE and model == MODEL_SHELLYRGBW2:
-        payload = (
-            '{"schema":"template",'
-            '"name":"' + light_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if white_value is defined %},^white^:{{white_value}}{% endif %}{% if effect is defined %},^effect^:{{effect}}{% endif %}}",'
-            '"cmd_off_tpl":"{^turn^:^off^}",'
-            '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
-            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"ids": ["' + mac + '"],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
+        payload[KEY_COMMAND_ON_TEMPLATE] = "{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if white_value is defined %},^white^:{{white_value}}{% endif %}{% if effect is defined %},^effect^:{{effect}}{% endif %}}"
     elif model in [MODEL_SHELLYDIMMER, MODEL_SHELLYDIMMER2]:
-        payload = (
-            '{"schema":"template",'
-            '"name":"' + light_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}}",'
-            '"cmd_off_tpl":"{^turn^:^off^}",'
-            '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
-            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"ids": ["' + mac + '"],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
+        payload[KEY_COMMAND_ON_TEMPLATE] = "{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}}"
     elif model == MODEL_SHELLYDUO:
-        payload = (
-            '{"schema":"template",'
-            '"name":"' + light_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if color_temp is defined %},^temp^:{{(1000000/(color_temp|int))|round(0,^floor^)}}{% endif %}}",'
-            '"cmd_off_tpl":"{^turn^:^off^}",'
-            '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
-            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"clr_temp_tpl":"{{((1000000/(value_json.temp|int))|round(0,^floor^))}}",'
-            '"max_mireds":370,'
-            '"min_mireds":153,'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"ids": ["' + mac + '"],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
+        payload[KEY_COMMAND_ON_TEMPLATE] = "{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if color_temp is defined %},^temp^:{{(1000000/(color_temp|int))|round(0,^floor^)}}{% endif %}}"
+        payload[KEY_COLOR_TEMP_TEMPLATE] = "{{((1000000/(value_json.temp|int))|round(0,^floor^))}}"
+        payload[KEY_MAX_MIREDS] = 370
+        payload[KEY_MIN_MIREDS] = 153
     elif model == MODEL_SHELLYVINTAGE:
-        payload = (
-            '{"schema":"template",'
-            '"name":"' + light_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}}",'
-            '"cmd_off_tpl":"{^turn^:^off^}",'
-            '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
-            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"ids": ["' + mac + '"],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
+        payload[KEY_COMMAND_ON_TEMPLATE] = "{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}}"
     else:
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
-    mqtt_publish(config_topic, payload, retain, qos)
+    mqtt_publish(config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos)
 
     # white light's binary sensors
     for bin_sensor_id in range(len(lights_bin_sensors)):
