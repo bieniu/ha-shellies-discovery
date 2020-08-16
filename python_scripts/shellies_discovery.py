@@ -1754,7 +1754,7 @@ for light_id in range(rgbw_lights):
         KEY_COMMAND_TOPIC: command_topic,
         KEY_STATE_TOPIC: state_topic,
         KEY_AVAILABILITY_TOPIC: availability_topic,
-        KEY_PAYLOAD_AVAILABLE:  VALUE_TRUE,
+        KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
         KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
         KEY_COMMAND_OFF_TEMPLATE: "{^turn^:^off^}",
         KEY_BRIGHTNESS_TEMPLATE: "{{value_json.gain|float|multiply(2.55)|round}}",
@@ -1775,19 +1775,41 @@ for light_id in range(rgbw_lights):
     }
     if config_mode == LIGHT_RGBW and model == MODEL_SHELLYRGBW2:
         payload[KEY_EFFECT_LIST] = ["Off", "Meteor Shower", "Gradual Change", "Flash"]
-        payload[KEY_COMMAND_ON_TEMPLATE] = "{^turn^:^on^{% if brightness is defined %},^gain^:{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if red is defined and green is defined and blue is defined %},^red^:{{red}},^green^:{{green}},^blue^:{{blue}}{% endif %}{% if white_value is defined %},^white^:{{white_value}}{% endif %}{% if effect is defined %}{% if effect == ^Meteor Shower^ %}^effect^:1{% elif effect == ^Gradual Change^ %}^effect^:2{% elif effect == ^Flash^ %}^effect^:3{% else %}^effect^:0{% endif %}{% else %}^effect^:0{% endif %}}"
-        payload[KEY_STATE_TEMPLATE] = "{% if value_json.ison %}on{% else %}off{% endif %}"
-        payload[KEY_EFFECT_TEMPLATE] = "{% if value_json.effect == 1 %}Meteor Shower{% elif value_json.effect == 2 %}Gradual Change{% elif value_json.effect == 3 %}Flash{% else %}Off{% endif %}"
+        payload[
+            KEY_COMMAND_ON_TEMPLATE
+        ] = "{^turn^:^on^{% if brightness is defined %},^gain^:{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if red is defined and green is defined and blue is defined %},^red^:{{red}},^green^:{{green}},^blue^:{{blue}}{% endif %}{% if white_value is defined %},^white^:{{white_value}}{% endif %}{% if effect is defined %}{% if effect == ^Meteor Shower^ %}^effect^:1{% elif effect == ^Gradual Change^ %}^effect^:2{% elif effect == ^Flash^ %}^effect^:3{% else %}^effect^:0{% endif %}{% else %}^effect^:0{% endif %}}"
+        payload[
+            KEY_STATE_TEMPLATE
+        ] = "{% if value_json.ison %}on{% else %}off{% endif %}"
+        payload[
+            KEY_EFFECT_TEMPLATE
+        ] = "{% if value_json.effect == 1 %}Meteor Shower{% elif value_json.effect == 2 %}Gradual Change{% elif value_json.effect == 3 %}Flash{% else %}Off{% endif %}"
     elif config_mode == LIGHT_RGBW and model == MODEL_SHELLYBULB:
-        payload[KEY_EFFECT_LIST] = ["Off", "Meteor Shower", "Gradual Change", "Breath", "Flash", "On/Off Gradual", "Red/Green Change"]
-        payload[KEY_COMMAND_ON_TEMPLATE] = "{^turn^:^on^,^mode^:^color^,{% if red is defined and green is defined and blue is defined %}^red^:{{red}},^green^:{{green}},^blue^:{{blue}},{% endif %}{% if white_value is defined %}^white^:{{white_value}},{% endif %}{% if brightness is defined %}^gain^:{{brightness|float|multiply(0.3922)|round}},{% endif %}{% if effect is defined %}{% if effect == ^Meteor Shower^ %}^effect^:1{% elif effect == ^Gradual Change^ %}^effect^:2{% elif effect == ^Breath^ %}^effect^:3{% elif effect == ^Flash^ %}^effect^:4{% elif effect == ^On/Off Gradual^ %}^effect^:5{% elif effect == ^Red/Green Change^ %}^effect^:6{% else %}^effect^:0{% endif %}{% else %}^effect^:0{% endif %}}"
-        payload[KEY_STATE_TEMPLATE] = "{% if value_json.ison == true and value_json.mode == ^color^ %}on{% else %}off{% endif %}"
-        payload[KEY_EFFECT_TEMPLATE] = "{% if value_json.effect == 1 %}Meteor Shower{% elif value_json.effect == 2 %}Gradual Change{% elif value_json.effect == 3 %}Breath{% elif value_json.effect == 4 %}Flash{% elif value_json.effect == 5 %}On/Off Gradual{% elif value_json.effect == 6 %}Red/Green Change{% else %}Off{% endif %}"
+        payload[KEY_EFFECT_LIST] = [
+            "Off",
+            "Meteor Shower",
+            "Gradual Change",
+            "Breath",
+            "Flash",
+            "On/Off Gradual",
+            "Red/Green Change",
+        ]
+        payload[
+            KEY_COMMAND_ON_TEMPLATE
+        ] = "{^turn^:^on^,^mode^:^color^,{% if red is defined and green is defined and blue is defined %}^red^:{{red}},^green^:{{green}},^blue^:{{blue}},{% endif %}{% if white_value is defined %}^white^:{{white_value}},{% endif %}{% if brightness is defined %}^gain^:{{brightness|float|multiply(0.3922)|round}},{% endif %}{% if effect is defined %}{% if effect == ^Meteor Shower^ %}^effect^:1{% elif effect == ^Gradual Change^ %}^effect^:2{% elif effect == ^Breath^ %}^effect^:3{% elif effect == ^Flash^ %}^effect^:4{% elif effect == ^On/Off Gradual^ %}^effect^:5{% elif effect == ^Red/Green Change^ %}^effect^:6{% else %}^effect^:0{% endif %}{% else %}^effect^:0{% endif %}}"
+        payload[
+            KEY_STATE_TEMPLATE
+        ] = "{% if value_json.ison == true and value_json.mode == ^color^ %}on{% else %}off{% endif %}"
+        payload[
+            KEY_EFFECT_TEMPLATE
+        ] = "{% if value_json.effect == 1 %}Meteor Shower{% elif value_json.effect == 2 %}Gradual Change{% elif value_json.effect == 3 %}Breath{% elif value_json.effect == 4 %}Flash{% elif value_json.effect == 5 %}On/Off Gradual{% elif value_json.effect == 6 %}Red/Green Change{% else %}Off{% endif %}"
     else:
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
-    mqtt_publish(config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos)
+    mqtt_publish(
+        config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos
+    )
 
     # color light's binary sensors
     for bin_sensor_id in range(len(lights_bin_sensors)):
@@ -1908,10 +1930,9 @@ for light_id in range(white_lights):
         KEY_COMMAND_TOPIC: command_topic,
         KEY_STATE_TOPIC: state_topic,
         KEY_AVAILABILITY_TOPIC: availability_topic,
-        KEY_PAYLOAD_AVAILABLE:  VALUE_TRUE,
+        KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
         KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-
-        KEY_COMMAND_OFF_TEMPLATE:"{^turn^:^off^}",
+        KEY_COMMAND_OFF_TEMPLATE: "{^turn^:^off^}",
         KEY_STATE_TEMPLATE: "{% if value_json.ison %}on{% else %}off{% endif %}",
         KEY_BRIGHTNESS_TEMPLATE: "{{value_json.brightness|float|multiply(2.55)|round}}",
         KEY_UNIQUE_ID: unique_id,
@@ -1926,21 +1947,33 @@ for light_id in range(white_lights):
         "~": default_topic,
     }
     if config_mode == LIGHT_WHITE and model == MODEL_SHELLYRGBW2:
-        payload[KEY_COMMAND_ON_TEMPLATE] = "{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if white_value is defined %},^white^:{{white_value}}{% endif %}{% if effect is defined %},^effect^:{{effect}}{% endif %}}"
+        payload[
+            KEY_COMMAND_ON_TEMPLATE
+        ] = "{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if white_value is defined %},^white^:{{white_value}}{% endif %}{% if effect is defined %},^effect^:{{effect}}{% endif %}}"
     elif model in [MODEL_SHELLYDIMMER, MODEL_SHELLYDIMMER2]:
-        payload[KEY_COMMAND_ON_TEMPLATE] = "{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}}"
+        payload[
+            KEY_COMMAND_ON_TEMPLATE
+        ] = "{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}}"
     elif model == MODEL_SHELLYDUO:
-        payload[KEY_COMMAND_ON_TEMPLATE] = "{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if color_temp is defined %},^temp^:{{(1000000/(color_temp|int))|round(0,^floor^)}}{% endif %}}"
-        payload[KEY_COLOR_TEMP_TEMPLATE] = "{{((1000000/(value_json.temp|int))|round(0,^floor^))}}"
+        payload[
+            KEY_COMMAND_ON_TEMPLATE
+        ] = "{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if color_temp is defined %},^temp^:{{(1000000/(color_temp|int))|round(0,^floor^)}}{% endif %}}"
+        payload[
+            KEY_COLOR_TEMP_TEMPLATE
+        ] = "{{((1000000/(value_json.temp|int))|round(0,^floor^))}}"
         payload[KEY_MAX_MIREDS] = 370
         payload[KEY_MIN_MIREDS] = 153
     elif model == MODEL_SHELLYVINTAGE:
-        payload[KEY_COMMAND_ON_TEMPLATE] = "{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}}"
+        payload[
+            KEY_COMMAND_ON_TEMPLATE
+        ] = "{^turn^:^on^{% if brightness is defined %},^brightness^:{{brightness|float|multiply(0.3922)|round}}{% endif %}}"
     else:
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
-    mqtt_publish(config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos)
+    mqtt_publish(
+        config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos
+    )
 
     # white light's binary sensors
     for bin_sensor_id in range(len(lights_bin_sensors)):
