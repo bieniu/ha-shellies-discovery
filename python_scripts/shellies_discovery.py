@@ -350,7 +350,13 @@ if not mac:
 if not fw_ver:
     raise ValueError(f"{fw_ver} is wrong fvw_ver argument")
 
-cur_ver = fw_ver.split("/v")[1].split("@")[0].rsplit(".", 1)
+try:
+    cur_ver = fw_ver.split("/v")[1].split("@")[0].rsplit(".", 1)
+except IndexError:
+    raise ValueError(
+        f"Firmware version {MIN_FIRMWARE_VERSION} is required, please update your device {dev_id}"
+    )
+
 cur_ver = float(cur_ver[0]) + float(cur_ver[1]) / 100
 
 min_ver = MIN_FIRMWARE_VERSION.rsplit(".", 1)
