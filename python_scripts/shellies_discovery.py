@@ -240,6 +240,7 @@ TPL_NEW_FIRMWARE_FROM_INFO = (
 TPL_OVERPOWER = "{% if value_json.overpower == true %}ON{% else %}OFF{% endif %}"
 TPL_OVERPOWER_RELAY = "{% if value == ^overpower^ %}ON{% else %}OFF{% endif %}"
 TPL_OVERPOWER_VALUE_TO_JSON = "{{{^overpower_value^:value}|tojson}}"
+TPL_POSITION = "{% if value != -1 %}{{value}}{% endif %}"
 TPL_POWER = "{{value|float|round(1)}}"
 TPL_POWER_FACTOR = "{{value|float*100|round}}"
 TPL_RSSI = "{{value_json[^wifi_sta^].rssi}}"
@@ -1254,6 +1255,7 @@ for roller_id in range(rollers):
             KEY_NAME: roller_name,
             KEY_COMMAND_TOPIC: command_topic,
             KEY_POSITION_TOPIC: position_topic,
+            KEY_VALUE_TEMPLATE: TPL_POSITION,
             KEY_SET_POSITION_TOPIC: set_position_topic,
             KEY_PAYLOAD_OPEN: VALUE_OPEN,
             KEY_PAYLOAD_CLOSE: VALUE_CLOSE,
