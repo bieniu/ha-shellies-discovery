@@ -222,6 +222,7 @@ TPL_CURRENT = "{{value|float|round(2)}}"
 TPL_DOUBLE_SHORTPUSH = "{% if value_json.event == ^SS^ %}ON{% else %}OFF{% endif %}"
 TPL_ENERGY_WH = "{{(value|float/1000)|round(2)}}"
 TPL_ENERGY_WMIN = "{{(value|float/60/1000)|round(2)}}"
+TPL_GAS = "{% if value in [^mild^, ^heavy^] %}ON{% else %}OFF{% endif %}"
 TPL_HUMIDITY = "{{value|float|round(1)}}"
 TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
 TPL_LONGPUSH = "{% if value_json.event == ^L^ %}ON{% else %}OFF{% endif %}"
@@ -640,10 +641,10 @@ if dev_id.rsplit("-", 1)[0] == "shellygas":
     sensors_classes = [None, None, None, None, DEVICE_CLASS_SIGNAL_STRENGTH, None]
     sensors_tpls = [None, None, None, TPL_CONCENTRATION, TPL_RSSI, TPL_SSID]
     sensors_units = [None, None, None, UNIT_PPM, UNIT_DB, None]
-    bin_sensors = [SENSOR_FIRMWARE_UPDATE]
-    bin_sensors_classes = [None]
-    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
-    bin_sensors_topics = [TOPIC_INFO]
+    bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_GAS]
+    bin_sensors_classes = [None, DEVICE_CLASS_GAS]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO, TPL_GAS]
+    bin_sensors_topics = [TOPIC_INFO, None]
 
 if dev_id.rsplit("-", 1)[0] == "shellybutton1":
     model = MODEL_SHELLYBUTTON1
