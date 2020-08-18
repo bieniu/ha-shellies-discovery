@@ -80,7 +80,7 @@ KEY_FORCE_UPDATE = "frc_upd"
 KEY_ICON = "icon"
 KEY_IDENTIFIERS = "ids"
 KEY_JSON_ATTRIBUTES_TEMPLATE = "json_attr_tpl"
-KEY_JSON_ATTRIBUTE_TOPIC = "json_attr_t"
+KEY_JSON_ATTRIBUTES_TOPIC = "json_attr_t"
 KEY_MANUFACTURER = "mf"
 KEY_MODEL = "mdl"
 KEY_NAME = "name"
@@ -217,12 +217,13 @@ TOPIC_LONGPUSH_2 = "longpush/2"
 TOPIC_RELAY = "relay"
 
 TPL_BATTERY = "{{value|float|round}}"
-TPL_CONCENTRATION = "{% if 0 <= value <= 65535%}{{value}}{% endif %}"
+TPL_CONCENTRATION = "{% if 0 <= value <= 65535 %}{{value}}{% endif %}"
 TPL_CURRENT = "{{value|float|round(2)}}"
 TPL_DOUBLE_SHORTPUSH = "{% if value_json.event == ^SS^ %}ON{% else %}OFF{% endif %}"
 TPL_ENERGY_WH = "{{(value|float/1000)|round(2)}}"
 TPL_ENERGY_WMIN = "{{(value|float/60/1000)|round(2)}}"
 TPL_GAS = "{% if value in [^mild^, ^heavy^] %}ON{% else %}OFF{% endif %}"
+TPL_GAS_TO_JSON = "{{{^status^:value}|tojson}}"
 TPL_HUMIDITY = "{{value|float|round(1)}}"
 TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
 TPL_LONGPUSH = "{% if value_json.event == ^L^ %}ON{% else %}OFF{% endif %}"
@@ -632,7 +633,7 @@ if dev_id.rsplit("-", 1)[0] == "shellygas":
     model = MODEL_SHELLYGAS
     sensors = [
         SENSOR_OPERATION,
-        SENSOR_GAS,
+        SENSOR_GAS,  # to remove
         SENSOR_SELF_TEST,
         SENSOR_CONCENTRATION,
         SENSOR_RSSI,
@@ -1527,7 +1528,7 @@ for sensor_id in range(len(sensors)):
         "~": default_topic,
     }
     if model == MODEL_SHELLYDW2 and sensors[sensor_id] == SENSOR_LUX:
-        payload[KEY_JSON_ATTRIBUTE_TOPIC] = f"~sensor/{SENSOR_ILLUMINATION}"
+        payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~sensor/{SENSOR_ILLUMINATION}"
         payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_ILLUMINATION_TO_JSON
     if sensors_units[sensor_id]:
         payload[KEY_UNIT] = sensors_units[sensor_id]
@@ -1543,6 +1544,8 @@ for sensor_id in range(len(sensors)):
         payload[KEY_ICON] = "mdi:wifi"
     if no_battery_sensor and sensors[sensor_id] == SENSOR_BATTERY:
         payload = ""
+    if model == MODEL_SHELLYGAS and sensors[sensor_id] == SENSOR_GAS:  # to remove
+        payload = ""  # to remove
     if dev_id.lower() in ignored:
         payload = ""
     mqtt_publish(
@@ -1718,6 +1721,9 @@ for bin_sensor_id in range(len(bin_sensors)):
         and bin_sensors[bin_sensor_id] == SENSOR_OVERPOWER
     ):
         payload = ""
+    if model == MODEL_SHELLYGAS and bin_sensors[bin_sensor_id] == SENSOR_GAS:
+        payload[KEY_JSON_ATTRIBUTES_TOPIC] = state_topic
+        payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_GAS_TO_JSON
     if dev_id.lower() in ignored:
         payload = ""
     mqtt_publish(
