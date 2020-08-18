@@ -214,6 +214,7 @@ TOPIC_LONGPUSH = "longpush"
 TOPIC_LONGPUSH_0 = "longpush/0"
 TOPIC_LONGPUSH_1 = "longpush/1"
 TOPIC_LONGPUSH_2 = "longpush/2"
+TOPIC_OVERPOWER_VALUE = "overpower_value"
 TOPIC_RELAY = "relay"
 
 TPL_BATTERY = "{{value|float|round}}"
@@ -238,6 +239,7 @@ TPL_NEW_FIRMWARE_FROM_INFO = (
 )
 TPL_OVERPOWER = "{% if value_json.overpower == true %}ON{% else %}OFF{% endif %}"
 TPL_OVERPOWER_RELAY = "{% if value == ^overpower^ %}ON{% else %}OFF{% endif %}"
+TPL_OVERPOWER_VALUE_TO_JSON = "{{{^overpower_value^:value}|tojson}}"
 TPL_POWER = "{{value|float|round(1)}}"
 TPL_POWER_FACTOR = "{{value|float*100|round}}"
 TPL_RSSI = "{{value_json[^wifi_sta^].rssi}}"
@@ -1479,6 +1481,14 @@ for relay_id in range(relays):
                 ]
             if relays_bin_sensors_classes[bin_sensor_id]:
                 payload[KEY_DEVICE_CLASS] = relays_bin_sensors_classes[bin_sensor_id]
+            if (
+                model == MODEL_SHELLY1PM
+                and relays_bin_sensors[bin_sensor_id] == SENSOR_OVERPOWER
+            ):
+                payload[
+                    KEY_JSON_ATTRIBUTES_TOPIC
+                ] = f"~{relays_bin_sensors_topics[bin_sensor_id]}/{relay_id}/{TOPIC_OVERPOWER_VALUE}"
+                payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_OVERPOWER_VALUE_TO_JSON
         else:
             payload = ""
         if dev_id.lower() in ignored:
@@ -1577,7 +1587,7 @@ for sensor_id in range(ext_temp_sensors):
         payload = {
             KEY_NAME: sensor_name,
             KEY_STATE_TOPIC: state_topic,
-            KEY_STATE_TEMPLATE: TPL_TEMPERATURE_EXT,
+            KEY_VALUE_TEMPLATE: TPL_TEMPERATURE_EXT,
             KEY_UNIT: UNIT_CELSIUS,
             KEY_DEVICE_CLASS: SENSOR_TEMPERATURE,
             KEY_EXPIRE_AFTER: expire_after,
@@ -1619,7 +1629,7 @@ for sensor_id in range(ext_humi_sensors):
         payload = {
             KEY_NAME: sensor_name,
             KEY_STATE_TOPIC: state_topic,
-            KEY_STATE_TEMPLATE: TPL_HUMIDITY_EXT,
+            KEY_VALUE_TEMPLATE: TPL_HUMIDITY_EXT,
             KEY_UNIT: UNIT_PERCENT,
             KEY_DEVICE_CLASS: SENSOR_HUMIDITY,
             KEY_EXPIRE_AFTER: expire_after,
