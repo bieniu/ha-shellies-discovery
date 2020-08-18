@@ -1482,7 +1482,15 @@ for relay_id in range(relays):
             if relays_bin_sensors_classes[bin_sensor_id]:
                 payload[KEY_DEVICE_CLASS] = relays_bin_sensors_classes[bin_sensor_id]
             if (
-                model == MODEL_SHELLY1PM
+                model
+                in [
+                    MODEL_SHELLY1PM,
+                    MODEL_SHELLY2,
+                    MODEL_SHELLY25,
+                    MODEL_SHELLY4PRO,
+                    MODEL_SHELLYPLUG,
+                    MODEL_SHELLYPLUG_S,
+                ]
                 and relays_bin_sensors[bin_sensor_id] == SENSOR_OVERPOWER
             ):
                 payload[
