@@ -217,6 +217,7 @@ TOPIC_LONGPUSH_2 = "longpush/2"
 TOPIC_RELAY = "relay"
 
 TPL_BATTERY = "{{value|float|round}}"
+TPL_CONCENTRATION = "{% if value >= 0 and value <= 65535%}{{value}}{% endif %}"
 TPL_CURRENT = "{{value|float|round(2)}}"
 TPL_DOUBLE_SHORTPUSH = "{% if value_json.event == ^SS^ %}ON{% else %}OFF{% endif %}"
 TPL_ENERGY_WH = "{{(value|float/1000)|round(2)}}"
@@ -637,7 +638,7 @@ if dev_id.rsplit("-", 1)[0] == "shellygas":
         SENSOR_SSID,
     ]
     sensors_classes = [None, None, None, None, DEVICE_CLASS_SIGNAL_STRENGTH, None]
-    sensors_tpls = [None, None, None, None, TPL_RSSI, TPL_SSID]
+    sensors_tpls = [None, None, None, TPL_CONCENTRATION, TPL_RSSI, TPL_SSID]
     sensors_units = [None, None, None, UNIT_PPM, UNIT_DB, None]
     bin_sensors = [SENSOR_FIRMWARE_UPDATE]
     bin_sensors_classes = [None]
