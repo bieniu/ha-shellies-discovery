@@ -218,39 +218,37 @@ TOPIC_OVERPOWER_VALUE = "overpower_value"
 TOPIC_RELAY = "relay"
 
 TPL_BATTERY = "{{value|float|round}}"
-TPL_CONCENTRATION = "{% if 0 <= value <= 65535 %}{{value}}{% endif %}"
+TPL_CONCENTRATION = "{%if 0<=value<=65535%}{{value}}{%endif%}"
 TPL_CURRENT = "{{value|float|round(2)}}"
-TPL_DOUBLE_SHORTPUSH = "{% if value_json.event == ^SS^ %}ON{% else %}OFF{% endif %}"
+TPL_DOUBLE_SHORTPUSH = "{%if value_json.event==^SS^%}ON{%else%}OFF{%endif%}"
 TPL_ENERGY_WH = "{{(value|float/1000)|round(2)}}"
 TPL_ENERGY_WMIN = "{{(value|float/60/1000)|round(2)}}"
-TPL_GAS = "{% if value in [^mild^, ^heavy^] %}ON{% else %}OFF{% endif %}"
+TPL_GAS = "{%if value in [^mild^,^heavy^]%}ON{%else%}OFF{%endif%}"
 TPL_GAS_TO_JSON = "{{{^status^:value}|tojson}}"
 TPL_HUMIDITY = "{{value|float|round(1)}}"
-TPL_HUMIDITY_EXT = "{% if value != 999 %}{{value|float|round(1)}}{% endif %}"
+TPL_HUMIDITY_EXT = "{%if value!=999%}{{value|float|round(1)}}{%endif%}"
 TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
-TPL_LONGPUSH = "{% if value_json.event == ^L^ %}ON{% else %}OFF{% endif %}"
-TPL_LONGPUSH_SHORTPUSH = "{% if value_json.event == ^LS^ %}ON{% else %}OFF{% endif %}"
+TPL_LONGPUSH = "{%if value_json.event==^L^%}ON{%else%}OFF{%endif%}"
+TPL_LONGPUSH_SHORTPUSH = "{%if value_json.event==^LS^%}ON{%else%}OFF{%endif%}"
 TPL_LUX = "{{value|float|round}}"
-TPL_NEW_FIRMWARE_FROM_ANNOUNCE = (
-    "{% if value_json.new_fw == true %}ON{% else %}OFF{% endif %}"
-)
+TPL_NEW_FIRMWARE_FROM_ANNOUNCE = "{%if value_json.new_fw==true%}ON{%else%}OFF{%endif%}"
 TPL_NEW_FIRMWARE_FROM_INFO = (
-    "{% if value_json[^update^].has_update == true %}ON{% else %}OFF{% endif %}"
+    "{%if value_json[^update^].has_update==true%}ON{%else%}OFF{%endif%}"
 )
-TPL_OVERPOWER = "{% if value_json.overpower == true %}ON{% else %}OFF{% endif %}"
-TPL_OVERPOWER_RELAY = "{% if value == ^overpower^ %}ON{% else %}OFF{% endif %}"
+TPL_OVERPOWER = "{%if value_json.overpower==true%}ON{%else%}OFF{%endif%}"
+TPL_OVERPOWER_RELAY = "{%if value==^overpower^%}ON{%else%}OFF{%endif%}"
 TPL_OVERPOWER_VALUE_TO_JSON = "{{{^overpower_value^:value}|tojson}}"
-TPL_POSITION = "{% if value != -1 %}{{value}}{% endif %}"
+TPL_POSITION = "{%if value!=-1%}{{value}}{%endif%}"
 TPL_POWER = "{{value|float|round(1)}}"
 TPL_POWER_FACTOR = "{{value|float*100|round}}"
 TPL_RSSI = "{{value_json[^wifi_sta^].rssi}}"
-TPL_SHORTPUSH = "{% if value_json.event == ^S^ %}ON{% else %}OFF{% endif %}"
-TPL_SHORTPUSH_LONGPUSH = "{% if value_json.event == ^SL^ %}ON{% else %}OFF{% endif %}"
+TPL_SHORTPUSH = "{%if value_json.event==^S^%}ON{%else%}OFF{%endif%}"
+TPL_SHORTPUSH_LONGPUSH = "{%if value_json.event==^SL^%}ON{%else%}OFF{%endif%}"
 TPL_SSID = "{{value_json[^wifi_sta^].ssid}}"
 TPL_TEMPERATURE = "{{value|float|round(1)}}"
-TPL_TEMPERATURE_EXT = "{% if value != 999 %}{{value|float|round(1)}}{% endif %}"
+TPL_TEMPERATURE_EXT = "{%if value != 999%}{{value|float|round(1)}}{%endif%}"
 TPL_TILT = "{{value|float}}"
-TPL_TRIPLE_SHORTPUSH = "{% if value_json.event == ^SSS^ %}ON{% else %}OFF{% endif %}"
+TPL_TRIPLE_SHORTPUSH = "{%if value_json.event==^SSS^%}ON{%else%}OFF{%endif%}"
 TPL_VOLTAGE = "{{value|float|round(1)}}"
 
 UNIT_AMPERE = "A"
@@ -1781,15 +1779,15 @@ for light_id in range(rgbw_lights):
             '"pl_avail":"true",'
             '"pl_not_avail":"false",'
             '"fx_list":["Off", "Meteor Shower", "Gradual Change", "Flash"],'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"gain\\":{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{red}},\\"green\\":{{green}},\\"blue\\":{{blue}}{% endif %}{% if white_value is defined %},\\"white\\":{{white_value}}{% endif %}{% if effect is defined %}{% if effect == \\"Meteor Shower\\" %}\\"effect\\":1{% elif effect == \\"Gradual Change\\" %}\\"effect\\":2{% elif effect == \\"Flash\\" %}\\"effect\\":3{% else %}\\"effect\\":0{% endif %}{% else %}\\"effect\\":0{% endif %}}",'
+            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{%if brightness is defined%},\\"gain\\":{{brightness|float|multiply(0.3922)|round}}{%endif%}{%if red is defined and green is defined and blue is defined%},\\"red\\":{{red}},\\"green\\":{{green}},\\"blue\\":{{blue}}{%endif%}{%if white_value is defined%},\\"white\\":{{white_value}}{%endif%}{%if effect is defined%}{%if effect==\\"Meteor Shower\\"%}\\"effect\\":1{%elif effect==\\"Gradual Change\\"%}\\"effect\\":2{%elif effect==\\"Flash\\"%}\\"effect\\":3{%else%}\\"effect\\":0{%endif%}{%else%}\\"effect\\":0{%endif%}}",'
             '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
-            '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
+            '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
             '"bri_tpl":"{{value_json.gain|float|multiply(2.55)|round}}",'
             '"r_tpl":"{{value_json.red}}",'
             '"g_tpl":"{{value_json.green}}",'
             '"b_tpl":"{{value_json.blue}}",'
             '"whit_val_tpl":"{{value_json.white}}",'
-            '"fx_tpl":"{% if value_json.effect == 1 %}Meteor Shower{% elif value_json.effect == 2 %}Gradual Change{% elif value_json.effect == 3 %}Flash{% else %}Off{% endif %}",'
+            '"fx_tpl":"{%if value_json.effect==1%}Meteor Shower{%elif value_json.effect==2%}Gradual Change{%elif value_json.effect==3%}Flash{%else%}Off{%endif%}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
             '"dev": {"ids": ["' + mac + '"],'
@@ -1809,15 +1807,15 @@ for light_id in range(rgbw_lights):
             '"pl_avail":"true",'
             '"pl_not_avail":"false",'
             '"fx_list":["Off", "Meteor Shower", "Gradual Change", "Breath", "Flash", "On/Off Gradual", "Red/Green Change"],'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\",\\"mode\\":\\"color\\",{% if red is defined and green is defined and blue is defined %}\\"red\\":{{red}},\\"green\\":{{green}},\\"blue\\":{{blue}},{% endif %}{% if white_value is defined %}\\"white\\":{{white_value}},{% endif %}{% if brightness is defined %}\\"gain\\":{{brightness|float|multiply(0.3922)|round}},{% endif %}{% if effect is defined %}{% if effect == \\"Meteor Shower\\" %}\\"effect\\":1{% elif effect == \\"Gradual Change\\" %}\\"effect\\":2{% elif effect == \\"Breath\\" %}\\"effect\\":3{% elif effect == \\"Flash\\" %}\\"effect\\":4{% elif effect == \\"On/Off Gradual\\" %}\\"effect\\":5{% elif effect == \\"Red/Green Change\\" %}\\"effect\\":6{% else %}\\"effect\\":0{% endif %}{% else %}\\"effect\\":0{% endif %}}",'
+            '"cmd_on_tpl":"{\\"turn\\":\\"on\\",\\"mode\\":\\"color\\",{%if red is defined and green is defined and blue is defined%}\\"red\\":{{red}},\\"green\\":{{green}},\\"blue\\":{{blue}},{%endif%}{%if white_value is defined%}\\"white\\":{{white_value}},{%endif%}{%if brightness is defined%}\\"gain\\":{{brightness|float|multiply(0.3922)|round}},{%endif%}{%if effect is defined%}{%if effect == \\"Meteor Shower\\"%}\\"effect\\":1{%elif effect == \\"Gradual Change\\"%}\\"effect\\":2{%elif effect == \\"Breath\\"%}\\"effect\\":3{%elif effect == \\"Flash\\"%}\\"effect\\":4{%elif effect == \\"On/Off Gradual\\"%}\\"effect\\":5{%elif effect == \\"Red/Green Change\\"%}\\"effect\\":6{%else%}\\"effect\\":0{%endif%}{%else%}\\"effect\\":0{%endif%}}",'
             '"cmd_off_tpl":"{\\"turn\\":\\"off\\",\\"mode\\":\\"color\\",\\"effect\\": 0}",'
-            '"stat_tpl":"{% if value_json.ison == true and value_json.mode == \\"color\\" %}on{% else %}off{% endif %}",'
+            '"stat_tpl":"{%if value_json.ison==true and value_json.mode==\\"color\\"%}on{%else%}off{%endif%}",'
             '"bri_tpl":"{{value_json.gain|float|multiply(2.55)|round}}",'
             '"r_tpl":"{{value_json.red}}",'
             '"g_tpl":"{{value_json.green}}",'
             '"b_tpl":"{{value_json.blue}}",'
             '"whit_val_tpl":"{{value_json.white}}",'
-            '"fx_tpl":"{% if value_json.effect == 1 %}Meteor Shower{% elif value_json.effect == 2 %}Gradual Change{% elif value_json.effect == 3 %}Breath{% elif value_json.effect == 4 %}Flash{% elif value_json.effect == 5 %}On/Off Gradual{% elif value_json.effect == 6 %}Red/Green Change{% else %}Off{% endif %}",'
+            '"fx_tpl":"{%if value_json.effect==1%}Meteor Shower{%elif value_json.effect==2%}Gradual Change{%elif value_json.effect==3%}Breath{%elif value_json.effect==4%}Flash{%elif value_json.effect==5%}On/Off Gradual{%elif value_json.effect==6%}Red/Green Change{%else%}Off{%endif%}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
             '"dev": {"ids": ["' + mac + '"],'
@@ -1954,9 +1952,9 @@ for light_id in range(white_lights):
             '"avty_t":"' + availability_topic + '",'
             '"pl_avail":"true",'
             '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if white_value is defined %},\\"white\\":{{white_value}}{% endif %}{% if effect is defined %},\\"effect\\":{{effect}}{% endif %}}",'
+            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{%if brightness is defined%},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{%endif%}{%if white_value is defined%},\\"white\\":{{white_value}}{%endif%}{%if effect is defined%},\\"effect\\":{{effect}}{%endif%}}",'
             '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
-            '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
+            '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
             '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
@@ -1976,9 +1974,9 @@ for light_id in range(white_lights):
             '"avty_t":"' + availability_topic + '",'
             '"pl_avail":"true",'
             '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{% endif %}}",'
+            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{%if brightness is defined%},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{%endif%}}",'
             '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
-            '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
+            '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
             '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
@@ -1998,9 +1996,9 @@ for light_id in range(white_lights):
             '"avty_t":"' + availability_topic + '",'
             '"pl_avail":"true",'
             '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{% endif %}{% if color_temp is defined %},\\"temp\\":{{(1000000/(color_temp|int))|round(0,\\"floor\\")}}{% endif %}}",'
+            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{%if brightness is defined%},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{%endif%}{%if color_temp is defined%},\\"temp\\":{{(1000000/(color_temp|int))|round(0,\\"floor\\")}}{%endif%}}",'
             '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
-            '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
+            '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
             '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
             '"clr_temp_tpl":"{{((1000000/(value_json.temp|int))|round(0,\\"floor\\"))}}",'
             '"max_mireds":370,'
@@ -2023,9 +2021,9 @@ for light_id in range(white_lights):
             '"avty_t":"' + availability_topic + '",'
             '"pl_avail":"true",'
             '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{% endif %}}",'
+            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{%if brightness is defined%},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{%endif%}}",'
             '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
-            '"stat_tpl":"{% if value_json.ison %}on{% else %}off{% endif %}",'
+            '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
             '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
