@@ -225,6 +225,7 @@ TPL_ENERGY_WMIN = "{{(value|float/60/1000)|round(2)}}"
 TPL_GAS = "{% if value in [^mild^, ^heavy^] %}ON{% else %}OFF{% endif %}"
 TPL_GAS_TO_JSON = "{{{^status^:value}|tojson}}"
 TPL_HUMIDITY = "{{value|float|round(1)}}"
+TPL_HUMIDITY_EXT = "{% if value != 999 %}{{value|float|round(1)}}{% endif %}"
 TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
 TPL_LONGPUSH = "{% if value_json.event == ^L^ %}ON{% else %}OFF{% endif %}"
 TPL_LONGPUSH_SHORTPUSH = "{% if value_json.event == ^LS^ %}ON{% else %}OFF{% endif %}"
@@ -244,6 +245,7 @@ TPL_SHORTPUSH = "{% if value_json.event == ^S^ %}ON{% else %}OFF{% endif %}"
 TPL_SHORTPUSH_LONGPUSH = "{% if value_json.event == ^SL^ %}ON{% else %}OFF{% endif %}"
 TPL_SSID = "{{value_json[^wifi_sta^].ssid}}"
 TPL_TEMPERATURE = "{{value|float|round(1)}}"
+TPL_TEMPERATURE_EXT = "{% if value != 999 %}{{value|float|round(1)}}{% endif %}"
 TPL_TILT = "{{value|float}}"
 TPL_TRIPLE_SHORTPUSH = "{% if value_json.event == ^SSS^ %}ON{% else %}OFF{% endif %}"
 TPL_VOLTAGE = "{{value|float|round(1)}}"
@@ -1575,6 +1577,7 @@ for sensor_id in range(ext_temp_sensors):
         payload = {
             KEY_NAME: sensor_name,
             KEY_STATE_TOPIC: state_topic,
+            KEY_STATE_TEMPLATE: TPL_TEMPERATURE_EXT,
             KEY_UNIT: UNIT_CELSIUS,
             KEY_DEVICE_CLASS: SENSOR_TEMPERATURE,
             KEY_EXPIRE_AFTER: expire_after,
@@ -1616,6 +1619,7 @@ for sensor_id in range(ext_humi_sensors):
         payload = {
             KEY_NAME: sensor_name,
             KEY_STATE_TOPIC: state_topic,
+            KEY_STATE_TEMPLATE: TPL_HUMIDITY_EXT,
             KEY_UNIT: UNIT_PERCENT,
             KEY_DEVICE_CLASS: SENSOR_HUMIDITY,
             KEY_EXPIRE_AFTER: expire_after,
