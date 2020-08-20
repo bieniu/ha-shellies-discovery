@@ -252,6 +252,7 @@ TPL_TILT = "{{value|float}}"
 TPL_TRIPLE_SHORTPUSH = "{%if value_json.event==^SSS^%}ON{%else%}OFF{%endif%}"
 TPL_UPDATE_TO_JSON = "{{value_json[^update^]|tojson}}"
 TPL_UPTIME = "{{(value_json.uptime/60/60/24)|round}}"
+TPL_UPTIME_TO_JSON = "{{{^seconds^:value_json.uptime}|tojson}}"
 TPL_VOLTAGE = "{{value|float|round(1)}}"
 
 UNIT_AMPERE = "A"
@@ -1557,7 +1558,7 @@ for sensor_id in range(len(sensors)):
     else:
         sensor_name = f"{device_name} {sensors[sensor_id].title()}"
     if sensors[sensor_id] in [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME]:
-        state_topic = "~info"
+        state_topic = f"~{TOPIC_INFO}"
     elif relays > 0 or white_lights > 0:
         state_topic = f"~{sensors[sensor_id]}"
     else:
@@ -1586,6 +1587,9 @@ for sensor_id in range(len(sensors)):
     if model == MODEL_SHELLYDW2 and sensors[sensor_id] == SENSOR_LUX:
         payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~sensor/{SENSOR_ILLUMINATION}"
         payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_ILLUMINATION_TO_JSON
+    if sensors[sensor_id] == SENSOR_UPTIME:
+        payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~{TOPIC_INFO}"
+        payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_UPTIME_TO_JSON
     if sensors_units[sensor_id]:
         payload[KEY_UNIT] = sensors_units[sensor_id]
     if sensors_classes[sensor_id]:
