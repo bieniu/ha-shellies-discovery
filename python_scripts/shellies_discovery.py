@@ -345,7 +345,7 @@ if not dev_id:
 if not mac:
     raise ValueError(f"{mac} is wrong mac argument")
 if not fw_ver:
-    raise ValueError(f"{fw_ver} is wrong fvw_ver argument")
+    raise ValueError(f"{fw_ver} is wrong fw_ver argument")
 
 try:
     cur_ver = fw_ver.split("/v")[1].split("@")[0].rsplit(".", 1)
