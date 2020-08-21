@@ -53,6 +53,7 @@ logger:
 - enabled MQTT in Shellies configuration
 - default topics configuration in Shellies
 - default Shellies IDs
+- you can't manually run the shellies_discovery.py script ('trigger' is undefined error)
 
 ## Minimal configuration
 
