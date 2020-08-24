@@ -643,12 +643,12 @@ if dev_id.rsplit("-", 1)[0] == "shelly4pro":
     relays_bin_sensors_classes = [DEVICE_CLASS_PROBLEM]
     bin_sensors = [SENSOR_FIRMWARE_UPDATE]
     bin_sensors_classes = [None]
-    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
-    bin_sensors_topics = [TOPIC_INFO]
-    sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME]
-    sensors_units = [UNIT_DB, None, None]
-    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]
-    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_ANNOUNCE]  # TPL_NEW_FIRMWARE_FROM_INFO after released firmware 1.8.0
+    bin_sensors_topics = [TOPIC_ANNOUNCE]  # TOPIC_INFO after released firmware 1.8.0
+    # sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME]  # firmware 1.8.0 required
+    # sensors_units = [UNIT_DB, None, None]  # firmware 1.8.0 required
+    # sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]  # firmware 1.8.0 required
+    # sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]  # firmware 1.8.0 required
 
 if dev_id.rsplit("-", 1)[0] == "shellyht":
     model = MODEL_SHELLYHT
