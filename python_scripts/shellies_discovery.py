@@ -221,7 +221,7 @@ TOPIC_OVERPOWER_VALUE = "overpower_value"
 TOPIC_RELAY = "relay"
 
 TPL_BATTERY = "{{value|float|round}}"
-TPL_CONCENTRATION = "{%if 0<=value<=65535%}{{value}}{%endif%}"
+TPL_CONCENTRATION = "{%if 0<=value|int<=65535%}{{value}}{%endif%}"
 TPL_CURRENT = "{{value|float|round(2)}}"
 TPL_DOUBLE_SHORTPUSH = "{%if value_json.event==^SS^%}ON{%else%}OFF{%endif%}"
 TPL_ENERGY_WH = "{{(value|float/1000)|round(2)}}"
