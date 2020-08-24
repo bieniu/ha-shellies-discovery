@@ -110,6 +110,7 @@ KEY_VALUE_TEMPLATE = "val_tpl"
 LIGHT_RGBW = "rgbw"
 LIGHT_WHITE = "white"
 
+MIN_4PRO_FIRMWARE_VERSION = "1.6.5"
 MIN_FIRMWARE_VERSION = "1.8.0"
 
 MODEL_SHELLY1 = f"{ATTR_SHELLY} 1"
@@ -356,8 +357,15 @@ cur_ver = float(cur_ver[0]) + float(cur_ver[1]) / 100
 
 min_ver = MIN_FIRMWARE_VERSION.rsplit(".", 1)
 min_ver = float(min_ver[0]) + float(min_ver[1]) / 100
+min_ver_4pro = MIN_4PRO_FIRMWARE_VERSION.rsplit(".", 1)
+min_ver_4pro = float(min_ver_4pro[0]) + float(min_ver_4pro[1]) / 100
 
-if cur_ver < min_ver:
+if "shelly4pro" in dev_id and cur_ver < min_ver_4pro:
+    raise ValueError(
+        f"Firmware version {MIN_4PRO_FIRMWARE_VERSION} is required, please update your device {dev_id}"
+    )
+
+if "shelly4pro" not in dev_id and cur_ver < min_ver:
     raise ValueError(
         f"Firmware version {MIN_FIRMWARE_VERSION} is required, please update your device {dev_id}"
     )
