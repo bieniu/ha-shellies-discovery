@@ -296,6 +296,14 @@ ROLLER_DEVICE_CLASSES = [
 ]
 
 
+def parse_version(version):
+    """Parse version string and return version number as integer."""
+    version = version.split("/")[1].split("@")[0].rsplit(".", 1)
+    version = ["".join(i for i in item if i.isdigit()) for item in version]
+    version = "".join(i for i in version)[:3]
+    return int(version)
+
+
 def get_device_config(dev_id):
     """Get device configuration."""
     result = data.get(dev_id, data.get(dev_id.lower(), {}))  # noqa: F821
@@ -348,17 +356,16 @@ if not fw_ver:
     raise ValueError(f"{fw_ver} is wrong fw_ver argument")
 
 try:
-    cur_ver = fw_ver.split("/v")[1].split("@")[0].rsplit(".", 1)
-except IndexError:
+    cur_ver = parse_version(fw_ver)
+except (IndexError, ValueError):
     raise ValueError(
-        f"Firmware version {MIN_FIRMWARE_VERSION} is required, please update your device {dev_id}"
+        f"Firmware version {fw_ver} is not supported, please update your device {dev_id}"
     )
-cur_ver = float(cur_ver[0]) + float(cur_ver[1]) / 100
 
-min_ver = MIN_FIRMWARE_VERSION.rsplit(".", 1)
-min_ver = float(min_ver[0]) + float(min_ver[1]) / 100
-min_ver_4pro = MIN_4PRO_FIRMWARE_VERSION.rsplit(".", 1)
-min_ver_4pro = float(min_ver_4pro[0]) + float(min_ver_4pro[1]) / 100
+min_ver = MIN_FIRMWARE_VERSION.split(".")
+min_ver = int("".join(i for i in min_ver)[:3])
+min_ver_4pro = MIN_4PRO_FIRMWARE_VERSION.split(".")
+min_ver_4pro = int("".join(i for i in min_ver_4pro)[:3])
 
 if "shelly4pro" in dev_id and cur_ver < min_ver_4pro:
     raise ValueError(
