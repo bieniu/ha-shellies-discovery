@@ -17,6 +17,7 @@ CONF_FORCE_UPDATE_SENSORS = "force_update_sensors"
 CONF_FRIENDLY_NAME = "friendly_name"
 CONF_FW_VER = "fw_ver"
 CONF_ID = "id"
+CONF_MODEL_ID = "model"
 CONF_IGNORED_DEVICES = "ignored_devices"
 CONF_MAC = "mac"
 CONF_MODE = "mode"
@@ -138,6 +139,82 @@ MODEL_SHELLYRGBW2 = f"{ATTR_SHELLY} RGBW2"
 MODEL_SHELLYSENSE = f"{ATTR_SHELLY} Sense"
 MODEL_SHELLYSMOKE = f"{ATTR_SHELLY} Smoke"
 MODEL_SHELLYVINTAGE = f"{ATTR_SHELLY} Vintage"
+
+MODEL_SHELLY1_ID = "SHSW-1"  # Shelly 1 OS
+MODEL_SHELLY1_PREFIX = "shelly1"
+
+MODEL_SHELLY1PM_ID = "SHSW-PM"  # Shelly 1PM
+MODEL_SHELLY1PM_PREFIX = "shelly1pm"
+
+MODEL_SHELLY2_ID = "SHSW-21"  # Shelly 2
+MODEL_SHELLY2_PREFIX = "shellyswitch"
+
+MODEL_SHELLY25_ID = "SHSW-25"  # Shelly 2.5
+MODEL_SHELLY25_PREFIX = "shellyswitch25"
+
+MODEL_SHELLY3EM_ID = "SHEM-3"  # Shelly 3EM
+MODEL_SHELLY3EM_PREFIX = "shellyem3"
+
+MODEL_SHELLY4PRO_ID = "SHSW-44"  # Shelly 4pro
+MODEL_SHELLY4PRO_PREFIX = "shelly4pro"
+
+MODEL_SHELLYAIR_ID = "SHAIR-1"  # Shelly Air
+MODEL_SHELLYAIR_PREFIX = "shellyair"
+
+MODEL_SHELLYBULB_ID = "SHBLB-1"  # Shelly Bulb
+MODEL_SHELLYBULB_PREFIX = "shellybulb"
+
+MODEL_SHELLYBUTTON1_ID = "SHBTN-1"  # Shelly Button1
+MODEL_SHELLYBUTTON1_PREFIX = "shellybutton1"
+
+MODEL_SHELLYDIMMER_ID = "SHDM-1"  # Shelly Dimmer
+MODEL_SHELLYDIMMER_PREFIX = "shellydimmer"
+
+MODEL_SHELLYDIMMER2_ID = "SHDM-2"  # Shelly Dimmer2
+MODEL_SHELLYDIMMER2_PREFIX = "shellydimmer2"
+
+MODEL_SHELLYDUO_ID = "SHBDUO-1"  # Shelly Duo
+MODEL_SHELLYDUO_PREFIX = "shellybulbduo"
+
+MODEL_SHELLYDW_ID = "SHDW-1"  # Shelly Door/Window
+MODEL_SHELLYDW_PREFIX = "shellydw"
+
+MODEL_SHELLYDW2_ID = "SHDW-2"  # Shelly Door/Window 2 (+ temp sensor)
+MODEL_SHELLYDW2_PREFIX = "shellydw2"
+
+MODEL_SHELLYEM_ID = "SHEM"  # Shelly EM
+MODEL_SHELLYEM_PREFIX = "shellyem"
+
+MODEL_SHELLYFLOOD_ID = "SHWT-1"  # Shelly Flood
+MODEL_SHELLYFLOOD_PREFIX = "shellyflood"
+
+MODEL_SHELLYGAS_ID = "SHGS-1"  # Shelly Gas
+MODEL_SHELLYGAS_PREFIX = "shellygas"
+
+MODEL_SHELLYHT_ID = "SHHT-1"  # Shelly H&T (humidity and temperature)
+MODEL_SHELLYHT_PREFIX = "shellyht"
+
+MODEL_SHELLYI3_ID = "SHIX3-1"  # Shelly i3
+MODEL_SHELLYI3_PREFIX = "shellyix3"
+
+MODEL_SHELLYPLUG_ID = "SHPLG-1"  # Shelly Plug
+MODEL_SHELLYPLUG_PREFIX = "shellyplug"
+
+MODEL_SHELLYPLUG_S_ID = "SHPLG-S"  # Shelly Plug S
+MODEL_SHELLYPLUG_S_PREFIX = "shellyplug-s"
+
+MODEL_SHELLYRGBW2_ID = "SHRGBW2"  # Shelly RGBW2
+MODEL_SHELLYRGBW2_PREFIX = "shellyrgbw2"
+
+MODEL_SHELLYSENSE_ID = "SHSEN-1"  # Shelly Sense
+MODEL_SHELLYSENSE_PREFIX = "shellysense"
+
+MODEL_SHELLYSMOKE_ID = "SHSM-01"  # Shelly Smoke
+MODEL_SHELLYSMOKE_PREFIX = "shellysmoke"
+
+MODEL_SHELLYVINTAGE_ID = "SHBVIN-1"  # Shelly Vintage
+MODEL_SHELLYVINTAGE_PREFIX = "shellyvintage"
+
 
 OFF_DELAY = 2
 
@@ -343,6 +420,7 @@ no_battery_sensor = False
 
 fw_ver = data.get(CONF_FW_VER)  # noqa: F821
 dev_id = data.get(CONF_ID)  # noqa: F821
+model_id = data.get(CONF_MODEL_ID)
 ignored = [
     element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])
 ]  # noqa: F821
@@ -362,22 +440,30 @@ except (IndexError, ValueError):
         f"Firmware version {fw_ver} is not supported, please update your device {dev_id}"
     )
 
+dev_id_prefix = dev_id.rsplit("-", 1)[0]
+
 min_ver = MIN_FIRMWARE_VERSION.split(".")
 min_ver = int("".join(i for i in min_ver)[:3])
 min_ver_4pro = MIN_4PRO_FIRMWARE_VERSION.split(".")
 min_ver_4pro = int("".join(i for i in min_ver_4pro)[:3])
 
-if "shelly4pro" in dev_id and cur_ver < min_ver_4pro:
+if (
+    dev_id_prefix == MODEL_SHELLY4PRO_PREFIX or MODEL_SHELLY4PRO_ID == model_id
+) and cur_ver < min_ver_4pro:
     raise ValueError(
         f"Firmware version {MIN_4PRO_FIRMWARE_VERSION} is required, please update your device {dev_id}"
     )
 
-if "shelly4pro" not in dev_id and cur_ver < min_ver:
+if (
+    dev_id_prefix != MODEL_SHELLY4PRO_PREFIX and MODEL_SHELLY4PRO_ID != model_id
+) and cur_ver < min_ver:
     raise ValueError(
         f"Firmware version {MIN_FIRMWARE_VERSION} is required, please update your device {dev_id}"
     )
 
-logger.debug("dev_id: %s, mac: %s, fw_ver: %s", dev_id, mac, fw_ver)  # noqa: F821
+logger.debug(
+    "dev_id: %s, mac: %s, fw_ver: %s, model_id: %s", dev_id, mac, fw_ver, model_id
+)  # noqa: F821
 
 try:
     if int(data.get(CONF_QOS, 0)) in [0, 1, 2]:  # noqa: F821
@@ -438,7 +524,7 @@ sensors_tpls = []
 sensors_units = []
 white_lights = 0
 
-if dev_id.rsplit("-", 1)[0] == "shelly1":
+if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     model = MODEL_SHELLY1
     relays = 1
     relays_bin_sensors = [SENSOR_INPUT, SENSOR_LONGPUSH, SENSOR_SHORTPUSH]
@@ -458,7 +544,7 @@ if dev_id.rsplit("-", 1)[0] == "shelly1":
     ext_temp_sensors = 3
     ext_sensors = 3  # to remove
 
-if dev_id.rsplit("-", 1)[0] == "shelly1pm":
+if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
     model = MODEL_SHELLY1PM
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
@@ -493,7 +579,7 @@ if dev_id.rsplit("-", 1)[0] == "shelly1pm":
     ext_temp_sensors = 3
     ext_sensors = 3  # to remove
 
-if dev_id.rsplit("-", 1)[0] == "shellyair":
+if model_id == MODEL_SHELLYAIR_ID or dev_id_prefix == MODEL_SHELLYAIR_PREFIX:
     model = MODEL_SHELLYAIR
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
@@ -528,7 +614,7 @@ if dev_id.rsplit("-", 1)[0] == "shellyair":
     ext_temp_sensors = 1
     ext_sensors = 1  # to remove
 
-if dev_id.rsplit("-", 1)[0] == "shellyswitch":
+if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
     model = MODEL_SHELLY2
     relays = 2
     rollers = 1
@@ -555,7 +641,7 @@ if dev_id.rsplit("-", 1)[0] == "shellyswitch":
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]
 
-if dev_id.rsplit("-", 1)[0] == "shellyswitch25":
+if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
     model = MODEL_SHELLY25
     relays = 2
     rollers = 1
@@ -588,7 +674,7 @@ if dev_id.rsplit("-", 1)[0] == "shellyswitch25":
     bin_sensors_tpls = [None, TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [None, TOPIC_INFO]
 
-if dev_id.rsplit("-", 1)[0] == "shellyplug":
+if model_id == MODEL_SHELLYPLUG_ID or dev_id_prefix == MODEL_SHELLYPLUG_PREFIX:
     model = MODEL_SHELLYPLUG
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
@@ -609,7 +695,7 @@ if dev_id.rsplit("-", 1)[0] == "shellyplug":
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]
 
-if dev_id.rsplit("-", 1)[0] == "shellyplug-s":
+if model_id == MODEL_SHELLYPLUG_S_ID or dev_id_prefix == MODEL_SHELLYPLUG_S_PREFIX:
     model = MODEL_SHELLYPLUG_S
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
@@ -636,7 +722,7 @@ if dev_id.rsplit("-", 1)[0] == "shellyplug-s":
     bin_sensors_tpls = [None, TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [None, TOPIC_INFO]
 
-if dev_id.rsplit("-", 1)[0] == "shelly4pro":
+if model_id == MODEL_SHELLY4PRO_ID or dev_id_prefix == MODEL_SHELLY4PRO_PREFIX:
     model = MODEL_SHELLY4PRO
     relays = 4
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
@@ -659,7 +745,7 @@ if dev_id.rsplit("-", 1)[0] == "shelly4pro":
     # sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]  # firmware 1.8.0 required
     # sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]  # firmware 1.8.0 required
 
-if dev_id.rsplit("-", 1)[0] == "shellyht":
+if model_id == MODEL_SHELLYHT_ID or dev_id_prefix == MODEL_SHELLYHT_PREFIX:
     model = MODEL_SHELLYHT
     sensors = [SENSOR_TEMPERATURE, SENSOR_HUMIDITY, SENSOR_BATTERY]
     sensors_classes = [
@@ -675,7 +761,7 @@ if dev_id.rsplit("-", 1)[0] == "shellyht":
     bin_sensors_topics = [TOPIC_ANNOUNCE]
     battery_powered = True
 
-if dev_id.rsplit("-", 1)[0] == "shellygas":
+if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
     model = MODEL_SHELLYGAS
     sensors = [
         SENSOR_OPERATION,
@@ -702,7 +788,7 @@ if dev_id.rsplit("-", 1)[0] == "shellygas":
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO, TPL_GAS]
     bin_sensors_topics = [TOPIC_INFO, None]
 
-if dev_id.rsplit("-", 1)[0] == "shellybutton1":
+if model_id == MODEL_SHELLYBUTTON1_ID or dev_id_prefix == MODEL_SHELLYBUTTON1_PREFIX:
     model = MODEL_SHELLYBUTTON1
     sensors = [SENSOR_BATTERY]
     sensors_classes = [DEVICE_CLASS_BATTERY]
@@ -736,7 +822,7 @@ if dev_id.rsplit("-", 1)[0] == "shellybutton1":
     ]
     battery_powered = True
 
-if dev_id.rsplit("-", 1)[0] == "shellydw":
+if model_id == MODEL_SHELLYDW_ID or dev_id_prefix == MODEL_SHELLYDW_PREFIX:
     model = MODEL_SHELLYDW
     sensors = [SENSOR_LUX, SENSOR_BATTERY, SENSOR_TILT]
     sensors_classes = [DEVICE_CLASS_ILLUMINANCE, DEVICE_CLASS_BATTERY, None]
@@ -749,7 +835,7 @@ if dev_id.rsplit("-", 1)[0] == "shellydw":
     bin_sensors_topics = [None, None, TOPIC_ANNOUNCE]
     battery_powered = True
 
-if dev_id.rsplit("-", 1)[0] == "shellydw2":
+if model_id == MODEL_SHELLYDW2_ID or dev_id_prefix == MODEL_SHELLYDW2_PREFIX:
     model = MODEL_SHELLYDW2
     sensors = [SENSOR_LUX, SENSOR_BATTERY, SENSOR_TILT, SENSOR_TEMPERATURE]
     sensors_classes = [
@@ -767,7 +853,7 @@ if dev_id.rsplit("-", 1)[0] == "shellydw2":
     bin_sensors_topics = [None, None, TOPIC_ANNOUNCE]
     battery_powered = True
 
-if dev_id.rsplit("-", 1)[0] == "shellysmoke":
+if model_id == MODEL_SHELLYSMOKE_ID or dev_id_prefix == MODEL_SHELLYSMOKE_PREFIX:
     model = MODEL_SHELLYSMOKE
     sensors = [SENSOR_TEMPERATURE, SENSOR_BATTERY]
     sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_BATTERY]
@@ -780,7 +866,7 @@ if dev_id.rsplit("-", 1)[0] == "shellysmoke":
     bin_sensors_topics = [None, TOPIC_ANNOUNCE]
     battery_powered = True
 
-if dev_id.rsplit("-", 1)[0] == "shellysense":
+if model_id == MODEL_SHELLYSENSE_ID or dev_id_prefix == MODEL_SHELLYSENSE_PREFIX:
     model = MODEL_SHELLYSENSE
     sensors = [SENSOR_TEMPERATURE, SENSOR_HUMIDITY, SENSOR_LUX, SENSOR_BATTERY]
     sensors_classes = [
@@ -798,7 +884,7 @@ if dev_id.rsplit("-", 1)[0] == "shellysense":
     bin_sensors_topics = [None, None, TOPIC_ANNOUNCE]
     battery_powered = True
 
-if dev_id.rsplit("-", 1)[0] == "shellyrgbw2":
+if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX:
     model = MODEL_SHELLYRGBW2
     rgbw_lights = 1
     white_lights = 4
@@ -828,7 +914,7 @@ if dev_id.rsplit("-", 1)[0] == "shellyrgbw2":
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]
 
-if dev_id.rsplit("-", 1)[0] == "shellydimmer":
+if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREFIX:
     model = MODEL_SHELLYDIMMER
     white_lights = 1
     sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME]
@@ -905,7 +991,7 @@ if dev_id.rsplit("-", 1)[0] == "shellydimmer":
     lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
 
-if dev_id.rsplit("-", 1)[0] == "shellydimmer2":
+if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PREFIX:
     model = MODEL_SHELLYDIMMER2
     white_lights = 1
     sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME]
@@ -982,7 +1068,7 @@ if dev_id.rsplit("-", 1)[0] == "shellydimmer2":
     lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
 
-if dev_id.rsplit("-", 1)[0] == "shellybulb":
+if model_id == MODEL_SHELLYBULB_ID or dev_id_prefix == MODEL_SHELLYBULB_PREFIX:
     model = MODEL_SHELLYBULB
     rgbw_lights = 1
     bin_sensors = [SENSOR_FIRMWARE_UPDATE]
@@ -994,7 +1080,7 @@ if dev_id.rsplit("-", 1)[0] == "shellybulb":
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]
 
-if dev_id.rsplit("-", 1)[0].lower() == "shellybulbduo":
+if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
     model = MODEL_SHELLYDUO
     white_lights = 1
     lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
@@ -1010,7 +1096,7 @@ if dev_id.rsplit("-", 1)[0].lower() == "shellybulbduo":
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]
 
-if dev_id.rsplit("-", 1)[0].lower() == "shellyvintage":
+if model_id == MODEL_SHELLYVINTAGE_ID or dev_id_prefix == MODEL_SHELLYVINTAGE_PREFIX:
     model = MODEL_SHELLYVINTAGE
     white_lights = 1
     lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
@@ -1026,7 +1112,7 @@ if dev_id.rsplit("-", 1)[0].lower() == "shellyvintage":
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]
 
-if dev_id.rsplit("-", 1)[0] == "shellyem":
+if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
     model = MODEL_SHELLYEM
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
@@ -1084,7 +1170,7 @@ if dev_id.rsplit("-", 1)[0] == "shellyem":
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]
 
-if dev_id.rsplit("-", 1)[0] == "shellyem3":
+if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
     model = MODEL_SHELLY3EM
     relays = 1
     meters = 3
@@ -1142,7 +1228,7 @@ if dev_id.rsplit("-", 1)[0] == "shellyem3":
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]
 
-if dev_id.rsplit("-", 1)[0] == "shellyflood":
+if model_id == MODEL_SHELLYFLOOD_ID or dev_id_prefix == MODEL_SHELLYFLOOD_PREFIX:
     model = MODEL_SHELLYFLOOD
     sensors = [SENSOR_TEMPERATURE, SENSOR_BATTERY]
     sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_BATTERY]
@@ -1155,7 +1241,7 @@ if dev_id.rsplit("-", 1)[0] == "shellyflood":
     bin_sensors_topics = [None, TOPIC_ANNOUNCE]
     battery_powered = True
 
-if dev_id.rsplit("-", 1)[0] == "shellyix3":
+if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
     model = MODEL_SHELLYI3
     bin_sensors = [
         SENSOR_INPUT_0,
