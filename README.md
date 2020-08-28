@@ -72,7 +72,6 @@ logger:
 - Home Assistant updated to current version
 - enabled MQTT in Shellies configuration
 - default topics configuration in Shellies
-- default Shellies IDs
 - you can't manually run the `shellies_discovery.py` script (`'trigger' is undefined` error)
 
 ## Minimal configuration
@@ -108,6 +107,7 @@ python_script:
       id: '{{ trigger.payload_json.id }}'
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
+      model: '{{ trigger.payload_json.model }}'
 ```
 
 ## Custom configuration example
@@ -143,6 +143,7 @@ python_script:
       id: '{{ trigger.payload_json.id }}'
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
+      model: '{{ trigger.payload_json.model }}'
       discovery_prefix: 'hass'
       qos: 2
       shelly1-AABB9900:
