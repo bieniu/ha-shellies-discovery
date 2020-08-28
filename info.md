@@ -53,7 +53,7 @@ logger:
 - enabled MQTT in Shellies configuration
 - you can't manually run the shellies_discovery.py script ('trigger' is undefined error)
 
-## Shelly device name option
+## Shelly device name
 
 The script supports Shelly devices with non-standard names (`Internet & Security` -> `Advanced - developer settings` -> `Custom MQTT prefix` in the Shelly WWW panel).
 If you want to change the name of the Shelly device, you must first remove the device from Home Assistant (`Configuration` -> `Integrations` -> `MQTT` -> Device -> `Remove`). Otherwise, all device entities will be duplicated.
