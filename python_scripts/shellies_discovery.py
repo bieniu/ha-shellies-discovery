@@ -139,6 +139,7 @@ MODEL_SHELLYRGBW2 = f"{ATTR_SHELLY} RGBW2"
 MODEL_SHELLYSENSE = f"{ATTR_SHELLY} Sense"
 MODEL_SHELLYSMOKE = f"{ATTR_SHELLY} Smoke"
 MODEL_SHELLYVINTAGE = f"{ATTR_SHELLY} Vintage"
+MODEL_SHELLYPLUGUSA = f"{ATTR_SHELLY} Plug USA"
 
 MODEL_SHELLY1_ID = "SHSW-1"  # Shelly 1
 MODEL_SHELLY1_PREFIX = "shelly1"
@@ -214,6 +215,9 @@ MODEL_SHELLYSMOKE_PREFIX = "shellysmoke"
 
 MODEL_SHELLYVINTAGE_ID = "SHBVIN-1"  # Shelly Vintage
 MODEL_SHELLYVINTAGE_PREFIX = "shellyvintage"
+
+MODEL_SHELLYPLUGUSA_ID = "SHPLG-U1" # Shelly Plug USA (U1)
+MODEL_SHELLYPLUGUSA_PREFIX = "shellyplug-u1"
 
 
 OFF_DELAY = 2
@@ -676,6 +680,27 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
 
 if model_id == MODEL_SHELLYPLUG_ID or dev_id_prefix == MODEL_SHELLYPLUG_PREFIX:
     model = MODEL_SHELLYPLUG
+    relays = 1
+    relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
+    relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
+    relays_bin_sensors = [SENSOR_OVERPOWER]
+    relays_bin_sensors_pl = [None]
+    relays_bin_sensors_topics = [TOPIC_RELAY]
+    relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
+    relays_bin_sensors_classes = [DEVICE_CLASS_PROBLEM]
+    bin_sensors = [SENSOR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [None]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
+    bin_sensors_topics = [TOPIC_INFO]
+    sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME]
+    sensors_units = [UNIT_DB, None, None]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]
+    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]
+
+if model_id == MODEL_SHELLYPLUGUSA_ID or dev_id_prefix == MODEL_SHELLYPLUGUSA_PREFIX:
+    model = MODEL_SHELLYPLUGUSA
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
@@ -2345,3 +2370,4 @@ for meter_id in range(meters):
         if dev_id.lower() in ignored:
             payload = ""
         mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
+        
