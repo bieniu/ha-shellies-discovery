@@ -46,6 +46,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly i3
 - Shelly Plug
 - Shelly Plug S
+- Shelly Plug US
 - Shelly RGBW2 (color and white mode)
 - Shelly Sense
 - Shelly Smoke

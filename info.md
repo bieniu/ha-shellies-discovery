@@ -26,6 +26,7 @@ This script needs Home Assistant `python_script` component so, if you never used
 - Shelly i3
 - Shelly Plug
 - Shelly Plug S
+- Shelly Plug US
 - Shelly RGBW2 (color and white mode)
 - Shelly Sense
 - Shelly Smoke

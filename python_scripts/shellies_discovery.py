@@ -135,11 +135,11 @@ MODEL_SHELLYHT = f"{ATTR_SHELLY} H&T"
 MODEL_SHELLYI3 = f"{ATTR_SHELLY} i3"
 MODEL_SHELLYPLUG = f"{ATTR_SHELLY} Plug"
 MODEL_SHELLYPLUG_S = f"{ATTR_SHELLY} Plug S"
+MODEL_SHELLYPLUG_US = f"{ATTR_SHELLY} Plug US"
 MODEL_SHELLYRGBW2 = f"{ATTR_SHELLY} RGBW2"
 MODEL_SHELLYSENSE = f"{ATTR_SHELLY} Sense"
 MODEL_SHELLYSMOKE = f"{ATTR_SHELLY} Smoke"
 MODEL_SHELLYVINTAGE = f"{ATTR_SHELLY} Vintage"
-MODEL_SHELLYPLUGUSA = f"{ATTR_SHELLY} Plug USA"
 
 MODEL_SHELLY1_ID = "SHSW-1"  # Shelly 1
 MODEL_SHELLY1_PREFIX = "shelly1"
@@ -204,6 +204,9 @@ MODEL_SHELLYPLUG_PREFIX = "shellyplug"
 MODEL_SHELLYPLUG_S_ID = "SHPLG-S"  # Shelly Plug S
 MODEL_SHELLYPLUG_S_PREFIX = "shellyplug-s"
 
+MODEL_SHELLYPLUG_US_ID = "SHPLG-U1" # Shelly Plug US
+MODEL_SHELLYPLUG_US_PREFIX = "shellyplug-u1"
+
 MODEL_SHELLYRGBW2_ID = "SHRGBW2"  # Shelly RGBW2
 MODEL_SHELLYRGBW2_PREFIX = "shellyrgbw2"
 
@@ -215,9 +218,6 @@ MODEL_SHELLYSMOKE_PREFIX = "shellysmoke"
 
 MODEL_SHELLYVINTAGE_ID = "SHBVIN-1"  # Shelly Vintage
 MODEL_SHELLYVINTAGE_PREFIX = "shellyvintage"
-
-MODEL_SHELLYPLUGUSA_ID = "SHPLG-U1" # Shelly Plug USA (U1)
-MODEL_SHELLYPLUGUSA_PREFIX = "shellyplug-u1"
 
 
 OFF_DELAY = 2
@@ -699,8 +699,8 @@ if model_id == MODEL_SHELLYPLUG_ID or dev_id_prefix == MODEL_SHELLYPLUG_PREFIX:
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]
 
-if model_id == MODEL_SHELLYPLUGUSA_ID or dev_id_prefix == MODEL_SHELLYPLUGUSA_PREFIX:
-    model = MODEL_SHELLYPLUGUSA
+if model_id == MODEL_SHELLYPLUG_US_ID or dev_id_prefix == MODEL_SHELLYPLUG_US_PREFIX:
+    model = MODEL_SHELLYPLUG_US
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
@@ -1663,6 +1663,7 @@ for relay_id in range(relays):
                     MODEL_SHELLY4PRO,
                     MODEL_SHELLYPLUG,
                     MODEL_SHELLYPLUG_S,
+                    MODEL_SHELLYPLUG_US,
                 ]
                 and relays_bin_sensors[bin_sensor_id] == SENSOR_OVERPOWER
             ):
@@ -2370,4 +2371,4 @@ for meter_id in range(meters):
         if dev_id.lower() in ignored:
             payload = ""
         mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
-        
+
