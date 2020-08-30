@@ -204,7 +204,7 @@ MODEL_SHELLYPLUG_PREFIX = "shellyplug"
 MODEL_SHELLYPLUG_S_ID = "SHPLG-S"  # Shelly Plug S
 MODEL_SHELLYPLUG_S_PREFIX = "shellyplug-s"
 
-MODEL_SHELLYPLUG_US_ID = "SHPLG-U1" # Shelly Plug US
+MODEL_SHELLYPLUG_US_ID = "SHPLG-U1"  # Shelly Plug US
 MODEL_SHELLYPLUG_US_PREFIX = "shellyplug-u1"
 
 MODEL_SHELLYRGBW2_ID = "SHRGBW2"  # Shelly RGBW2
@@ -2371,4 +2371,3 @@ for meter_id in range(meters):
         if dev_id.lower() in ignored:
             payload = ""
         mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
-
