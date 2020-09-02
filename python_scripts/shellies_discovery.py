@@ -1367,7 +1367,7 @@ if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
     bin_sensors_pl = [
         PL_1_0,
         PL_1_0,
-        PL_0_1,
+        PL_1_0,
         None,
         None,
         None,
