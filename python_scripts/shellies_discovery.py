@@ -431,7 +431,7 @@ ignored = [
 mac = data.get(CONF_MAC).lower()  # noqa: F821
 
 if not dev_id:
-    raise ValueError(f"{dev_id} is wrong dev_id argument")
+    raise ValueError(f"{dev_id} is wrong id argument")
 if not mac:
     raise ValueError(f"{mac} is wrong mac argument")
 if not fw_ver:
