@@ -466,7 +466,7 @@ if (
     )
 
 logger.debug(
-    "dev_id: %s, mac: %s, fw_ver: %s, model_id: %s", dev_id, mac, fw_ver, model_id
+    "id: %s, mac: %s, fw_ver: %s, model: %s", dev_id, mac, fw_ver, model_id
 )  # noqa: F821
 
 try:
