@@ -444,7 +444,7 @@ except (IndexError, ValueError):
         f"Firmware version {fw_ver} is not supported, please update your device {dev_id}"
     )
 
-dev_id_prefix = dev_id.rsplit("-", 1)[0]
+dev_id_prefix = dev_id.rsplit("-", 1)[0].lower()
 
 min_ver = MIN_FIRMWARE_VERSION.split(".")
 min_ver = int("".join(i for i in min_ver)[:3])
