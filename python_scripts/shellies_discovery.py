@@ -492,7 +492,6 @@ bin_sensors_pl = []
 bin_sensors_topics = []
 bin_sensors_tpls = []
 ext_humi_sensors = 0
-ext_sensors = 0  # to remove
 ext_temp_sensors = 0
 lights_bin_sensors = []
 lights_bin_sensors_classes = []
@@ -546,7 +545,6 @@ if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]
     ext_humi_sensors = 1
     ext_temp_sensors = 3
-    ext_sensors = 3  # to remove
 
 if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
     model = MODEL_SHELLY1PM
@@ -581,7 +579,6 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
     bin_sensors_topics = [None, TOPIC_INFO]
     ext_humi_sensors = 1
     ext_temp_sensors = 3
-    ext_sensors = 3  # to remove
 
 if model_id == MODEL_SHELLYAIR_ID or dev_id_prefix == MODEL_SHELLYAIR_PREFIX:
     model = MODEL_SHELLYAIR
@@ -616,7 +613,6 @@ if model_id == MODEL_SHELLYAIR_ID or dev_id_prefix == MODEL_SHELLYAIR_PREFIX:
     bin_sensors_tpls = [None, TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [None, TOPIC_INFO]
     ext_temp_sensors = 1
-    ext_sensors = 1  # to remove
 
 if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
     model = MODEL_SHELLY2
@@ -790,7 +786,6 @@ if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
     model = MODEL_SHELLYGAS
     sensors = [
         SENSOR_OPERATION,
-        SENSOR_GAS,  # to remove
         SENSOR_SELF_TEST,
         SENSOR_CONCENTRATION,
         SENSOR_RSSI,
@@ -1740,19 +1735,11 @@ for sensor_id in range(len(sensors)):
         payload[KEY_ICON] = "mdi:timer-outline"
     if no_battery_sensor and sensors[sensor_id] == SENSOR_BATTERY:
         payload = ""
-    if model == MODEL_SHELLYGAS and sensors[sensor_id] == SENSOR_GAS:  # to remove
-        payload = ""  # to remove
     if dev_id.lower() in ignored:
         payload = ""
     mqtt_publish(
         config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos
     )
-
-# external sensors, to remove
-for sensor_id in range(ext_sensors):
-    config_topic = f"{disc_prefix}/sensor/{dev_id}-ext-{sensor_id}/config"
-    payload = ""
-    mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
 
 # external temperature sensors
 for sensor_id in range(ext_temp_sensors):
