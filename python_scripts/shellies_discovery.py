@@ -33,11 +33,11 @@ DEVICE_CLASS_BATTERY_CHARGING = "battery_charging"
 DEVICE_CLASS_BLIND = "blind"
 DEVICE_CLASS_COLD = "cold"
 DEVICE_CLASS_CONNECTIVITY = "connectivity"
-DEVICE_CLASS_CURRENT = "current"  # Home Assistant 0.115
+DEVICE_CLASS_CURRENT = "current"
 DEVICE_CLASS_CURTAIN = "curtain"
 DEVICE_CLASS_DAMPER = "damper"
 DEVICE_CLASS_DOOR = "door"
-DEVICE_CLASS_ENERGY = "energy"  # Home Assistant 0.115
+DEVICE_CLASS_ENERGY = "energy"
 DEVICE_CLASS_GARAGE = "garage"
 DEVICE_CLASS_GARAGE_DOOR = "garage_door"
 DEVICE_CLASS_GAS = "gas"
@@ -54,7 +54,7 @@ DEVICE_CLASS_OCCUPANCY = "occupancy"
 DEVICE_CLASS_OPENING = "opening"
 DEVICE_CLASS_PLUG = "plug"
 DEVICE_CLASS_POWER = "power"
-DEVICE_CLASS_POWER_FACTOR = "power_factor"  # Home Assistant 0.115
+DEVICE_CLASS_POWER_FACTOR = "power_factor"
 DEVICE_CLASS_PRESENCE = "presence"
 DEVICE_CLASS_PRESSURE = "pressure"
 DEVICE_CLASS_PROBLEM = "problem"
@@ -67,7 +67,7 @@ DEVICE_CLASS_SOUND = "sound"
 DEVICE_CLASS_TEMPERATURE = "temperature"
 DEVICE_CLASS_TIMESTAMP = "timestamp"
 DEVICE_CLASS_VIBRATION = "vibration"
-DEVICE_CLASS_VOLTAGE = "voltage"  # Home Assistant 0.115
+DEVICE_CLASS_VOLTAGE = "voltage"
 DEVICE_CLASS_WINDOW = "window"
 
 EXPIRE_AFTER_FOR_BATTERY_POWERED = 43200
@@ -553,7 +553,7 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [
         SENSOR_INPUT,
@@ -588,7 +588,7 @@ if model_id == MODEL_SHELLYAIR_ID or dev_id_prefix == MODEL_SHELLYAIR_PREFIX:
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [SENSOR_INPUT]
     relays_bin_sensors_pl = [PL_1_0]
@@ -624,7 +624,7 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
     rollers = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [
         SENSOR_INPUT,
@@ -651,7 +651,7 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
     rollers = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [
         SENSOR_INPUT,
@@ -683,7 +683,7 @@ if model_id == MODEL_SHELLYPLUG_ID or dev_id_prefix == MODEL_SHELLYPLUG_PREFIX:
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [SENSOR_OVERPOWER]
     relays_bin_sensors_pl = [None]
@@ -704,7 +704,7 @@ if model_id == MODEL_SHELLYPLUG_US_ID or dev_id_prefix == MODEL_SHELLYPLUG_US_PR
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [SENSOR_OVERPOWER]
     relays_bin_sensors_pl = [None]
@@ -725,7 +725,7 @@ if model_id == MODEL_SHELLYPLUG_S_ID or dev_id_prefix == MODEL_SHELLYPLUG_S_PREF
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [SENSOR_OVERPOWER]
     relays_bin_sensors_pl = [None]
@@ -752,7 +752,7 @@ if model_id == MODEL_SHELLY4PRO_ID or dev_id_prefix == MODEL_SHELLY4PRO_PREFIX:
     relays = 4
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [SENSOR_OVERPOWER]
     relays_bin_sensors_pl = [None]
@@ -1013,7 +1013,7 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
     ]
     lights_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH]
-    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
+    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
 
 if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PREFIX:
@@ -1090,7 +1090,7 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
     ]
     lights_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH]
-    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
+    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
 
 if model_id == MODEL_SHELLYBULB_ID or dev_id_prefix == MODEL_SHELLYBULB_PREFIX:
@@ -1110,7 +1110,7 @@ if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
     white_lights = 1
     lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
     lights_sensors_units = [UNIT_KWH, UNIT_WATT]
-    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
+    lights_sensors_classes = [DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
     lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
     bin_sensors = [SENSOR_FIRMWARE_UPDATE]
     bin_sensors_classes = [None]
@@ -1126,7 +1126,7 @@ if model_id == MODEL_SHELLYVINTAGE_ID or dev_id_prefix == MODEL_SHELLYVINTAGE_PR
     white_lights = 1
     lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
     lights_sensors_units = [UNIT_KWH, UNIT_WATT]
-    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
+    lights_sensors_classes = [DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
     lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
     bin_sensors = [SENSOR_FIRMWARE_UPDATE]
     bin_sensors_classes = [None]
@@ -1142,7 +1142,7 @@ if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_POWER]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [SENSOR_OVERPOWER]
     relays_bin_sensors_pl = [None]
@@ -1171,11 +1171,11 @@ if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
     meters_sensors_classes = [
         DEVICE_CLASS_POWER,
         None,
-        None,
-        DEVICE_CLASS_POWER,
-        DEVICE_CLASS_POWER,
-        DEVICE_CLASS_POWER,
-        DEVICE_CLASS_POWER,
+        DEVICE_CLASS_VOLTAGE,
+        DEVICE_CLASS_ENERGY,
+        DEVICE_CLASS_ENERGY,
+        DEVICE_CLASS_ENERGY,
+        DEVICE_CLASS_ENERGY,
     ]
     meters_sensors_tpls = [
         TPL_POWER,
@@ -1225,14 +1225,14 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
         UNIT_KWH,
     ]
     meters_sensors_classes = [
-        None,
+        DEVICE_CLASS_CURRENT,
         DEVICE_CLASS_POWER,
-        None,
-        None,
-        DEVICE_CLASS_POWER,
-        DEVICE_CLASS_POWER,
-        DEVICE_CLASS_POWER,
-        DEVICE_CLASS_POWER,
+        DEVICE_CLASS_POWER_FACTOR,
+        DEVICE_CLASS_VOLTAGE,
+        DEVICE_CLASS_ENERGY,
+        DEVICE_CLASS_ENERGY,
+        DEVICE_CLASS_ENERGY,
+        DEVICE_CLASS_ENERGY,
     ]
     meters_sensors_tpls = [
         TPL_CURRENT,
