@@ -139,6 +139,7 @@ MODEL_SHELLYPLUG_US = f"{ATTR_SHELLY} Plug US"
 MODEL_SHELLYRGBW2 = f"{ATTR_SHELLY} RGBW2"
 MODEL_SHELLYSENSE = f"{ATTR_SHELLY} Sense"
 MODEL_SHELLYSMOKE = f"{ATTR_SHELLY} Smoke"
+MODEL_SHELLYUNI = f"{ATTR_SHELLY} UNI"
 MODEL_SHELLYVINTAGE = f"{ATTR_SHELLY} Vintage"
 
 MODEL_SHELLY1_ID = "SHSW-1"  # Shelly 1
@@ -219,9 +220,12 @@ MODEL_SHELLYSMOKE_PREFIX = "shellysmoke"
 MODEL_SHELLYVINTAGE_ID = "SHBVIN-1"  # Shelly Vintage
 MODEL_SHELLYVINTAGE_PREFIX = "shellyvintage"
 
+MODEL_SHELLYUNI_ID = "SHUNI-1"  # Shelly UNI
+MODEL_SHELLYUNI_PREFIX = "shellyuni"
 
 OFF_DELAY = 2
 
+SENSOR_ADC = "adc"
 SENSOR_BATTERY = "battery"
 SENSOR_CHARGER = "charger"
 SENSOR_CONCENTRATION = "concentration"
@@ -285,6 +289,7 @@ SENSOR_UPTIME = "uptime"
 SENSOR_VIBRATION = "vibration"
 SENSOR_VOLTAGE = "voltage"
 
+TOPIC_ADC = "adc/0"
 TOPIC_ANNOUNCE = "announce"
 TOPIC_COLOR_0_STATUS = "color/0/status"
 TOPIC_INFO = "info"
@@ -523,6 +528,7 @@ rgbw_lights = 0
 rollers = 0
 sensors = []
 sensors_classes = []
+sensors_topics = []
 sensors_tpls = []
 sensors_units = []
 white_lights = 0
@@ -673,6 +679,25 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
     bin_sensors_pl = [PL_1_0, None]
     bin_sensors_tpls = [None, TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [None, TOPIC_INFO]
+
+if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
+    model = MODEL_SHELLYUNI
+    relays = 2
+    relays_bin_sensors = [SENSOR_INPUT]
+    relays_bin_sensors_pl = [PL_1_0]
+    relays_bin_sensors_topics = [None]
+    relays_bin_sensors_tpls = [None]
+    relays_bin_sensors_classes = [None]
+    sensors = [SENSOR_ADC, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME]
+    sensors_classes = [
+        None,
+        DEVICE_CLASS_SIGNAL_STRENGTH,
+        None,
+        DEVICE_CLASS_TIMESTAMP,
+    ]
+    sensors_units = [None, UNIT_DB, None, None]
+    sensors_tpls = [None, TPL_RSSI, TPL_SSID, TPL_UPTIME]
+    sensors_topics = [TOPIC_ADC, None, None, None]
 
 if model_id == MODEL_SHELLYPLUG_ID or dev_id_prefix == MODEL_SHELLYPLUG_PREFIX:
     model = MODEL_SHELLYPLUG
@@ -1685,7 +1710,7 @@ for sensor_id in range(len(sensors)):
     config_topic = f"{disc_prefix}/sensor/{dev_id}-{sensors[sensor_id]}/config"
     default_topic = f"shellies/{dev_id}/"
     availability_topic = "~online"
-    if sensors[sensor_id] in [SENSOR_RSSI, SENSOR_SSID]:
+    if sensors[sensor_id] in [SENSOR_RSSI, SENSOR_SSID, SENSOR_ADC]:
         sensor_name = f"{device_name} {sensors[sensor_id].upper()}"
     else:
         sensor_name = f"{device_name} {sensors[sensor_id].title()}"
@@ -1723,6 +1748,8 @@ for sensor_id in range(len(sensors)):
         payload[KEY_UNIT] = sensors_units[sensor_id]
     if sensors_classes[sensor_id]:
         payload[KEY_DEVICE_CLASS] = sensors_classes[sensor_id]
+    if sensors_topics[sensor_id]:
+        payload[KEY_STATE_TOPIC] = sensors_topics[sensor_id]
     if not battery_powered:
         payload[KEY_AVAILABILITY_TOPIC] = availability_topic
         payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
