@@ -13,6 +13,7 @@ COMP_SWITCH = "switch"
 
 CONF_DEVELOP = "develop"
 CONF_DISCOVERY_PREFIX = "discovery_prefix"
+CONF_EXPIRE_AFTER = "expire_after"
 CONF_FORCE_UPDATE_SENSORS = "force_update_sensors"
 CONF_FRIENDLY_NAME = "friendly_name"
 CONF_FW_VER = "fw_ver"
@@ -419,7 +420,7 @@ def mqtt_publish(topic, payload, retain, qos):
     hass.services.call("mqtt", "publish", service_data, False)  # noqa: F821
 
 
-expire_after = EXPIRE_AFTER_FOR_BATTERY_POWERED
+expire_after = None
 
 qos = 0
 retain = True
@@ -1743,13 +1744,16 @@ for sensor_id in range(len(sensors)):
         state_topic = f"~sensor/{sensors[sensor_id]}"
 
     config_component = COMP_SWITCH
-    if device_config.get(CONF_POWERED) == ATTR_POWER_AC:
-        no_battery_sensor = True
-        expire_after = EXPIRE_AFTER_FOR_AC_POWERED
+    if battery_powered:
+        expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED)
+        if device_config.get(CONF_POWERED) == ATTR_POWER_AC:
+            no_battery_sensor = True
+            expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED)
+    if not isinstance(expire_after, int):
+        raise TypeError(f"expire_after value {expire_after} is not an integer")
     payload = {
         KEY_NAME: sensor_name,
         KEY_STATE_TOPIC: state_topic,
-        KEY_EXPIRE_AFTER: expire_after,
         KEY_FORCE_UPDATE: str(force_update),
         KEY_UNIQUE_ID: unique_id,
         KEY_QOS: qos,
@@ -1771,7 +1775,9 @@ for sensor_id in range(len(sensors)):
         payload[KEY_DEVICE_CLASS] = sensors_classes[sensor_id]
     if sensors_topics[sensor_id]:
         payload[KEY_STATE_TOPIC] = sensors_topics[sensor_id]
-    if not battery_powered:
+    if expire_after:
+        payload[KEY_EXPIRE_AFTER] = expire_after
+    else:
         payload[KEY_AVAILABILITY_TOPIC] = availability_topic
         payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
@@ -1809,7 +1815,6 @@ for sensor_id in range(ext_temp_sensors):
             KEY_VALUE_TEMPLATE: TPL_TEMPERATURE_EXT,
             KEY_UNIT: UNIT_CELSIUS,
             KEY_DEVICE_CLASS: SENSOR_TEMPERATURE,
-            KEY_EXPIRE_AFTER: expire_after,
             KEY_FORCE_UPDATE: str(force_update),
             KEY_AVAILABILITY_TOPIC: availability_topic,
             KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
@@ -1851,7 +1856,6 @@ for sensor_id in range(ext_humi_sensors):
             KEY_VALUE_TEMPLATE: TPL_HUMIDITY_EXT,
             KEY_UNIT: UNIT_PERCENT,
             KEY_DEVICE_CLASS: SENSOR_HUMIDITY,
-            KEY_EXPIRE_AFTER: expire_after,
             KEY_FORCE_UPDATE: str(force_update),
             KEY_AVAILABILITY_TOPIC: availability_topic,
             KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
@@ -1879,6 +1883,13 @@ for bin_sensor_id in range(len(bin_sensors)):
     push_off_delay = True
     if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
         push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
+    if battery_powered:
+        expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED)
+        if device_config.get(CONF_POWERED) == ATTR_POWER_AC:
+            no_battery_sensor = True
+            expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED)
+    if not isinstance(expire_after, int):
+        raise TypeError(f"expire_after value {expire_after} is not an integer")
     config_mode = LIGHT_RGBW
     if device_config.get(CONF_MODE):
         config_mode = device_config[CONF_MODE]
@@ -1917,7 +1928,7 @@ for bin_sensor_id in range(len(bin_sensors)):
     else:
         payload[KEY_PAYLOAD_ON] = bin_sensors_pl[bin_sensor_id][VALUE_ON]
         payload[KEY_PAYLOAD_OFF] = bin_sensors_pl[bin_sensor_id][VALUE_OFF]
-    if battery_powered:
+    if expire_after:
         payload[KEY_EXPIRE_AFTER] = expire_after
     else:
         payload[KEY_AVAILABILITY_TOPIC] = availability_topic
