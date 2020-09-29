@@ -1753,8 +1753,8 @@ for sensor_id in range(len(sensors)):
             expire_after = device_config.get(
                 CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED
             )
-    if not isinstance(expire_after, int):
-        raise TypeError(f"expire_after value {expire_after} is not an integer")
+        if not isinstance(expire_after, int):
+            raise TypeError(f"expire_after value {expire_after} is not an integer")
     payload = {
         KEY_NAME: sensor_name,
         KEY_STATE_TOPIC: state_topic,
@@ -1779,18 +1779,18 @@ for sensor_id in range(len(sensors)):
         payload[KEY_DEVICE_CLASS] = sensors_classes[sensor_id]
     if sensors_topics[sensor_id]:
         payload[KEY_STATE_TOPIC] = sensors_topics[sensor_id]
-    if expire_after:
-        payload[KEY_EXPIRE_AFTER] = expire_after
-    else:
-        payload[KEY_AVAILABILITY_TOPIC] = availability_topic
-        payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
-        payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
     if sensors_tpls[sensor_id]:
         payload[KEY_VALUE_TEMPLATE] = sensors_tpls[sensor_id]
     if sensors[sensor_id] == SENSOR_SSID:
         payload[KEY_ICON] = "mdi:wifi"
     elif sensors[sensor_id] == SENSOR_UPTIME:
         payload[KEY_ICON] = "mdi:timer-outline"
+    if battery_powered:
+        payload[KEY_EXPIRE_AFTER] = expire_after
+    else:
+        payload[KEY_AVAILABILITY_TOPIC] = availability_topic
+        payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
+        payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
     if no_battery_sensor and sensors[sensor_id] == SENSOR_BATTERY:
         payload = ""
     if dev_id.lower() in ignored:
@@ -1896,8 +1896,8 @@ for bin_sensor_id in range(len(bin_sensors)):
             expire_after = device_config.get(
                 CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED
             )
-    if not isinstance(expire_after, int):
-        raise TypeError(f"expire_after value {expire_after} is not an integer")
+        if not isinstance(expire_after, int):
+            raise TypeError(f"expire_after value {expire_after} is not an integer")
     config_mode = LIGHT_RGBW
     if device_config.get(CONF_MODE):
         config_mode = device_config[CONF_MODE]
@@ -1936,7 +1936,7 @@ for bin_sensor_id in range(len(bin_sensors)):
     else:
         payload[KEY_PAYLOAD_ON] = bin_sensors_pl[bin_sensor_id][VALUE_ON]
         payload[KEY_PAYLOAD_OFF] = bin_sensors_pl[bin_sensor_id][VALUE_OFF]
-    if expire_after:
+    if battery_powered:
         payload[KEY_EXPIRE_AFTER] = expire_after
     else:
         payload[KEY_AVAILABILITY_TOPIC] = availability_topic
