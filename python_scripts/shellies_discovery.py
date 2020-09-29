@@ -111,8 +111,11 @@ KEY_VALUE_TEMPLATE = "val_tpl"
 LIGHT_RGBW = "rgbw"
 LIGHT_WHITE = "white"
 
-MIN_4PRO_FIRMWARE_VERSION = "1.6.5"
-MIN_FIRMWARE_VERSION = "1.8.0"
+# Firmware 1.6.5 release date
+MIN_4PRO_FIRMWARE_DATE = 20200408
+
+# Firmware 1.8.0 release date
+MIN_FIRMWARE_DATE = 20200812
 
 MODEL_SHELLY1 = f"{ATTR_SHELLY} 1"
 MODEL_SHELLY1PM = f"{ATTR_SHELLY} 1PM"
@@ -383,11 +386,8 @@ ROLLER_DEVICE_CLASSES = [
 
 
 def parse_version(version):
-    """Parse version string and return version number as integer."""
-    version = version.split("/")[1].split("@")[0].rsplit(".", 1)
-    version = ["".join(i for i in item if i.isdigit()) for item in version]
-    version = "".join(i for i in version)[:3]
-    return int(version)
+    """Parse version string and return version date integer."""
+    return int(version.rsplit("-", 1)[0])
 
 
 def get_device_config(dev_id):
@@ -443,7 +443,7 @@ if not fw_ver:
     raise ValueError(f"{fw_ver} is wrong fw_ver argument")
 
 try:
-    cur_ver = parse_version(fw_ver)
+    cur_ver_date = parse_version(fw_ver)
 except (IndexError, ValueError):
     raise ValueError(
         f"Firmware version {fw_ver} is not supported, please update your device {dev_id}"
@@ -451,23 +451,18 @@ except (IndexError, ValueError):
 
 dev_id_prefix = dev_id.rsplit("-", 1)[0].lower()
 
-min_ver = MIN_FIRMWARE_VERSION.split(".")
-min_ver = int("".join(i for i in min_ver)[:3])
-min_ver_4pro = MIN_4PRO_FIRMWARE_VERSION.split(".")
-min_ver_4pro = int("".join(i for i in min_ver_4pro)[:3])
-
 if (
     dev_id_prefix == MODEL_SHELLY4PRO_PREFIX or MODEL_SHELLY4PRO_ID == model_id
-) and cur_ver < min_ver_4pro:
+) and cur_ver_date < MIN_4PRO_FIRMWARE_DATE:
     raise ValueError(
-        f"Firmware version {MIN_4PRO_FIRMWARE_VERSION} is required, please update your device {dev_id}"
+        f"Firmware dated {MIN_4PRO_FIRMWARE_DATE} is required, please update your device {dev_id}"
     )
 
 if (
     dev_id_prefix != MODEL_SHELLY4PRO_PREFIX and MODEL_SHELLY4PRO_ID != model_id
-) and cur_ver < min_ver:
+) and cur_ver_date < MIN_FIRMWARE_DATE:
     raise ValueError(
-        f"Firmware version {MIN_FIRMWARE_VERSION} is required, please update your device {dev_id}"
+        f"Firmware dated {MIN_FIRMWARE_DATE} is required, please update your device {dev_id}"
     )
 
 logger.debug(
