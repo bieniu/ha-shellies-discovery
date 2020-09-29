@@ -1745,10 +1745,14 @@ for sensor_id in range(len(sensors)):
 
     config_component = COMP_SWITCH
     if battery_powered:
-        expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED)
+        expire_after = device_config.get(
+            CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED
+        )
         if device_config.get(CONF_POWERED) == ATTR_POWER_AC:
             no_battery_sensor = True
-            expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED)
+            expire_after = device_config.get(
+                CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED
+            )
     if not isinstance(expire_after, int):
         raise TypeError(f"expire_after value {expire_after} is not an integer")
     payload = {
@@ -1884,10 +1888,14 @@ for bin_sensor_id in range(len(bin_sensors)):
     if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
         push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
     if battery_powered:
-        expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED)
+        expire_after = device_config.get(
+            CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED
+        )
         if device_config.get(CONF_POWERED) == ATTR_POWER_AC:
             no_battery_sensor = True
-            expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED)
+            expire_after = device_config.get(
+                CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED
+            )
     if not isinstance(expire_after, int):
         raise TypeError(f"expire_after value {expire_after} is not an integer")
     config_mode = LIGHT_RGBW
