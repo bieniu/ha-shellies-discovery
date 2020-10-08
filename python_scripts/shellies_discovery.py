@@ -2236,7 +2236,7 @@ for light_id in range(white_lights):
             '"cmd_off_tpl":"{\\"turn\\":\\"off\\"}",'
             '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
             '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"clr_temp_tpl":"{{((1000000/(value_json.temp|int))|round(0,\\"floor\\"))}}",'
+            '"clr_temp_tpl":"{{((1000000/(value_json.temp|int,2700)|max)|round(0,\\"floor\\"))}}",'
             '"max_mireds":370,'
             '"min_mireds":153,'
             '"uniq_id":"' + unique_id + '",'
