@@ -204,6 +204,7 @@ MODEL_SHELLYI3_ID = "SHIX3-1"  # Shelly i3
 MODEL_SHELLYI3_PREFIX = "shellyix3"
 
 MODEL_SHELLYPLUG_ID = "SHPLG-1"  # Shelly Plug
+MODEL_SHELLYPLUG_E_ID = "SHPLG2-1"  # Shelly Plug E
 MODEL_SHELLYPLUG_PREFIX = "shellyplug"
 
 MODEL_SHELLYPLUG_S_ID = "SHPLG-S"  # Shelly Plug S
@@ -700,7 +701,7 @@ if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     sensors_tpls = [None, TPL_RSSI, TPL_SSID, TPL_UPTIME]
     sensors_topics = [TOPIC_ADC, None, None, None]
 
-if model_id == MODEL_SHELLYPLUG_ID or dev_id_prefix == MODEL_SHELLYPLUG_PREFIX:
+if model_id in [MODEL_SHELLYPLUG_ID, MODEL_SHELLYPLUG_E_ID] or dev_id_prefix == MODEL_SHELLYPLUG_PREFIX:
     model = MODEL_SHELLYPLUG
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
