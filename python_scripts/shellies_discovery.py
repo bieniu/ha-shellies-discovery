@@ -701,7 +701,10 @@ if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     sensors_tpls = [None, TPL_RSSI, TPL_SSID, TPL_UPTIME]
     sensors_topics = [TOPIC_ADC, None, None, None]
 
-if model_id in [MODEL_SHELLYPLUG_ID, MODEL_SHELLYPLUG_E_ID] or dev_id_prefix == MODEL_SHELLYPLUG_PREFIX:
+if (
+    model_id in [MODEL_SHELLYPLUG_ID, MODEL_SHELLYPLUG_E_ID]
+    or dev_id_prefix == MODEL_SHELLYPLUG_PREFIX
+):
     model = MODEL_SHELLYPLUG
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
