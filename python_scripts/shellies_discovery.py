@@ -389,7 +389,7 @@ ROLLER_DEVICE_CLASSES = [
 
 def parse_version(version):
     """Parse version string and return version date integer."""
-    return int(version.rsplit("-", 1)[0])
+    return int(version.split("-", 1)[0])
 
 
 def get_device_config(dev_id):
