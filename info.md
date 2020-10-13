@@ -31,6 +31,7 @@ This script needs Home Assistant `python_script` component so, if you never used
 - Shelly Sense
 - Shelly Smoke
 - Shelly Vintage
+- Shelly UNI
 
 ## How to debug
 
