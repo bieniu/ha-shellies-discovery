@@ -1940,9 +1940,9 @@ for bin_sensor_id in range(len(bin_sensors)):
     else:
         payload[KEY_PAYLOAD_ON] = bin_sensors_pl[bin_sensor_id][VALUE_ON]
         payload[KEY_PAYLOAD_OFF] = bin_sensors_pl[bin_sensor_id][VALUE_OFF]
-    if battery_powered:
+    if battery_powered and bin_sensors[bin_sensor_id] != SENSOR_FIRMWARE_UPDATE:
         payload[KEY_EXPIRE_AFTER] = expire_after
-    else:
+    if not battery_powered:
         payload[KEY_AVAILABILITY_TOPIC] = availability_topic
         payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
