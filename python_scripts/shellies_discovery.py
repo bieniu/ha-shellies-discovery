@@ -831,14 +831,13 @@ if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
         None,
         None,
         None,
-        None,
         DEVICE_CLASS_SIGNAL_STRENGTH,
         None,
         DEVICE_CLASS_TIMESTAMP,
     ]
-    sensors_tpls = [None, None, None, TPL_CONCENTRATION, TPL_RSSI, TPL_SSID, TPL_UPTIME]
-    sensors_topics = [None, None, None, None, None, None, None]
-    sensors_units = [None, None, None, UNIT_PPM, UNIT_DB, None, None]
+    sensors_tpls = [None, None, TPL_CONCENTRATION, TPL_RSSI, TPL_SSID, TPL_UPTIME]
+    sensors_topics = [None, None, None, None, None, None]
+    sensors_units = [None, None, UNIT_PPM, UNIT_DB, None, None]
     bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_GAS]
     bin_sensors_classes = [None, DEVICE_CLASS_GAS]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO, TPL_GAS]

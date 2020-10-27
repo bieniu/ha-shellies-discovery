@@ -51,6 +51,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Sense
 - Shelly Smoke
 - Shelly Vintage
+- Shelly UNI
 
 ## How to debug
 
