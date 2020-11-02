@@ -26,6 +26,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 ## Supported devices
 
 - Shelly 1 (with external sensors)
+- Shelly 1L
 - Shelly 1PM (with external sensors)
 - Shelly 2 (relays and roller mode)
 - Shelly 2.5 (relays and roller mode)

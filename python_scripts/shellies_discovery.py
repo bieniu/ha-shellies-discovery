@@ -119,6 +119,7 @@ MIN_4PRO_FIRMWARE_DATE = 20200408
 MIN_FIRMWARE_DATE = 20200812
 
 MODEL_SHELLY1 = f"{ATTR_SHELLY} 1"
+MODEL_SHELLY1L = f"{ATTR_SHELLY} 1L"
 MODEL_SHELLY1PM = f"{ATTR_SHELLY} 1PM"
 MODEL_SHELLY2 = f"{ATTR_SHELLY} 2"
 MODEL_SHELLY25 = f"{ATTR_SHELLY} 2.5"
@@ -148,6 +149,9 @@ MODEL_SHELLYVINTAGE = f"{ATTR_SHELLY} Vintage"
 
 MODEL_SHELLY1_ID = "SHSW-1"  # Shelly 1
 MODEL_SHELLY1_PREFIX = "shelly1"
+
+MODEL_SHELLY1L_ID = "SHSW-L"  # Shelly 1L
+MODEL_SHELLY1L_PREFIX = "shelly1l"
 
 MODEL_SHELLY1PM_ID = "SHSW-PM"  # Shelly 1PM
 MODEL_SHELLY1PM_PREFIX = "shelly1pm"
@@ -550,6 +554,74 @@ if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     ext_humi_sensors = 1
     ext_temp_sensors = 3
 
+if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
+    model = MODEL_SHELLY1L
+    relays = 1
+    relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
+    sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME]
+    sensors_classes = [
+        DEVICE_CLASS_TEMPERATURE,
+        DEVICE_CLASS_SIGNAL_STRENGTH,
+        None,
+        DEVICE_CLASS_TIMESTAMP,
+    ]
+    sensors_units = [UNIT_CELSIUS, UNIT_DB, None, None]
+    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI, TPL_SSID, TPL_UPTIME]
+    sensors_topics = [None, None, None, None]
+    bin_sensors = [
+        SENSOR_INPUT_0,
+        SENSOR_INPUT_1,
+        SENSOR_SHORTPUSH_0,
+        SENSOR_LONGPUSH_0,
+        SENSOR_SHORTPUSH_1,
+        SENSOR_LONGPUSH_1,
+        SENSOR_FIRMWARE_UPDATE,
+        SENSOR_OVERTEMPERATURE,
+    ]
+    bin_sensors_classes = [
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        DEVICE_CLASS_PROBLEM,
+    ]
+    bin_sensors_tpls = [
+        None,
+        None,
+        TPL_SHORTPUSH,
+        TPL_LONGPUSH,
+        TPL_SHORTPUSH,
+        TPL_LONGPUSH,
+        TPL_NEW_FIRMWARE_FROM_INFO,
+        None,
+    ]
+    bin_sensors_topics = [
+        TOPIC_INPUT_0,
+        TOPIC_INPUT_1,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_1,
+        TOPIC_INPUT_EVENT_1,
+        TOPIC_INFO,
+        None,
+    ]
+    bin_sensors_pl = [
+        PL_1_0,
+        PL_1_0,
+        None,
+        None,
+        None,
+        None,
+        None,
+        PL_1_0,
+    ]
+
 if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
     model = MODEL_SHELLY1PM
     relays = 1
@@ -831,13 +903,14 @@ if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
         None,
         None,
         None,
+        None,
         DEVICE_CLASS_SIGNAL_STRENGTH,
         None,
         DEVICE_CLASS_TIMESTAMP,
     ]
-    sensors_tpls = [None, None, TPL_CONCENTRATION, TPL_RSSI, TPL_SSID, TPL_UPTIME]
-    sensors_topics = [None, None, None, None, None, None]
-    sensors_units = [None, None, UNIT_PPM, UNIT_DB, None, None]
+    sensors_tpls = [None, None, None, TPL_CONCENTRATION, TPL_RSSI, TPL_SSID, TPL_UPTIME]
+    sensors_topics = [None, None, None, None, None, None, None]
+    sensors_units = [None, None, None, UNIT_PPM, UNIT_DB, None, None]
     bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_GAS]
     bin_sensors_classes = [None, DEVICE_CLASS_GAS]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO, TPL_GAS]
