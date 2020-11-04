@@ -339,6 +339,7 @@ TPL_OVERPOWER_VALUE_TO_JSON = "{{{^overpower_value^:value}|tojson}}"
 TPL_POSITION = "{%if value!=-1%}{{value}}{%endif%}"
 TPL_POWER = "{{value|float|round(1)}}"
 TPL_POWER_FACTOR = "{{value|float*100|round}}"
+TPL_ROLLER_TO_JSON = "{{{^roller_state^:value}|tojson}}"
 TPL_RSSI = "{{value_json[^wifi_sta^].rssi}}"
 TPL_SHORTPUSH = "{%if value_json.event==^S^%}ON{%else%}OFF{%endif%}"
 TPL_SHORTPUSH_LONGPUSH = "{%if value_json.event==^SL^%}ON{%else%}OFF{%endif%}"
@@ -1563,6 +1564,8 @@ for roller_id in range(rollers):
                 KEY_MANUFACTURER: ATTR_MANUFACTURER,
             },
             "~": default_topic,
+            KEY_JSON_ATTRIBUTES_TOPIC: f"~roller/{roller_id}",
+            KEY_JSON_ATTRIBUTES_TEMPLATE: TPL_ROLLER_TO_JSON
         }
     else:
         payload = ""
@@ -1570,7 +1573,7 @@ for roller_id in range(rollers):
         payload[KEY_DEVICE_CLASS] = device_class
     if dev_id.lower() in ignored:
         payload = ""
-    mqtt_publish(config_topic, str(payload).replace("'", '"'), retain, qos)
+    mqtt_publish(config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos)
 
 # relays
 for relay_id in range(relays):
