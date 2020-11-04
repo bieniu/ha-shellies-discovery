@@ -1565,7 +1565,7 @@ for roller_id in range(rollers):
             },
             "~": default_topic,
             KEY_JSON_ATTRIBUTES_TOPIC: f"~roller/{roller_id}",
-            KEY_JSON_ATTRIBUTES_TEMPLATE: TPL_ROLLER_TO_JSON
+            KEY_JSON_ATTRIBUTES_TEMPLATE: TPL_ROLLER_TO_JSON,
         }
     else:
         payload = ""
@@ -1573,7 +1573,9 @@ for roller_id in range(rollers):
         payload[KEY_DEVICE_CLASS] = device_class
     if dev_id.lower() in ignored:
         payload = ""
-    mqtt_publish(config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos)
+    mqtt_publish(
+        config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos
+    )
 
 # relays
 for relay_id in range(relays):
