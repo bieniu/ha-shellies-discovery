@@ -403,8 +403,6 @@ def get_device_config(dev_id):
     if not result:
         result = {}
     try:
-        if isinstance(result, list):
-            raise TypeError
         if len(result) > 0:
             result[0]
     except TypeError:
