@@ -24,6 +24,16 @@ assignees: ''
  - Shellies Discovery: 
  - Shelly device firmware: 
 
+**Shellies Discovery automation:**
+<!--
+  Please provide Shellies Discovery automation here.
+-->
+
+```yaml
+
+```
+
+
 **Debug log:**
 <!--
   Please provide debug log for python_script component.
