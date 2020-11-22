@@ -763,13 +763,13 @@ if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     relays_bin_sensors_classes = [None]
     sensors = [SENSOR_ADC, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME]
     sensors_classes = [
-        None,
+        DEVICE_CLASS_VOLTAGE,
         DEVICE_CLASS_SIGNAL_STRENGTH,
         None,
         DEVICE_CLASS_TIMESTAMP,
     ]
-    sensors_units = [None, UNIT_DB, None, None]
-    sensors_tpls = [None, TPL_RSSI, TPL_SSID, TPL_UPTIME]
+    sensors_units = [UNIT_VOLT, UNIT_DB, None, None]
+    sensors_tpls = [TPL_VOLTAGE, TPL_RSSI, TPL_SSID, TPL_UPTIME]
     sensors_topics = [TOPIC_ADC, None, None, None]
 
 if (
