@@ -138,6 +138,7 @@ MODEL_SHELLYFLOOD = f"{ATTR_SHELLY} Flood"
 MODEL_SHELLYGAS = f"{ATTR_SHELLY} Gas"
 MODEL_SHELLYHT = f"{ATTR_SHELLY} H&T"
 MODEL_SHELLYI3 = f"{ATTR_SHELLY} i3"
+MODEL_SHELLYMOTION = f"{ATTR_SHELLY} Motion"
 MODEL_SHELLYPLUG = f"{ATTR_SHELLY} Plug"
 MODEL_SHELLYPLUG_S = f"{ATTR_SHELLY} Plug S"
 MODEL_SHELLYPLUG_US = f"{ATTR_SHELLY} Plug US"
@@ -206,6 +207,8 @@ MODEL_SHELLYHT_PREFIX = "shellyht"
 
 MODEL_SHELLYI3_ID = "SHIX3-1"  # Shelly i3
 MODEL_SHELLYI3_PREFIX = "shellyix3"
+
+MODEL_SHELLYMOTION_PREFIX = "shellymotionsensor"  # Shelly Motion
 
 MODEL_SHELLYPLUG_ID = "SHPLG-1"  # Shelly Plug
 MODEL_SHELLYPLUG_E_ID = "SHPLG2-1"  # Shelly Plug E
@@ -314,6 +317,7 @@ TOPIC_LONGPUSH_1 = "longpush/1"
 TOPIC_LONGPUSH_2 = "longpush/2"
 TOPIC_OVERPOWER_VALUE = "overpower_value"
 TOPIC_RELAY = "relay"
+TOPIC_STATUS = "status"
 
 TPL_BATTERY = "{{value|float|round}}"
 TPL_CONCENTRATION = "{%if 0<=value|int<=65535%}{{value}}{%endif%}"
@@ -325,10 +329,12 @@ TPL_GAS = "{%if value in [^mild^,^heavy^]%}ON{%else%}OFF{%endif%}"
 TPL_GAS_TO_JSON = "{{{^status^:value}|tojson}}"
 TPL_HUMIDITY = "{{value|float|round(1)}}"
 TPL_HUMIDITY_EXT = "{%if value!=999%}{{value|float|round(1)}}{%endif%}"
+TPL_ILLUMINATION = "{{value_json.lux}}"
 TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
 TPL_LONGPUSH = "{%if value_json.event==^L^%}ON{%else%}OFF{%endif%}"
 TPL_LONGPUSH_SHORTPUSH = "{%if value_json.event==^LS^%}ON{%else%}OFF{%endif%}"
 TPL_LUX = "{{value|float|round}}"
+TPL_MOTION = "{%if value_json.motion==true%}ON{%else%}OFF{%endif%}"
 TPL_NEW_FIRMWARE_FROM_ANNOUNCE = "{%if value_json.new_fw==true%}ON{%else%}OFF{%endif%}"
 TPL_NEW_FIRMWARE_FROM_INFO = (
     "{%if value_json[^update^].has_update==true%}ON{%else%}OFF{%endif%}"
@@ -350,6 +356,7 @@ TPL_TILT = "{{value|float}}"
 TPL_TRIPLE_SHORTPUSH = "{%if value_json.event==^SSS^%}ON{%else%}OFF{%endif%}"
 TPL_UPDATE_TO_JSON = "{{value_json[^update^]|tojson}}"
 TPL_UPTIME = "{{(as_timestamp(now())-value_json.uptime)|timestamp_local}}"
+TPL_VIBRATION = "{%if value_json.vibration==true%}ON{%else%}OFF{%endif%}"
 TPL_VOLTAGE = "{{value|float|round(1)}}"
 
 UNIT_AMPERE = "A"
@@ -886,6 +893,25 @@ if model_id == MODEL_SHELLYHT_ID or dev_id_prefix == MODEL_SHELLYHT_PREFIX:
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_ANNOUNCE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
+    battery_powered = True
+
+if dev_id_prefix == MODEL_SHELLYMOTION_PREFIX:  # Add model_id
+    model = MODEL_SHELLYMOTION
+    sensors = [SENSOR_TEMPERATURE, SENSOR_HUMIDITY, SENSOR_BATTERY, SENSOR_LUX]
+    sensors_classes = [
+        DEVICE_CLASS_TEMPERATURE,
+        DEVICE_CLASS_HUMIDITY,
+        DEVICE_CLASS_BATTERY,
+        DEVICE_CLASS_ILLUMINANCE
+    ]
+    sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_PERCENT, UNIT_LUX]
+    sensors_tpls = [TPL_TEMPERATURE, TPL_HUMIDITY, TPL_BATTERY, TPL_ILLUMINATION]
+    sensors_topics = [None, None, None, TOPIC_STATUS]
+    bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_MOTION, SENSOR_VIBRATION]
+    bin_sensors_classes = [None, DEVICE_CLASS_MOTION, DEVICE_CLASS_VIBRATION]
+    bin_sensors_pl = [None, PL_TRUE_FALSE, PL_TRUE_FALSE]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_ANNOUNCE, TPL_MOTION, TPL_VIBRATION]
+    bin_sensors_topics = [TOPIC_ANNOUNCE, TOPIC_STATUS, TOPIC_STATUS]
     battery_powered = True
 
 if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
@@ -1819,6 +1845,8 @@ for sensor_id in range(len(sensors)):
         state_topic = f"~{TOPIC_INFO}"
     elif relays > 0 or white_lights > 0:
         state_topic = f"~{sensors[sensor_id]}"
+    elif sensors_topics[sensor_id]:
+        state_topic = f"~sensor/{sensors_topics[sensor_id]}"
     else:
         state_topic = f"~sensor/{sensors[sensor_id]}"
 
@@ -1856,8 +1884,6 @@ for sensor_id in range(len(sensors)):
         payload[KEY_UNIT] = sensors_units[sensor_id]
     if sensors_classes[sensor_id]:
         payload[KEY_DEVICE_CLASS] = sensors_classes[sensor_id]
-    if sensors_topics[sensor_id]:
-        payload[KEY_STATE_TOPIC] = sensors_topics[sensor_id]
     if sensors_tpls[sensor_id]:
         payload[KEY_VALUE_TEMPLATE] = sensors_tpls[sensor_id]
     if sensors[sensor_id] == SENSOR_SSID:
@@ -1988,7 +2014,7 @@ for bin_sensor_id in range(len(bin_sensors)):
     sensor_name = (
         f"{device_name} {bin_sensors[bin_sensor_id].replace('/', ' ').title()}"
     )
-    if bin_sensors_topics and bin_sensors_topics[bin_sensor_id]:
+    if bin_sensors_topics[bin_sensor_id]:
         state_topic = f"~{bin_sensors_topics[bin_sensor_id]}"
     elif relays > 0 or white_lights > 0:
         state_topic = f"~{bin_sensors[bin_sensor_id]}"
