@@ -1846,7 +1846,7 @@ for sensor_id in range(len(sensors)):
     elif relays > 0 or white_lights > 0:
         state_topic = f"~{sensors[sensor_id]}"
     elif sensors_topics[sensor_id]:
-        state_topic = f"~sensor/{sensors_topics[sensor_id]}"
+        state_topic = f"~{sensors_topics[sensor_id]}"
     else:
         state_topic = f"~sensor/{sensors[sensor_id]}"
 
