@@ -33,6 +33,7 @@ This script needs Home Assistant `python_script` component so, if you never used
 - Shelly Smoke
 - Shelly Vintage
 - Shelly UNI
+- Shelly Motion
 
 ## How to debug
 
