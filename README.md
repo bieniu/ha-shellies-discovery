@@ -53,6 +53,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Smoke
 - Shelly Vintage
 - Shelly UNI
+- Shelly Motion
 
 ## How to debug
 
