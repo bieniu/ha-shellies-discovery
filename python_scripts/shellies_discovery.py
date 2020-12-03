@@ -445,7 +445,7 @@ model_id = data.get(CONF_MODEL_ID)
 ignored = [
     element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])
 ]  # noqa: F821
-mac = data.get(CONF_MAC).lower()  # noqa: F821
+mac = data.get(CONF_MAC)  # noqa: F821
 
 if not dev_id:
     raise ValueError(f"{dev_id} is wrong id argument")
@@ -453,6 +453,8 @@ if not mac:
     raise ValueError(f"{mac} is wrong mac argument")
 if not fw_ver:
     raise ValueError(f"{fw_ver} is wrong fw_ver argument")
+
+mac = str(mac).lower()  # noqa: F821
 
 try:
     cur_ver_date = parse_version(fw_ver)
