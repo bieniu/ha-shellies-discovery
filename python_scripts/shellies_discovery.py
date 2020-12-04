@@ -766,11 +766,16 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
 if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     model = MODEL_SHELLYUNI
     relays = 2
-    relays_bin_sensors = [SENSOR_INPUT]
-    relays_bin_sensors_pl = [PL_1_0]
-    relays_bin_sensors_topics = [None]
-    relays_bin_sensors_tpls = [None]
-    relays_bin_sensors_classes = [None]
+    relays_bin_sensors = [
+        SENSOR_INPUT,
+        SENSOR_LONGPUSH,
+        SENSOR_SHORTPUSH,
+        SENSOR_OVERPOWER,
+    ]
+    relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
+    relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
+    relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
+    relays_bin_sensors_classes = [None, None, None, DEVICE_CLASS_PROBLEM]
     sensors = [SENSOR_ADC, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME]
     sensors_classes = [
         DEVICE_CLASS_VOLTAGE,
@@ -1150,7 +1155,11 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
     ]
     lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER_VALUE]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH, UNIT_WATT]
-    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
+    lights_sensors_classes = [
+        DEVICE_CLASS_POWER,
+        DEVICE_CLASS_ENERGY,
+        DEVICE_CLASS_POWER,
+    ]
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN, TPL_POWER]
 
 if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PREFIX:
@@ -1226,9 +1235,18 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         TOPIC_LONGPUSH_1,
         TOPIC_INFO,
     ]
-    lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER, SENSOR_OVERPOWER_VALUE]
+    lights_sensors = [
+        SENSOR_POWER,
+        SENSOR_ENERGY,
+        SENSOR_OVERPOWER,
+        SENSOR_OVERPOWER_VALUE,
+    ]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH, UNIT_WATT]
-    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
+    lights_sensors_classes = [
+        DEVICE_CLASS_POWER,
+        DEVICE_CLASS_ENERGY,
+        DEVICE_CLASS_POWER,
+    ]
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN, TPL_POWER]
 
 if model_id == MODEL_SHELLYBULB_ID or dev_id_prefix == MODEL_SHELLYBULB_PREFIX:
