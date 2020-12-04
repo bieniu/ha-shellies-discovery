@@ -22,8 +22,10 @@ CONF_MODEL_ID = "model"
 CONF_IGNORED_DEVICES = "ignored_devices"
 CONF_MAC = "mac"
 CONF_MODE = "mode"
+CONF_POSITION_TEMPLATE = "position_template"
 CONF_POWERED = "powered"
 CONF_PUSH_OFF_DELAY = "push_off_delay"
+CONF_SET_POSITION_TEMPLATE = "set_position_template"
 CONF_QOS = "qos"
 
 DEFAULT_DISC_PREFIX = "homeassistant"
@@ -101,6 +103,7 @@ KEY_POSITION_TOPIC = "pos_t"
 KEY_QOS = "qos"
 KEY_RETAIN = "retain"
 KEY_SET_POSITION_TOPIC = "set_pos_t"
+KEY_SET_POSITION_TEMPLATE = "set_pos_tpl"
 KEY_STATE_TEMPLATE = "stat_tpl"
 KEY_STATE_TOPIC = "stat_t"
 KEY_SW_VERSION = "sw"
@@ -1564,6 +1567,11 @@ for roller_id in range(rollers):
     config_mode = ATTR_RELAY
     if device_config.get(CONF_MODE):
         config_mode = device_config[CONF_MODE]
+    if device_config.get(CONF_POSITION_TEMPLATE):
+        position_template = device_config[CONF_POSITION_TEMPLATE]
+    else:
+        position_template = TPL_POSITION
+    set_position_template = device_config.get(CONF_SET_POSITION_TEMPLATE, None)
     device_name = f"{model} {dev_id.split('-')[-1]}"
     if device_config.get(f"roller-{roller_id}-name"):
         roller_name = device_config[f"roller-{roller_id}-name"]
@@ -1591,7 +1599,7 @@ for roller_id in range(rollers):
             KEY_NAME: roller_name,
             KEY_COMMAND_TOPIC: command_topic,
             KEY_POSITION_TOPIC: position_topic,
-            KEY_VALUE_TEMPLATE: TPL_POSITION,
+            KEY_VALUE_TEMPLATE: position_template,
             KEY_SET_POSITION_TOPIC: set_position_topic,
             KEY_PAYLOAD_OPEN: VALUE_OPEN,
             KEY_PAYLOAD_CLOSE: VALUE_CLOSE,
@@ -1615,6 +1623,8 @@ for roller_id in range(rollers):
         }
     else:
         payload = ""
+    if set_position_template:
+        payload[KEY_SET_POSITION_TEMPLATE] = set_position_template
     if device_class:
         payload[KEY_DEVICE_CLASS] = device_class
     if dev_id.lower() in ignored:
