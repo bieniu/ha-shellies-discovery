@@ -1562,10 +1562,6 @@ for roller_id in range(rollers):
     config_mode = ATTR_RELAY
     if device_config.get(CONF_MODE):
         config_mode = device_config[CONF_MODE]
-
-    logger.debug(device_config["position_template"])
-    logger.debug(device_config["set_position_template"])
-
     device_name = f"{model} {dev_id.split('-')[-1]}"
     if device_config.get(f"roller-{roller_id}-name"):
         roller_name = device_config[f"roller-{roller_id}-name"]
@@ -1823,6 +1819,8 @@ for relay_id in range(relays):
                 payload[KEY_PAYLOAD_OFF] = relays_bin_sensors_pl[bin_sensor_id][
                     VALUE_OFF
                 ]
+            if relays_bin_sensors[bin_sensor_id] == SENSOR_INPUT:
+                payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~input_event/{bin_sensor_id}"
             if relays_bin_sensors_classes[bin_sensor_id]:
                 payload[KEY_DEVICE_CLASS] = relays_bin_sensors_classes[bin_sensor_id]
             if (
@@ -2102,6 +2100,12 @@ for bin_sensor_id in range(len(bin_sensors)):
         and bin_sensors[bin_sensor_id] == SENSOR_OVERPOWER
     ):
         payload = ""
+    if bin_sensors[bin_sensor_id] == SENSOR_INPUT_0:
+        payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~{TOPIC_INPUT_EVENT_0}"
+    elif bin_sensors[bin_sensor_id] == SENSOR_INPUT_1:
+        payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~{TOPIC_INPUT_EVENT_1}"
+    elif bin_sensors[bin_sensor_id] == SENSOR_INPUT_2:
+        payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~{TOPIC_INPUT_EVENT_2}"
     if model == MODEL_SHELLYGAS and bin_sensors[bin_sensor_id] == SENSOR_GAS:
         payload[KEY_JSON_ATTRIBUTES_TOPIC] = state_topic
         payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_GAS_TO_JSON
