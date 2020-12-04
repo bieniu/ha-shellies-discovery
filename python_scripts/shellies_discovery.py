@@ -766,6 +766,8 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
 if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     model = MODEL_SHELLYUNI
     relays = 2
+    ext_humi_sensors = 1
+    ext_temp_sensors = 3
     relays_bin_sensors = [
         SENSOR_INPUT,
         SENSOR_LONGPUSH,
