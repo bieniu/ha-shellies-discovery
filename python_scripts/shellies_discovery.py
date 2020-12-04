@@ -272,6 +272,7 @@ SENSOR_OPENING = "opening"
 SENSOR_OPERATION = "operation"
 SENSOR_OVERLOAD = "overload"
 SENSOR_OVERPOWER = "overpower"
+SENSOR_OVERPOWER_VALUE = "overpower_value"
 SENSOR_OVERTEMPERATURE = "overtemperature"
 SENSOR_POWER = "power"
 SENSOR_POWER_FACTOR = "pf"
@@ -1147,10 +1148,10 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
         TOPIC_LONGPUSH_1,
         TOPIC_INFO,
     ]
-    lights_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    lights_sensors_units = [UNIT_WATT, UNIT_KWH]
-    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
-    lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
+    lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER_VALUE]
+    lights_sensors_units = [UNIT_WATT, UNIT_KWH, UNIT_WATT]
+    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
+    lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN, TPL_POWER]
 
 if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PREFIX:
     model = MODEL_SHELLYDIMMER2
@@ -1225,10 +1226,10 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         TOPIC_LONGPUSH_1,
         TOPIC_INFO,
     ]
-    lights_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    lights_sensors_units = [UNIT_WATT, UNIT_KWH]
-    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
-    lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
+    lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER, SENSOR_OVERPOWER_VALUE]
+    lights_sensors_units = [UNIT_WATT, UNIT_KWH, UNIT_WATT]
+    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
+    lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN, TPL_POWER]
 
 if model_id == MODEL_SHELLYBULB_ID or dev_id_prefix == MODEL_SHELLYBULB_PREFIX:
     model = MODEL_SHELLYBULB
@@ -1543,6 +1544,10 @@ for roller_id in range(rollers):
     config_mode = ATTR_RELAY
     if device_config.get(CONF_MODE):
         config_mode = device_config[CONF_MODE]
+
+    logger.debug(device_config["position_template"])
+    logger.debug(device_config["set_position_template"])
+
     device_name = f"{model} {dev_id.split('-')[-1]}"
     if device_config.get(f"roller-{roller_id}-name"):
         roller_name = device_config[f"roller-{roller_id}-name"]
