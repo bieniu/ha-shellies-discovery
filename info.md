@@ -32,7 +32,7 @@ This script needs Home Assistant `python_script` component so, if you never used
 - Shelly Sense
 - Shelly Smoke
 - Shelly Vintage
-- Shelly UNI
+- Shelly UNI (with external sensors)
 - Shelly Motion
 
 ## How to debug
@@ -158,6 +158,8 @@ python_script:
         mode: "roller"
         roller-0-name: "Garage"
         roller-0-class: "garage"
+        position_template: "{{ '{% if value | float < 30 %}0{% else %}{{ value }}{% endif %}' }}"
+        set_position_template: "{{ '{%if position | float < 30 %}0{% else %}{{ position }}{% endif %}' }}"
       shellyplug-s-CCBBCCAA:
         relay-0: "light"
         force_update_sensors: true
