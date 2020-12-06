@@ -211,7 +211,8 @@ MODEL_SHELLYHT_PREFIX = "shellyht"
 MODEL_SHELLYI3_ID = "SHIX3-1"  # Shelly i3
 MODEL_SHELLYI3_PREFIX = "shellyix3"
 
-MODEL_SHELLYMOTION_PREFIX = "shellymotionsensor"  # Shelly Motion
+MODEL_SHELLYMOTION_ID = "SHMOS-01"  # Shelly Motion
+MODEL_SHELLYMOTION_PREFIX = "shellymotionsensor"
 
 MODEL_SHELLYPLUG_ID = "SHPLG-1"  # Shelly Plug
 MODEL_SHELLYPLUG_E_ID = "SHPLG2-1"  # Shelly Plug E
@@ -908,7 +909,7 @@ if model_id == MODEL_SHELLYHT_ID or dev_id_prefix == MODEL_SHELLYHT_PREFIX:
     bin_sensors_topics = [TOPIC_ANNOUNCE]
     battery_powered = True
 
-if dev_id_prefix == MODEL_SHELLYMOTION_PREFIX:  # Add model_id
+if model_id == MODEL_SHELLYMOTION_ID or dev_id_prefix == MODEL_SHELLYMOTION_PREFIX:
     model = MODEL_SHELLYMOTION
     sensors = [SENSOR_TEMPERATURE, SENSOR_HUMIDITY, SENSOR_BATTERY, SENSOR_LUX]
     sensors_classes = [
