@@ -1,0 +1,11 @@
+shellies/announce {"id":"shellycolorbulb-483FDA927F7E","model":"SHCB-1","mac":"483FDA927F7E","ip":"192.168.178.186","new_fw":false,"fw_ver":"20201124-090732/v1.9.0@57ac4ad8"}
+shellies/shellycolorbulb-483FDA927F7E/announce {"id":"shellycolorbulb-483FDA927F7E","model":"SHCB-1","mac":"483FDA927F7E","ip":"192.168.178.186","new_fw":false,"fw_ver":"20201124-090732/v1.9.0@57ac4ad8"}
+shellies/shellycolorbulb-483FDA927F7E/color/0 on
+shellies/shellycolorbulb-483FDA927F7E/color/0/status {"ison":true,"source":"http","has_timer":false,"timer_started":0,"timer_duration":0,"timer_remaining":0,"mode":"color","red":255,"green":0,"blue":0,"white":0,"gain":100,"temp":3000,"brightness":100,"effect":0}
+shellies/shellycolorbulb-483FDA927F7E/light/0/power 1.25
+shellies/shellycolorbulb-483FDA927F7E/light/0/energy 20
+shellies/shellycolorbulb-483FDA927F7E/color/0 on
+shellies/shellycolorbulb-483FDA927F7E/color/0/status {"ison":true,"source":"http","has_timer":false,"timer_started":0,"timer_duration":0,"timer_remaining":0,"mode":"color","red":255,"green":0,"blue":0,"white":0,"gain":100,"temp":3000,"brightness":100,"effect":0}
+shellies/shellycolorbulb-483FDA927F7E/light/0/power 1.25
+shellies/shellycolorbulb-483FDA927F7E/light/0/energy 20
+shellies/shellycolorbulb-483FDA927F7E/light/0/energy 21
