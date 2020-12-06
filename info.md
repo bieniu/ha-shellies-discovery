@@ -172,6 +172,9 @@ python_script:
         powered: "ac"
       shellyrgbw2-AA123FF32:
         mode: "white"
+        light-1-name: "Living room"
+        light-2-name: "Bedroom"
+        light-3-name: "Kitchen"
       shellyrgbw2-AA123FF84:
         mode: "rgbw"
       shellyem-BB23CC45:
