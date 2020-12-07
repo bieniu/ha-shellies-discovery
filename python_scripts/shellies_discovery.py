@@ -74,7 +74,7 @@ DEVICE_CLASS_VOLTAGE = "voltage"
 DEVICE_CLASS_WINDOW = "window"
 
 EXPIRE_AFTER_FOR_BATTERY_POWERED = 1.2 * 12 * 60 * 60  # 1.2 * 12 h
-EXPIRE_AFTER_FOR_AC_POWERED = 2.2 * 10 * 60            # 2.2 * 10 min
+EXPIRE_AFTER_FOR_AC_POWERED = 2.2 * 10 * 60  # 2.2 * 10 min
 
 KEY_AVAILABILITY_TOPIC = "avty_t"
 KEY_COMMAND_TOPIC = "cmd_t"
@@ -2113,7 +2113,10 @@ for bin_sensor_id in range(len(bin_sensors)):
         and bin_sensors[bin_sensor_id] == SENSOR_OVERPOWER
     ):
         payload = ""
-    if model in [MODEL_SHELLYDW, MODEL_SHELLYDW2] and bin_sensors[bin_sensor_id] == SENSOR_OPENING:
+    if (
+        model in [MODEL_SHELLYDW, MODEL_SHELLYDW2]
+        and bin_sensors[bin_sensor_id] == SENSOR_OPENING
+    ):
         payload[KEY_FORCE_UPDATE] = str(True)
     if bin_sensors[bin_sensor_id] == SENSOR_INPUT_0:
         payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~{TOPIC_INPUT_EVENT_0}"
