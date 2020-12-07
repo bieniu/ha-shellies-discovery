@@ -2113,6 +2113,8 @@ for bin_sensor_id in range(len(bin_sensors)):
         and bin_sensors[bin_sensor_id] == SENSOR_OVERPOWER
     ):
         payload = ""
+    if model in [MODEL_SHELLYDW, MODEL_SHELLYDW2] and bin_sensors[bin_sensor_id] == SENSOR_OPENING:
+        payload[KEY_FORCE_UPDATE] = str(True)
     if bin_sensors[bin_sensor_id] == SENSOR_INPUT_0:
         payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~{TOPIC_INPUT_EVENT_0}"
     elif bin_sensors[bin_sensor_id] == SENSOR_INPUT_1:
