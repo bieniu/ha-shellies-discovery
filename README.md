@@ -34,6 +34,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly 4Pro
 - Shelly Air
 - Shelly Bulb
+- Shelly Bulb RGBW
 - Shelly Button1
 - Shelly Dimmer
 - Shelly Dimmer 2

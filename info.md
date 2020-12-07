@@ -15,6 +15,7 @@ This script needs Home Assistant `python_script` component so, if you never used
 - Shelly 4Pro
 - Shelly Air
 - Shelly Bulb
+- Shelly Bulb RGBW
 - Shelly Button1
 - Shelly Dimmer
 - Shelly Dimmer 2
