@@ -130,6 +130,7 @@ MODEL_SHELLY3EM = f"{ATTR_SHELLY} 3EM"
 MODEL_SHELLY4PRO = f"{ATTR_SHELLY} 4Pro"
 MODEL_SHELLYAIR = f"{ATTR_SHELLY} Air"
 MODEL_SHELLYBULB = f"{ATTR_SHELLY} Bulb"
+MODEL_SHELLYBULBRGBW = f"{ATTR_SHELLY} Bulb RGBW"
 MODEL_SHELLYBUTTON1 = f"{ATTR_SHELLY} Button1"
 MODEL_SHELLYDIMMER = f"{ATTR_SHELLY} Dimmer"
 MODEL_SHELLYDIMMER2 = f"{ATTR_SHELLY} Dimmer 2"
@@ -177,6 +178,9 @@ MODEL_SHELLYAIR_PREFIX = "shellyair"
 
 MODEL_SHELLYBULB_ID = "SHBLB-1"  # Shelly Bulb
 MODEL_SHELLYBULB_PREFIX = "shellybulb"
+
+MODEL_SHELLYBULBRGBW_ID = "SHCB-1"  # Shelly Bulb RGBW
+MODEL_SHELLYBULBRGBW_PREFIX = "shellycolorbulb"
 
 MODEL_SHELLYBUTTON1_ID = "SHBTN-1"  # Shelly Button1
 MODEL_SHELLYBUTTON1_PREFIX = "shellybutton1"
@@ -1268,6 +1272,23 @@ if model_id == MODEL_SHELLYBULB_ID or dev_id_prefix == MODEL_SHELLYBULB_PREFIX:
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]
     sensors_topics = [None, None, None]
 
+if model_id == MODEL_SHELLYBULBRGBW_ID or dev_id_prefix == MODEL_SHELLYBULBRGBW_PREFIX:
+    model = MODEL_SHELLYBULBRGBW
+    rgbw_lights = 1
+    lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
+    lights_sensors_units = [UNIT_KWH, UNIT_WATT]
+    lights_sensors_classes = [DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
+    lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
+    bin_sensors = [SENSOR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [None]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
+    bin_sensors_topics = [TOPIC_INFO]
+    sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME]
+    sensors_units = [UNIT_DB, None, None]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]
+    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME]
+    sensors_topics = [None, None, None]
+
 if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
     model = MODEL_SHELLYDUO
     white_lights = 1
@@ -2184,7 +2205,10 @@ for light_id in range(rgbw_lights):
             '"mf":"' + ATTR_MANUFACTURER + '"},'
             '"~":"' + default_topic + '"}'
         )
-    elif config_mode == LIGHT_RGBW and model == MODEL_SHELLYBULB:
+    elif config_mode == LIGHT_RGBW and model in [
+        MODEL_SHELLYBULB,
+        MODEL_SHELLYBULBRGBW,
+    ]:
         payload = (
             '{"schema":"template",'
             '"name":"' + light_name + '",'
@@ -2273,7 +2297,10 @@ for light_id in range(rgbw_lights):
         unique_id = f"{dev_id}-color-{lights_sensors[sensor_id]}-{light_id}".lower()
         config_topic = f"{disc_prefix}/sensor/{dev_id}-color-{lights_sensors[sensor_id]}-{light_id}/config"
         sensor_name = f"{device_name} {lights_sensors[sensor_id].title()} {light_id}"
-        state_topic = f"~color/{light_id}/status"
+        if model == MODEL_SHELLYBULBRGBW:
+            state_topic = f"~light/{light_id}/{lights_sensors[sensor_id]}"
+        else:
+            state_topic = f"~color/{light_id}/status"
         if config_mode == LIGHT_RGBW:
             payload = {
                 KEY_NAME: sensor_name,
