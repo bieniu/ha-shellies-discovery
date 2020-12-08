@@ -1063,27 +1063,25 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
     model = MODEL_SHELLYRGBW2
     rgbw_lights = 1
     white_lights = 4
-    lights_sensors = [SENSOR_POWER]
-    lights_sensors_classes = [DEVICE_CLASS_POWER]
-    lights_sensors_units = [UNIT_WATT]
-    lights_sensors_tpls = ["{{value_json.power|float|round(1)}}"]
+    lights_sensors = [SENSOR_POWER, SENSOR_ENERGY]
+    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    lights_sensors_units = [UNIT_WATT, UNIT_KWH]
+    lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
+    lights_bin_sensors = [SENSOR_OVERPOWER]
+    lights_bin_sensors_tpls = [TPL_OVERPOWER]
+    lights_bin_sensors_classes = [DEVICE_CLASS_PROBLEM]
+    lights_bin_sensors_pl = [None]
+    lights_bin_sensors_topics = [None]
     bin_sensors = [
-        SENSOR_OVERPOWER,
         SENSOR_INPUT_0,
         SENSOR_LONGPUSH_0,
         SENSOR_SHORTPUSH_0,
         SENSOR_FIRMWARE_UPDATE,
     ]
-    bin_sensors_classes = [DEVICE_CLASS_PROBLEM, None, None, None, None]
-    bin_sensors_tpls = [TPL_OVERPOWER, None, None, None, TPL_NEW_FIRMWARE_FROM_INFO]
-    bin_sensors_pl = [None, PL_1_0, PL_1_0, PL_0_1, None]
-    bin_sensors_topics = [
-        TOPIC_COLOR_0_STATUS,
-        TOPIC_INPUT_0,
-        TOPIC_LONGPUSH_0,
-        TOPIC_LONGPUSH_0,
-        TOPIC_INFO,
-    ]
+    bin_sensors_classes = [None, None, None, None]
+    bin_sensors_tpls = [None, None, None, TPL_NEW_FIRMWARE_FROM_INFO]
+    bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
+    bin_sensors_topics = [TOPIC_INPUT_0, TOPIC_LONGPUSH_0, TOPIC_LONGPUSH_0, TOPIC_INFO]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME]
     sensors_units = [UNIT_DB, None, None]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]
@@ -2299,6 +2297,8 @@ for light_id in range(rgbw_lights):
         sensor_name = f"{device_name} {lights_sensors[sensor_id].title()} {light_id}"
         if model == MODEL_SHELLYBULBRGBW:
             state_topic = f"~light/{light_id}/{lights_sensors[sensor_id]}"
+        elif model == MODEL_SHELLYRGBW2:
+            state_topic = f"~color/{light_id}/{lights_sensors[sensor_id]}"
         else:
             state_topic = f"~color/{light_id}/status"
         if config_mode == LIGHT_RGBW:
@@ -2504,7 +2504,6 @@ for light_id in range(white_lights):
                     payload[KEY_PAYLOAD_OFF] = lights_bin_sensors_pl[bin_sensor_id][
                         VALUE_OFF
                     ]
-
             else:
                 payload = ""
             if dev_id.lower() in ignored:
@@ -2527,6 +2526,8 @@ for light_id in range(white_lights):
             MODEL_SHELLYVINTAGE,
         ]:
             state_topic = f"~light/{light_id}/{lights_sensors[sensor_id]}"
+        elif model == MODEL_SHELLYRGBW2:
+            state_topic = f"~white/{light_id}/{lights_sensors[sensor_id]}"
         else:
             state_topic = f"~white/{light_id}/status"
         if model in [
@@ -2534,6 +2535,7 @@ for light_id in range(white_lights):
             MODEL_SHELLYDIMMER2,
             MODEL_SHELLYDUO,
             MODEL_SHELLYVINTAGE,
+            MODEL_SHELLYRGBW2,
         ]:
             payload = {
                 KEY_NAME: sensor_name,
