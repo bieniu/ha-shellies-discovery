@@ -1246,7 +1246,6 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
     lights_sensors = [
         SENSOR_POWER,
         SENSOR_ENERGY,
-        SENSOR_OVERPOWER,
         SENSOR_OVERPOWER_VALUE,
     ]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH, UNIT_WATT]
