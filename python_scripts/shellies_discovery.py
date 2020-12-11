@@ -2072,7 +2072,7 @@ for bin_sensor_id in range(len(bin_sensors)):
     availability_topic = "~online"
     if bin_sensors[bin_sensor_id] == SENSOR_EXT_SWITCH:
         sensor_name = f"{device_name} External Switch"
-    else:    
+    else:
         sensor_name = (
             f"{device_name} {bin_sensors[bin_sensor_id].replace('/', ' ').title()}"
         )
