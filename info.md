@@ -6,8 +6,8 @@ This script needs Home Assistant `python_script` component so, if you never used
 
 ## Supported devices
 
-- Shelly 1 (with external sensors)
-- Shelly 1L
+- Shelly 1 (with external sensors and external switch)
+- Shelly 1L (with external sensors)
 - Shelly 1PM (with external sensors)
 - Shelly 2 (relays and roller mode)
 - Shelly 2.5 (relays and roller mode)
@@ -147,6 +147,11 @@ python_script:
         ext-humidity-0: true
         push_off_delay: false
         force_update_sensors: true
+      shelly1l-ddbb9911:
+        ext-temperature-0: true
+        ext-temperature-1: true
+        ext-temperature-2: true
+        ext-humidity-0: true
       shellyswitch-123409FF:
         relay-0: "fan"
         relay-0-name: "Bathroom Fan"

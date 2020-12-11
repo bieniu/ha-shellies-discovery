@@ -642,6 +642,8 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
         None,
         PL_1_0,
     ]
+    ext_humi_sensors = 1
+    ext_temp_sensors = 3
 
 if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
     model = MODEL_SHELLY1PM
