@@ -2070,9 +2070,12 @@ for bin_sensor_id in range(len(bin_sensors)):
     config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}/config"
     default_topic = f"shellies/{dev_id}/"
     availability_topic = "~online"
-    sensor_name = (
-        f"{device_name} {bin_sensors[bin_sensor_id].replace('/', ' ').title()}"
-    )
+    if bin_sensors[bin_sensor_id] == SENSOR_EXT_SWITCH:
+        sensor_name = f"{device_name} External Switch"
+    else:    
+        sensor_name = (
+            f"{device_name} {bin_sensors[bin_sensor_id].replace('/', ' ').title()}"
+        )
     if bin_sensors_topics[bin_sensor_id]:
         state_topic = f"~{bin_sensors_topics[bin_sensor_id]}"
     elif relays > 0 or white_lights > 0:
