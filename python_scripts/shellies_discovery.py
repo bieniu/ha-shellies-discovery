@@ -14,6 +14,7 @@ COMP_SWITCH = "switch"
 CONF_DEVELOP = "develop"
 CONF_DISCOVERY_PREFIX = "discovery_prefix"
 CONF_EXPIRE_AFTER = "expire_after"
+CONF_EXT_SWITCH = "ext-switch"
 CONF_FORCE_UPDATE_SENSORS = "force_update_sensors"
 CONF_FRIENDLY_NAME = "friendly_name"
 CONF_FW_VER = "fw_ver"
@@ -256,6 +257,7 @@ SENSOR_DOUBLE_SHORTPUSH_1 = "double shortpush 1"
 SENSOR_DOUBLE_SHORTPUSH_2 = "double shortpush 2"
 SENSOR_ENERGY = "energy"
 SENSOR_EXT_HUMIDITY = "ext_humidity"
+SENSOR_EXT_SWITCH = "ext_switch"
 SENSOR_EXT_TEMPERATURE = "ext_temperature"
 SENSOR_FIRMWARE_UPDATE = "firmware update"
 SENSOR_FLOOD = "flood"
@@ -313,6 +315,7 @@ SENSOR_VOLTAGE = "voltage"
 TOPIC_ADC = "adc/0"
 TOPIC_ANNOUNCE = "announce"
 TOPIC_COLOR_0_STATUS = "color/0/status"
+TOPIC_EXT_SWITCH = "ext_switch/0"
 TOPIC_INFO = "info"
 TOPIC_INPUT_0 = "input/0"
 TOPIC_INPUT_1 = "input/1"
@@ -559,10 +562,11 @@ if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH]
     relays_bin_sensors_tpls = [None, None, None]
     relays_bin_sensors_classes = [None, None, None]
-    bin_sensors = [SENSOR_FIRMWARE_UPDATE]
-    bin_sensors_classes = [None]
-    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
-    bin_sensors_topics = [TOPIC_INFO]
+    bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_EXT_SWITCH]
+    bin_sensors_classes = [None, None]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO, None]
+    bin_sensors_pl = [None, PL_1_0]
+    bin_sensors_topics = [TOPIC_INFO, TOPIC_EXT_SWITCH]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME]
     sensors_units = [UNIT_DB, None, None]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP]
@@ -2151,6 +2155,12 @@ for bin_sensor_id in range(len(bin_sensors)):
     ):
         payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~{TOPIC_INFO}"
         payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_UPDATE_TO_JSON
+    if (
+        model == MODEL_SHELLY1
+        and bin_sensors[bin_sensor_id] == SENSOR_EXT_SWITCH
+        and not device_config.get(CONF_EXT_SWITCH)
+    ):
+        payload = ""
     if dev_id.lower() in ignored:
         payload = ""
     mqtt_publish(
