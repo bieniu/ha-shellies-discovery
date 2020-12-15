@@ -635,16 +635,7 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
         TOPIC_INFO,
         None,
     ]
-    bin_sensors_pl = [
-        PL_1_0,
-        PL_1_0,
-        PL_0_1,
-        PL_1_0,
-        PL_0_1,
-        PL_1_0,
-        None,
-        PL_1_0,
-    ]
+    bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, PL_1_0, PL_0_1, PL_1_0, None, PL_1_0]
     ext_humi_sensors = 1
     ext_temp_sensors = 3
 
@@ -976,7 +967,15 @@ if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
         TPL_UPTIME,
         TPL_IP,
     ]
-    sensors_tpls = [None, None, TPL_CONCENTRATION, TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
+    sensors_tpls = [
+        None,
+        None,
+        TPL_CONCENTRATION,
+        TPL_RSSI,
+        TPL_SSID,
+        TPL_UPTIME,
+        TPL_IP,
+    ]
     sensors_topics = [None, None, None, None, None, None, None]
     sensors_units = [None, None, UNIT_PPM, UNIT_DB, None, None, None]
     bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_GAS]
@@ -1271,11 +1270,7 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         TOPIC_LONGPUSH_1,
         TOPIC_INFO,
     ]
-    lights_sensors = [
-        SENSOR_POWER,
-        SENSOR_ENERGY,
-        SENSOR_OVERPOWER_VALUE,
-    ]
+    lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER_VALUE]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH, UNIT_WATT]
     lights_sensors_classes = [
         DEVICE_CLASS_POWER,
