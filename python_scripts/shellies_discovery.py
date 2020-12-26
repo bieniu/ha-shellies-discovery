@@ -333,6 +333,7 @@ TOPIC_RELAY = "relay"
 TOPIC_STATUS = "status"
 
 TPL_BATTERY = "{{value|float|round}}"
+TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
 TPL_CONCENTRATION = "{%if 0<=value|int<=65535%}{{value}}{%endif%}"
 TPL_CURRENT = "{{value|float|round(2)}}"
 TPL_DOUBLE_SHORTPUSH = "{%if value_json.event==^SS^%}ON{%else%}OFF{%endif%}"
@@ -925,11 +926,11 @@ if model_id == MODEL_SHELLYHT_ID or dev_id_prefix == MODEL_SHELLYHT_PREFIX:
 
 if model_id == MODEL_SHELLYMOTION_ID or dev_id_prefix == MODEL_SHELLYMOTION_PREFIX:
     model = MODEL_SHELLYMOTION
-    sensors = [SENSOR_LUX]
-    sensors_classes = [DEVICE_CLASS_ILLUMINANCE]
-    sensors_units = [UNIT_LUX]
-    sensors_tpls = [TPL_ILLUMINATION]
-    sensors_topics = [TOPIC_STATUS]
+    sensors = [SENSOR_LUX, SENSOR_BATTERY]
+    sensors_classes = [DEVICE_CLASS_ILLUMINANCE, DEVICE_CLASS_BATTERY]
+    sensors_units = [UNIT_LUX, UNIT_PERCENT]
+    sensors_tpls = [TPL_ILLUMINATION, TPL_BATTERY_FROM_JSON]
+    sensors_topics = [TOPIC_STATUS, TOPIC_STATUS]
     bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_MOTION, SENSOR_VIBRATION]
     bin_sensors_classes = [None, DEVICE_CLASS_MOTION, DEVICE_CLASS_VIBRATION]
     bin_sensors_pl = [None, PL_TRUE_FALSE, PL_TRUE_FALSE]
