@@ -926,11 +926,15 @@ if model_id == MODEL_SHELLYHT_ID or dev_id_prefix == MODEL_SHELLYHT_PREFIX:
 
 if model_id == MODEL_SHELLYMOTION_ID or dev_id_prefix == MODEL_SHELLYMOTION_PREFIX:
     model = MODEL_SHELLYMOTION
-    sensors = [SENSOR_LUX, SENSOR_BATTERY]
-    sensors_classes = [DEVICE_CLASS_ILLUMINANCE, DEVICE_CLASS_BATTERY]
-    sensors_units = [UNIT_LUX, UNIT_PERCENT]
-    sensors_tpls = [TPL_ILLUMINATION, TPL_BATTERY_FROM_JSON]
-    sensors_topics = [TOPIC_STATUS, TOPIC_STATUS]
+    sensors = [SENSOR_LUX, SENSOR_BATTERY, SENSOR_RSSI]
+    sensors_classes = [
+        DEVICE_CLASS_ILLUMINANCE,
+        DEVICE_CLASS_BATTERY,
+        DEVICE_CLASS_SIGNAL_STRENGTH,
+    ]
+    sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DB]
+    sensors_tpls = [TPL_ILLUMINATION, TPL_BATTERY_FROM_JSON, TPL_RSSI]
+    sensors_topics = [TOPIC_STATUS, TOPIC_STATUS, None]
     bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_MOTION, SENSOR_VIBRATION]
     bin_sensors_classes = [None, DEVICE_CLASS_MOTION, DEVICE_CLASS_VIBRATION]
     bin_sensors_pl = [None, PL_TRUE_FALSE, PL_TRUE_FALSE]
@@ -956,15 +960,6 @@ if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
         None,
         DEVICE_CLASS_TIMESTAMP,
         None,
-    ]
-    sensors_tpls = [
-        None,
-        None,
-        TPL_CONCENTRATION,
-        TPL_RSSI,
-        TPL_SSID,
-        TPL_UPTIME,
-        TPL_IP,
     ]
     sensors_tpls = [
         None,
