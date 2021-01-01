@@ -335,6 +335,7 @@ TOPIC_STATUS = "status"
 TPL_BATTERY = "{{value|float|round}}"
 TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
 TPL_CONCENTRATION = "{%if 0<=value|int<=65535%}{{value}}{%endif%}"
+TPL_CHARGER = "{%if value_json.charger==true%}ON{%else%}OFF{%endif%}"
 TPL_CURRENT = "{{value|float|round(2)}}"
 TPL_DOUBLE_SHORTPUSH = "{%if value_json.event==^SS^%}ON{%else%}OFF{%endif%}"
 TPL_ENERGY_WH = "{{(value|float/1000)|round(2)}}"
@@ -935,11 +936,26 @@ if model_id == MODEL_SHELLYMOTION_ID or dev_id_prefix == MODEL_SHELLYMOTION_PREF
     sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DB]
     sensors_tpls = [TPL_ILLUMINATION, TPL_BATTERY_FROM_JSON, TPL_RSSI]
     sensors_topics = [TOPIC_STATUS, TOPIC_STATUS, None]
-    bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_MOTION, SENSOR_VIBRATION]
-    bin_sensors_classes = [None, DEVICE_CLASS_MOTION, DEVICE_CLASS_VIBRATION]
-    bin_sensors_pl = [None, PL_TRUE_FALSE, PL_TRUE_FALSE]
-    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_ANNOUNCE, TPL_MOTION, TPL_VIBRATION]
-    bin_sensors_topics = [TOPIC_ANNOUNCE, TOPIC_STATUS, TOPIC_STATUS]
+    bin_sensors = [
+        SENSOR_FIRMWARE_UPDATE,
+        SENSOR_MOTION,
+        SENSOR_VIBRATION,
+        SENSOR_CHARGER,
+    ]
+    bin_sensors_classes = [
+        None,
+        DEVICE_CLASS_MOTION,
+        DEVICE_CLASS_VIBRATION,
+        DEVICE_CLASS_BATTERY_CHARGING,
+    ]
+    bin_sensors_pl = [None, None, None, None]
+    bin_sensors_tpls = [
+        TPL_NEW_FIRMWARE_FROM_INFO,
+        TPL_MOTION,
+        TPL_VIBRATION,
+        TPL_CHARGER,
+    ]
+    bin_sensors_topics = [TOPIC_STATUS, TOPIC_STATUS, TOPIC_STATUS, TOPIC_STATUS]
 
 if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
     model = MODEL_SHELLYGAS
