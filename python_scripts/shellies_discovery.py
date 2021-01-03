@@ -899,15 +899,8 @@ if model_id == MODEL_SHELLY4PRO_ID or dev_id_prefix == MODEL_SHELLY4PRO_PREFIX:
     relays_bin_sensors_classes = [DEVICE_CLASS_PROBLEM]
     bin_sensors = [SENSOR_FIRMWARE_UPDATE]
     bin_sensors_classes = [None]
-    bin_sensors_tpls = [
-        TPL_NEW_FIRMWARE_FROM_ANNOUNCE
-    ]  # TPL_NEW_FIRMWARE_FROM_INFO after released firmware 1.8.0
-    bin_sensors_topics = [TOPIC_ANNOUNCE]  # TOPIC_INFO after released firmware 1.8.0
-    # sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]  # firmware 1.8.0 required
-    # sensors_units = [UNIT_DB, None, None, None]  # firmware 1.8.0 required
-    # sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]  # firmware 1.8.0 required
-    # sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]  # firmware 1.8.0 required
-    # sensors_topics = [None, None, None, None]  # firmware 1.8.0 required
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_ANNOUNCE]
+    bin_sensors_topics = [TOPIC_ANNOUNCE]
 
 if model_id == MODEL_SHELLYHT_ID or dev_id_prefix == MODEL_SHELLYHT_PREFIX:
     model = MODEL_SHELLYHT
