@@ -184,6 +184,7 @@ MODEL_SHELLYBULBRGBW_ID = "SHCB-1"  # Shelly Bulb RGBW
 MODEL_SHELLYBULBRGBW_PREFIX = "shellycolorbulb"
 
 MODEL_SHELLYBUTTON1_ID = "SHBTN-1"  # Shelly Button1
+MODEL_SHELLYBUTTON1V2_ID = "SHBTN-2"  # Shelly Button1 v2
 MODEL_SHELLYBUTTON1_PREFIX = "shellybutton1"
 
 MODEL_SHELLYDIMMER_ID = "SHDM-1"  # Shelly Dimmer
@@ -993,7 +994,7 @@ if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO, TPL_GAS]
     bin_sensors_topics = [TOPIC_INFO, None]
 
-if model_id == MODEL_SHELLYBUTTON1_ID or dev_id_prefix == MODEL_SHELLYBUTTON1_PREFIX:
+if model_id in [MODEL_SHELLYBUTTON1_ID, MODEL_SHELLYBUTTON1V2_ID] or dev_id_prefix == MODEL_SHELLYBUTTON1_PREFIX:
     model = MODEL_SHELLYBUTTON1
     sensors = [SENSOR_BATTERY]
     sensors_classes = [DEVICE_CLASS_BATTERY]
