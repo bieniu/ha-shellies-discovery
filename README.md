@@ -35,7 +35,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Air
 - Shelly Bulb
 - Shelly Bulb RGBW
-- Shelly Button1
+- Shelly Button1 (battery or USB powered)
 - Shelly Dimmer
 - Shelly Dimmer 2
 - Shelly Door/Window
@@ -44,17 +44,17 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly EM
 - Shelly Flood
 - Shelly Gas
-- Shelly H&T (with or without USB adapter)
+- Shelly H&T (battery or USB powered)
 - Shelly i3
+- Shelly Motion (battery or USB powered)
 - Shelly Plug
 - Shelly Plug S
 - Shelly Plug US
 - Shelly RGBW2 (color and white mode)
-- Shelly Sense
+- Shelly Sense (battery or USB powered)
 - Shelly Smoke
-- Shelly Vintage
 - Shelly UNI (with external sensors)
-- Shelly Motion
+- Shelly Vintage
 
 ## How to debug
 
@@ -197,6 +197,10 @@ python_script:
         powered: "battery"
       shellyht-11AA00CCFF:
         powered: "ac"
+      shellybutton1-112200CCFF:
+        powered: "ac"
+      shellymotionsensor-113300CCFF:
+        powered: "ac"
       shellyrgbw2-AA123FF32:
         mode: "white"
         light-1-name: "Living room"
@@ -238,7 +242,7 @@ key | optional | type | default | possible values | description
 `force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) for sensors
 `push_off_delay` | True | boolean | `true` | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (2 sec) for `longpush`/`shortpush`/`double shortpush`/`triple shortpush` binary sensors
 `mode` | True | string | | `white`, `rgbw`, `relay`, `roller` | `white` or `rgbw` for Shelly RGBW2, `relay` or `roller` for Shelly 2/Shelly 2.5
-`powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for Shelly H&T
+`powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for Shelly H&T, Motion, Sense and Button1
 `expire_after` | True | integer | 51840 | | [expire after](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#expire_after) for battery powered sensors in seconds
 
 
