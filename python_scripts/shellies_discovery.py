@@ -992,11 +992,17 @@ if (
     or dev_id_prefix == MODEL_SHELLYBUTTON1_PREFIX
 ):
     model = MODEL_SHELLYBUTTON1
-    sensors = [SENSOR_BATTERY]
-    sensors_classes = [DEVICE_CLASS_BATTERY]
-    sensors_units = [UNIT_PERCENT]
-    sensors_tpls = [TPL_BATTERY]
-    sensors_topics = [None]
+    sensors = [SENSOR_BATTERY, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_classes = [
+        DEVICE_CLASS_BATTERY,
+        DEVICE_CLASS_SIGNAL_STRENGTH,
+        None,
+        DEVICE_CLASS_TIMESTAMP,
+        None,
+    ]
+    sensors_units = [UNIT_PERCENT, UNIT_DB, None, None, None]
+    sensors_tpls = [TPL_BATTERY, TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
+    sensors_topics = [None, None, None, None, None]
     bin_sensors = [
         SENSOR_INPUT_0,
         SENSOR_SHORTPUSH,
@@ -1021,7 +1027,7 @@ if (
         TPL_DOUBLE_SHORTPUSH,
         TPL_TRIPLE_SHORTPUSH,
         TPL_LONGPUSH,
-        TPL_NEW_FIRMWARE_FROM_ANNOUNCE,
+        TPL_NEW_FIRMWARE_FROM_INFO,
         None,
     ]
     bin_sensors_pl = [PL_1_0, None, None, None, None, None, PL_TRUE_FALSE]
@@ -1031,7 +1037,7 @@ if (
         TOPIC_INPUT_EVENT_0,
         TOPIC_INPUT_EVENT_0,
         TOPIC_INPUT_EVENT_0,
-        TOPIC_ANNOUNCE,
+        TOPIC_INFO,
         None,
     ]
     battery_powered = True
