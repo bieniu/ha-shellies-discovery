@@ -1008,8 +1008,9 @@ if model_id in [MODEL_SHELLYBUTTON1_ID, MODEL_SHELLYBUTTON1V2_ID] or dev_id_pref
         SENSOR_TRIPLE_SHORTPUSH,
         SENSOR_LONGPUSH,
         SENSOR_FIRMWARE_UPDATE,
+        SENSOR_CHARGER,
     ]
-    bin_sensors_classes = [None, None, None, None, None, None]
+    bin_sensors_classes = [None, None, None, None, None, None, DEVICE_CLASS_BATTERY_CHARGING]
     bin_sensors_tpls = [
         None,
         TPL_SHORTPUSH,
@@ -1017,8 +1018,9 @@ if model_id in [MODEL_SHELLYBUTTON1_ID, MODEL_SHELLYBUTTON1V2_ID] or dev_id_pref
         TPL_TRIPLE_SHORTPUSH,
         TPL_LONGPUSH,
         TPL_NEW_FIRMWARE_FROM_ANNOUNCE,
+        None
     ]
-    bin_sensors_pl = [PL_1_0, None, None, None, None, None]
+    bin_sensors_pl = [PL_1_0, None, None, None, None, None, PL_TRUE_FALSE]
     bin_sensors_topics = [
         None,
         TOPIC_INPUT_EVENT_0,
@@ -1026,6 +1028,7 @@ if model_id in [MODEL_SHELLYBUTTON1_ID, MODEL_SHELLYBUTTON1V2_ID] or dev_id_pref
         TOPIC_INPUT_EVENT_0,
         TOPIC_INPUT_EVENT_0,
         TOPIC_ANNOUNCE,
+        None,
     ]
     battery_powered = True
 
