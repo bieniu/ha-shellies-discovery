@@ -994,7 +994,10 @@ if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO, TPL_GAS]
     bin_sensors_topics = [TOPIC_INFO, None]
 
-if model_id in [MODEL_SHELLYBUTTON1_ID, MODEL_SHELLYBUTTON1V2_ID] or dev_id_prefix == MODEL_SHELLYBUTTON1_PREFIX:
+if (
+    model_id in [MODEL_SHELLYBUTTON1_ID, MODEL_SHELLYBUTTON1V2_ID]
+    or dev_id_prefix == MODEL_SHELLYBUTTON1_PREFIX
+):
     model = MODEL_SHELLYBUTTON1
     sensors = [SENSOR_BATTERY]
     sensors_classes = [DEVICE_CLASS_BATTERY]
@@ -1010,7 +1013,15 @@ if model_id in [MODEL_SHELLYBUTTON1_ID, MODEL_SHELLYBUTTON1V2_ID] or dev_id_pref
         SENSOR_FIRMWARE_UPDATE,
         SENSOR_CHARGER,
     ]
-    bin_sensors_classes = [None, None, None, None, None, None, DEVICE_CLASS_BATTERY_CHARGING]
+    bin_sensors_classes = [
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        DEVICE_CLASS_BATTERY_CHARGING,
+    ]
     bin_sensors_tpls = [
         None,
         TPL_SHORTPUSH,
@@ -1018,7 +1029,7 @@ if model_id in [MODEL_SHELLYBUTTON1_ID, MODEL_SHELLYBUTTON1V2_ID] or dev_id_pref
         TPL_TRIPLE_SHORTPUSH,
         TPL_LONGPUSH,
         TPL_NEW_FIRMWARE_FROM_ANNOUNCE,
-        None
+        None,
     ]
     bin_sensors_pl = [PL_1_0, None, None, None, None, None, PL_TRUE_FALSE]
     bin_sensors_topics = [
@@ -1941,9 +1952,12 @@ for sensor_id in range(len(sensors)):
         state_topic = f"~sensor/{sensors[sensor_id]}"
 
     config_component = COMP_SWITCH
-    if model in [MODEL_SHELLYBUTTON1, MODEL_SHELLYMOTION, MODEL_SHELLYSENSE] and device_config.get(CONF_POWERED) == ATTR_POWER_AC:
-       battery_powered = False
-       no_battery_sensor = True
+    if (
+        model in [MODEL_SHELLYBUTTON1, MODEL_SHELLYMOTION, MODEL_SHELLYSENSE]
+        and device_config.get(CONF_POWERED) == ATTR_POWER_AC
+    ):
+        battery_powered = False
+        no_battery_sensor = True
     if battery_powered:
         expire_after = device_config.get(
             CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED
@@ -2085,8 +2099,11 @@ for bin_sensor_id in range(len(bin_sensors)):
     push_off_delay = True
     if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
         push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
-    if model in [MODEL_SHELLYBUTTON1, MODEL_SHELLYMOTION, MODEL_SHELLYSENSE] and device_config.get(CONF_POWERED) == ATTR_POWER_AC:
-       battery_powered = False
+    if (
+        model in [MODEL_SHELLYBUTTON1, MODEL_SHELLYMOTION, MODEL_SHELLYSENSE]
+        and device_config.get(CONF_POWERED) == ATTR_POWER_AC
+    ):
+        battery_powered = False
     if battery_powered:
         expire_after = device_config.get(
             CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED
