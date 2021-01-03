@@ -1941,6 +1941,9 @@ for sensor_id in range(len(sensors)):
         state_topic = f"~sensor/{sensors[sensor_id]}"
 
     config_component = COMP_SWITCH
+    if model in [MODEL_SHELLYBUTTON1, MODEL_SHELLYMOTION, MODEL_SHELLYSENSE] and device_config.get(CONF_POWERED) == ATTR_POWER_AC:
+       battery_powered = False
+       no_battery_sensor = True
     if battery_powered:
         expire_after = device_config.get(
             CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED
@@ -2082,6 +2085,8 @@ for bin_sensor_id in range(len(bin_sensors)):
     push_off_delay = True
     if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
         push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
+    if model in [MODEL_SHELLYBUTTON1, MODEL_SHELLYMOTION, MODEL_SHELLYSENSE] and device_config.get(CONF_POWERED) == ATTR_POWER_AC:
+       battery_powered = False
     if battery_powered:
         expire_after = device_config.get(
             CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED
