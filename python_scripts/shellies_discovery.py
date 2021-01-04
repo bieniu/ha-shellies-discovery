@@ -808,6 +808,11 @@ if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     sensors_units = [UNIT_VOLT, UNIT_DB, None, None, None]
     sensors_tpls = [TPL_VOLTAGE, TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_topics = [TOPIC_ADC, None, None, None, None]
+    bin_sensors = [SENSOR_FIRMWARE_UPDATE]
+    bin_sensors_classes = [None]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
+    bin_sensors_pl = [None]
+    bin_sensors_topics = [TOPIC_INFO]
 
 if (
     model_id in [MODEL_SHELLYPLUG_ID, MODEL_SHELLYPLUG_E_ID]
