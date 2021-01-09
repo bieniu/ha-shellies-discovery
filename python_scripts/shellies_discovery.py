@@ -1089,68 +1089,193 @@ if (
 
 if model_id == MODEL_SHELLYDW_ID or dev_id_prefix == MODEL_SHELLYDW_PREFIX:
     model = MODEL_SHELLYDW
-    sensors = [SENSOR_LUX, SENSOR_BATTERY, SENSOR_TILT]
-    sensors_classes = [DEVICE_CLASS_ILLUMINANCE, DEVICE_CLASS_BATTERY, None]
-    sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DEGREE]
-    sensors_tpls = [TPL_LUX, TPL_BATTERY, TPL_TILT]
-    sensors_topics = [None, None, None]
+    sensors = [
+        SENSOR_LUX,
+        SENSOR_BATTERY,
+        SENSOR_TILT,
+        SENSOR_RSSI,
+        SENSOR_SSID,
+        SENSOR_UPTIME,
+        SENSOR_IP,
+    ]
+    sensors_classes = [
+        DEVICE_CLASS_ILLUMINANCE,
+        DEVICE_CLASS_BATTERY,
+        None,
+        DEVICE_CLASS_SIGNAL_STRENGTH,
+        None,
+        DEVICE_CLASS_TIMESTAMP,
+        None,
+    ]
+    sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DEGREE, UNIT_DB, None, None, None]
+    sensors_tpls = [
+        TPL_LUX,
+        TPL_BATTERY,
+        TPL_TILT,
+        TPL_RSSI,
+        TPL_SSID,
+        TPL_UPTIME,
+        TPL_IP,
+    ]
+    sensors_topics = [None, None, None, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO]
     bin_sensors = [SENSOR_OPENING, SENSOR_VIBRATION, SENSOR_FIRMWARE_UPDATE]
     bin_sensors_classes = [DEVICE_CLASS_OPENING, DEVICE_CLASS_VIBRATION, None]
     bin_sensors_pl = [PL_OPEN_CLOSE, PL_1_0, None]
-    bin_sensors_tpls = [None, None, TPL_NEW_FIRMWARE_FROM_ANNOUNCE]
-    bin_sensors_topics = [None, None, TOPIC_ANNOUNCE]
+    bin_sensors_tpls = [None, None, TPL_NEW_FIRMWARE_FROM_INFO]
+    bin_sensors_topics = [None, None, TOPIC_INFO]
     battery_powered = True
 
 if model_id == MODEL_SHELLYDW2_ID or dev_id_prefix == MODEL_SHELLYDW2_PREFIX:
     model = MODEL_SHELLYDW2
-    sensors = [SENSOR_LUX, SENSOR_BATTERY, SENSOR_TILT, SENSOR_TEMPERATURE]
+    sensors = [
+        SENSOR_LUX,
+        SENSOR_BATTERY,
+        SENSOR_TILT,
+        SENSOR_TEMPERATURE,
+        SENSOR_RSSI,
+        SENSOR_SSID,
+        SENSOR_UPTIME,
+        SENSOR_IP,
+    ]
     sensors_classes = [
         DEVICE_CLASS_ILLUMINANCE,
         DEVICE_CLASS_BATTERY,
         None,
         DEVICE_CLASS_TEMPERATURE,
+        DEVICE_CLASS_SIGNAL_STRENGTH,
+        None,
+        DEVICE_CLASS_TIMESTAMP,
+        None,
     ]
-    sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DEGREE, UNIT_CELSIUS]
-    sensors_tpls = [TPL_LUX, TPL_BATTERY, TPL_TILT, TPL_TEMPERATURE]
-    sensors_topics = [None, None, None, None]
+    sensors_units = [
+        UNIT_LUX,
+        UNIT_PERCENT,
+        UNIT_DEGREE,
+        UNIT_CELSIUS,
+        UNIT_DB,
+        None,
+        None,
+        None,
+    ]
+    sensors_tpls = [
+        TPL_LUX,
+        TPL_BATTERY,
+        TPL_TILT,
+        TPL_TEMPERATURE,
+        TPL_RSSI,
+        TPL_SSID,
+        TPL_UPTIME,
+        TPL_IP,
+    ]
+    sensors_topics = [
+        None,
+        None,
+        None,
+        None,
+        TOPIC_INFO,
+        TOPIC_INFO,
+        TOPIC_INFO,
+        TOPIC_INFO,
+    ]
     bin_sensors = [SENSOR_OPENING, SENSOR_VIBRATION, SENSOR_FIRMWARE_UPDATE]
     bin_sensors_classes = [DEVICE_CLASS_OPENING, DEVICE_CLASS_VIBRATION, None]
     bin_sensors_pl = [PL_OPEN_CLOSE, PL_1_0, None]
-    bin_sensors_tpls = [None, None, TPL_NEW_FIRMWARE_FROM_ANNOUNCE]
-    bin_sensors_topics = [None, None, TOPIC_ANNOUNCE]
+    bin_sensors_tpls = [None, None, TPL_NEW_FIRMWARE_FROM_INFO]
+    bin_sensors_topics = [None, None, TOPIC_INFO]
     battery_powered = True
 
 if model_id == MODEL_SHELLYSMOKE_ID or dev_id_prefix == MODEL_SHELLYSMOKE_PREFIX:
     model = MODEL_SHELLYSMOKE
-    sensors = [SENSOR_TEMPERATURE, SENSOR_BATTERY]
-    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_BATTERY]
-    sensors_units = [UNIT_CELSIUS, UNIT_PERCENT]
-    sensors_tpls = [TPL_TEMPERATURE, TPL_BATTERY]
-    sensors_topics = [None, None]
+    sensors = [
+        SENSOR_TEMPERATURE,
+        SENSOR_BATTERY,
+        SENSOR_RSSI,
+        SENSOR_SSID,
+        SENSOR_UPTIME,
+        SENSOR_IP,
+    ]
+    sensors_classes = [
+        DEVICE_CLASS_TEMPERATURE,
+        DEVICE_CLASS_BATTERY,
+        DEVICE_CLASS_SIGNAL_STRENGTH,
+        None,
+        DEVICE_CLASS_TIMESTAMP,
+        None,
+    ]
+    sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_DB, None, None, None]
+    sensors_tpls = [
+        TPL_TEMPERATURE,
+        TPL_BATTERY,
+        TPL_RSSI,
+        TPL_SSID,
+        TPL_UPTIME,
+        TPL_IP,
+    ]
+    sensors_topics = [None, None, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO]
     bin_sensors = [SENSOR_SMOKE, SENSOR_FIRMWARE_UPDATE]
     bin_sensors_classes = [DEVICE_CLASS_SMOKE, None]
     bin_sensors_pl = [PL_TRUE_FALSE, None]
-    bin_sensors_tpls = [None, TPL_NEW_FIRMWARE_FROM_ANNOUNCE]
-    bin_sensors_topics = [None, TOPIC_ANNOUNCE]
+    bin_sensors_tpls = [None, TPL_NEW_FIRMWARE_FROM_INFO]
+    bin_sensors_topics = [None, TOPIC_INFO]
     battery_powered = True
 
 if model_id == MODEL_SHELLYSENSE_ID or dev_id_prefix == MODEL_SHELLYSENSE_PREFIX:
     model = MODEL_SHELLYSENSE
-    sensors = [SENSOR_TEMPERATURE, SENSOR_HUMIDITY, SENSOR_LUX, SENSOR_BATTERY]
+    sensors = [
+        SENSOR_TEMPERATURE,
+        SENSOR_HUMIDITY,
+        SENSOR_LUX,
+        SENSOR_BATTERY,
+        SENSOR_RSSI,
+        SENSOR_SSID,
+        SENSOR_UPTIME,
+        SENSOR_IP,
+    ]
     sensors_classes = [
         DEVICE_CLASS_TEMPERATURE,
         DEVICE_CLASS_HUMIDITY,
         DEVICE_CLASS_ILLUMINANCE,
         DEVICE_CLASS_BATTERY,
+        DEVICE_CLASS_SIGNAL_STRENGTH,
+        None,
+        DEVICE_CLASS_TIMESTAMP,
+        None,
     ]
-    sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_LUX, UNIT_PERCENT]
-    sensors_tpls = [TPL_TEMPERATURE, TPL_HUMIDITY, TPL_LUX, TPL_BATTERY]
-    sensors_topics = [None, None, None, None]
+    sensors_units = [
+        UNIT_CELSIUS,
+        UNIT_PERCENT,
+        UNIT_LUX,
+        UNIT_PERCENT,
+        UNIT_DB,
+        None,
+        None,
+        None,
+    ]
+    sensors_tpls = [
+        TPL_TEMPERATURE,
+        TPL_HUMIDITY,
+        TPL_LUX,
+        TPL_BATTERY,
+        TPL_RSSI,
+        TPL_SSID,
+        TPL_UPTIME,
+        TPL_IP,
+    ]
+    sensors_topics = [
+        None,
+        None,
+        None,
+        None,
+        TOPIC_INFO,
+        TOPIC_INFO,
+        TOPIC_INFO,
+        TOPIC_INFO,
+    ]
     bin_sensors = [SENSOR_MOTION, SENSOR_CHARGER, SENSOR_FIRMWARE_UPDATE]
     bin_sensors_classes = [DEVICE_CLASS_MOTION, DEVICE_CLASS_BATTERY_CHARGING, None]
     bin_sensors_pl = [PL_TRUE_FALSE, PL_TRUE_FALSE, None]
-    bin_sensors_tpls = [None, None, TPL_NEW_FIRMWARE_FROM_ANNOUNCE]
-    bin_sensors_topics = [None, None, TOPIC_ANNOUNCE]
+    bin_sensors_tpls = [None, None, TPL_NEW_FIRMWARE_FROM_INFO]
+    bin_sensors_topics = [None, None, TOPIC_INFO]
     battery_powered = True
 
 if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX:
@@ -1532,16 +1657,37 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
 
 if model_id == MODEL_SHELLYFLOOD_ID or dev_id_prefix == MODEL_SHELLYFLOOD_PREFIX:
     model = MODEL_SHELLYFLOOD
-    sensors = [SENSOR_TEMPERATURE, SENSOR_BATTERY]
-    sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_BATTERY]
-    sensors_units = [UNIT_CELSIUS, UNIT_PERCENT]
-    sensors_tpls = [TPL_TEMPERATURE, TPL_BATTERY]
-    sensors_topics = [None, None]
+    sensors = [
+        SENSOR_TEMPERATURE,
+        SENSOR_BATTERY,
+        SENSOR_RSSI,
+        SENSOR_SSID,
+        SENSOR_UPTIME,
+        SENSOR_IP,
+    ]
+    sensors_classes = [
+        DEVICE_CLASS_TEMPERATURE,
+        DEVICE_CLASS_BATTERY,
+        DEVICE_CLASS_SIGNAL_STRENGTH,
+        None,
+        DEVICE_CLASS_TIMESTAMP,
+        None,
+    ]
+    sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_DB, None, None, None]
+    sensors_tpls = [
+        TPL_TEMPERATURE,
+        TPL_BATTERY,
+        TPL_RSSI,
+        TPL_SSID,
+        TPL_UPTIME,
+        TPL_IP,
+    ]
+    sensors_topics = [None, None, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO]
     bin_sensors = [SENSOR_FLOOD, SENSOR_FIRMWARE_UPDATE]
     bin_sensors_classes = [DEVICE_CLASS_MOISTURE, None]
     bin_sensors_pl = [PL_TRUE_FALSE, None]
-    bin_sensors_tpls = [None, TPL_NEW_FIRMWARE_FROM_ANNOUNCE]
-    bin_sensors_topics = [None, TOPIC_ANNOUNCE]
+    bin_sensors_tpls = [None, TPL_NEW_FIRMWARE_FROM_INFO]
+    bin_sensors_topics = [None, TOPIC_INFO]
     battery_powered = True
 
 if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
