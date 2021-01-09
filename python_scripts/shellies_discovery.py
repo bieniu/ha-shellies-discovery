@@ -250,6 +250,7 @@ OFF_DELAY = 2
 SENSOR_ADC = "adc"
 SENSOR_BATTERY = "battery"
 SENSOR_CHARGER = "charger"
+SENSOR_CLOUD = "cloud"
 SENSOR_CONCENTRATION = "concentration"
 SENSOR_CURRENT = "current"
 SENSOR_DOUBLE_SHORTPUSH = "double shortpush"
@@ -335,6 +336,7 @@ TOPIC_STATUS = "status"
 
 TPL_BATTERY = "{{value|float|round}}"
 TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
+TPL_CLOUD = "{%if value_json[^cloud^].connected==true%}ON{%else%}OFF{%endif%}"
 TPL_CONCENTRATION = "{%if 0<=value|int<=65535%}{{value}}{%endif%}"
 TPL_CHARGER = "{%if value_json.charger==true%}ON{%else%}OFF{%endif%}"
 TPL_CURRENT = "{{value|float|round(2)}}"
@@ -918,10 +920,11 @@ if model_id == MODEL_SHELLYHT_ID or dev_id_prefix == MODEL_SHELLYHT_PREFIX:
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_PERCENT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_HUMIDITY, TPL_BATTERY]
     sensors_topics = [None, None, None]
-    bin_sensors = [SENSOR_FIRMWARE_UPDATE]
-    bin_sensors_classes = [None]
-    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_ANNOUNCE]
-    bin_sensors_topics = [TOPIC_ANNOUNCE]
+    bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_CLOUD]
+    bin_sensors_classes = [None, DEVICE_CLASS_CONNECTIVITY]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_ANNOUNCE, TPL_CLOUD]
+    bin_sensors_topics = [TOPIC_ANNOUNCE, TOPIC_INFO]
+    bin_sensors_pl = [None, None]
     battery_powered = True
 
 if model_id == MODEL_SHELLYMOTION_ID or dev_id_prefix == MODEL_SHELLYMOTION_PREFIX:
@@ -940,21 +943,24 @@ if model_id == MODEL_SHELLYMOTION_ID or dev_id_prefix == MODEL_SHELLYMOTION_PREF
         SENSOR_MOTION,
         SENSOR_VIBRATION,
         SENSOR_CHARGER,
+        SENSOR_CLOUD,
     ]
     bin_sensors_classes = [
         None,
         DEVICE_CLASS_MOTION,
         DEVICE_CLASS_VIBRATION,
         DEVICE_CLASS_BATTERY_CHARGING,
+        DEVICE_CLASS_CONNECTIVITY,
     ]
-    bin_sensors_pl = [None, None, None, None]
+    bin_sensors_pl = [None, None, None, None, None]
     bin_sensors_tpls = [
         TPL_NEW_FIRMWARE_FROM_INFO,
         TPL_MOTION,
         TPL_VIBRATION,
         TPL_CHARGER,
+        TPL_CLOUD,
     ]
-    bin_sensors_topics = [TOPIC_INFO, TOPIC_STATUS, TOPIC_STATUS, TOPIC_INFO]
+    bin_sensors_topics = [TOPIC_INFO, TOPIC_STATUS, TOPIC_STATUS, TOPIC_INFO, TOPIC_INFO]
 
 if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
     model = MODEL_SHELLYGAS
