@@ -922,8 +922,8 @@ if model_id == MODEL_SHELLYHT_ID or dev_id_prefix == MODEL_SHELLYHT_PREFIX:
     sensors_topics = [None, None, None]
     bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_CLOUD]
     bin_sensors_classes = [None, DEVICE_CLASS_CONNECTIVITY]
-    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_ANNOUNCE, TPL_CLOUD]
-    bin_sensors_topics = [TOPIC_ANNOUNCE, TOPIC_INFO]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO TPL_CLOUD]
+    bin_sensors_topics = [TOPIC_INFO, TOPIC_INFO]
     bin_sensors_pl = [None, None]
     battery_powered = True
 
