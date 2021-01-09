@@ -960,7 +960,13 @@ if model_id == MODEL_SHELLYMOTION_ID or dev_id_prefix == MODEL_SHELLYMOTION_PREF
         TPL_CHARGER,
         TPL_CLOUD,
     ]
-    bin_sensors_topics = [TOPIC_INFO, TOPIC_STATUS, TOPIC_STATUS, TOPIC_INFO, TOPIC_INFO]
+    bin_sensors_topics = [
+        TOPIC_INFO,
+        TOPIC_STATUS,
+        TOPIC_STATUS,
+        TOPIC_INFO,
+        TOPIC_INFO,
+    ]
 
 if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
     model = MODEL_SHELLYGAS
