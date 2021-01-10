@@ -777,7 +777,12 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
     sensors_units = [UNIT_CELSIUS, UNIT_DB, None, None, None]
     sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_topics = [None, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO]
-    bin_sensors = [SENSOR_OVERTEMPERATURE, SENSOR_FIRMWARE_UPDATE, SENSOR_INPUT_0, SENSOR_INPUT_1]
+    bin_sensors = [
+        SENSOR_OVERTEMPERATURE,
+        SENSOR_FIRMWARE_UPDATE,
+        SENSOR_INPUT_0,
+        SENSOR_INPUT_1,
+    ]
     bin_sensors_classes = [DEVICE_CLASS_PROBLEM, None, None, None]
     bin_sensors_pl = [PL_1_0, None, PL_1_0, PL_1_0]
     bin_sensors_tpls = [None, TPL_NEW_FIRMWARE_FROM_INFO, None, None]
