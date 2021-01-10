@@ -2347,6 +2347,11 @@ for bin_sensor_id in range(len(bin_sensors)):
     if battery_powered and bin_sensors[bin_sensor_id] not in [
         SENSOR_FIRMWARE_UPDATE,
         SENSOR_OPENING,
+        SENSOR_SSID,
+        SENSOR_RSSI,
+        SENSOR_CLOUD,
+        SENSOR_UPTIME,
+        SENSOR_IP,
     ]:
         payload[KEY_EXPIRE_AFTER] = expire_after
     if not battery_powered:
