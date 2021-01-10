@@ -747,7 +747,7 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
     sensors_units = [UNIT_DB, None, None, None]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
-    sensors_topics = [None, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO]
+    sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO]
 
 if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
     model = MODEL_SHELLY25
@@ -2132,10 +2132,10 @@ for sensor_id in range(len(sensors)):
         sensor_name = f"{device_name} {sensors[sensor_id].upper()}"
     else:
         sensor_name = f"{device_name} {sensors[sensor_id].title()}"
-    if relays > 0 or white_lights > 0:
-        state_topic = f"~{sensors[sensor_id]}"
-    elif sensors_topics[sensor_id]:
+    if sensors_topics[sensor_id]:
         state_topic = f"~{sensors_topics[sensor_id]}"
+    elif relays > 0 or white_lights > 0:
+        state_topic = f"~{sensors[sensor_id]}"
     else:
         state_topic = f"~sensor/{sensors[sensor_id]}"
 
@@ -2185,9 +2185,14 @@ for sensor_id in range(len(sensors)):
         payload[KEY_ICON] = "mdi:wifi"
     elif sensors[sensor_id] == SENSOR_UPTIME:
         payload[KEY_ICON] = "mdi:timer-outline"
-    if battery_powered:
+    if battery_powered and sensors[sensor_id] not in [
+        SENSOR_SSID,
+        SENSOR_RSSI,
+        SENSOR_UPTIME,
+        SENSOR_IP,
+    ]:
         payload[KEY_EXPIRE_AFTER] = expire_after
-    else:
+    if not battery_powered:
         payload[KEY_AVAILABILITY_TOPIC] = availability_topic
         payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
@@ -2347,11 +2352,7 @@ for bin_sensor_id in range(len(bin_sensors)):
     if battery_powered and bin_sensors[bin_sensor_id] not in [
         SENSOR_FIRMWARE_UPDATE,
         SENSOR_OPENING,
-        SENSOR_SSID,
-        SENSOR_RSSI,
         SENSOR_CLOUD,
-        SENSOR_UPTIME,
-        SENSOR_IP,
     ]:
         payload[KEY_EXPIRE_AFTER] = expire_after
     if not battery_powered:
