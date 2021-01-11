@@ -981,16 +981,23 @@ if model_id == MODEL_SHELLYHT_ID or dev_id_prefix == MODEL_SHELLYHT_PREFIX:
 
 if model_id == MODEL_SHELLYMOTION_ID or dev_id_prefix == MODEL_SHELLYMOTION_PREFIX:
     model = MODEL_SHELLYMOTION
-    sensors = [SENSOR_LUX, SENSOR_BATTERY, SENSOR_RSSI, SENSOR_IP]
+    sensors = [SENSOR_LUX, SENSOR_BATTERY, SENSOR_RSSI, SENSOR_IP, SENSOR_SSID]
     sensors_classes = [
         DEVICE_CLASS_ILLUMINANCE,
         DEVICE_CLASS_BATTERY,
         DEVICE_CLASS_SIGNAL_STRENGTH,
         None,
+        None,
     ]
-    sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DB, None]
-    sensors_tpls = [TPL_ILLUMINATION, TPL_BATTERY_FROM_JSON, TPL_RSSI.TPL_IP]
-    sensors_topics = [TOPIC_STATUS, TOPIC_STATUS, TOPIC_INFO, TOPIC_ANNOUNCE]
+    sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DB, None, None]
+    sensors_tpls = [TPL_ILLUMINATION, TPL_BATTERY_FROM_JSON, TPL_RSSI, TPL_IP, TPL_SSID]
+    sensors_topics = [
+        TOPIC_STATUS,
+        TOPIC_STATUS,
+        TOPIC_INFO,
+        TOPIC_ANNOUNCE,
+        TOPIC_INFO,
+    ]
     bin_sensors = [
         SENSOR_FIRMWARE_UPDATE,
         SENSOR_MOTION,
