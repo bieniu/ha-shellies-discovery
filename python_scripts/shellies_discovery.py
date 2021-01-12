@@ -609,7 +609,7 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
         TOPIC_INFO,
         TOPIC_INFO,
         TOPIC_INFO,
-        TPL_ANNOUNCE,
+        TOPIC_ANNOUNCE,
     ]
     bin_sensors = [
         SENSOR_INPUT_0,
