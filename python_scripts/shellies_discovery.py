@@ -77,6 +77,7 @@ DEVICE_CLASS_WINDOW = "window"
 EXPIRE_AFTER_FOR_BATTERY_POWERED = int(1.2 * 12 * 60 * 60)  # 1.2 * 12 h
 EXPIRE_AFTER_FOR_AC_POWERED = int(2.2 * 10 * 60)  # 2.2 * 10 min
 
+KEY_AUTOMATION_TYPE = "atype"
 KEY_AVAILABILITY_TOPIC = "avty_t"
 KEY_COMMAND_TOPIC = "cmd_t"
 KEY_DEVICE = "dev"
@@ -92,7 +93,7 @@ KEY_MODEL = "mdl"
 KEY_NAME = "name"
 KEY_OFF_DELAY = "off_dly"
 KEY_OPTIMISTIC = "opt"
-KEY_PAYLOAD = "payload"
+KEY_PAYLOAD = "pl"
 KEY_PAYLOAD_AVAILABLE = "pl_avail"
 KEY_PAYLOAD_CLOSE = "pl_cls"
 KEY_PAYLOAD_NOT_AVAILABLE = "pl_not_avail"
@@ -102,13 +103,15 @@ KEY_PAYLOAD_OPEN = "pl_open"
 KEY_PAYLOAD_STOP = "pl_stop"
 KEY_POSITION_TOPIC = "pos_t"
 KEY_QOS = "qos"
-KEY_RETAIN = "retain"
+KEY_RETAIN = "ret"
 KEY_SET_POSITION_TOPIC = "set_pos_t"
 KEY_SET_POSITION_TEMPLATE = "set_pos_tpl"
 KEY_STATE_TEMPLATE = "stat_tpl"
 KEY_STATE_TOPIC = "stat_t"
+KEY_SUBTYPE = "stype"
 KEY_SW_VERSION = "sw"
-KEY_TOPIC = "topic"
+KEY_TOPIC = "t"
+KEY_TYPE = "type"
 KEY_UNIQUE_ID = "uniq_id"
 KEY_UNIT = "unit_of_meas"
 KEY_VALUE_TEMPLATE = "val_tpl"
@@ -391,12 +394,17 @@ UNIT_VAR = "VAR"
 UNIT_VOLT = "V"
 UNIT_WATT = "W"
 
+VALUE_0 = "0"
+VALUE_1 = "1"
+VALUE_BUTTON_LONG_PRESS = "button_long_press"
+VALUE_BUTTON_SHORT_PRESS = "button_short_press"
 VALUE_CLOSE = "close"
 VALUE_FALSE = "false"
 VALUE_OFF = "off"
 VALUE_ON = "on"
 VALUE_OPEN = "open"
 VALUE_STOP = "stop"
+VALUE_TRIGGER = "trigger"
 VALUE_TRUE = "true"
 
 PL_0_1 = {VALUE_ON: "0", VALUE_OFF: "1"}
@@ -445,11 +453,12 @@ def get_device_config(dev_id):
 def mqtt_publish(topic, payload, retain, qos):
     """Publish data to MQTT broker."""
     service_data = {
-        KEY_TOPIC: topic,
-        KEY_PAYLOAD: payload,
-        KEY_RETAIN: retain,
-        KEY_QOS: qos,
+        "topic": topic,
+        "payload": payload,
+        "retain": retain,
+        "qos": qos,
     }
+    logger.debug(service_data)
     logger.debug("Sending to MQTT broker: %s %s", topic, payload)  # noqa: F821
     hass.services.call("mqtt", "publish", service_data, False)  # noqa: F821
 
@@ -530,6 +539,7 @@ bin_sensors_topics = []
 bin_sensors_tpls = []
 ext_humi_sensors = 0
 ext_temp_sensors = 0
+inputs = 0
 lights_bin_sensors = []
 lights_bin_sensors_classes = []
 lights_bin_sensors_pl = []
@@ -732,6 +742,7 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
     model = MODEL_SHELLY2
     relays = 2
     rollers = 1
+    inputs = 2
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -2151,6 +2162,57 @@ for sensor_id in range(len(sensors)):
         payload = ""
     if no_battery_sensor and sensors[sensor_id] == SENSOR_BATTERY:
         payload = ""
+    if dev_id.lower() in ignored:
+        payload = ""
+    mqtt_publish(
+        config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos
+    )
+
+# inputs
+for input_id in range(inputs):
+    device_name = f"{model} {dev_id.split('-')[-1]}"
+    input_topic = f"shellies/{dev_id}/longpush/{input_id}"
+    config_topic = (
+        f"{disc_prefix}/device_automation/{dev_id}-input-{input_id}/shortpush/config"
+    )
+    payload = {
+        KEY_AUTOMATION_TYPE: VALUE_TRIGGER,
+        KEY_TOPIC: input_topic,
+        KEY_PAYLOAD: VALUE_0,
+        KEY_QOS: qos,
+        KEY_DEVICE: {
+            KEY_IDENTIFIERS: [mac],
+            KEY_NAME: device_name,
+            KEY_MODEL: model,
+            KEY_SW_VERSION: fw_ver,
+            KEY_MANUFACTURER: ATTR_MANUFACTURER,
+        },
+        KEY_TYPE: VALUE_BUTTON_SHORT_PRESS,
+        KEY_SUBTYPE: f"button_{input_id + 1}",
+    }
+    if dev_id.lower() in ignored:
+        payload = ""
+    mqtt_publish(
+        config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos
+    )
+    config_topic = (
+        f"{disc_prefix}/device_automation/{dev_id}-input-{input_id}/longpush/config"
+    )
+    payload = {
+        KEY_AUTOMATION_TYPE: VALUE_TRIGGER,
+        KEY_TOPIC: input_topic,
+        KEY_PAYLOAD: VALUE_1,
+        KEY_QOS: qos,
+        KEY_DEVICE: {
+            KEY_IDENTIFIERS: [mac],
+            KEY_NAME: device_name,
+            KEY_MODEL: model,
+            KEY_SW_VERSION: fw_ver,
+            KEY_MANUFACTURER: ATTR_MANUFACTURER,
+        },
+        KEY_TYPE: VALUE_BUTTON_LONG_PRESS,
+        KEY_SUBTYPE: f"button_{input_id + 1}",
+    }
     if dev_id.lower() in ignored:
         payload = ""
     mqtt_publish(
