@@ -2171,13 +2171,13 @@ for sensor_id in range(len(sensors)):
 # inputs
 for input_id in range(inputs):
     device_name = f"{model} {dev_id.split('-')[-1]}"
-    input_topic = f"shellies/{dev_id}/longpush/{input_id}"
+    topic = f"shellies/{dev_id}/input/{input_id}"
     config_topic = (
-        f"{disc_prefix}/device_automation/{dev_id}-input-{input_id}/shortpush/config"
+        f"{disc_prefix}/device_automation/{dev_id}-input-{input_id}/push/config"
     )
     payload = {
         KEY_AUTOMATION_TYPE: VALUE_TRIGGER,
-        KEY_TOPIC: input_topic,
+        KEY_TOPIC: topic,
         KEY_PAYLOAD: VALUE_0,
         KEY_QOS: qos,
         KEY_DEVICE: {
@@ -2188,29 +2188,6 @@ for input_id in range(inputs):
             KEY_MANUFACTURER: ATTR_MANUFACTURER,
         },
         KEY_TYPE: VALUE_BUTTON_SHORT_PRESS,
-        KEY_SUBTYPE: f"button_{input_id + 1}",
-    }
-    if dev_id.lower() in ignored:
-        payload = ""
-    mqtt_publish(
-        config_topic, str(payload).replace("'", '"').replace("^", "'"), retain, qos
-    )
-    config_topic = (
-        f"{disc_prefix}/device_automation/{dev_id}-input-{input_id}/longpush/config"
-    )
-    payload = {
-        KEY_AUTOMATION_TYPE: VALUE_TRIGGER,
-        KEY_TOPIC: input_topic,
-        KEY_PAYLOAD: VALUE_1,
-        KEY_QOS: qos,
-        KEY_DEVICE: {
-            KEY_IDENTIFIERS: [mac],
-            KEY_NAME: device_name,
-            KEY_MODEL: model,
-            KEY_SW_VERSION: fw_ver,
-            KEY_MANUFACTURER: ATTR_MANUFACTURER,
-        },
-        KEY_TYPE: VALUE_BUTTON_LONG_PRESS,
         KEY_SUBTYPE: f"button_{input_id + 1}",
     }
     if dev_id.lower() in ignored:
