@@ -394,7 +394,6 @@ UNIT_VAR = "VAR"
 UNIT_VOLT = "V"
 UNIT_WATT = "W"
 
-VALUE_0 = "0"
 VALUE_1 = "1"
 VALUE_BUTTON_LONG_PRESS = "button_long_press"
 VALUE_BUTTON_SHORT_PRESS = "button_short_press"
@@ -2205,7 +2204,7 @@ for input_id in range(inputs):
     payload = {
         KEY_AUTOMATION_TYPE: VALUE_TRIGGER,
         KEY_TOPIC: topic,
-        KEY_PAYLOAD: VALUE_0,
+        KEY_PAYLOAD: VALUE_1,
         KEY_QOS: qos,
         KEY_DEVICE: {
             KEY_IDENTIFIERS: [mac],
