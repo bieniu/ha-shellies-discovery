@@ -578,6 +578,7 @@ white_lights = 0
 if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     model = MODEL_SHELLY1
     relays = 1
+    inputs = 1
     relays_bin_sensors = [SENSOR_INPUT, SENSOR_LONGPUSH, SENSOR_SHORTPUSH]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1]
     relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH]
@@ -599,6 +600,7 @@ if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
 if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
     model = MODEL_SHELLY1L
     relays = 1
+    inputs = 2
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -668,6 +670,7 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
 if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
     model = MODEL_SHELLY1PM
     relays = 1
+    inputs = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -704,6 +707,7 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
 if model_id == MODEL_SHELLYAIR_ID or dev_id_prefix == MODEL_SHELLYAIR_PREFIX:
     model = MODEL_SHELLYAIR
     relays = 1
+    inputs = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -771,6 +775,7 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
     model = MODEL_SHELLY25
     relays = 2
     rollers = 1
+    inputs = 2
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -809,6 +814,7 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
 if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     model = MODEL_SHELLYUNI
     relays = 2
+    inputs = 1
     ext_humi_sensors = 1
     ext_temp_sensors = 3
     relays_bin_sensors = [
@@ -917,15 +923,16 @@ if model_id == MODEL_SHELLYPLUG_S_ID or dev_id_prefix == MODEL_SHELLYPLUG_S_PREF
 if model_id == MODEL_SHELLY4PRO_ID or dev_id_prefix == MODEL_SHELLY4PRO_PREFIX:
     model = MODEL_SHELLY4PRO
     relays = 4
+    inputs = 4
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
-    relays_bin_sensors = [SENSOR_OVERPOWER]
-    relays_bin_sensors_pl = [None]
-    relays_bin_sensors_topics = [TOPIC_RELAY]
-    relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_classes = [DEVICE_CLASS_PROBLEM]
+    relays_bin_sensors = [SENSOR_OVERPOWER, SENSOR_INPUT]
+    relays_bin_sensors_pl = [None, PL_1_0]
+    relays_bin_sensors_topics = [TOPIC_RELAY, None]
+    relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY, None]
+    relays_bin_sensors_classes = [DEVICE_CLASS_PROBLEM, None]
     bin_sensors = [SENSOR_FIRMWARE_UPDATE]
     bin_sensors_classes = [None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_ANNOUNCE]
@@ -1275,6 +1282,7 @@ if model_id == MODEL_SHELLYSENSE_ID or dev_id_prefix == MODEL_SHELLYSENSE_PREFIX
 
 if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX:
     model = MODEL_SHELLYRGBW2
+    inputs = 1
     rgbw_lights = 1
     white_lights = 4
     lights_sensors = [SENSOR_POWER, SENSOR_ENERGY]
@@ -1305,6 +1313,7 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
 if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREFIX:
     model = MODEL_SHELLYDIMMER
     white_lights = 1
+    inputs = 2
     sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
     sensors_classes = [
         DEVICE_CLASS_TEMPERATURE,
@@ -1387,6 +1396,7 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
 
 if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PREFIX:
     model = MODEL_SHELLYDIMMER2
+    inputs = 2
     white_lights = 1
     sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
     sensors_classes = [
@@ -1666,6 +1676,7 @@ if model_id == MODEL_SHELLYFLOOD_ID or dev_id_prefix == MODEL_SHELLYFLOOD_PREFIX
 
 if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
     model = MODEL_SHELLYI3
+    inputs = 3
     bin_sensors = [
         SENSOR_INPUT_0,
         SENSOR_INPUT_1,
