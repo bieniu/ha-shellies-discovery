@@ -166,8 +166,6 @@ python_script:
         mode: "roller"
         roller-0-name: "Garage"
         roller-0-class: "garage"
-        position_template: "{{ '{% if value | float < 30 %}0{% else %}{{ value }}{% endif %}' }}"
-        set_position_template: "{{ '{%if position | float < 30 %}0{% else %}{{ position }}{% endif %}' }}"
       shellyplug-s-CCBBCCAA:
         relay-0: "light"
         force_update_sensors: true
@@ -180,6 +178,10 @@ python_script:
         powered: "ac"
       shellymotionsensor-113300CCFF:
         powered: "ac"
+      shellyswitch2-AA4455AA:
+        mode: "roller"
+        position_template: "{{ '{% if value | float < 30 %}0{% else %}{{ value }}{% endif %}' }}"
+        set_position_template: "{{ '{%if position | float < 30 %}0{% else %}{{ position }}{% endif %}' }}"
       shellyht-11AA00CCFF:
         powered: "ac"
       shellyrgbw2-AA123FF32:
