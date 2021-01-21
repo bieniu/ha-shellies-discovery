@@ -93,7 +93,7 @@ python_script:
     topic: shellies/announce
   action:
     service: python_script.shellies_discovery
-    data_template:
+    data:
       id: '{{ trigger.payload_json.id }}'
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
@@ -129,7 +129,7 @@ python_script:
     topic: shellies/announce
   action:
     service: python_script.shellies_discovery
-    data_template:
+    data:
       id: '{{ trigger.payload_json.id }}'
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
