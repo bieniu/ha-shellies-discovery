@@ -274,9 +274,9 @@ SENSOR_GAS = "gas"
 SENSOR_HUMIDITY = "humidity"
 SENSOR_ILLUMINATION = "illumination"
 SENSOR_INPUT = "input"
-SENSOR_INPUT_0 = "input 0"
-SENSOR_INPUT_1 = "input 1"
-SENSOR_INPUT_2 = "input 2"
+SENSOR_INPUT_0 = "input 0"  # to remove
+SENSOR_INPUT_1 = "input 1"  # to remove
+SENSOR_INPUT_2 = "input 2"  # to remove
 SENSOR_LOADERROR = "loaderror"
 SENSOR_LONGPUSH = "longpush"
 SENSOR_LONGPUSH_0 = "longpush 0"
@@ -2140,6 +2140,12 @@ for relay_id in range(relays):
                 payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_OVERPOWER_VALUE_TO_JSON
         else:
             payload = ""
+        if (
+            relays_bin_sensors[bin_sensor_id]
+            in [SENSOR_INPUT, SENSOR_INPUT_0, SENSOR_INPUT_1, SENSOR_INPUT_2]
+            and model != MODEL_SHELLY4PRO
+        ):  # to remove
+            payload = ""
         if dev_id.lower() in ignored:
             payload = ""
         mqtt_publish(
@@ -2507,6 +2513,12 @@ for bin_sensor_id in range(len(bin_sensors)):
         and bin_sensors[bin_sensor_id] == SENSOR_CLOUD
         and device_config.get(CONF_POWERED) != ATTR_POWER_AC
     ):
+        payload = ""
+    if (
+        bin_sensors[bin_sensor_id]
+        in [SENSOR_INPUT, SENSOR_INPUT_0, SENSOR_INPUT_1, SENSOR_INPUT_2]
+        and model != MODEL_SHELLY4PRO
+    ):  # to remove
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
