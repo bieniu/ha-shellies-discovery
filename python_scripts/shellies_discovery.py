@@ -127,7 +127,7 @@ LIGHT_WHITE = "white"
 MIN_4PRO_FIRMWARE_DATE = 20200408
 
 # Firmware 1.9.0 release date
-MIN_FIRMWARE_DATE = 20201124
+MIN_FIRMWARE_DATE = 20201124  # change the date to release 1.10
 
 MODEL_SHELLY1 = f"{ATTR_SHELLY} 1"
 MODEL_SHELLY1L = f"{ATTR_SHELLY} 1L"
@@ -2168,7 +2168,7 @@ for relay_id in range(relays):
             SENSOR_INPUT_0,
             SENSOR_INPUT_1,
             SENSOR_INPUT_2,
-        ] and not model in [
+        ] and model not in [
             MODEL_SHELLY4PRO,
             MODEL_SHELLYAIR_ID,
         ]:  # remove one month after release 0.39.0
