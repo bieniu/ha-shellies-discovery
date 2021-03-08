@@ -330,6 +330,7 @@ TOPIC_INFO = "info"
 TOPIC_INPUT_0 = "input/0"
 TOPIC_INPUT_1 = "input/1"
 TOPIC_INPUT_2 = "input/2"
+TOPIC_INPUT_EVENT = "input_event"
 TOPIC_INPUT_EVENT_0 = "input_event/0"
 TOPIC_INPUT_EVENT_1 = "input_event/1"
 TOPIC_INPUT_EVENT_2 = "input_event/2"
@@ -603,9 +604,9 @@ if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     inputs = 1
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     relays_bin_sensors = [SENSOR_INPUT, SENSOR_LONGPUSH, SENSOR_SHORTPUSH]
-    relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1]
-    relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH]
-    relays_bin_sensors_tpls = [None, None, None]
+    relays_bin_sensors_pl = [PL_1_0, None, None]
+    relays_bin_sensors_topics = [None, TOPIC_INPUT_EVENT, TOPIC_INPUT_EVENT]
+    relays_bin_sensors_tpls = [None, TPL_LONGPUSH, TPL_SHORTPUSH]
     relays_bin_sensors_classes = [None, None, None]
     bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_EXT_SWITCH]
     bin_sensors_classes = [None, None]
@@ -2118,8 +2119,6 @@ for relay_id in range(relays):
                 payload[KEY_PAYLOAD_OFF] = relays_bin_sensors_pl[bin_sensor_id][
                     VALUE_OFF
                 ]
-            if relays_bin_sensors[bin_sensor_id] == SENSOR_INPUT:
-                payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~input_event/{bin_sensor_id}"
             if relays_bin_sensors_classes[bin_sensor_id]:
                 payload[KEY_DEVICE_CLASS] = relays_bin_sensors_classes[bin_sensor_id]
             if (
@@ -2488,12 +2487,6 @@ for bin_sensor_id in range(len(bin_sensors)):
         and bin_sensors[bin_sensor_id] == SENSOR_OPENING
     ):
         payload[KEY_FORCE_UPDATE] = str(True)
-    if bin_sensors[bin_sensor_id] == SENSOR_INPUT_0:
-        payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~{TOPIC_INPUT_EVENT_0}"
-    elif bin_sensors[bin_sensor_id] == SENSOR_INPUT_1:
-        payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~{TOPIC_INPUT_EVENT_1}"
-    elif bin_sensors[bin_sensor_id] == SENSOR_INPUT_2:
-        payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~{TOPIC_INPUT_EVENT_2}"
     if model == MODEL_SHELLYGAS and bin_sensors[bin_sensor_id] == SENSOR_GAS:
         payload[KEY_JSON_ATTRIBUTES_TOPIC] = state_topic
         payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_GAS_TO_JSON
