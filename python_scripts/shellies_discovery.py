@@ -274,9 +274,9 @@ SENSOR_GAS = "gas"
 SENSOR_HUMIDITY = "humidity"
 SENSOR_ILLUMINATION = "illumination"
 SENSOR_INPUT = "input"
-SENSOR_INPUT_0 = "input 0"  # to remove
-SENSOR_INPUT_1 = "input 1"  # to remove
-SENSOR_INPUT_2 = "input 2"  # to remove
+SENSOR_INPUT_0 = "input 0"  # remove one month after release 0.39.0
+SENSOR_INPUT_1 = "input 1"  # remove one month after release 0.39.0
+SENSOR_INPUT_2 = "input 2"  # remove one month after release 0.39.0
 SENSOR_LOADERROR = "loaderror"
 SENSOR_LONGPUSH = "longpush"
 SENSOR_LONGPUSH_0 = "longpush 0"
@@ -603,7 +603,11 @@ if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     relays = 1
     inputs = 1
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
-    relays_bin_sensors = [SENSOR_INPUT, SENSOR_LONGPUSH, SENSOR_SHORTPUSH]
+    relays_bin_sensors = [
+        SENSOR_INPUT,
+        SENSOR_LONGPUSH,
+        SENSOR_SHORTPUSH,
+    ]  # remove SENSOR_INPUT one month after release 0.39.0
     relays_bin_sensors_pl = [PL_1_0, None, None]
     relays_bin_sensors_topics = [None, TOPIC_INPUT_EVENT, TOPIC_INPUT_EVENT]
     relays_bin_sensors_tpls = [None, TPL_LONGPUSH, TPL_SHORTPUSH]
@@ -649,8 +653,8 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
         TOPIC_ANNOUNCE,
     ]
     bin_sensors = [
-        SENSOR_INPUT_0,
-        SENSOR_INPUT_1,
+        SENSOR_INPUT_0,  # remove one month after release 0.39.0
+        SENSOR_INPUT_1,  # remove one month after release 0.39.0
         SENSOR_SHORTPUSH_0,
         SENSOR_LONGPUSH_0,
         SENSOR_SHORTPUSH_1,
@@ -671,24 +675,24 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
     bin_sensors_tpls = [
         None,
         None,
-        None,
-        None,
-        None,
-        None,
+        TPL_SHORTPUSH,
+        TPL_LONGPUSH,
+        TPL_SHORTPUSH,
+        TPL_LONGPUSH,
         TPL_NEW_FIRMWARE_FROM_INFO,
         None,
     ]
     bin_sensors_topics = [
         TOPIC_INPUT_0,
         TOPIC_INPUT_1,
-        TOPIC_LONGPUSH_0,
-        TOPIC_LONGPUSH_0,
-        TOPIC_LONGPUSH_1,
-        TOPIC_LONGPUSH_1,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_1,
+        TOPIC_INPUT_EVENT_1,
         TOPIC_INFO,
         None,
     ]
-    bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, PL_1_0, PL_0_1, PL_1_0, None, PL_1_0]
+    bin_sensors_pl = [PL_1_0, PL_1_0, None, None, None, None, None, PL_1_0]
     ext_humi_sensors = 1
     ext_temp_sensors = 3
 
@@ -702,14 +706,19 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [
-        SENSOR_INPUT,
+        SENSOR_INPUT,  # remove one month after release 0.39.0
         SENSOR_LONGPUSH,
         SENSOR_SHORTPUSH,
         SENSOR_OVERPOWER,
     ]
-    relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
-    relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
-    relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
+    relays_bin_sensors_pl = [PL_1_0, None, None, None]
+    relays_bin_sensors_topics = [
+        None,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_RELAY,
+    ]
+    relays_bin_sensors_tpls = [None, TPL_LONGPUSH, TPL_SHORTPUSH, TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [None, None, None, DEVICE_CLASS_PROBLEM]
     sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
     sensors_classes = [
@@ -782,11 +791,15 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
         SENSOR_SHORTPUSH,
         SENSOR_OVERPOWER,
     ]
-    relays_bin_sensors_pl = [PL_1_0, PL_0_1, None]
-    relays_bin_sensors_topics = [TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
-    relays_bin_sensors_tpls = [None, None, TPL_OVERPOWER_RELAY]
+    relays_bin_sensors_pl = [None, None, None]
+    relays_bin_sensors_topics = [TOPIC_INPUT_EVENT, TOPIC_INPUT_EVENT, TOPIC_RELAY]
+    relays_bin_sensors_tpls = [TPL_LONGPUSH, TPL_SHORTPUSH, TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [None, None, DEVICE_CLASS_PROBLEM]
-    bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_INPUT_0, SENSOR_INPUT_1]
+    bin_sensors = [
+        SENSOR_FIRMWARE_UPDATE,
+        SENSOR_INPUT_0,
+        SENSOR_INPUT_1,
+    ]  # remove SENSOR_INPUT_0, SENSOR_INPUT_1 one month after release 0.39.0
     bin_sensors_pl = [None, PL_1_0, PL_1_0]
     bin_sensors_classes = [None, None, None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO, None, None]
@@ -812,9 +825,9 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         SENSOR_SHORTPUSH,
         SENSOR_OVERPOWER,
     ]
-    relays_bin_sensors_pl = [PL_1_0, PL_0_1, None]
-    relays_bin_sensors_topics = [TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
-    relays_bin_sensors_tpls = [None, None, TPL_OVERPOWER_RELAY]
+    relays_bin_sensors_pl = [None, None, None]
+    relays_bin_sensors_topics = [TOPIC_INPUT_EVENT, TOPIC_INPUT_EVENT, TOPIC_RELAY]
+    relays_bin_sensors_tpls = [TPL_LONGPUSH, TPL_SHORTPUSH, TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [None, None, DEVICE_CLASS_PROBLEM]
     sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
     sensors_classes = [
@@ -830,8 +843,8 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
     bin_sensors = [
         SENSOR_OVERTEMPERATURE,
         SENSOR_FIRMWARE_UPDATE,
-        SENSOR_INPUT_0,
-        SENSOR_INPUT_1,
+        SENSOR_INPUT_0,  # remove one month after release 0.39.0
+        SENSOR_INPUT_1,  # remove one month after release 0.39.0
     ]
     bin_sensors_classes = [DEVICE_CLASS_PROBLEM, None, None, None]
     bin_sensors_pl = [PL_1_0, None, PL_1_0, PL_1_0]
@@ -846,14 +859,19 @@ if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     ext_humi_sensors = 1
     ext_temp_sensors = 3
     relays_bin_sensors = [
-        SENSOR_INPUT,
+        SENSOR_INPUT,  # remove one month after release 0.39.0
         SENSOR_LONGPUSH,
         SENSOR_SHORTPUSH,
         SENSOR_OVERPOWER,
     ]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
-    relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH, TOPIC_RELAY]
-    relays_bin_sensors_tpls = [None, None, None, TPL_OVERPOWER_RELAY]
+    relays_bin_sensors_topics = [
+        None,
+        TOPIC_INPUT_EVENT,
+        TOPIC_INPUT_EVENT,
+        TOPIC_RELAY,
+    ]
+    relays_bin_sensors_tpls = [None, TPL_LONGPUSH, TPL_SHORTPUSH, TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [None, None, None, DEVICE_CLASS_PROBLEM]
     sensors = [SENSOR_ADC, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
     sensors_classes = [
@@ -1331,15 +1349,20 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
     lights_bin_sensors_pl = [None]
     lights_bin_sensors_topics = [None]
     bin_sensors = [
-        SENSOR_INPUT_0,
+        SENSOR_INPUT_0,  # remove one month after release 0.39.0
         SENSOR_LONGPUSH_0,
         SENSOR_SHORTPUSH_0,
         SENSOR_FIRMWARE_UPDATE,
     ]
     bin_sensors_classes = [None, None, None, None]
-    bin_sensors_tpls = [None, None, None, TPL_NEW_FIRMWARE_FROM_INFO]
-    bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
-    bin_sensors_topics = [TOPIC_INPUT_0, TOPIC_LONGPUSH_0, TOPIC_LONGPUSH_0, TOPIC_INFO]
+    bin_sensors_tpls = [None, TPL_LONGPUSH, TPL_SHORTPUSH, TPL_NEW_FIRMWARE_FROM_INFO]
+    bin_sensors_pl = [PL_1_0, None, None, None]
+    bin_sensors_topics = [
+        TOPIC_INPUT_0,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INFO,
+    ]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
     sensors_units = [UNIT_DB, None, None, None]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
@@ -1366,8 +1389,8 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
         SENSOR_OVERTEMPERATURE,
         SENSOR_OVERLOAD,
         SENSOR_LOADERROR,
-        SENSOR_INPUT_0,
-        SENSOR_INPUT_1,
+        SENSOR_INPUT_0,  # remove one month after release 0.39.0
+        SENSOR_INPUT_1,  # remove one month after release 0.39.0
         SENSOR_LONGPUSH_0,
         SENSOR_LONGPUSH_1,
         SENSOR_SHORTPUSH_0,
@@ -1392,10 +1415,10 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
         PL_1_0,
         PL_1_0,
         PL_1_0,
-        PL_1_0,
-        PL_1_0,
-        PL_0_1,
-        PL_0_1,
+        None,
+        None,
+        None,
+        None,
         None,
     ]
     bin_sensors_tpls = [
@@ -1404,10 +1427,10 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
         None,
         None,
         None,
-        None,
-        None,
-        None,
-        None,
+        TPL_LONGPUSH,
+        TPL_LONGPUSH,
+        TPL_SHORTPUSH,
+        TPL_SHORTPUSH,
         TPL_NEW_FIRMWARE_FROM_INFO,
     ]
     bin_sensors_topics = [
@@ -1416,10 +1439,10 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
         None,
         TOPIC_INPUT_0,
         TOPIC_INPUT_1,
-        TOPIC_LONGPUSH_0,
-        TOPIC_LONGPUSH_1,
-        TOPIC_LONGPUSH_0,
-        TOPIC_LONGPUSH_1,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_1,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_1,
         TOPIC_INFO,
     ]
     lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER_VALUE]
@@ -1451,8 +1474,8 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         SENSOR_OVERTEMPERATURE,
         SENSOR_OVERLOAD,
         SENSOR_LOADERROR,
-        SENSOR_INPUT_0,
-        SENSOR_INPUT_1,
+        SENSOR_INPUT_0,  # remove one month after release 0.39.0
+        SENSOR_INPUT_1,  # remove one month after release 0.39.0
         SENSOR_LONGPUSH_0,
         SENSOR_LONGPUSH_1,
         SENSOR_SHORTPUSH_0,
@@ -1477,10 +1500,10 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         PL_1_0,
         PL_1_0,
         PL_1_0,
-        PL_1_0,
-        PL_1_0,
-        PL_0_1,
-        PL_0_1,
+        None,
+        None,
+        None,
+        None,
         None,
     ]
     bin_sensors_tpls = [
@@ -1489,10 +1512,10 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         None,
         None,
         None,
-        None,
-        None,
-        None,
-        None,
+        TPL_LONGPUSH,
+        TPL_LONGPUSH,
+        TPL_SHORTPUSH,
+        TPL_SHORTPUSH,
         TPL_NEW_FIRMWARE_FROM_INFO,
     ]
     bin_sensors_topics = [
@@ -1501,10 +1524,10 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         None,
         TOPIC_INPUT_0,
         TOPIC_INPUT_1,
-        TOPIC_LONGPUSH_0,
-        TOPIC_LONGPUSH_1,
-        TOPIC_LONGPUSH_0,
-        TOPIC_LONGPUSH_1,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_1,
+        TOPIC_INPUT_EVENT_0,
+        TOPIC_INPUT_EVENT_1,
         TOPIC_INFO,
     ]
     lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER_VALUE]
@@ -1724,9 +1747,9 @@ if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
         VALUE_BUTTON_LONG_SHORT_PRESS,
     ]
     bin_sensors = [
-        SENSOR_INPUT_0,
-        SENSOR_INPUT_1,
-        SENSOR_INPUT_2,
+        SENSOR_INPUT_0,  # remove one month after release 0.39.0
+        SENSOR_INPUT_1,  # remove one month after release 0.39.0
+        SENSOR_INPUT_2,  # remove one month after release 0.39.0
         SENSOR_SHORTPUSH_0,
         SENSOR_DOUBLE_SHORTPUSH_0,
         SENSOR_TRIPLE_SHORTPUSH_0,
@@ -2140,11 +2163,15 @@ for relay_id in range(relays):
                 payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_OVERPOWER_VALUE_TO_JSON
         else:
             payload = ""
-        if (
-            relays_bin_sensors[bin_sensor_id]
-            in [SENSOR_INPUT, SENSOR_INPUT_0, SENSOR_INPUT_1, SENSOR_INPUT_2]
-            and model != MODEL_SHELLY4PRO
-        ):  # to remove
+        if relays_bin_sensors[bin_sensor_id] in [
+            SENSOR_INPUT,
+            SENSOR_INPUT_0,
+            SENSOR_INPUT_1,
+            SENSOR_INPUT_2,
+        ] and not model in [
+            MODEL_SHELLY4PRO,
+            MODEL_SHELLYAIR_ID,
+        ]:  # remove one month after release 0.39.0
             payload = ""
         if dev_id.lower() in ignored:
             payload = ""
@@ -2518,7 +2545,7 @@ for bin_sensor_id in range(len(bin_sensors)):
         bin_sensors[bin_sensor_id]
         in [SENSOR_INPUT, SENSOR_INPUT_0, SENSOR_INPUT_1, SENSOR_INPUT_2]
         and model != MODEL_SHELLY4PRO
-    ):  # to remove
+    ):  # remove one month after release 0.39.0
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
