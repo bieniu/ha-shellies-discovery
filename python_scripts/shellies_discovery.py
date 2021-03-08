@@ -1176,7 +1176,7 @@ if (
     sensors_tpls = [TPL_BATTERY, TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_topics = [None, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
     bin_sensors = [
-        SENSOR_INPUT_0,
+        SENSOR_INPUT_0,  # remove one month after release 0.39.0
         SENSOR_SHORTPUSH,
         SENSOR_DOUBLE_SHORTPUSH,
         SENSOR_TRIPLE_SHORTPUSH,
