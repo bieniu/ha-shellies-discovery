@@ -604,7 +604,7 @@ if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
         SENSOR_INPUT,
         SENSOR_LONGPUSH,
         SENSOR_SHORTPUSH,
-    ]  # remove SENSOR_INPUT one month after release 0.39.0
+    ]
     relays_bin_sensors_pl = [PL_1_0, None, None]
     relays_bin_sensors_topics = [None, TOPIC_INPUT_EVENT, TOPIC_INPUT_EVENT]
     relays_bin_sensors_tpls = [None, TPL_LONGPUSH, TPL_SHORTPUSH]
@@ -739,6 +739,7 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
 if model_id == MODEL_SHELLYAIR_ID or dev_id_prefix == MODEL_SHELLYAIR_PREFIX:
     model = MODEL_SHELLYAIR
     relays = 1
+    inputs = 1  # remove one month after release 0.39.0
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -796,7 +797,7 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
         SENSOR_FIRMWARE_UPDATE,
         SENSOR_INPUT_0,
         SENSOR_INPUT_1,
-    ]  # remove SENSOR_INPUT_0, SENSOR_INPUT_1 one month after release 0.39.0
+    ]
     bin_sensors_pl = [None, PL_1_0, PL_1_0]
     bin_sensors_classes = [None, None, None]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO, None, None]
@@ -966,7 +967,7 @@ if model_id == MODEL_SHELLYPLUG_S_ID or dev_id_prefix == MODEL_SHELLYPLUG_S_PREF
 if model_id == MODEL_SHELLY4PRO_ID or dev_id_prefix == MODEL_SHELLY4PRO_PREFIX:
     model = MODEL_SHELLY4PRO
     relays = 4
-    inputs = 4  # remove
+    inputs = 4  # remove one month after release 0.39.0
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -2285,6 +2286,12 @@ for input_id in range(inputs):
         KEY_TYPE: VALUE_BUTTON_SHORT_RELEASE,
         KEY_SUBTYPE: f"button_{input_id + 1}",
     }
+
+    # remove one month after release 0.39.0
+    if model in [MODEL_SHELLY4PRO, MODEL_SHELLYAIR]:
+        payload = ""
+    # remove one month after release 0.39.0
+
     if dev_id.lower() in ignored:
         payload = ""
     mqtt_publish(config_topic, str(payload).replace("'", '"').replace("^", "'"), retain)
