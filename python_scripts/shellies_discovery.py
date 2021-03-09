@@ -126,8 +126,8 @@ LIGHT_WHITE = "white"
 # Firmware 1.6.5 release date
 MIN_4PRO_FIRMWARE_DATE = 20200408
 
-# Firmware 1.9.0 release date
-MIN_FIRMWARE_DATE = 20201124  # change the date to release 1.10
+# Firmware 1.10.0 RC3 release date
+MIN_FIRMWARE_DATE = 20210306
 
 MODEL_SHELLY1 = f"{ATTR_SHELLY} 1"
 MODEL_SHELLY1L = f"{ATTR_SHELLY} 1L"
