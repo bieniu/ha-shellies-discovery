@@ -274,9 +274,9 @@ SENSOR_GAS = "gas"
 SENSOR_HUMIDITY = "humidity"
 SENSOR_ILLUMINATION = "illumination"
 SENSOR_INPUT = "input"
-SENSOR_INPUT_0 = "input 0"  # remove one month after release 0.39.0
-SENSOR_INPUT_1 = "input 1"  # remove one month after release 0.39.0
-SENSOR_INPUT_2 = "input 2"  # remove one month after release 0.39.0
+SENSOR_INPUT_0 = "input 0"
+SENSOR_INPUT_1 = "input 1"
+SENSOR_INPUT_2 = "input 2"
 SENSOR_LOADERROR = "loaderror"
 SENSOR_LONGPUSH = "longpush"
 SENSOR_LONGPUSH_0 = "longpush 0"
@@ -653,8 +653,8 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
         TOPIC_ANNOUNCE,
     ]
     bin_sensors = [
-        SENSOR_INPUT_0,  # remove one month after release 0.39.0
-        SENSOR_INPUT_1,  # remove one month after release 0.39.0
+        SENSOR_INPUT_0,
+        SENSOR_INPUT_1,
         SENSOR_SHORTPUSH_0,
         SENSOR_LONGPUSH_0,
         SENSOR_SHORTPUSH_1,
@@ -706,7 +706,7 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [
-        SENSOR_INPUT,  # remove one month after release 0.39.0
+        SENSOR_INPUT,
         SENSOR_LONGPUSH,
         SENSOR_SHORTPUSH,
         SENSOR_OVERPOWER,
@@ -843,8 +843,8 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
     bin_sensors = [
         SENSOR_OVERTEMPERATURE,
         SENSOR_FIRMWARE_UPDATE,
-        SENSOR_INPUT_0,  # remove one month after release 0.39.0
-        SENSOR_INPUT_1,  # remove one month after release 0.39.0
+        SENSOR_INPUT_0,
+        SENSOR_INPUT_1,
     ]
     bin_sensors_classes = [DEVICE_CLASS_PROBLEM, None, None, None]
     bin_sensors_pl = [PL_1_0, None, PL_1_0, PL_1_0]
@@ -859,7 +859,7 @@ if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     ext_humi_sensors = 1
     ext_temp_sensors = 3
     relays_bin_sensors = [
-        SENSOR_INPUT,  # remove one month after release 0.39.0
+        SENSOR_INPUT,
         SENSOR_LONGPUSH,
         SENSOR_SHORTPUSH,
         SENSOR_OVERPOWER,
@@ -1176,7 +1176,7 @@ if (
     sensors_tpls = [TPL_BATTERY, TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_topics = [None, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
     bin_sensors = [
-        SENSOR_INPUT_0,  # remove one month after release 0.39.0
+        SENSOR_INPUT_0,
         SENSOR_SHORTPUSH,
         SENSOR_DOUBLE_SHORTPUSH,
         SENSOR_TRIPLE_SHORTPUSH,
@@ -1349,7 +1349,7 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
     lights_bin_sensors_pl = [None]
     lights_bin_sensors_topics = [None]
     bin_sensors = [
-        SENSOR_INPUT_0,  # remove one month after release 0.39.0
+        SENSOR_INPUT_0,
         SENSOR_LONGPUSH_0,
         SENSOR_SHORTPUSH_0,
         SENSOR_FIRMWARE_UPDATE,
@@ -1389,8 +1389,8 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
         SENSOR_OVERTEMPERATURE,
         SENSOR_OVERLOAD,
         SENSOR_LOADERROR,
-        SENSOR_INPUT_0,  # remove one month after release 0.39.0
-        SENSOR_INPUT_1,  # remove one month after release 0.39.0
+        SENSOR_INPUT_0,
+        SENSOR_INPUT_1,
         SENSOR_LONGPUSH_0,
         SENSOR_LONGPUSH_1,
         SENSOR_SHORTPUSH_0,
@@ -1474,8 +1474,8 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         SENSOR_OVERTEMPERATURE,
         SENSOR_OVERLOAD,
         SENSOR_LOADERROR,
-        SENSOR_INPUT_0,  # remove one month after release 0.39.0
-        SENSOR_INPUT_1,  # remove one month after release 0.39.0
+        SENSOR_INPUT_0,
+        SENSOR_INPUT_1,
         SENSOR_LONGPUSH_0,
         SENSOR_LONGPUSH_1,
         SENSOR_SHORTPUSH_0,
@@ -1747,9 +1747,9 @@ if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
         VALUE_BUTTON_LONG_SHORT_PRESS,
     ]
     bin_sensors = [
-        SENSOR_INPUT_0,  # remove one month after release 0.39.0
-        SENSOR_INPUT_1,  # remove one month after release 0.39.0
-        SENSOR_INPUT_2,  # remove one month after release 0.39.0
+        SENSOR_INPUT_0,
+        SENSOR_INPUT_1,
+        SENSOR_INPUT_2,
         SENSOR_SHORTPUSH_0,
         SENSOR_DOUBLE_SHORTPUSH_0,
         SENSOR_TRIPLE_SHORTPUSH_0,
@@ -2163,16 +2163,6 @@ for relay_id in range(relays):
                 payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_OVERPOWER_VALUE_TO_JSON
         else:
             payload = ""
-        if relays_bin_sensors[bin_sensor_id] in [
-            SENSOR_INPUT,
-            SENSOR_INPUT_0,
-            SENSOR_INPUT_1,
-            SENSOR_INPUT_2,
-        ] and model not in [
-            MODEL_SHELLY4PRO,
-            MODEL_SHELLYAIR_ID,
-        ]:  # remove one month after release 0.39.0
-            payload = ""
         if dev_id.lower() in ignored:
             payload = ""
         mqtt_publish(
@@ -2540,12 +2530,6 @@ for bin_sensor_id in range(len(bin_sensors)):
         and bin_sensors[bin_sensor_id] == SENSOR_CLOUD
         and device_config.get(CONF_POWERED) != ATTR_POWER_AC
     ):
-        payload = ""
-    if (
-        bin_sensors[bin_sensor_id]
-        in [SENSOR_INPUT, SENSOR_INPUT_0, SENSOR_INPUT_1, SENSOR_INPUT_2]
-        and model != MODEL_SHELLY4PRO
-    ):  # remove one month after release 0.39.0
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
