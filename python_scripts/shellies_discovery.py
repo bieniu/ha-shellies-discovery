@@ -384,6 +384,9 @@ TPL_UPTIME = "{{(as_timestamp(now())-value_json.uptime)|timestamp_local}}"
 TPL_VIBRATION = "{%if value_json.vibration==true%}ON{%else%}OFF{%endif%}"
 TPL_VOLTAGE = "{{value|float|round(1)}}"
 
+TPL_DEVICE_TRIGGER_S = "{{value_json.event==^S^}}"
+TPL_DEVICE_TRIGGER_L = "{{value_json.event==^L^}}"
+
 UNIT_AMPERE = "A"
 UNIT_CELSIUS = "°C"
 UNIT_DB = "dB"
@@ -397,9 +400,12 @@ UNIT_VAR = "VAR"
 UNIT_VOLT = "V"
 UNIT_WATT = "W"
 
-VALUE_1 = "1"
+VALUE_BUTTON_DOUBLE_PRESS = "button_double_press"
 VALUE_BUTTON_LONG_PRESS = "button_long_press"
+VALUE_BUTTON_LONG_SHORT_PRESS = "button_long_short_press"
+VALUE_BUTTON_SHORT_LONG_PRESS = "button_short_long_press"
 VALUE_BUTTON_SHORT_PRESS = "button_short_press"
+VALUE_BUTTON_TRIPLE_PRESS = "button_triple_press"
 VALUE_CLOSE = "close"
 VALUE_CLOSE = "close"
 VALUE_FALSE = "false"
@@ -411,6 +417,15 @@ VALUE_STOP = "stop"
 VALUE_STOP = "stop"
 VALUE_TRIGGER = "trigger"
 VALUE_TRUE = "true"
+
+DEVICE_TRIGGERS_MAP = {
+    VALUE_BUTTON_DOUBLE_PRESS: "SS",
+    VALUE_BUTTON_LONG_PRESS: "L",
+    VALUE_BUTTON_LONG_SHORT_PRESS: "LS",
+    VALUE_BUTTON_SHORT_LONG_PRESS: "SL",
+    VALUE_BUTTON_SHORT_PRESS: "S",
+    VALUE_BUTTON_TRIPLE_PRESS: "SSS",
+}
 
 PL_0_1 = {VALUE_ON: "0", VALUE_OFF: "1"}
 PL_1_0 = {VALUE_ON: "1", VALUE_OFF: "0"}
@@ -545,6 +560,7 @@ bin_sensors_tpls = []
 ext_humi_sensors = 0
 ext_temp_sensors = 0
 inputs = 0
+inputs_types = []
 lights_bin_sensors = []
 lights_bin_sensors_classes = []
 lights_bin_sensors_pl = []
@@ -584,6 +600,7 @@ if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     model = MODEL_SHELLY1
     relays = 1
     inputs = 1
+    inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     relays_bin_sensors = [SENSOR_INPUT, SENSOR_LONGPUSH, SENSOR_SHORTPUSH]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1]
     relays_bin_sensors_topics = [None, TOPIC_LONGPUSH, TOPIC_LONGPUSH]
@@ -606,6 +623,7 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
     model = MODEL_SHELLY1L
     relays = 1
     inputs = 2
+    inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -676,6 +694,7 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
     model = MODEL_SHELLY1PM
     relays = 1
     inputs = 1
+    inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -712,7 +731,6 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
 if model_id == MODEL_SHELLYAIR_ID or dev_id_prefix == MODEL_SHELLYAIR_PREFIX:
     model = MODEL_SHELLYAIR
     relays = 1
-    inputs = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -752,6 +770,7 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
     relays = 2
     rollers = 1
     inputs = 2
+    inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -781,6 +800,7 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
     relays = 2
     rollers = 1
     inputs = 2
+    inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -820,6 +840,7 @@ if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     model = MODEL_SHELLYUNI
     relays = 2
     inputs = 1
+    inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     ext_humi_sensors = 1
     ext_temp_sensors = 3
     relays_bin_sensors = [
@@ -928,7 +949,7 @@ if model_id == MODEL_SHELLYPLUG_S_ID or dev_id_prefix == MODEL_SHELLYPLUG_S_PREF
 if model_id == MODEL_SHELLY4PRO_ID or dev_id_prefix == MODEL_SHELLY4PRO_PREFIX:
     model = MODEL_SHELLY4PRO
     relays = 4
-    inputs = 4
+    inputs = 4  # remove
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -1116,6 +1137,13 @@ if (
     or dev_id_prefix == MODEL_SHELLYBUTTON1_PREFIX
 ):
     model = MODEL_SHELLYBUTTON1
+    inputs = 1
+    inputs_types = [
+        VALUE_BUTTON_LONG_PRESS,
+        VALUE_BUTTON_SHORT_PRESS,
+        VALUE_BUTTON_DOUBLE_PRESS,
+        VALUE_BUTTON_TRIPLE_PRESS,
+    ]
     sensors = [SENSOR_BATTERY, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
     sensors_classes = [
         DEVICE_CLASS_BATTERY,
@@ -1288,6 +1316,7 @@ if model_id == MODEL_SHELLYSENSE_ID or dev_id_prefix == MODEL_SHELLYSENSE_PREFIX
 if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX:
     model = MODEL_SHELLYRGBW2
     inputs = 1
+    inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     rgbw_lights = 1
     white_lights = 4
     lights_sensors = [SENSOR_POWER, SENSOR_ENERGY]
@@ -1319,6 +1348,7 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
     model = MODEL_SHELLYDIMMER
     white_lights = 1
     inputs = 2
+    inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
     sensors_classes = [
         DEVICE_CLASS_TEMPERATURE,
@@ -1402,6 +1432,7 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
 if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PREFIX:
     model = MODEL_SHELLYDIMMER2
     inputs = 2
+    inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     white_lights = 1
     sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
     sensors_classes = [
@@ -1682,6 +1713,14 @@ if model_id == MODEL_SHELLYFLOOD_ID or dev_id_prefix == MODEL_SHELLYFLOOD_PREFIX
 if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
     model = MODEL_SHELLYI3
     inputs = 3
+    inputs_types = [
+        VALUE_BUTTON_LONG_PRESS,
+        VALUE_BUTTON_SHORT_PRESS,
+        VALUE_BUTTON_DOUBLE_PRESS,
+        VALUE_BUTTON_TRIPLE_PRESS,
+        VALUE_BUTTON_SHORT_LONG_PRESS,
+        VALUE_BUTTON_LONG_SHORT_PRESS,
+    ]
     bin_sensors = [
         SENSOR_INPUT_0,
         SENSOR_INPUT_1,
@@ -2201,28 +2240,40 @@ for sensor_id in range(len(sensors)):
 # inputs
 for input_id in range(inputs):
     device_name = f"{model} {dev_id.split('-')[-1]}"
-    topic = f"shellies/{dev_id}/input/{input_id}"
+
+    # remove one month after release 0.39.0
     config_topic = (
         f"{disc_prefix}/device_automation/{dev_id}-input-{input_id}/push/config"
     )
-    payload = {
-        KEY_AUTOMATION_TYPE: VALUE_TRIGGER,
-        KEY_TOPIC: topic,
-        KEY_PAYLOAD: VALUE_1,
-        KEY_QOS: qos,
-        KEY_DEVICE: {
-            KEY_IDENTIFIERS: [mac],
-            KEY_NAME: device_name,
-            KEY_MODEL: model,
-            KEY_SW_VERSION: fw_ver,
-            KEY_MANUFACTURER: ATTR_MANUFACTURER,
-        },
-        KEY_TYPE: VALUE_BUTTON_SHORT_PRESS,
-        KEY_SUBTYPE: f"button_{input_id + 1}",
-    }
-    if dev_id.lower() in ignored:
-        payload = ""
-    mqtt_publish(config_topic, str(payload).replace("'", '"').replace("^", "'"), retain)
+    mqtt_publish(config_topic, "", retain)
+    # remove one month after release 0.39.0
+
+    topic = f"shellies/{dev_id}/input_event/{input_id}"
+    for event in inputs_types:
+        config_topic = (
+            f"{disc_prefix}/device_automation/{dev_id}-input-{input_id}/{event}/config"
+        )
+        payload = {
+            KEY_AUTOMATION_TYPE: VALUE_TRIGGER,
+            KEY_TOPIC: topic,
+            KEY_PAYLOAD: DEVICE_TRIGGERS_MAP[event],
+            KEY_VALUE_TEMPLATE: "{{value_json.event}}",
+            KEY_QOS: qos,
+            KEY_DEVICE: {
+                KEY_IDENTIFIERS: [mac],
+                KEY_NAME: device_name,
+                KEY_MODEL: model,
+                KEY_SW_VERSION: fw_ver,
+                KEY_MANUFACTURER: ATTR_MANUFACTURER,
+            },
+            KEY_TYPE: event,
+            KEY_SUBTYPE: f"button_{input_id + 1}",
+        }
+        if dev_id.lower() in ignored:
+            payload = ""
+        mqtt_publish(
+            config_topic, str(payload).replace("'", '"').replace("^", "'"), retain
+        )
 
 # external temperature sensors
 for sensor_id in range(ext_temp_sensors):
