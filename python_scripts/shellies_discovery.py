@@ -385,9 +385,6 @@ TPL_UPTIME = "{{(as_timestamp(now())-value_json.uptime)|timestamp_local}}"
 TPL_VIBRATION = "{%if value_json.vibration==true%}ON{%else%}OFF{%endif%}"
 TPL_VOLTAGE = "{{value|float|round(1)}}"
 
-TPL_DEVICE_TRIGGER_S = "{{value_json.event==^S^}}"
-TPL_DEVICE_TRIGGER_L = "{{value_json.event==^L^}}"
-
 UNIT_AMPERE = "A"
 UNIT_CELSIUS = "°C"
 UNIT_DB = "dB"
