@@ -406,6 +406,7 @@ VALUE_BUTTON_LONG_SHORT_PRESS = "button_long_short_press"
 VALUE_BUTTON_SHORT_LONG_PRESS = "button_short_long_press"
 VALUE_BUTTON_SHORT_PRESS = "button_short_press"
 VALUE_BUTTON_TRIPLE_PRESS = "button_triple_press"
+VALUE_BUTTON_SHORT_RELEASE = "button_short_release"
 VALUE_CLOSE = "close"
 VALUE_CLOSE = "close"
 VALUE_FALSE = "false"
@@ -2247,6 +2248,27 @@ for input_id in range(inputs):
     )
     mqtt_publish(config_topic, "", retain)
     # remove one month after release 0.39.0
+
+    config_topic = f"{disc_prefix}/device_automation/{dev_id}-input-{input_id}/button_release/config"
+    topic = f"shellies/{dev_id}/input/{input_id}"
+    payload = {
+        KEY_AUTOMATION_TYPE: VALUE_TRIGGER,
+        KEY_TOPIC: topic,
+        KEY_PAYLOAD: "0",
+        KEY_QOS: qos,
+        KEY_DEVICE: {
+            KEY_IDENTIFIERS: [mac],
+            KEY_NAME: device_name,
+            KEY_MODEL: model,
+            KEY_SW_VERSION: fw_ver,
+            KEY_MANUFACTURER: ATTR_MANUFACTURER,
+        },
+        KEY_TYPE: VALUE_BUTTON_SHORT_RELEASE,
+        KEY_SUBTYPE: f"button_{input_id + 1}",
+    }
+    if dev_id.lower() in ignored:
+        payload = ""
+    mqtt_publish(config_topic, str(payload).replace("'", '"').replace("^", "'"), retain)
 
     topic = f"shellies/{dev_id}/input_event/{input_id}"
     for event in inputs_types:
