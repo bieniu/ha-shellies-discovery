@@ -501,11 +501,11 @@ ignored = [
 mac = data.get(CONF_MAC)  # noqa: F821
 
 if not dev_id:
-    raise ValueError(f"{dev_id} is wrong id argument")
+    raise ValueError("id value None is not valid, check script configuration")
 if not mac:
-    raise ValueError(f"{mac} is wrong mac argument")
+    raise ValueError("mac value None is not valid, check script configuration")
 if not fw_ver:
-    raise ValueError(f"{fw_ver} is wrong fw_ver argument")
+    raise ValueError(f"fw_ver value None is not valid, check script configuration")
 
 mac = str(mac).lower()  # noqa: F821
 
@@ -542,7 +542,7 @@ try:
     else:
         raise ValueError()
 except ValueError:
-    logger.error("Wrong qos argument, the default value 0 was used")  # noqa: F821
+    logger.error("Not valid qos value, the default value 0 was used")  # noqa: F821
 
 disc_prefix = data.get(CONF_DISCOVERY_PREFIX, DEFAULT_DISC_PREFIX)  # noqa: F821
 
@@ -599,58 +599,42 @@ white_lights = 0
 
 if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     model = MODEL_SHELLY1
-    relays = 1
+
+    ext_humi_sensors = 1
+    ext_temp_sensors = 3
     inputs = 1
+    relays = 1
+
+    bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_EXT_SWITCH]
+    bin_sensors_classes = [None, None]
+    bin_sensors_pl = [None, PL_1_0]
+    bin_sensors_topics = [TOPIC_INFO, TOPIC_EXT_SWITCH]
+    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO, None]
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     relays_bin_sensors = [
         SENSOR_INPUT,
         SENSOR_LONGPUSH,
         SENSOR_SHORTPUSH,
     ]
+    relays_bin_sensors_classes = [None, None, None]
     relays_bin_sensors_pl = [PL_1_0, None, None]
     relays_bin_sensors_topics = [None, TOPIC_INPUT_EVENT, TOPIC_INPUT_EVENT]
     relays_bin_sensors_tpls = [None, TPL_LONGPUSH, TPL_SHORTPUSH]
-    relays_bin_sensors_classes = [None, None, None]
-    bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_EXT_SWITCH]
-    bin_sensors_classes = [None, None]
-    bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO, None]
-    bin_sensors_pl = [None, PL_1_0]
-    bin_sensors_topics = [TOPIC_INFO, TOPIC_EXT_SWITCH]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
-    sensors_units = [UNIT_DB, None, None, None]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
-    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
-    ext_humi_sensors = 1
-    ext_temp_sensors = 3
+    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
+    sensors_units = [UNIT_DB, None, None, None]
+
 
 if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
     model = MODEL_SHELLY1L
-    relays = 1
+
+    ext_humi_sensors = 1
+    ext_temp_sensors = 3
     inputs = 2
-    inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
-    relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
-    relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
-    sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
-    sensors_classes = [
-        DEVICE_CLASS_TEMPERATURE,
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-        None,
-    ]
-    sensors_units = [UNIT_CELSIUS, UNIT_DB, None, None, None]
-    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
-    sensors_topics = [
-        None,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_ANNOUNCE,
-    ]
+    relays = 1
+
     bin_sensors = [
         SENSOR_INPUT_0,
         SENSOR_INPUT_1,
@@ -671,16 +655,7 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
         None,
         DEVICE_CLASS_PROBLEM,
     ]
-    bin_sensors_tpls = [
-        None,
-        None,
-        TPL_SHORTPUSH,
-        TPL_LONGPUSH,
-        TPL_SHORTPUSH,
-        TPL_LONGPUSH,
-        TPL_NEW_FIRMWARE_FROM_INFO,
-        None,
-    ]
+    bin_sensors_pl = [PL_1_0, PL_1_0, None, None, None, None, None, PL_1_0]
     bin_sensors_topics = [
         TOPIC_INPUT_0,
         TOPIC_INPUT_1,
@@ -691,9 +666,39 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
         TOPIC_INFO,
         None,
     ]
-    bin_sensors_pl = [PL_1_0, PL_1_0, None, None, None, None, None, PL_1_0]
-    ext_humi_sensors = 1
-    ext_temp_sensors = 3
+    bin_sensors_tpls = [
+        None,
+        None,
+        TPL_SHORTPUSH,
+        TPL_LONGPUSH,
+        TPL_SHORTPUSH,
+        TPL_LONGPUSH,
+        TPL_NEW_FIRMWARE_FROM_INFO,
+        None,
+    ]
+    inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
+    relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
+    sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_classes = [
+        DEVICE_CLASS_TEMPERATURE,
+        DEVICE_CLASS_SIGNAL_STRENGTH,
+        None,
+        DEVICE_CLASS_TIMESTAMP,
+        None,
+    ]
+    sensors_topics = [
+        None,
+        TOPIC_INFO,
+        TOPIC_INFO,
+        TOPIC_INFO,
+        TOPIC_INFO,
+        TOPIC_ANNOUNCE,
+    ]
+    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
+    sensors_units = [UNIT_CELSIUS, UNIT_DB, None, None, None]
 
 if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
     model = MODEL_SHELLY1PM
@@ -1335,7 +1340,7 @@ if model_id == MODEL_SHELLYSENSE_ID or dev_id_prefix == MODEL_SHELLYSENSE_PREFIX
 
 if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX:
     if mode not in [LIGHT_COLOR, LIGHT_WHITE]:
-        raise ValueError(f"{mode} is wrong mode argument")
+        raise ValueError(f"mode value {mode} is not valid, check script configuration")
 
     model = MODEL_SHELLYRGBW2
 
@@ -2213,7 +2218,7 @@ for sensor_id in range(len(sensors)):
                 CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED
             )
         if not isinstance(expire_after, int):
-            raise TypeError(f"expire_after value {expire_after} is not an integer")
+            raise TypeError(f"expire_after value {expire_after} is not an integer, check script configuration")
     payload = {
         KEY_NAME: sensor_name,
         KEY_STATE_TOPIC: state_topic,
@@ -2433,7 +2438,7 @@ for bin_sensor_id in range(len(bin_sensors)):
                 CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED
             )
         if not isinstance(expire_after, int):
-            raise TypeError(f"expire_after value {expire_after} is not an integer")
+            raise TypeError(f"expire_after value {expire_after} is not an integer, check your configuration")
     device_name = f"{model} {dev_id.split('-')[-1]}"
     unique_id = f"{dev_id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}".lower()
     config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}/config"
