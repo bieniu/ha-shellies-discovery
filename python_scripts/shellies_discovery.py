@@ -19,6 +19,7 @@ CONF_FORCE_UPDATE_SENSORS = "force_update_sensors"
 CONF_FRIENDLY_NAME = "friendly_name"
 CONF_FW_VER = "fw_ver"
 CONF_ID = "id"
+CONF_MODE = "mode"
 CONF_MODEL_ID = "model"
 CONF_IGNORED_DEVICES = "ignored_devices"
 CONF_MAC = "mac"
@@ -120,7 +121,7 @@ KEY_UNIQUE_ID = "uniq_id"
 KEY_UNIT = "unit_of_meas"
 KEY_VALUE_TEMPLATE = "val_tpl"
 
-LIGHT_RGBW = "rgbw"
+LIGHT_COLOR = "color"
 LIGHT_WHITE = "white"
 
 # Firmware 1.6.5 release date
@@ -493,6 +494,7 @@ no_battery_sensor = False
 fw_ver = data.get(CONF_FW_VER)  # noqa: F821
 dev_id = data.get(CONF_ID)  # noqa: F821
 model_id = data.get(CONF_MODEL_ID)
+mode = data.get(CONF_MODE)
 ignored = [
     element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])
 ]  # noqa: F821
@@ -2427,9 +2429,6 @@ for bin_sensor_id in range(len(bin_sensors)):
             )
         if not isinstance(expire_after, int):
             raise TypeError(f"expire_after value {expire_after} is not an integer")
-    config_mode = LIGHT_RGBW
-    if device_config.get(CONF_MODE):
-        config_mode = device_config[CONF_MODE]
     device_name = f"{model} {dev_id.split('-')[-1]}"
     unique_id = f"{dev_id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}".lower()
     config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}/config"
@@ -2505,7 +2504,7 @@ for bin_sensor_id in range(len(bin_sensors)):
         payload[KEY_OFF_DELAY] = OFF_DELAY
     if (
         model == MODEL_SHELLYRGBW2
-        and config_mode == LIGHT_WHITE
+        and mode == LIGHT_WHITE
         and bin_sensors[bin_sensor_id] == SENSOR_OVERPOWER
     ):
         payload = ""
@@ -2553,10 +2552,7 @@ for light_id in range(rgbw_lights):
     availability_topic = "~online"
     unique_id = f"{dev_id}-light-{light_id}".lower()
     config_topic = f"{disc_prefix}/light/{dev_id}-{light_id}/config"
-    config_mode = LIGHT_RGBW
-    if device_config.get(CONF_MODE):
-        config_mode = device_config[CONF_MODE]
-    if config_mode == LIGHT_RGBW and model == MODEL_SHELLYRGBW2:
+    if mode == LIGHT_COLOR and model == MODEL_SHELLYRGBW2:
         payload = (
             '{"schema":"template",'
             '"name":"' + light_name + '",'
@@ -2584,10 +2580,7 @@ for light_id in range(rgbw_lights):
             '"mf":"' + ATTR_MANUFACTURER + '"},'
             '"~":"' + default_topic + '"}'
         )
-    elif config_mode == LIGHT_RGBW and model in [
-        MODEL_SHELLYBULB,
-        MODEL_SHELLYBULBRGBW,
-    ]:
+    elif model in [MODEL_SHELLYBULB, MODEL_SHELLYBULBRGBW]:
         payload = (
             '{"schema":"template",'
             '"name":"' + light_name + '",'
@@ -2634,7 +2627,7 @@ for light_id in range(rgbw_lights):
             state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
         else:
             state_topic = f"~color/{light_id}/status"
-        if config_mode == LIGHT_RGBW:
+        if mode == LIGHT_COLOR:
             payload = {
                 KEY_NAME: sensor_name,
                 KEY_STATE_TOPIC: state_topic,
@@ -2682,7 +2675,7 @@ for light_id in range(rgbw_lights):
             state_topic = f"~color/{light_id}/{lights_sensors[sensor_id]}"
         else:
             state_topic = f"~color/{light_id}/status"
-        if config_mode == LIGHT_RGBW:
+        if mode == LIGHT_COLOR:
             payload = {
                 KEY_NAME: sensor_name,
                 KEY_STATE_TOPIC: state_topic,
@@ -2735,10 +2728,7 @@ for light_id in range(white_lights):
         unique_id = f"{dev_id}-light-white-{light_id}".lower()
         config_topic = f"{disc_prefix}/light/{dev_id}-white-{light_id}/config"
     availability_topic = "~online"
-    config_mode = LIGHT_RGBW
-    if device_config.get(CONF_MODE):
-        config_mode = device_config[CONF_MODE]
-    if config_mode == LIGHT_WHITE and model == MODEL_SHELLYRGBW2:
+    if mode == LIGHT_WHITE and model == MODEL_SHELLYRGBW2:
         payload = (
             '{"schema":"template",'
             '"name":"' + light_name + '",'
@@ -2851,7 +2841,7 @@ for light_id in range(white_lights):
             sensor_name = (
                 f"{device_name} {lights_bin_sensors[bin_sensor_id].title()} {light_id}"
             )
-            if config_mode != LIGHT_RGBW:
+            if mode != LIGHT_COLOR:
                 payload = {
                     KEY_NAME: sensor_name,
                     KEY_STATE_TOPIC: state_topic,
@@ -2911,13 +2901,17 @@ for light_id in range(white_lights):
             state_topic = f"~white/{light_id}/{lights_sensors[sensor_id]}"
         else:
             state_topic = f"~white/{light_id}/status"
-        if model in [
-            MODEL_SHELLYDIMMER,
-            MODEL_SHELLYDIMMER2,
-            MODEL_SHELLYDUO,
-            MODEL_SHELLYVINTAGE,
-            MODEL_SHELLYRGBW2,
-        ]:
+        if (
+            model
+            in [
+                MODEL_SHELLYDIMMER,
+                MODEL_SHELLYDIMMER2,
+                MODEL_SHELLYDUO,
+                MODEL_SHELLYVINTAGE,
+                MODEL_SHELLYRGBW2,
+            ]
+            and mode != LIGHT_COLOR
+        ):
             payload = {
                 KEY_NAME: sensor_name,
                 KEY_STATE_TOPIC: state_topic,

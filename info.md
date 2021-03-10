@@ -98,6 +98,7 @@ python_script:
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
       model: '{{ trigger.payload_json.model }}'
+      mode: '{{ trigger.payload_json.mode }}'
 ```
 
 ## Custom configuration example
@@ -134,6 +135,7 @@ python_script:
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
       model: '{{ trigger.payload_json.model }}'
+      mode: '{{ trigger.payload_json.mode }}'
       discovery_prefix: 'hass'
       qos: 2
       shelly1-AABB9900:
@@ -185,12 +187,9 @@ python_script:
       shellyht-11AA00CCFF:
         powered: "ac"
       shellyrgbw2-AA123FF32:
-        mode: "white"
         light-1-name: "Living room"
         light-2-name: "Bedroom"
         light-3-name: "Kitchen"
-      shellyrgbw2-AA123FF84:
-        mode: "rgbw"
       shellyem-BB23CC45:
         force_update_sensors: true
       ignored_devices:
@@ -224,7 +223,7 @@ key | optional | type | default | possible values | description
 `ext-switch` | True | boolean | `false` | `true`, `false` | presence of external switch
 `force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) for sensors
 `push_off_delay` | True | boolean | `true` | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (2 sec) for `longpush`/`shortpush`/`double shortpush`/`triple shortpush` binary sensors
-`mode` | True | string | | `white`, `rgbw`, `relay`, `roller` | `white` or `rgbw` for Shelly RGBW2, `relay` or `roller` for Shelly 2/Shelly 2.5
+`mode` | True | string | | `relay`, `roller` | `relay` or `roller` for Shelly 2/Shelly 2.5
 `powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for Shelly H&T, Motion, Sense and Button1
 `expire_after` | True | integer | 51840 | | [expire after](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#expire_after) for battery powered sensors in seconds
 
