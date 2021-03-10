@@ -201,6 +201,7 @@ python_script:
 ## Battery powered devices
 
 For battery powered devices, the script requires you to set the value of 12h for `sleep_mode.period` or to configure `expire_after` yourself.
+
 Don't send `announce` topic more than once an hour if you're using Shelly Motion! This can quickly drain your device's battery.
 
 ## How to use device automation triggers?
