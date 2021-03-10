@@ -505,7 +505,7 @@ if not dev_id:
 if not mac:
     raise ValueError("mac value None is not valid, check script configuration")
 if not fw_ver:
-    raise ValueError(f"fw_ver value None is not valid, check script configuration")
+    raise ValueError("fw_ver value None is not valid, check script configuration")
 
 mac = str(mac).lower()  # noqa: F821
 
