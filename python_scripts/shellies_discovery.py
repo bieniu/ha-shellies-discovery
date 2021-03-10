@@ -2218,7 +2218,9 @@ for sensor_id in range(len(sensors)):
                 CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED
             )
         if not isinstance(expire_after, int):
-            raise TypeError(f"expire_after value {expire_after} is not an integer, check script configuration")
+            raise TypeError(
+                f"expire_after value {expire_after} is not an integer, check script configuration"
+            )
     payload = {
         KEY_NAME: sensor_name,
         KEY_STATE_TOPIC: state_topic,
@@ -2438,7 +2440,9 @@ for bin_sensor_id in range(len(bin_sensors)):
                 CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED
             )
         if not isinstance(expire_after, int):
-            raise TypeError(f"expire_after value {expire_after} is not an integer, check your configuration")
+            raise TypeError(
+                f"expire_after value {expire_after} is not an integer, check your configuration"
+            )
     device_name = f"{model} {dev_id.split('-')[-1]}"
     unique_id = f"{dev_id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}".lower()
     config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}/config"
