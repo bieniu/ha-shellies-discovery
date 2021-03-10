@@ -113,7 +113,7 @@ python_script:
     - platform: homeassistant
       event: start
     - platform: time_pattern
-      hours: "/1"
+      hours: "/1"  # Modifying this if you are using Shelly Motion can drain your device's battery quickly.
   action:
     service: mqtt.publish
     data:
