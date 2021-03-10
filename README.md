@@ -97,7 +97,7 @@ python_script:
     - platform: homeassistant
       event: start
     - platform: time_pattern
-      hours: "/1"
+      hours: "/1"  # Modifying this if you are using Shelly Motion can drain your device's battery quickly.
   action:
     service: mqtt.publish
     data:
@@ -133,7 +133,7 @@ python_script:
     - platform: homeassistant
       event: start
     - platform: time_pattern
-      hours: "/1"
+      hours: "/1"  # Modifying this if you are using Shelly Motion can drain your device's battery quickly.
   action:
     service: mqtt.publish
     data:
@@ -221,6 +221,11 @@ python_script:
 ## Battery powered devices
 
 For battery powered devices, the script requires you to set the value of 12h for `sleep_mode.period` or to configure `expire_after` yourself.
+Don't send `announce` topic more than once an hour if you're using Shelly Motion! This can quickly drain your device's battery.
+
+## How to use device automation triggers?
+![device_automation](https://user-images.githubusercontent.com/478555/110620441-4c98e500-8199-11eb-87d0-27616dfbfea5.gif)
+
 
 ## Script arguments
 
