@@ -17,7 +17,7 @@ This script needs Home Assistant `python_script` component so, if you never used
 
 ## Installation
 
-You can download `shellies_discovery.py` file and save it in `<config>/python_scripts` folder or install the script via [HACS](https://hacs.xyz/). 
+You can download `shellies_discovery.py` file and save it in `<config>/python_scripts` folder or install the script via [HACS](https://hacs.xyz/).
 You won't find **Shellies Discovery** in the HACS **Integrations** section, nor add it as a custom repository. You must have a properly configured `python_script` component to be able to install the script from the HACS **Automations** section.
 
 After installing the script and adding automations, run `Shellies Announce` automation or restart Home Assistant twice.
@@ -224,7 +224,8 @@ For battery powered devices, the script requires you to set the value of 12h for
 Don't send `announce` topic more than once an hour if you're using Shelly Motion! This can quickly drain your device's battery.
 
 ## How to use device automation triggers?
-![device_automation](https://user-images.githubusercontent.com/478555/110620441-4c98e500-8199-11eb-87d0-27616dfbfea5.gif)
+
+![device_automation](https://github.com/bieniu/ha-shellies-discovery/blob/master/images/device-triggers.gif)
 
 
 ## Script arguments
