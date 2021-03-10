@@ -1334,20 +1334,15 @@ if model_id == MODEL_SHELLYSENSE_ID or dev_id_prefix == MODEL_SHELLYSENSE_PREFIX
     battery_powered = True
 
 if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX:
+    if mode not in [LIGHT_COLOR, LIGHT_WHITE]:
+        raise ValueError(f"{mode} is wrong mode argument")
+
     model = MODEL_SHELLYRGBW2
+
     inputs = 1
-    inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     rgbw_lights = 1
     white_lights = 4
-    lights_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
-    lights_sensors_units = [UNIT_WATT, UNIT_KWH]
-    lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
-    lights_bin_sensors = [SENSOR_OVERPOWER]
-    lights_bin_sensors_tpls = [TPL_OVERPOWER]
-    lights_bin_sensors_classes = [DEVICE_CLASS_PROBLEM]
-    lights_bin_sensors_pl = [None]
-    lights_bin_sensors_topics = [None]
+
     bin_sensors = [
         SENSOR_INPUT_0,
         SENSOR_LONGPUSH_0,
@@ -1355,7 +1350,6 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
         SENSOR_FIRMWARE_UPDATE,
     ]
     bin_sensors_classes = [None, None, None, None]
-    bin_sensors_tpls = [None, TPL_LONGPUSH, TPL_SHORTPUSH, TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_pl = [PL_1_0, None, None, None]
     bin_sensors_topics = [
         TOPIC_INPUT_0,
@@ -1363,11 +1357,22 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
         TOPIC_INPUT_EVENT_0,
         TOPIC_INFO,
     ]
+    bin_sensors_tpls = [None, TPL_LONGPUSH, TPL_SHORTPUSH, TPL_NEW_FIRMWARE_FROM_INFO]
+    inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
+    lights_bin_sensors = [SENSOR_OVERPOWER]
+    lights_bin_sensors_classes = [DEVICE_CLASS_PROBLEM]
+    lights_bin_sensors_pl = [None]
+    lights_bin_sensors_topics = [None]
+    lights_bin_sensors_tpls = [TPL_OVERPOWER]
+    lights_sensors = [SENSOR_POWER, SENSOR_ENERGY]
+    lights_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
+    lights_sensors_units = [UNIT_WATT, UNIT_KWH]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
-    sensors_units = [UNIT_DB, None, None, None]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
-    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
+    sensors_units = [UNIT_DB, None, None, None]
 
 if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREFIX:
     model = MODEL_SHELLYDIMMER
