@@ -311,6 +311,7 @@ SENSOR_SHORTPUSH_LONGPUSH_2 = "shortpush longpush 2"
 SENSOR_SMOKE = "smoke"
 SENSOR_SSID = "ssid"
 SENSOR_TEMPERATURE = "temperature"
+SENSOR_TEMPERATURE_STATUS = "temperarure_status"
 SENSOR_TILT = "tilt"
 SENSOR_TOTAL = "total"
 SENSOR_TOTALWORKTIME = "totalworktime"
@@ -342,6 +343,7 @@ TOPIC_LONGPUSH_2 = "longpush/2"
 TOPIC_OVERPOWER_VALUE = "overpower_value"
 TOPIC_RELAY = "relay"
 TOPIC_STATUS = "status"
+TOPIC_TEMPERATURE_STATUS = "temperature_status"
 
 TPL_BATTERY = "{{value|float|round}}"
 TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
@@ -379,6 +381,7 @@ TPL_SHORTPUSH_LONGPUSH = "{%if value_json.event==^SL^%}ON{%else%}OFF{%endif%}"
 TPL_SSID = "{{value_json[^wifi_sta^].ssid}}"
 TPL_TEMPERATURE = "{{value|float|round(1)}}"
 TPL_TEMPERATURE_EXT = "{%if value != 999%}{{value|float|round(1)}}{%endif%}"
+TPL_TEMPERATURE_STATUS = "{{value|lower}}"
 TPL_TILT = "{{value|float}}"
 TPL_TRIPLE_SHORTPUSH = "{%if value_json.event==^SSS^%}ON{%else%}OFF{%endif%}"
 TPL_UPDATE_TO_JSON = "{{value_json[^update^]|tojson}}"
@@ -1876,11 +1879,11 @@ if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
         None,
         None,
     ]
-    sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
-    sensors_units = [UNIT_DB, None, None, None]
-    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
-    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
-    sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP, SENSOR_TEMPERATURE_STATUS]
+    sensors_units = [UNIT_DB, None, None, None, None]
+    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None, None]
+    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP, TPL_TEMPERATURE_STATUS]
+    sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE, TOPIC_TEMPERATURE_STATUS]
 
 # rollers
 for roller_id in range(rollers):
