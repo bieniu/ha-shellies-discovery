@@ -17,7 +17,7 @@ This script needs Home Assistant `python_script` component so, if you never used
 
 ## Installation
 
-You can download `shellies_discovery.py` file and save it in `<config>/python_scripts` folder or install the script via [HACS](https://hacs.xyz/). 
+You can download `shellies_discovery.py` file and save it in `<config>/python_scripts` folder or install the script via [HACS](https://hacs.xyz/).
 You won't find **Shellies Discovery** in the HACS **Integrations** section, nor add it as a custom repository. You must have a properly configured `python_script` component to be able to install the script from the HACS **Automations** section.
 
 After installing the script and adding automations, run `Shellies Announce` automation or restart Home Assistant twice.
@@ -228,6 +228,7 @@ key | optional | type | default | description
 `discovery_prefix` | True | string | `homeassistant` | MQTT discovery prefix
 `qos` | True | integer | `0` | MQTT QoS, you can use `0`, `1` or `2`
 `ignored_devices` | True | list | `None` | list of devices to ignore
+`ignore_device_model` | True | boolean | `false` | ignore device model to generate device name
 
 ## Device arguments
 
