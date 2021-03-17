@@ -837,7 +837,13 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
     bin_sensors_topics = [TOPIC_INFO, TOPIC_INPUT_0, TOPIC_INPUT_1]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP, SENSOR_VOLTAGE]
     sensors_units = [UNIT_DB, None, None, None, UNIT_VOLT]
-    sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None, DEVICE_CLASS_VOLTAGE]
+    sensors_classes = [
+        DEVICE_CLASS_SIGNAL_STRENGTH,
+        None,
+        DEVICE_CLASS_TIMESTAMP,
+        None,
+        DEVICE_CLASS_VOLTAGE,
+    ]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP, TPL_VOLTAGE_FROM_INFO]
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE, TOPIC_INFO]
 
@@ -876,7 +882,7 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         DEVICE_CLASS_TIMESTAMP,
         None,
         None,
-        DEVICE_CLASS_VOLTAGE
+        DEVICE_CLASS_VOLTAGE,
     ]
     sensors_units = [UNIT_CELSIUS, UNIT_DB, None, None, None, None, UNIT_VOLT]
     sensors_tpls = [
@@ -886,7 +892,7 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         TPL_UPTIME,
         TPL_IP,
         TPL_TEMPERATURE_STATUS,
-        TPL_VOLTAGE_FROM_INFO
+        TPL_VOLTAGE_FROM_INFO,
     ]
     sensors_topics = [
         None,
