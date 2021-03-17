@@ -128,6 +128,9 @@ LIGHT_WHITE = "white"
 # Firmware 1.6.5 release date
 MIN_4PRO_FIRMWARE_DATE = 20200408
 
+# Firmware 1.1.0 release date
+MIN_MOTION_FIRMWARE_DATE = 20210226
+
 # Firmware 1.10.0 RC3 release date
 MIN_FIRMWARE_DATE = 20210306
 
@@ -528,6 +531,13 @@ if (
 ) and cur_ver_date < MIN_4PRO_FIRMWARE_DATE:
     raise ValueError(
         f"Firmware dated {MIN_4PRO_FIRMWARE_DATE} is required, please update your device {dev_id}"
+    )
+
+if (
+    dev_id_prefix == MODEL_SHELLYMOTION_PREFIX or MODEL_SHELLYMOTION_ID == model_id
+) and cur_ver_date < MIN_MOTION_FIRMWARE_DATE:
+    raise ValueError(
+        f"Firmware dated {MIN_MOTION_FIRMWARE_DATE} is required, please update your device {dev_id}"
     )
 
 if (
