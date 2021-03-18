@@ -541,7 +541,8 @@ if (
     )
 
 if (
-    dev_id_prefix != MODEL_SHELLY4PRO_PREFIX and MODEL_SHELLY4PRO_ID != model_id
+    dev_id_prefix not in [MODEL_SHELLY4PRO_PREFIX, MODEL_SHELLYMOTION_PREFIX]
+    and model_id not in [MODEL_SHELLY4PRO_ID, MODEL_SHELLYMOTION_ID]
 ) and cur_ver_date < MIN_FIRMWARE_DATE:
     raise ValueError(
         f"Firmware dated {MIN_FIRMWARE_DATE} is required, please update your device {dev_id}"
