@@ -1690,22 +1690,14 @@ if model_id == MODEL_SHELLYVINTAGE_ID or dev_id_prefix == MODEL_SHELLYVINTAGE_PR
 if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
     model = MODEL_SHELLYEM
     relays = 1
-    relays_sensors = [
-        SENSOR_POWER,
-        SENSOR_ENERGY,
-    ]  # remove one month after release 0.39.1
-    relays_sensors_units = [
-        UNIT_WATT,
-        UNIT_KWH,
-    ]  # remove one month after release 0.39.1
-    relays_sensors_classes = [
-        DEVICE_CLASS_POWER,
-        DEVICE_CLASS_ENERGY,
-    ]  # remove one month after release 0.39.1
-    relays_sensors_tpls = [
-        TPL_POWER,
-        TPL_ENERGY_WMIN,
-    ]  # remove one month after release 0.39.1
+
+    # remove one month after release 0.39.1
+    relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
+    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
+    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
+    relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
+    # end of block to be removed
+
     relays_bin_sensors = [SENSOR_OVERPOWER]
     relays_bin_sensors_pl = [None]
     relays_bin_sensors_topics = [TOPIC_RELAY]
@@ -2158,6 +2150,7 @@ for relay_id in range(relays):
                 SENSOR_ENERGY,
             ]:
                 payload = ""
+            # end of block to be removed
 
             mqtt_publish(config_topic, str(payload).replace("'", '"'), retain)
 
