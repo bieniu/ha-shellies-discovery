@@ -98,7 +98,7 @@ python_script:
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
       model: '{{ trigger.payload_json.model }}'
-      mode: '{{ trigger.payload_json.mode }}'
+      mode: '{{ trigger.payload_json.mode | default }}'
 ```
 
 ## Custom configuration example
@@ -135,7 +135,7 @@ python_script:
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
       model: '{{ trigger.payload_json.model }}'
-      mode: '{{ trigger.payload_json.mode }}'
+      mode: '{{ trigger.payload_json.mode | default }}'
       discovery_prefix: 'hass'
       qos: 2
       shelly1-AABB9900:
