@@ -2002,8 +2002,9 @@ for roller_id in range(rollers):
         if device_config[f"roller-{roller_id}-class"] in ROLLER_DEVICE_CLASSES:
             device_class = device_config[f"roller-{roller_id}-class"]
         else:
+            wrong_class = device_config[f"roller-{roller_id}-class"]
             logger.error(
-                "Wrong roller class, the default value None was used"
+                f"{wrong_class} is the wrong roller class, the default value None was used"
             )  # noqa: F821
     default_topic = f"shellies/{dev_id}/"
     state_topic = f"~roller/{roller_id}"
