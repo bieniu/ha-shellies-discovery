@@ -110,6 +110,7 @@ KEY_QOS = "qos"
 KEY_RETAIN = "ret"
 KEY_SET_POSITION_TEMPLATE = "set_pos_tpl"
 KEY_SET_POSITION_TOPIC = "set_pos_t"
+KEY_STATE_CLASS = "stat_cla"
 KEY_STATE_CLOSING = "stat_closing"
 KEY_STATE_OPENING = "stat_opening"
 KEY_STATE_STOPPED = "stat_stopped"
@@ -328,6 +329,8 @@ SENSOR_TRIPLE_SHORTPUSH_2 = "triple shortpush 2"
 SENSOR_UPTIME = "uptime"
 SENSOR_VIBRATION = "vibration"
 SENSOR_VOLTAGE = "voltage"
+
+STATE_CLASS_MEASUREMENT = "measurement"
 
 TOPIC_ADC = "adc/0"
 TOPIC_ANNOUNCE = "announce"
@@ -617,6 +620,7 @@ relays_sensors_units = []
 rgbw_lights = 0
 rollers = 0
 sensors = []
+sensors_state_classes = []
 sensors_classes = []
 sensors_enabled = []
 sensors_topics = []
@@ -649,6 +653,7 @@ if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     relays_bin_sensors_topics = [None, TOPIC_INPUT_EVENT, TOPIC_INPUT_EVENT]
     relays_bin_sensors_tpls = [None, TPL_LONGPUSH, TPL_SHORTPUSH]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [None, None, None, None]
     sensors_enabled = [False, False, False, False]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
@@ -712,6 +717,7 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None, None]
     sensors_enabled = [True, False, False, False, False]
     sensors_classes = [
         DEVICE_CLASS_TEMPERATURE,
@@ -763,6 +769,7 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
         SENSOR_IP,
         SENSOR_TEMPERATURE_STATUS,
     ]
+    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None, None, None]
     sensors_enabled = [True, False, False, False, False, True]
     sensors_classes = [
         DEVICE_CLASS_TEMPERATURE,
@@ -818,6 +825,7 @@ if model_id == MODEL_SHELLYAIR_ID or dev_id_prefix == MODEL_SHELLYAIR_PREFIX:
         SENSOR_UPTIME,
         SENSOR_IP,
     ]
+    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None, None, None]
     sensors_enabled = [True, False, False, False, False, False]
     sensors_classes = [
         DEVICE_CLASS_TEMPERATURE,
@@ -868,6 +876,7 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO, None, None]
     bin_sensors_topics = [TOPIC_INFO, TOPIC_INPUT_0, TOPIC_INPUT_1]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP, SENSOR_VOLTAGE]
+    sensors_state_classes = [None, None, None, None, STATE_CLASS_MEASUREMENT]
     sensors_enabled = [False, False, False, False, True]
     sensors_units = [UNIT_DBM, None, None, None, UNIT_VOLT]
     sensors_classes = [
@@ -907,6 +916,15 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         SENSOR_IP,
         SENSOR_TEMPERATURE_STATUS,
         SENSOR_VOLTAGE,
+    ]
+    sensors_state_classes = [
+        STATE_CLASS_MEASUREMENT,
+        None,
+        None,
+        None,
+        None,
+        None,
+        STATE_CLASS_MEASUREMENT,
     ]
     sensors_enabled = [True, False, False, False, False, True, True]
     sensors_classes = [
@@ -972,6 +990,7 @@ if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     relays_bin_sensors_tpls = [None, TPL_LONGPUSH, TPL_SHORTPUSH, TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [None, None, None, DEVICE_CLASS_PROBLEM]
     sensors = [SENSOR_ADC, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [None, None, None, None, None]
     sensors_enabled = [True, False, False, False, False]
     sensors_classes = [
         DEVICE_CLASS_VOLTAGE,
@@ -1011,6 +1030,7 @@ if (
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [None, None, None, None]
     sensors_enabled = [False, False, False, False]
     sensors_units = [UNIT_DBM, None, None, None]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
@@ -1035,6 +1055,7 @@ if model_id == MODEL_SHELLYPLUG_US_ID or dev_id_prefix == MODEL_SHELLYPLUG_US_PR
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [None, None, None, None]
     sensors_enabled = [False, False, False, False]
     sensors_units = [UNIT_DBM, None, None, None]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
@@ -1054,6 +1075,7 @@ if model_id == MODEL_SHELLYPLUG_S_ID or dev_id_prefix == MODEL_SHELLYPLUG_S_PREF
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
     relays_bin_sensors_classes = [DEVICE_CLASS_PROBLEM]
     sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None, None]
     sensors_enabled = [True, False, False, False, False]
     sensors_classes = [
         DEVICE_CLASS_TEMPERATURE,
@@ -1091,6 +1113,7 @@ if model_id == MODEL_SHELLY4PRO_ID or dev_id_prefix == MODEL_SHELLY4PRO_PREFIX:
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_ANNOUNCE]
     bin_sensors_topics = [TOPIC_ANNOUNCE]
     sensors = [SENSOR_IP]
+    sensors_state_classes = [None]
     sensors_enabled = [False]
     sensors_classes = [None]
     sensors_units = [None]
@@ -1107,6 +1130,15 @@ if model_id == MODEL_SHELLYHT_ID or dev_id_prefix == MODEL_SHELLYHT_PREFIX:
         SENSOR_SSID,
         SENSOR_UPTIME,
         SENSOR_IP,
+    ]
+    sensors_state_classes = [
+        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_MEASUREMENT,
+        None,
+        None,
+        None,
+        None,
     ]
     sensors_enabled = [True, True, True, False, False, False, False]
     sensors_classes = [
@@ -1162,6 +1194,14 @@ if model_id == MODEL_SHELLYMOTION_ID or dev_id_prefix == MODEL_SHELLYMOTION_PREF
         SENSOR_IP,
         SENSOR_SSID,
         SENSOR_UPTIME,
+    ]
+    sensors_state_classes = [
+        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_MEASUREMENT,
+        None,
+        None,
+        None,
+        None,
     ]
     sensors_enabled = [True, True, False, False, False, False]
     sensors_classes = [
@@ -1231,6 +1271,15 @@ if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
         SENSOR_UPTIME,
         SENSOR_IP,
     ]
+    sensors_state_classes = [
+        None,
+        None,
+        STATE_CLASS_MEASUREMENT,
+        None,
+        None,
+        None,
+        None,
+    ]
     sensors_enabled = [True, True, True, False, False, False, False]
     sensors_classes = [
         None,
@@ -1279,6 +1328,7 @@ if (
         VALUE_BUTTON_TRIPLE_PRESS,
     ]
     sensors = [SENSOR_BATTERY, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None, None]
     sensors_enabled = [True, False, False, False, False]
     sensors_classes = [
         DEVICE_CLASS_BATTERY,
@@ -1333,6 +1383,12 @@ if (
 if model_id == MODEL_SHELLYDW_ID or dev_id_prefix == MODEL_SHELLYDW_PREFIX:
     model = MODEL_SHELLYDW
     sensors = [SENSOR_LUX, SENSOR_BATTERY, SENSOR_TILT, SENSOR_IP]
+    sensors_state_classes = [
+        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_MEASUREMENT,
+        None,
+    ]
     sensors_enabled = [True, True, True, False]
     sensors_classes = [DEVICE_CLASS_ILLUMINANCE, DEVICE_CLASS_BATTERY, None, None]
     sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DEGREE, None]
@@ -1349,6 +1405,13 @@ if model_id == MODEL_SHELLYDW_ID or dev_id_prefix == MODEL_SHELLYDW_PREFIX:
 if model_id == MODEL_SHELLYDW2_ID or dev_id_prefix == MODEL_SHELLYDW2_PREFIX:
     model = MODEL_SHELLYDW2
     sensors = [SENSOR_LUX, SENSOR_BATTERY, SENSOR_TILT, SENSOR_TEMPERATURE, SENSOR_IP]
+    sensors_state_classes = [
+        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_MEASUREMENT,
+        None,
+    ]
     sensors_enabled = [True, True, True, True, False]
     sensors_classes = [
         DEVICE_CLASS_ILLUMINANCE,
@@ -1375,6 +1438,7 @@ if model_id == MODEL_SHELLYSMOKE_ID or dev_id_prefix == MODEL_SHELLYSMOKE_PREFIX
         SENSOR_BATTERY,
         SENSOR_IP,
     ]
+    sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT, None]
     sensors_enabled = [True, True, False]
     sensors_classes = [
         DEVICE_CLASS_TEMPERATURE,
@@ -1407,6 +1471,16 @@ if model_id == MODEL_SHELLYSENSE_ID or dev_id_prefix == MODEL_SHELLYSENSE_PREFIX
         SENSOR_SSID,
         SENSOR_UPTIME,
         SENSOR_IP,
+    ]
+    sensors_state_classes = [
+        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_MEASUREMENT,
+        None,
+        None,
+        None,
+        None,
     ]
     sensors_enabled = [True, True, True, True, False, False, False, False]
     sensors_classes = [
@@ -1494,6 +1568,7 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [None, None, None, None]
     sensors_enabled = [False, False, False, False]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
@@ -1506,6 +1581,7 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
     inputs = 2
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None, None]
     sensors_enabled = [True, False, False, False, False]
     sensors_classes = [
         DEVICE_CLASS_TEMPERATURE,
@@ -1604,6 +1680,7 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     white_lights = 1
     sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None, None]
     sensors_enabled = [True, False, False, False, False]
     sensors_classes = [
         DEVICE_CLASS_TEMPERATURE,
@@ -1705,6 +1782,7 @@ if model_id == MODEL_SHELLYBULB_ID or dev_id_prefix == MODEL_SHELLYBULB_PREFIX:
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [None, None, None, None]
     sensors_enabled = [False, False, False, False]
     sensors_units = [UNIT_DBM, None, None, None]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
@@ -1724,6 +1802,7 @@ if model_id == MODEL_SHELLYBULBRGBW_ID or dev_id_prefix == MODEL_SHELLYBULBRGBW_
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [None, None, None, None]
     sensors_enabled = [False, False, False, False]
     sensors_units = [UNIT_DBM, None, None, None]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
@@ -1743,6 +1822,7 @@ if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [None, None, None, None]
     sensors_enabled = [False, False, False, False]
     sensors_units = [UNIT_DBM, None, None, None]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
@@ -1762,6 +1842,7 @@ if model_id == MODEL_SHELLYVINTAGE_ID or dev_id_prefix == MODEL_SHELLYVINTAGE_PR
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [None, None, None, None]
     sensors_enabled = [False, False, False, False]
     sensors_units = [UNIT_DBM, None, None, None]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
@@ -1827,6 +1908,7 @@ if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [None, None, None, None]
     sensors_enabled = [False, False, False, False]
     sensors_units = [UNIT_DBM, None, None, None]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
@@ -1888,6 +1970,7 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
     sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
+    sensors_state_classes = [None, None, None, None]
     sensors_enabled = [False, False, False, False]
     sensors_units = [UNIT_DBM, None, None, None]
     sensors_classes = [DEVICE_CLASS_SIGNAL_STRENGTH, None, DEVICE_CLASS_TIMESTAMP, None]
@@ -1897,6 +1980,7 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
 if model_id == MODEL_SHELLYFLOOD_ID or dev_id_prefix == MODEL_SHELLYFLOOD_PREFIX:
     model = MODEL_SHELLYFLOOD
     sensors = [SENSOR_TEMPERATURE, SENSOR_BATTERY, SENSOR_IP]
+    sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT, None]
     sensors_enabled = [True, True, False]
     sensors_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_BATTERY, None]
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, None]
@@ -2072,6 +2156,7 @@ if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
         SENSOR_IP,
         SENSOR_TEMPERATURE_STATUS,
     ]
+    sensors_state_classes = [None, None, None, None, None]
     sensors_enabled = [False, False, False, False, True]
     sensors_units = [UNIT_DBM, None, None, None, None]
     sensors_classes = [
@@ -2451,6 +2536,7 @@ for sensor_id in range(len(sensors)):
     payload = {
         KEY_NAME: sensor_name,
         KEY_STATE_TOPIC: state_topic,
+        KEY_STATE_CLASS: sensors_state_classes[sensor_id],
         KEY_FORCE_UPDATE: str(force_update),
         KEY_ENABLED_BY_DEFAULT: str(sensors_enabled[sensor_id]),
         KEY_UNIQUE_ID: unique_id,
@@ -2591,6 +2677,7 @@ for sensor_id in range(ext_temp_sensors):
             KEY_NAME: sensor_name,
             KEY_STATE_TOPIC: state_topic,
             KEY_VALUE_TEMPLATE: TPL_TEMPERATURE_EXT,
+            KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
             KEY_UNIT: UNIT_CELSIUS,
             KEY_DEVICE_CLASS: SENSOR_TEMPERATURE,
             KEY_FORCE_UPDATE: str(force_update),
@@ -2635,6 +2722,7 @@ for sensor_id in range(ext_humi_sensors):
             KEY_NAME: sensor_name,
             KEY_STATE_TOPIC: state_topic,
             KEY_VALUE_TEMPLATE: TPL_HUMIDITY_EXT,
+            KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
             KEY_UNIT: UNIT_PERCENT,
             KEY_DEVICE_CLASS: SENSOR_HUMIDITY,
             KEY_FORCE_UPDATE: str(force_update),
