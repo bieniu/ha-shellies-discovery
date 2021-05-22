@@ -602,6 +602,7 @@ lights_sensors_tpls = []
 lights_sensors_units = []
 meters = 0
 meters_sensors = []
+meters_sensors_state_classes = []
 meters_sensors_device_classes = []
 meters_sensors_tpls = []
 meters_sensors_units = []
@@ -1883,6 +1884,7 @@ if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
         SENSOR_TOTAL,
         SENSOR_TOTAL_RETURNED,
     ]
+    meters_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT, None, None]
     meters_sensors_units = [
         UNIT_WATT,
         UNIT_VAR,
@@ -1942,6 +1944,7 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
         SENSOR_TOTAL,
         SENSOR_TOTAL_RETURNED,
     ]
+    meters_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT, None, STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT, None, None]
     meters_sensors_units = [
         UNIT_AMPERE,
         UNIT_WATT,
@@ -3300,6 +3303,7 @@ for meter_id in range(meters):
         payload = {
             KEY_NAME: sensor_name,
             KEY_STATE_TOPIC: state_topic,
+            KEY_STATE_CLASS: meters_sensors_state_classes[sensor_id],
             KEY_UNIT: meters_sensors_units[sensor_id],
             KEY_VALUE_TEMPLATE: meters_sensors_tpls[sensor_id],
             KEY_AVAILABILITY_TOPIC: availability_topic,
