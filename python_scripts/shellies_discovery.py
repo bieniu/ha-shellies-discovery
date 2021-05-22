@@ -3257,6 +3257,7 @@ for light_id in range(white_lights):
             payload = {
                 KEY_NAME: sensor_name,
                 KEY_STATE_TOPIC: state_topic,
+                KEY_STATE_CLASS: lights_sensors_state_classes[sensor_id],
                 KEY_UNIT: lights_sensors_units[sensor_id],
                 KEY_VALUE_TEMPLATE: lights_sensors_tpls[sensor_id],
                 KEY_DEVICE_CLASS: lights_sensors_device_classes[sensor_id],
