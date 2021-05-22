@@ -808,7 +808,6 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
 if model_id == MODEL_SHELLYAIR_ID or dev_id_prefix == MODEL_SHELLYAIR_PREFIX:
     model = MODEL_SHELLYAIR
     relays = 1
-    inputs = 1  # remove one month after release 0.39.0
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -1097,7 +1096,6 @@ if model_id == MODEL_SHELLYPLUG_S_ID or dev_id_prefix == MODEL_SHELLYPLUG_S_PREF
 if model_id == MODEL_SHELLY4PRO_ID or dev_id_prefix == MODEL_SHELLY4PRO_PREFIX:
     model = MODEL_SHELLY4PRO
     relays = 4
-    inputs = 4  # remove one month after release 0.39.0
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
@@ -1853,13 +1851,6 @@ if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
     model = MODEL_SHELLYEM
     relays = 1
 
-    # remove one month after release 0.39.1
-    relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    relays_sensors_units = [UNIT_WATT, UNIT_KWH]
-    relays_sensors_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
-    relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
-    # end of block to be removed
-
     relays_bin_sensors = [SENSOR_OVERPOWER]
     relays_bin_sensors_pl = [None]
     relays_bin_sensors_topics = [TOPIC_RELAY]
@@ -2342,14 +2333,6 @@ for relay_id in range(relays):
             if dev_id.lower() in ignored:
                 payload = ""
 
-            # remove one month after release 0.39.1
-            if model == MODEL_SHELLYEM and relays_sensors[sensor_id] in [
-                SENSOR_POWER,
-                SENSOR_ENERGY,
-            ]:
-                payload = ""
-            # end of block to be removed
-
             mqtt_publish(config_topic, str(payload).replace("'", '"'), retain)
 
     # relay's sensors
@@ -2594,14 +2577,6 @@ for input_id in range(inputs):
         device_name = dev_id.replace("-", " ").replace("_", " ").title()
     else:
         device_name = f"{model} {dev_id.split('-')[-1]}"
-
-    # remove one month after release 0.39.0
-    config_topic = (
-        f"{disc_prefix}/device_automation/{dev_id}-input-{input_id}/push/config"
-    )
-    mqtt_publish(config_topic, "", retain)
-    # remove one month after release 0.39.0
-
     config_topic = f"{disc_prefix}/device_automation/{dev_id}-input-{input_id}/button_release/config"
     topic = f"shellies/{dev_id}/input/{input_id}"
     payload = {
@@ -2619,12 +2594,6 @@ for input_id in range(inputs):
         KEY_TYPE: VALUE_BUTTON_SHORT_RELEASE,
         KEY_SUBTYPE: f"button_{input_id + 1}",
     }
-
-    # remove one month after release 0.39.0
-    if model in [MODEL_SHELLY4PRO, MODEL_SHELLYAIR]:
-        payload = ""
-    # remove one month after release 0.39.0
-
     if dev_id.lower() in ignored:
         payload = ""
     mqtt_publish(config_topic, str(payload).replace("'", '"').replace("^", "'"), retain)
