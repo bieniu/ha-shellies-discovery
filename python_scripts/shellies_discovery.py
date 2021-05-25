@@ -720,14 +720,7 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
         DEVICE_CLASS_TIMESTAMP,
         None,
     ]
-    sensors_topics = [
-        None,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_ANNOUNCE,
-    ]
+    sensors_topics = [None, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
     sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_units = [UNIT_CELSIUS, UNIT_DBM, None, None, None]
 
