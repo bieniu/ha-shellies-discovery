@@ -2411,7 +2411,6 @@ for relay_id in range(relays):
                     KEY_NAME: sensor_name,
                     KEY_STATE_TOPIC: state_topic,
                     KEY_UNIT: relays_sensors_units[sensor_id],
-                    KEY_STATE_CLASS: relays_sensors_state_classes[sensor_id],
                     KEY_VALUE_TEMPLATE: relays_sensors_tpls[sensor_id],
                     KEY_DEVICE_CLASS: relays_sensors_device_classes[sensor_id],
                     KEY_AVAILABILITY_TOPIC: availability_topic,
@@ -2429,6 +2428,8 @@ for relay_id in range(relays):
                     },
                     "~": default_topic,
                 }
+                if relays_sensors_state_classes[sensor_id]:
+                    payload[KEY_STATE_CLASS] = relays_sensors_state_classes[sensor_id]
             else:
                 payload = ""
             if dev_id.lower() in ignored:
@@ -2622,7 +2623,6 @@ for sensor_id in range(len(sensors)):
     payload = {
         KEY_NAME: sensor_name,
         KEY_STATE_TOPIC: state_topic,
-        KEY_STATE_CLASS: sensors_state_classes[sensor_id],
         KEY_FORCE_UPDATE: str(force_update),
         KEY_ENABLED_BY_DEFAULT: str(sensors_enabled[sensor_id]),
         KEY_UNIQUE_ID: unique_id,
@@ -2636,6 +2636,8 @@ for sensor_id in range(len(sensors)):
         },
         "~": default_topic,
     }
+    if sensors_state_classes[sensor_id]:
+        payload[KEY_STATE_CLASS] = sensors_state_classes[sensor_id]
     if model == MODEL_SHELLYDW2 and sensors[sensor_id] == SENSOR_LUX:
         payload[KEY_JSON_ATTRIBUTES_TOPIC] = f"~sensor/{SENSOR_ILLUMINATION}"
         payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_ILLUMINATION_TO_JSON
@@ -3104,7 +3106,6 @@ for light_id in range(rgbw_lights):
             payload = {
                 KEY_NAME: sensor_name,
                 KEY_STATE_TOPIC: state_topic,
-                KEY_STATE_CLASS: lights_sensors_state_classes[sensor_id],
                 KEY_UNIT: lights_sensors_units[sensor_id],
                 KEY_VALUE_TEMPLATE: lights_sensors_tpls[sensor_id],
                 KEY_DEVICE_CLASS: lights_sensors_device_classes[sensor_id],
@@ -3123,6 +3124,8 @@ for light_id in range(rgbw_lights):
                 },
                 "~": default_topic,
             }
+            if lights_sensors_state_classes[sensor_id]:
+                payload[KEY_STATE_CLASS] = lights_sensors_state_classes[sensor_id]
         else:
             payload = ""
         if dev_id.lower() in ignored:
@@ -3344,7 +3347,6 @@ for light_id in range(white_lights):
             payload = {
                 KEY_NAME: sensor_name,
                 KEY_STATE_TOPIC: state_topic,
-                KEY_STATE_CLASS: lights_sensors_state_classes[sensor_id],
                 KEY_UNIT: lights_sensors_units[sensor_id],
                 KEY_VALUE_TEMPLATE: lights_sensors_tpls[sensor_id],
                 KEY_DEVICE_CLASS: lights_sensors_device_classes[sensor_id],
@@ -3363,6 +3365,8 @@ for light_id in range(white_lights):
                 },
                 "~": default_topic,
             }
+            if lights_sensors_state_classes[sensor_id]:
+                payload[KEY_STATE_CLASS] = lights_sensors_state_classes[sensor_id]
         else:
             payload = ""
         if dev_id.lower() in ignored:
@@ -3391,7 +3395,6 @@ for meter_id in range(meters):
         payload = {
             KEY_NAME: sensor_name,
             KEY_STATE_TOPIC: state_topic,
-            KEY_STATE_CLASS: meters_sensors_state_classes[sensor_id],
             KEY_UNIT: meters_sensors_units[sensor_id],
             KEY_VALUE_TEMPLATE: meters_sensors_tpls[sensor_id],
             KEY_AVAILABILITY_TOPIC: availability_topic,
@@ -3409,6 +3412,8 @@ for meter_id in range(meters):
             },
             "~": default_topic,
         }
+        if meters_sensors_state_classes[sensor_id]:
+            payload[KEY_STATE_CLASS] = meters_sensors_state_classes[sensor_id]
         if meters_sensors_device_classes and meters_sensors_device_classes[sensor_id]:
             payload[KEY_DEVICE_CLASS] = meters_sensors_device_classes[sensor_id]
         if dev_id.lower() in ignored:
