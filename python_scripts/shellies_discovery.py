@@ -1803,7 +1803,12 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         TOPIC_INPUT_EVENT_1,
         TOPIC_INFO,
     ]
-    lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER_VALUE, None]
+    lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER_VALUE]
+    lights_sensors_state_classes = [
+        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_MEASUREMENT,
+        None,
+    ]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH, UNIT_WATT]
     lights_sensors_device_classes = [
         DEVICE_CLASS_POWER,
