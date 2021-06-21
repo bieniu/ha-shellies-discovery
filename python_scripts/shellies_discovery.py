@@ -133,8 +133,8 @@ MIN_4PRO_FIRMWARE_DATE = 20200408
 # Firmware 1.1.0 release date
 MIN_MOTION_FIRMWARE_DATE = 20210226
 
-# Firmware 1.10.0 release date
-MIN_FIRMWARE_DATE = 20210318
+# Firmware 1.11.0 release date
+MIN_FIRMWARE_DATE = 20210618
 
 MODEL_SHELLY1 = f"{ATTR_SHELLY} 1"
 MODEL_SHELLY1L = f"{ATTR_SHELLY} 1L"
@@ -499,7 +499,6 @@ expire_after = None
 
 qos = 0
 retain = True
-roller_mode = False
 
 no_battery_sensor = False
 
@@ -507,6 +506,11 @@ fw_ver = data.get(CONF_FW_VER)  # noqa: F821
 dev_id = data.get(CONF_ID)  # noqa: F821
 model_id = data.get(CONF_MODEL_ID)
 mode = data.get(CONF_MODE)
+
+roller_mode = False
+if mode == "roller":
+    roller_mode = True
+
 ignored = [
     element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])
 ]  # noqa: F821
@@ -2267,9 +2271,6 @@ if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
 # rollers
 for roller_id in range(rollers):
     device_config = get_device_config(dev_id)
-    config_mode = ATTR_RELAY
-    if device_config.get(CONF_MODE):
-        config_mode = device_config[CONF_MODE]
     if device_config.get(CONF_POSITION_TEMPLATE):
         position_template = device_config[CONF_POSITION_TEMPLATE]
     else:
@@ -2300,8 +2301,7 @@ for roller_id in range(rollers):
     availability_topic = "~online"
     unique_id = f"{dev_id}-roller-{roller_id}".lower()
     config_topic = f"{disc_prefix}/cover/{dev_id}-roller-{roller_id}/config"
-    if config_mode == ATTR_ROLLER:
-        roller_mode = True
+    if roller_mode:
         payload = {
             KEY_NAME: roller_name,
             KEY_COMMAND_TOPIC: command_topic,
@@ -2330,12 +2330,12 @@ for roller_id in range(rollers):
             },
             "~": default_topic,
         }
+        if set_position_template:
+            payload[KEY_SET_POSITION_TEMPLATE] = set_position_template
+        if device_class:
+            payload[KEY_DEVICE_CLASS] = device_class
     else:
         payload = ""
-    if set_position_template:
-        payload[KEY_SET_POSITION_TEMPLATE] = set_position_template
-    if device_class:
-        payload[KEY_DEVICE_CLASS] = device_class
     if dev_id.lower() in ignored:
         payload = ""
     mqtt_publish(config_topic, str(payload).replace("'", '"').replace("^", "'"), retain)
