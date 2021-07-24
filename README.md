@@ -185,7 +185,6 @@ python_script:
       shellydimmer-883409cc:
         light-0-name: "Bedroom Lamp"
       shellyswitch25-334455AA:
-        mode: "roller"
         roller-0-name: "Garage"
         roller-0-class: "garage"
       shellyplug-s-CCBBCCAA:
@@ -199,7 +198,6 @@ python_script:
       shellyht-11AA00CCFF:
         powered: "ac"
       shellyswitch2-AA4455AA:
-        mode: "roller"
         position_template: "{{ '{% if value | float < 30 %}0{% else %}{{ value }}{% endif %}' }}"
         set_position_template: "{{ '{%if position | float < 30 %}0{% else %}{{ position }}{% endif %}' }}"
       shellybutton1-112200CCFF:
@@ -251,7 +249,6 @@ key | optional | type | default | possible values | description
 `ext-switch` | True | boolean | `false` | `true`, `false` | presence of external switch
 `force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) for sensors
 `push_off_delay` | True | boolean | `true` | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (2 sec) for `longpush`/`shortpush`/`double shortpush`/`triple shortpush` binary sensors
-`mode` | True | string | | `relay`, `roller` | `relay` or `roller` for Shelly 2/Shelly 2.5
 `powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for Shelly H&T, Motion, Sense and Button1
 `expire_after` | True | integer | 51840 | | [expire after](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#expire_after) for battery powered sensors in seconds
 
