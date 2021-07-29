@@ -91,6 +91,8 @@ KEY_ICON = "icon"
 KEY_IDENTIFIERS = "ids"
 KEY_JSON_ATTRIBUTES_TEMPLATE = "json_attr_tpl"
 KEY_JSON_ATTRIBUTES_TOPIC = "json_attr_t"
+KEY_LAST_RESET_TOPIC = "lrst_t"
+KEY_LAST_RESET_VALUE_TEMPLATE = "lrst_val_tpl"
 KEY_MANUFACTURER = "mf"
 KEY_MODEL = "mdl"
 KEY_NAME = "name"
@@ -3437,10 +3439,20 @@ for meter_id in range(meters):
             },
             "~": default_topic,
         }
+        if meters_sensors[sensor_id] in [
+            SENSOR_ENERGY,
+            SENSOR_RETURNED_ENERGY,
+            SENSOR_TOTAL,
+            SENSOR_TOTAL_RETURNED,
+        ]:
+            payload[KEY_LAST_RESET_TOPIC] = state_topic
+            payload[KEY_LAST_RESET_VALUE_TEMPLATE] = "{{0|timestamp_utc}}"
         if meters_sensors_state_classes[sensor_id]:
             payload[KEY_STATE_CLASS] = meters_sensors_state_classes[sensor_id]
         if meters_sensors_device_classes and meters_sensors_device_classes[sensor_id]:
             payload[KEY_DEVICE_CLASS] = meters_sensors_device_classes[sensor_id]
         if dev_id.lower() in ignored:
             payload = ""
-        mqtt_publish(config_topic, str(payload).replace("'", '"'), retain)
+        mqtt_publish(
+            config_topic, str(payload).replace("'", '"').replace("^", "'"), retain
+        )
