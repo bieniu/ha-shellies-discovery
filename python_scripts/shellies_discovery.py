@@ -336,6 +336,8 @@ SENSOR_VIBRATION = "vibration"
 SENSOR_VOLTAGE = "voltage"
 
 STATE_CLASS_MEASUREMENT = "measurement"
+STATE_CLASS_TOTAL = "total"
+STATE_CLASS_TOTAL_INCREASING = "total_increasing"
 
 TOPIC_ADC = "adc/0"
 TOPIC_ANNOUNCE = "announce"
@@ -734,7 +736,7 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
     ]
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT]
+    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_TOTAL]
     relays_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
@@ -758,7 +760,7 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
     inputs = 1
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT]
+    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_TOTAL]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
@@ -825,7 +827,7 @@ if model_id == MODEL_SHELLYAIR_ID or dev_id_prefix == MODEL_SHELLYAIR_PREFIX:
     model = MODEL_SHELLYAIR
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT]
+    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_TOTAL]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
@@ -869,7 +871,7 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
     inputs = 2
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT]
+    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_TOTAL]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
@@ -913,7 +915,7 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
     inputs = 2
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT]
+    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_TOTAL]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
@@ -1034,8 +1036,7 @@ if (
     model = MODEL_SHELLYPLUG
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT]
-    relays_sensors_state_class = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT]
+    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_TOTAL]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
@@ -1066,7 +1067,7 @@ if model_id == MODEL_SHELLYPLUG_US_ID or dev_id_prefix == MODEL_SHELLYPLUG_US_PR
     model = MODEL_SHELLYPLUG_US
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT]
+    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_TOTAL]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
@@ -1097,7 +1098,7 @@ if model_id == MODEL_SHELLYPLUG_S_ID or dev_id_prefix == MODEL_SHELLYPLUG_S_PREF
     model = MODEL_SHELLYPLUG_S
     relays = 1
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT]
+    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_TOTAL]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
@@ -1130,7 +1131,7 @@ if model_id == MODEL_SHELLY4PRO_ID or dev_id_prefix == MODEL_SHELLY4PRO_PREFIX:
     model = MODEL_SHELLY4PRO
     relays = 4
     relays_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT]
+    relays_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_TOTAL]
     relays_sensors_units = [UNIT_WATT, UNIT_KWH]
     relays_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
@@ -1605,7 +1606,7 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
     lights_bin_sensors_topics = [None]
     lights_bin_sensors_tpls = [TPL_OVERPOWER]
     lights_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    lights_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT]
+    lights_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_TOTAL]
     lights_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH]
@@ -1715,7 +1716,7 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
     lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER_VALUE]
     lights_sensors_state_classes = [
         STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_TOTAL,
         None,
     ]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH, UNIT_WATT]
@@ -1819,7 +1820,7 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
     lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER_VALUE]
     lights_sensors_state_classes = [
         STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_TOTAL,
         None,
     ]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH, UNIT_WATT]
@@ -1855,7 +1856,7 @@ if model_id == MODEL_SHELLYBULBRGBW_ID or dev_id_prefix == MODEL_SHELLYBULBRGBW_
     model = MODEL_SHELLYBULBRGBW
     rgbw_lights = 1
     lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
-    lights_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT]
+    lights_sensors_state_classes = [STATE_CLASS_TOTAL, STATE_CLASS_MEASUREMENT]
     lights_sensors_units = [UNIT_KWH, UNIT_WATT]
     lights_sensors_device_classes = [DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
     lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
@@ -1881,7 +1882,7 @@ if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
     model = MODEL_SHELLYDUO
     white_lights = 1
     lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
-    lights_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT]
+    lights_sensors_state_classes = [STATE_CLASS_TOTAL, STATE_CLASS_MEASUREMENT]
     lights_sensors_units = [UNIT_KWH, UNIT_WATT]
     lights_sensors_device_classes = [DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
     lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
@@ -1907,7 +1908,7 @@ if model_id == MODEL_SHELLYVINTAGE_ID or dev_id_prefix == MODEL_SHELLYVINTAGE_PR
     model = MODEL_SHELLYVINTAGE
     white_lights = 1
     lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
-    lights_sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT]
+    lights_sensors_state_classes = [STATE_CLASS_TOTAL, STATE_CLASS_MEASUREMENT]
     lights_sensors_units = [UNIT_KWH, UNIT_WATT]
     lights_sensors_device_classes = [DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
     lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
@@ -1943,7 +1944,7 @@ if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
         SENSOR_POWER,
         SENSOR_REACTIVE_POWER,
         SENSOR_VOLTAGE,
-        SENSOR_ENERGY,
+        STATE_CLASS_TOTAL_INCREASING,
         SENSOR_RETURNED_ENERGY,
         SENSOR_TOTAL,
         SENSOR_TOTAL_RETURNED,
@@ -2016,7 +2017,7 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
         SENSOR_POWER,
         SENSOR_POWER_FACTOR,
         SENSOR_VOLTAGE,
-        SENSOR_ENERGY,
+        STATE_CLASS_TOTAL_INCREASING,
         SENSOR_RETURNED_ENERGY,
         SENSOR_TOTAL,
         SENSOR_TOTAL_RETURNED,
