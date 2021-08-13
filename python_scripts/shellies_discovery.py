@@ -376,7 +376,6 @@ TPL_HUMIDITY = "{{value|float|round(1)}}"
 TPL_HUMIDITY_EXT = "{%if value!=999%}{{value|float|round(1)}}{%endif%}"
 TPL_ILLUMINATION = "{{value_json.lux}}"
 TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
-TPL_LAST_RESET = "{{0|timestamp_utc}}"
 TPL_LAST_RESET_FROM_UPTIME = (
     "{{(as_timestamp(utcnow())-value_json.uptime)|timestamp_utc}}"
 )
@@ -3458,14 +3457,6 @@ for meter_id in range(meters):
             },
             "~": default_topic,
         }
-        if meters_sensors[sensor_id] in (
-            SENSOR_ENERGY,
-            SENSOR_RETURNED_ENERGY,
-            SENSOR_TOTAL,
-            SENSOR_TOTAL_RETURNED,
-        ):
-            payload[KEY_LAST_RESET_TOPIC] = state_topic
-            payload[KEY_LAST_RESET_VALUE_TEMPLATE] = TPL_LAST_RESET
         if meters_sensors_state_classes[sensor_id]:
             payload[KEY_STATE_CLASS] = meters_sensors_state_classes[sensor_id]
         if meters_sensors_device_classes and meters_sensors_device_classes[sensor_id]:
