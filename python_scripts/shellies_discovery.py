@@ -2700,8 +2700,6 @@ for sensor_id in range(len(sensors)):
         payload[KEY_VALUE_TEMPLATE] = sensors_tpls[sensor_id]
     if sensors[sensor_id] == SENSOR_SSID:
         payload[KEY_ICON] = "mdi:wifi"
-    elif sensors[sensor_id] == SENSOR_UPTIME:
-        payload[KEY_ICON] = "mdi:timer-outline"
     elif sensors[sensor_id] == SENSOR_TEMPERATURE_STATUS:
         payload[KEY_ICON] = "mdi:thermometer"
     if battery_powered and sensors[sensor_id] not in (
