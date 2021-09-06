@@ -1,5 +1,5 @@
 *.yaml
-*.log
+*.log*
 __pycache__/
 *.db
 *.conf
