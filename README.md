@@ -77,7 +77,7 @@ logger:
 - Shellies firmware updated to current version
 - Home Assistant updated to current version
 - enabled MQTT in Shellies configuration
-- you can't manually run the `shellies_discovery.py` script (`'trigger' is undefined` error)
+- you can't manually run the `shellies_discovery.py` script (`'dict object' has no attribute 'payload_json'` error)
 
 ## Shelly device name
 
