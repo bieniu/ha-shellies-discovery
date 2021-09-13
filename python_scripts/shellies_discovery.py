@@ -1232,7 +1232,7 @@ if model_id == MODEL_SHELLYHT_ID or dev_id_prefix == MODEL_SHELLYHT_PREFIX:
         TPL_SSID,
         TPL_UPTIME,
         TPL_IP,
-        TPL_TEMPERATURE
+        TPL_TEMPERATURE,
     ]
     sensors_topics = [
         None,
