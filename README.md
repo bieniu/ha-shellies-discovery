@@ -251,6 +251,7 @@ key | optional | type | default | possible values | description
 `push_off_delay` | True | boolean | `true` | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (2 sec) for `longpush`/`shortpush`/`double shortpush`/`triple shortpush` binary sensors
 `powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for Shelly H&T, Motion, Sense and Button1
 `expire_after` | True | integer | 51840 | | [expire after](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#expire_after) for battery powered sensors in seconds
+`use_fahrenheit` | True | boolean | `false` | `true`, `false` | does H&T temperature sensor use the Fahrenheit scale
 
 
 [releases]: https://github.com/bieniu/ha-shellies-discovery/releases
