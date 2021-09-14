@@ -795,7 +795,15 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
         SENSOR_TEMPERATURE_STATUS,
         "temperarure_status",  # to remove in the future
     ]
-    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None, None, None, None]
+    sensors_state_classes = [
+        STATE_CLASS_MEASUREMENT,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+    ]
     sensors_enabled = [True, False, False, False, False, True, True]
     sensors_device_classes = [
         DEVICE_CLASS_TEMPERATURE,
@@ -2335,7 +2343,14 @@ if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
         None,
         None,
     ]
-    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP, TPL_TEMPERATURE_STATUS, TPL_TEMPERATURE_STATUS]
+    sensors_tpls = [
+        TPL_RSSI,
+        TPL_SSID,
+        TPL_UPTIME,
+        TPL_IP,
+        TPL_TEMPERATURE_STATUS,
+        TPL_TEMPERATURE_STATUS,
+    ]
     sensors_topics = [
         TOPIC_INFO,
         TOPIC_INFO,
