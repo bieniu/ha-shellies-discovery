@@ -793,9 +793,10 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
         SENSOR_UPTIME,
         SENSOR_IP,
         SENSOR_TEMPERATURE_STATUS,
+        "temperarure_status",  # to remove in the future
     ]
-    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None, None, None]
-    sensors_enabled = [True, False, False, False, False, True]
+    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None, None, None, None]
+    sensors_enabled = [True, False, False, False, False, True, True]
     sensors_device_classes = [
         DEVICE_CLASS_TEMPERATURE,
         DEVICE_CLASS_SIGNAL_STRENGTH,
@@ -803,14 +804,16 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
         DEVICE_CLASS_TIMESTAMP,
         None,
         None,
+        None,
     ]
-    sensors_units = [UNIT_CELSIUS, UNIT_DBM, None, None, None, None]
+    sensors_units = [UNIT_CELSIUS, UNIT_DBM, None, None, None, None, None]
     sensors_tpls = [
         TPL_TEMPERATURE,
         TPL_RSSI,
         TPL_SSID,
         TPL_UPTIME,
         TPL_IP,
+        TPL_TEMPERATURE_STATUS,
         TPL_TEMPERATURE_STATUS,
     ]
     sensors_topics = [
@@ -819,6 +822,7 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
         TOPIC_INFO,
         TOPIC_INFO,
         TOPIC_ANNOUNCE,
+        TOPIC_TEMPERATURE_STATUS,
         TOPIC_TEMPERATURE_STATUS,
     ]
     bin_sensors = [SENSOR_OVERTEMPERATURE, SENSOR_FIRMWARE_UPDATE]
@@ -952,6 +956,7 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         SENSOR_IP,
         SENSOR_TEMPERATURE_STATUS,
         SENSOR_VOLTAGE,
+        "temperarure_status",  # to remove in the future
     ]
     sensors_state_classes = [
         STATE_CLASS_MEASUREMENT,
@@ -961,8 +966,9 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         None,
         None,
         STATE_CLASS_MEASUREMENT,
+        None,
     ]
-    sensors_enabled = [True, False, False, False, False, True, True]
+    sensors_enabled = [True, False, False, False, False, True, True, True]
     sensors_device_classes = [
         DEVICE_CLASS_TEMPERATURE,
         DEVICE_CLASS_SIGNAL_STRENGTH,
@@ -971,8 +977,9 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         None,
         None,
         DEVICE_CLASS_VOLTAGE,
+        None,
     ]
-    sensors_units = [UNIT_CELSIUS, UNIT_DBM, None, None, None, None, UNIT_VOLT]
+    sensors_units = [UNIT_CELSIUS, UNIT_DBM, None, None, None, None, UNIT_VOLT, None]
     sensors_tpls = [
         TPL_TEMPERATURE,
         TPL_RSSI,
@@ -981,6 +988,7 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         TPL_IP,
         TPL_TEMPERATURE_STATUS,
         TPL_VOLTAGE,
+        TPL_TEMPERATURE_STATUS,
     ]
     sensors_topics = [
         None,
@@ -990,6 +998,7 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         TOPIC_ANNOUNCE,
         TOPIC_TEMPERATURE_STATUS,
         TOPIC_VOLTAGE,
+        TOPIC_TEMPERATURE_STATUS,
     ]
     bin_sensors = [
         SENSOR_OVERTEMPERATURE,
@@ -2313,23 +2322,26 @@ if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
         SENSOR_UPTIME,
         SENSOR_IP,
         SENSOR_TEMPERATURE_STATUS,
+        "temperarure_status",  # to remove in the future
     ]
-    sensors_state_classes = [None, None, None, None, None]
-    sensors_enabled = [False, False, False, False, True]
-    sensors_units = [UNIT_DBM, None, None, None, None]
+    sensors_state_classes = [None, None, None, None, None, None]
+    sensors_enabled = [False, False, False, False, True, True]
+    sensors_units = [UNIT_DBM, None, None, None, None, None]
     sensors_device_classes = [
         DEVICE_CLASS_SIGNAL_STRENGTH,
         None,
         DEVICE_CLASS_TIMESTAMP,
         None,
         None,
+        None,
     ]
-    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP, TPL_TEMPERATURE_STATUS]
+    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP, TPL_TEMPERATURE_STATUS, TPL_TEMPERATURE_STATUS]
     sensors_topics = [
         TOPIC_INFO,
         TOPIC_INFO,
         TOPIC_INFO,
         TOPIC_ANNOUNCE,
+        TOPIC_TEMPERATURE_STATUS,
         TOPIC_TEMPERATURE_STATUS,
     ]
 
@@ -2747,6 +2759,8 @@ for sensor_id in range(len(sensors)):
     if use_fahrenheit and sensors[sensor_id] == SENSOR_TEMPERATURE:
         payload = ""
     if not use_fahrenheit and sensors[sensor_id] == SENSOR_TEMPERATURE_F:
+        payload = ""
+    if sensors[sensor_id] == "temperarure_status":  # to remove in the future
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
