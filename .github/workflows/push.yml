@@ -9,18 +9,18 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.7, 3.8]
+        python-version: [3.8, 3.9]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
     - name: Check with Black Code Formatter
       run: |
         pip install black
-        black python_scripts -t py38 --check
+        black python_scripts --check
     - name: Lint with flake8
       run: |
         pip install flake8
