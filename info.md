@@ -99,6 +99,7 @@ python_script:
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
       model: '{{ trigger.payload_json.model }}'
       mode: '{{ trigger.payload_json.mode | default }}'
+      host: '{{ trigger.payload_json.ip }}'
 ```
 
 ## Custom configuration example
@@ -136,6 +137,7 @@ python_script:
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
       model: '{{ trigger.payload_json.model }}'
       mode: '{{ trigger.payload_json.mode | default }}'
+      host: '{{ trigger.payload_json.ip }}'
       discovery_prefix: 'hass'
       qos: 2
       shelly1-AABB9900:
