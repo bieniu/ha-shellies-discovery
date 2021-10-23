@@ -1497,14 +1497,21 @@ if model_id == MODEL_SHELLYDW_ID or dev_id_prefix == MODEL_SHELLYDW_PREFIX:
 
 if model_id == MODEL_SHELLYDW2_ID or dev_id_prefix == MODEL_SHELLYDW2_PREFIX:
     model = MODEL_SHELLYDW2
-    sensors = [SENSOR_LUX, SENSOR_BATTERY, SENSOR_TILT, SENSOR_TEMPERATURE, SENSOR_IP, SENSOR_TEMPERATURE_F]
+    sensors = [
+        SENSOR_LUX,
+        SENSOR_BATTERY,
+        SENSOR_TILT,
+        SENSOR_TEMPERATURE,
+        SENSOR_IP,
+        SENSOR_TEMPERATURE_F,
+    ]
     sensors_state_classes = [
         STATE_CLASS_MEASUREMENT,
         STATE_CLASS_MEASUREMENT,
         STATE_CLASS_MEASUREMENT,
         STATE_CLASS_MEASUREMENT,
         None,
-        STATE_CLASS_MEASUREMENT
+        STATE_CLASS_MEASUREMENT,
     ]
     sensors_enabled = [True, True, True, True, False, True]
     sensors_device_classes = [
@@ -1513,10 +1520,24 @@ if model_id == MODEL_SHELLYDW2_ID or dev_id_prefix == MODEL_SHELLYDW2_PREFIX:
         None,
         DEVICE_CLASS_TEMPERATURE,
         None,
-        DEVICE_CLASS_TEMPERATURE
+        DEVICE_CLASS_TEMPERATURE,
     ]
-    sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DEGREE, UNIT_CELSIUS, None, UNIT_FAHRENHEIT]
-    sensors_tpls = [TPL_LUX, TPL_BATTERY, TPL_TILT, TPL_TEMPERATURE, TPL_IP, TPL_TEMPERATURE]
+    sensors_units = [
+        UNIT_LUX,
+        UNIT_PERCENT,
+        UNIT_DEGREE,
+        UNIT_CELSIUS,
+        None,
+        UNIT_FAHRENHEIT,
+    ]
+    sensors_tpls = [
+        TPL_LUX,
+        TPL_BATTERY,
+        TPL_TILT,
+        TPL_TEMPERATURE,
+        TPL_IP,
+        TPL_TEMPERATURE,
+    ]
     sensors_topics = [None, None, None, None, TOPIC_ANNOUNCE, TOPIC_TEMPERATURE]
     bin_sensors = [SENSOR_OPENING, SENSOR_VIBRATION, SENSOR_FIRMWARE_UPDATE]
     bin_sensors_enabled = [True, True, True]
@@ -2156,9 +2177,19 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
 if model_id == MODEL_SHELLYFLOOD_ID or dev_id_prefix == MODEL_SHELLYFLOOD_PREFIX:
     model = MODEL_SHELLYFLOOD
     sensors = [SENSOR_TEMPERATURE, SENSOR_BATTERY, SENSOR_IP, SENSOR_TEMPERATURE_F]
-    sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT, None, STATE_CLASS_MEASUREMENT]
+    sensors_state_classes = [
+        STATE_CLASS_MEASUREMENT,
+        STATE_CLASS_MEASUREMENT,
+        None,
+        STATE_CLASS_MEASUREMENT,
+    ]
     sensors_enabled = [True, True, False, True]
-    sensors_device_classes = [DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_BATTERY, None, DEVICE_CLASS_TEMPERATURE]
+    sensors_device_classes = [
+        DEVICE_CLASS_TEMPERATURE,
+        DEVICE_CLASS_BATTERY,
+        None,
+        DEVICE_CLASS_TEMPERATURE,
+    ]
     sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, None, UNIT_FAHRENHEIT]
     sensors_tpls = [TPL_TEMPERATURE, TPL_BATTERY, TPL_IP, TPL_TEMPERATURE]
     sensors_topics = [None, None, TOPIC_ANNOUNCE, None, TOPIC_TEMPERATURE]
