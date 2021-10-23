@@ -469,9 +469,11 @@ ROLLER_DEVICE_CLASSES = [
     DEVICE_CLASS_WINDOW,
 ]
 
+
 def format_mac(mac):
     """Format the mac address string."""
     return ":".join(mac[i : i + 2] for i in range(0, 12, 2))
+
 
 def parse_version(version):
     """Parse version string and return version date integer."""
