@@ -85,6 +85,7 @@ EXPIRE_AFTER_FOR_SHELLY_MOTION = int(1.2 * 60 * 60)  # 1.2 * 60 min
 KEY_AUTOMATION_TYPE = "atype"
 KEY_AVAILABILITY_TOPIC = "avty_t"
 KEY_COMMAND_TOPIC = "cmd_t"
+KEY_CONNECTIONS = "cns"
 KEY_DEVICE = "dev"
 KEY_DEVICE_CLASS = "dev_cla"
 KEY_ENABLED_BY_DEFAULT = "en"
@@ -94,6 +95,7 @@ KEY_ICON = "icon"
 KEY_IDENTIFIERS = "ids"
 KEY_JSON_ATTRIBUTES_TEMPLATE = "json_attr_tpl"
 KEY_JSON_ATTRIBUTES_TOPIC = "json_attr_t"
+KEY_MAC = "mac"
 KEY_MANUFACTURER = "mf"
 KEY_MODEL = "mdl"
 KEY_NAME = "name"
@@ -466,6 +468,11 @@ ROLLER_DEVICE_CLASSES = [
     DEVICE_CLASS_SHUTTER,
     DEVICE_CLASS_WINDOW,
 ]
+
+
+def format_mac(mac):
+    """Format the mac address string."""
+    return ":".join(mac[i : i + 2] for i in range(0, 12, 2))
 
 
 def parse_version(version):
@@ -2417,6 +2424,7 @@ for roller_id in range(rollers):
             KEY_QOS: qos,
             KEY_DEVICE: {
                 KEY_IDENTIFIERS: [mac],
+                KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                 KEY_NAME: device_name,
                 KEY_MODEL: model,
                 KEY_SW_VERSION: fw_ver,
@@ -2473,6 +2481,7 @@ for relay_id in range(relays):
                 KEY_QOS: qos,
                 KEY_DEVICE: {
                     KEY_IDENTIFIERS: [mac],
+                    KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                     KEY_NAME: device_name,
                     KEY_MODEL: model,
                     KEY_SW_VERSION: fw_ver,
@@ -2519,6 +2528,7 @@ for relay_id in range(relays):
                     KEY_QOS: qos,
                     KEY_DEVICE: {
                         KEY_IDENTIFIERS: [mac],
+                        KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                         KEY_NAME: device_name,
                         KEY_MODEL: model,
                         KEY_SW_VERSION: fw_ver,
@@ -2569,6 +2579,7 @@ for relay_id in range(relays):
                 KEY_QOS: qos,
                 KEY_DEVICE: {
                     KEY_IDENTIFIERS: [mac],
+                    KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                     KEY_NAME: device_name,
                     KEY_MODEL: model,
                     KEY_SW_VERSION: fw_ver,
@@ -2617,6 +2628,7 @@ for relay_id in range(relays):
                 KEY_QOS: qos,
                 KEY_DEVICE: {
                     KEY_IDENTIFIERS: [mac],
+                    KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                     KEY_NAME: device_name,
                     KEY_MODEL: model,
                     KEY_SW_VERSION: fw_ver,
@@ -2748,6 +2760,7 @@ for sensor_id in range(len(sensors)):
         KEY_QOS: qos,
         KEY_DEVICE: {
             KEY_IDENTIFIERS: [mac],
+            KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
             KEY_NAME: device_name,
             KEY_MODEL: model,
             KEY_SW_VERSION: fw_ver,
@@ -2818,6 +2831,7 @@ for input_id in range(inputs):
         KEY_QOS: qos,
         KEY_DEVICE: {
             KEY_IDENTIFIERS: [mac],
+            KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
             KEY_NAME: device_name,
             KEY_MODEL: model,
             KEY_SW_VERSION: fw_ver,
@@ -2845,6 +2859,7 @@ for input_id in range(inputs):
             KEY_QOS: qos,
             KEY_DEVICE: {
                 KEY_IDENTIFIERS: [mac],
+                KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                 KEY_NAME: device_name,
                 KEY_MODEL: model,
                 KEY_SW_VERSION: fw_ver,
@@ -2895,6 +2910,7 @@ for sensor_id in range(ext_temp_sensors):
             KEY_QOS: qos,
             KEY_DEVICE: {
                 KEY_IDENTIFIERS: [mac],
+                KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                 KEY_NAME: device_name,
                 KEY_MODEL: model,
                 KEY_SW_VERSION: fw_ver,
@@ -2944,6 +2960,7 @@ for sensor_id in range(ext_humi_sensors):
             KEY_QOS: qos,
             KEY_DEVICE: {
                 KEY_IDENTIFIERS: [mac],
+                KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                 KEY_NAME: device_name,
                 KEY_MODEL: model,
                 KEY_SW_VERSION: fw_ver,
@@ -3020,6 +3037,7 @@ for bin_sensor_id in range(len(bin_sensors)):
         KEY_QOS: qos,
         KEY_DEVICE: {
             KEY_IDENTIFIERS: [mac],
+            KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
             KEY_NAME: device_name,
             KEY_MODEL: model,
             KEY_SW_VERSION: fw_ver,
@@ -3220,6 +3238,7 @@ for light_id in range(rgbw_lights):
                 KEY_QOS: qos,
                 KEY_DEVICE: {
                     KEY_IDENTIFIERS: [mac],
+                    KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                     KEY_NAME: device_name,
                     KEY_MODEL: model,
                     KEY_SW_VERSION: fw_ver,
@@ -3281,6 +3300,7 @@ for light_id in range(rgbw_lights):
                 KEY_QOS: qos,
                 KEY_DEVICE: {
                     KEY_IDENTIFIERS: [mac],
+                    KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                     KEY_NAME: device_name,
                     KEY_MODEL: model,
                     KEY_SW_VERSION: fw_ver,
@@ -3472,6 +3492,7 @@ for light_id in range(white_lights):
                     KEY_QOS: qos,
                     KEY_DEVICE: {
                         KEY_IDENTIFIERS: [mac],
+                        KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                         KEY_NAME: device_name,
                         KEY_MODEL: model,
                         KEY_SW_VERSION: fw_ver,
@@ -3550,6 +3571,7 @@ for light_id in range(white_lights):
                 KEY_QOS: qos,
                 KEY_DEVICE: {
                     KEY_IDENTIFIERS: [mac],
+                    KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                     KEY_NAME: device_name,
                     KEY_MODEL: model,
                     KEY_SW_VERSION: fw_ver,
@@ -3601,6 +3623,7 @@ for meter_id in range(meters):
             KEY_QOS: qos,
             KEY_DEVICE: {
                 KEY_IDENTIFIERS: [mac],
+                KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                 KEY_NAME: device_name,
                 KEY_MODEL: model,
                 KEY_SW_VERSION: fw_ver,
