@@ -18,11 +18,11 @@ CONF_EXT_SWITCH = "ext-switch"
 CONF_FORCE_UPDATE_SENSORS = "force_update_sensors"
 CONF_FRIENDLY_NAME = "friendly_name"
 CONF_FW_VER = "fw_ver"
+CONF_HOST = "host"
 CONF_ID = "id"
 CONF_IGNORED_DEVICES = "ignored_devices"
 CONF_IGNORE_DEVICE_MODEL = "ignore_device_model"
 CONF_MAC = "mac"
-CONF_MODE = "mode"
 CONF_MODE = "mode"
 CONF_MODEL_ID = "model"
 CONF_POSITION_TEMPLATE = "position_template"
@@ -85,6 +85,7 @@ EXPIRE_AFTER_FOR_SHELLY_MOTION = int(1.2 * 60 * 60)  # 1.2 * 60 min
 KEY_AUTOMATION_TYPE = "atype"
 KEY_AVAILABILITY_TOPIC = "avty_t"
 KEY_COMMAND_TOPIC = "cmd_t"
+KEY_CONFIGURATION_URL = "cu"
 KEY_CONNECTIONS = "cns"
 KEY_DEVICE = "dev"
 KEY_DEVICE_CLASS = "dev_cla"
@@ -523,6 +524,7 @@ fw_ver = data.get(CONF_FW_VER)  # noqa: F821
 dev_id = data.get(CONF_ID)  # noqa: F821
 model_id = data.get(CONF_MODEL_ID)
 mode = data.get(CONF_MODE)
+host = data.get(CONF_HOST)
 
 use_fahrenheit = False
 
@@ -2429,6 +2431,7 @@ for roller_id in range(rollers):
                 KEY_MODEL: model,
                 KEY_SW_VERSION: fw_ver,
                 KEY_MANUFACTURER: ATTR_MANUFACTURER,
+                KEY_CONFIGURATION_URL: f"http://{host}/",
             },
             "~": default_topic,
         }
@@ -2486,6 +2489,7 @@ for relay_id in range(relays):
                     KEY_MODEL: model,
                     KEY_SW_VERSION: fw_ver,
                     KEY_MANUFACTURER: ATTR_MANUFACTURER,
+                    KEY_CONFIGURATION_URL: f"http://{host}/",
                 },
                 "~": default_topic,
             }
@@ -2533,6 +2537,7 @@ for relay_id in range(relays):
                         KEY_MODEL: model,
                         KEY_SW_VERSION: fw_ver,
                         KEY_MANUFACTURER: ATTR_MANUFACTURER,
+                        KEY_CONFIGURATION_URL: f"http://{host}/",
                     },
                     "~": default_topic,
                 }
@@ -2584,6 +2589,7 @@ for relay_id in range(relays):
                     KEY_MODEL: model,
                     KEY_SW_VERSION: fw_ver,
                     KEY_MANUFACTURER: ATTR_MANUFACTURER,
+                    KEY_CONFIGURATION_URL: f"http://{host}/",
                 },
                 "~": default_topic,
             }
@@ -2633,6 +2639,7 @@ for relay_id in range(relays):
                     KEY_MODEL: model,
                     KEY_SW_VERSION: fw_ver,
                     KEY_MANUFACTURER: ATTR_MANUFACTURER,
+                    KEY_CONFIGURATION_URL: f"http://{host}/",
                 },
                 "~": default_topic,
             }
@@ -2765,6 +2772,7 @@ for sensor_id in range(len(sensors)):
             KEY_MODEL: model,
             KEY_SW_VERSION: fw_ver,
             KEY_MANUFACTURER: ATTR_MANUFACTURER,
+            KEY_CONFIGURATION_URL: f"http://{host}/",
         },
         "~": default_topic,
     }
@@ -2836,6 +2844,7 @@ for input_id in range(inputs):
             KEY_MODEL: model,
             KEY_SW_VERSION: fw_ver,
             KEY_MANUFACTURER: ATTR_MANUFACTURER,
+            KEY_CONFIGURATION_URL: f"http://{host}/",
         },
         KEY_TYPE: VALUE_BUTTON_SHORT_RELEASE,
         KEY_SUBTYPE: f"button_{input_id + 1}",
@@ -2864,6 +2873,7 @@ for input_id in range(inputs):
                 KEY_MODEL: model,
                 KEY_SW_VERSION: fw_ver,
                 KEY_MANUFACTURER: ATTR_MANUFACTURER,
+                KEY_CONFIGURATION_URL: f"http://{host}/",
             },
             KEY_TYPE: event,
             KEY_SUBTYPE: f"button_{input_id + 1}",
@@ -2915,6 +2925,7 @@ for sensor_id in range(ext_temp_sensors):
                 KEY_MODEL: model,
                 KEY_SW_VERSION: fw_ver,
                 KEY_MANUFACTURER: ATTR_MANUFACTURER,
+                KEY_CONFIGURATION_URL: f"http://{host}/",
             },
             "~": default_topic,
         }
@@ -2965,6 +2976,7 @@ for sensor_id in range(ext_humi_sensors):
                 KEY_MODEL: model,
                 KEY_SW_VERSION: fw_ver,
                 KEY_MANUFACTURER: ATTR_MANUFACTURER,
+                KEY_CONFIGURATION_URL: f"http://{host}/",
             },
             "~": default_topic,
         }
@@ -3042,6 +3054,7 @@ for bin_sensor_id in range(len(bin_sensors)):
             KEY_MODEL: model,
             KEY_SW_VERSION: fw_ver,
             KEY_MANUFACTURER: ATTR_MANUFACTURER,
+            KEY_CONFIGURATION_URL: f"http://{host}/",
         },
         "~": default_topic,
     }
@@ -3243,6 +3256,7 @@ for light_id in range(rgbw_lights):
                     KEY_MODEL: model,
                     KEY_SW_VERSION: fw_ver,
                     KEY_MANUFACTURER: ATTR_MANUFACTURER,
+                    KEY_CONFIGURATION_URL: f"http://{host}/",
                 },
                 "~": default_topic,
             }
@@ -3305,6 +3319,7 @@ for light_id in range(rgbw_lights):
                     KEY_MODEL: model,
                     KEY_SW_VERSION: fw_ver,
                     KEY_MANUFACTURER: ATTR_MANUFACTURER,
+                    KEY_CONFIGURATION_URL: f"http://{host}/",
                 },
                 "~": default_topic,
             }
@@ -3497,6 +3512,7 @@ for light_id in range(white_lights):
                         KEY_MODEL: model,
                         KEY_SW_VERSION: fw_ver,
                         KEY_MANUFACTURER: ATTR_MANUFACTURER,
+                        KEY_CONFIGURATION_URL: f"http://{host}/",
                     },
                     "~": default_topic,
                 }
@@ -3576,6 +3592,7 @@ for light_id in range(white_lights):
                     KEY_MODEL: model,
                     KEY_SW_VERSION: fw_ver,
                     KEY_MANUFACTURER: ATTR_MANUFACTURER,
+                    KEY_CONFIGURATION_URL: f"http://{host}/",
                 },
                 "~": default_topic,
             }
@@ -3628,6 +3645,7 @@ for meter_id in range(meters):
                 KEY_MODEL: model,
                 KEY_SW_VERSION: fw_ver,
                 KEY_MANUFACTURER: ATTR_MANUFACTURER,
+                KEY_CONFIGURATION_URL: f"http://{host}/",
             },
             "~": default_topic,
         }
