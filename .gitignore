@@ -9,3 +9,4 @@ __pycache__/
 .storage
 .vscode
 venv/
+home-assistant_v2.db*
