@@ -627,6 +627,7 @@ lights_bin_sensors_device_classes = []
 lights_bin_sensors_pl = []
 lights_bin_sensors_tpls = []
 lights_sensors = []
+lights_sensors_entity_categories = []
 lights_sensors_device_classes = []
 lights_sensors_state_classes = []
 lights_sensors_tpls = []
@@ -1915,6 +1916,7 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
     lights_bin_sensors_topics = [None]
     lights_bin_sensors_tpls = [TPL_OVERPOWER]
     lights_sensors = [SENSOR_POWER, SENSOR_ENERGY]
+    lights_sensors_entity_categories = [None, None]
     lights_sensors_state_classes = [
         STATE_CLASS_MEASUREMENT,
         STATE_CLASS_TOTAL_INCREASING,
@@ -2051,6 +2053,7 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
         TOPIC_INFO,
     ]
     lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER_VALUE]
+    lights_sensors_entity_categories = [None, None, ENTITY_CATEGORY_DIAGNOSTIC]
     lights_sensors_state_classes = [
         STATE_CLASS_MEASUREMENT,
         STATE_CLASS_TOTAL_INCREASING,
@@ -2219,6 +2222,7 @@ if model_id == MODEL_SHELLYBULBRGBW_ID or dev_id_prefix == MODEL_SHELLYBULBRGBW_
     model = MODEL_SHELLYBULBRGBW
     rgbw_lights = 1
     lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
+    lights_sensors_entity_categories = [None, None]
     lights_sensors_state_classes = [
         STATE_CLASS_TOTAL_INCREASING,
         STATE_CLASS_MEASUREMENT,
@@ -2255,6 +2259,7 @@ if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
     model = MODEL_SHELLYDUO
     white_lights = 1
     lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
+    lights_sensors_entity_categories = [None, None]
     lights_sensors_state_classes = [
         STATE_CLASS_TOTAL_INCREASING,
         STATE_CLASS_MEASUREMENT,
@@ -2291,6 +2296,7 @@ if model_id == MODEL_SHELLYVINTAGE_ID or dev_id_prefix == MODEL_SHELLYVINTAGE_PR
     model = MODEL_SHELLYVINTAGE
     white_lights = 1
     lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
+    lights_sensors_entity_categories = [None, None]
     lights_sensors_state_classes = [
         STATE_CLASS_TOTAL_INCREASING,
         STATE_CLASS_MEASUREMENT,
@@ -3037,9 +3043,9 @@ for relay_id in range(relays):
                 and push_off_delay
             ):
                 payload[KEY_OFF_DELAY] = OFF_DELAY
-            if relays_bin_sensors_entity_categories[sensor_id]:
+            if relays_bin_sensors_entity_categories[bin_sensor_id]:
                 payload[KEY_ENTITY_CATEGORY] = relays_bin_sensors_entity_categories[
-                    sensor_id
+                    bin_sensor_id
                 ]
             if relays_bin_sensors_tpls[bin_sensor_id]:
                 payload[KEY_VALUE_TEMPLATE] = relays_bin_sensors_tpls[bin_sensor_id]
@@ -3433,8 +3439,8 @@ for bin_sensor_id in range(len(bin_sensors)):
         },
         "~": default_topic,
     }
-    if bin_sensors_entity_categories[sensor_id]:
-        payload[KEY_ENTITY_CATEGORY] = bin_sensors_entity_categories[sensor_id]
+    if bin_sensors_entity_categories[bin_sensor_id]:
+        payload[KEY_ENTITY_CATEGORY] = bin_sensors_entity_categories[bin_sensor_id]
     if bin_sensors_tpls[bin_sensor_id]:
         payload[KEY_VALUE_TEMPLATE] = bin_sensors_tpls[bin_sensor_id]
     else:
@@ -3702,6 +3708,10 @@ for light_id in range(rgbw_lights):
             }
             if lights_sensors_state_classes[sensor_id]:
                 payload[KEY_STATE_CLASS] = lights_sensors_state_classes[sensor_id]
+            if lights_sensors_entity_categories[sensor_id]:
+                payload[KEY_ENTITY_CATEGORY] = lights_sensors_entity_categories[
+                    sensor_id
+                ]
         else:
             payload = ""
         if dev_id.lower() in ignored:
@@ -3973,6 +3983,10 @@ for light_id in range(white_lights):
                 },
                 "~": default_topic,
             }
+            if lights_sensors_entity_categories[sensor_id]:
+                payload[KEY_ENTITY_CATEGORY] = lights_sensors_entity_categories[
+                    sensor_id
+                ]
             if lights_sensors_state_classes[sensor_id]:
                 payload[KEY_STATE_CLASS] = lights_sensors_state_classes[sensor_id]
         else:
