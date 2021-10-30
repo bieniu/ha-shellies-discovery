@@ -2999,9 +2999,7 @@ for relay_id in range(relays):
         if device_config.get(f"relay-{relay_id}-name"):
             sensor_name = f"{device_config[f'relay-{relay_id}-name']} {clean_name(relays_bin_sensors[bin_sensor_id])}"
         else:
-            sensor_name = (
-                f"{device_name} {clean_name(relays_bin_sensors[bin_sensor_id])} {relay_id}"
-            )
+            sensor_name = f"{device_name} {clean_name(relays_bin_sensors[bin_sensor_id])} {relay_id}"
         if relays_bin_sensors_topics and relays_bin_sensors_topics[bin_sensor_id]:
             state_topic = f"~{relays_bin_sensors_topics[bin_sensor_id]}/{relay_id}"
         else:
@@ -3888,9 +3886,7 @@ for light_id in range(white_lights):
                 state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
             else:
                 state_topic = f"~white/{light_id}/status"
-            sensor_name = (
-                f"{device_name} {clean_name(lights_bin_sensors[bin_sensor_id])} {light_id}"
-            )
+            sensor_name = f"{device_name} {clean_name(lights_bin_sensors[bin_sensor_id])} {light_id}"
             if mode != LIGHT_COLOR:
                 payload = {
                     KEY_NAME: sensor_name,
