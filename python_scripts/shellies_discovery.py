@@ -3109,7 +3109,7 @@ for sensor_id in range(len(sensors)):
     if sensors[sensor_id] in (SENSOR_RSSI, SENSOR_SSID, SENSOR_ADC, SENSOR_IP):
         sensor_name = f"{device_name} {sensors[sensor_id].upper()}"
     else:
-        sensor_name = f"{device_name} {sensors[sensor_id].title()}"
+        sensor_name = f"{device_name} {clean_name(sensors[sensor_id])}"
     if sensors[sensor_id] == SENSOR_TEMPERATURE_F:
         sensor_name = f"{device_name} Temperature"
     if sensors_topics[sensor_id]:
@@ -3681,7 +3681,9 @@ for light_id in range(rgbw_lights):
         ).decode(
             "utf-8"
         )
-        sensor_name = f"{device_name} {lights_sensors[sensor_id].title()} {light_id}"
+        sensor_name = (
+            f"{device_name} {clean_name(lights_sensors[sensor_id])} {light_id}"
+        )
         if model == MODEL_SHELLYBULBRGBW:
             state_topic = f"~light/{light_id}/{lights_sensors[sensor_id]}"
         elif model == MODEL_SHELLYRGBW2:
@@ -3943,7 +3945,9 @@ for light_id in range(white_lights):
         ).decode(
             "utf-8"
         )
-        sensor_name = f"{device_name} {lights_sensors[sensor_id].title()} {light_id}"
+        sensor_name = (
+            f"{device_name} {clean_name(lights_sensors[sensor_id])} {light_id}"
+        )
         if model in (
             MODEL_SHELLYDIMMER,
             MODEL_SHELLYDIMMER2,
