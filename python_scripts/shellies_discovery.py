@@ -2896,9 +2896,9 @@ for relay_id in range(relays):
                 "utf-8"
             )
             if device_config.get(f"relay-{relay_id}-name"):
-                sensor_name = f"{device_config[f'relay-{relay_id}-name']} {relays_sensors[sensor_id].title()}"
+                sensor_name = f"{device_config[f'relay-{relay_id}-name']} {clean_name(relays_sensors[sensor_id])}"
             else:
-                sensor_name = f"{device_name} {relays_sensors[sensor_id].title()}"
+                sensor_name = f"{device_name} {clean_name(relays_sensors[sensor_id])}"
             state_topic = f"~relay/{relays_sensors[sensor_id]}"
             if model == MODEL_SHELLY2 or roller_mode:
                 payload = {
@@ -2946,10 +2946,10 @@ for relay_id in range(relays):
             "utf-8"
         )
         if device_config.get(f"relay-{relay_id}-name"):
-            sensor_name = f"{device_config[f'relay-{relay_id}-name']} {relays_sensors[sensor_id].title()}"
+            sensor_name = f"{device_config[f'relay-{relay_id}-name']} {clean_name(relays_sensors[sensor_id])}"
         else:
             sensor_name = (
-                f"{device_name} {relays_sensors[sensor_id].title()} {relay_id}"
+                f"{device_name} {clean_name(relays_sensors[sensor_id])} {relay_id}"
             )
         state_topic = f"~relay/{relay_id}/{relays_sensors[sensor_id]}"
         if model != MODEL_SHELLY2 and not roller_mode:
@@ -2997,10 +2997,10 @@ for relay_id in range(relays):
             "utf-8"
         )
         if device_config.get(f"relay-{relay_id}-name"):
-            sensor_name = f"{device_config[f'relay-{relay_id}-name']} {relays_bin_sensors[bin_sensor_id].title()}"
+            sensor_name = f"{device_config[f'relay-{relay_id}-name']} {clean_name(relays_bin_sensors[bin_sensor_id])}"
         else:
             sensor_name = (
-                f"{device_name} {relays_bin_sensors[bin_sensor_id].title()} {relay_id}"
+                f"{device_name} {clean_name(relays_bin_sensors[bin_sensor_id])} {relay_id}"
             )
         if relays_bin_sensors_topics and relays_bin_sensors_topics[bin_sensor_id]:
             state_topic = f"~{relays_bin_sensors_topics[bin_sensor_id]}/{relay_id}"
@@ -3418,7 +3418,7 @@ for bin_sensor_id in range(len(bin_sensors)):
         sensor_name = f"{device_name} External Switch"
     else:
         sensor_name = (
-            f"{device_name} {bin_sensors[bin_sensor_id].replace('/', ' ').title()}"
+            f"{device_name} {clean_name(bin_sensors[bin_sensor_id].replace('/', ' '))}"
         )
     if bin_sensors_topics[bin_sensor_id]:
         state_topic = f"~{bin_sensors_topics[bin_sensor_id]}"
@@ -3615,7 +3615,7 @@ for light_id in range(rgbw_lights):
     # color light's binary sensors
     for bin_sensor_id in range(len(lights_bin_sensors)):
         sensor_name = (
-            f"{device_name} {lights_bin_sensors[bin_sensor_id].title()} {light_id}"
+            f"{device_name} {clean_name(lights_bin_sensors[bin_sensor_id])} {light_id}"
         )
         config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config".encode(
             "ascii", "ignore"
@@ -3889,7 +3889,7 @@ for light_id in range(white_lights):
             else:
                 state_topic = f"~white/{light_id}/status"
             sensor_name = (
-                f"{device_name} {lights_bin_sensors[bin_sensor_id].title()} {light_id}"
+                f"{device_name} {clean_name(lights_bin_sensors[bin_sensor_id])} {light_id}"
             )
             if mode != LIGHT_COLOR:
                 payload = {
@@ -4025,7 +4025,7 @@ for meter_id in range(meters):
             "utf-8"
         )
         sensor_name = (
-            f"{device_name} Meter {meters_sensors[sensor_id].title()} {meter_id}"
+            f"{device_name} Meter {clean_name(meters_sensors[sensor_id])} {meter_id}"
         )
         state_topic = f"~emeter/{meter_id}/{meters_sensors[sensor_id]}"
         payload = {
