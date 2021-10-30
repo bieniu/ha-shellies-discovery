@@ -2177,6 +2177,7 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         TOPIC_INFO,
     ]
     lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER_VALUE]
+    lights_sensors_entity_categories = [None, None, ENTITY_CATEGORY_DIAGNOSTIC]
     lights_sensors_state_classes = [
         STATE_CLASS_MEASUREMENT,
         STATE_CLASS_TOTAL_INCREASING,
