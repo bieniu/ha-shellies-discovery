@@ -642,6 +642,7 @@ model = None
 relay_components = [COMP_SWITCH, COMP_LIGHT, COMP_FAN]
 relays = 0
 relays_bin_sensors = []
+relays_bin_sensors_entity_categories = []
 relays_bin_sensors_device_classes = []
 relays_bin_sensors_pl = []
 relays_bin_sensors_topics = []
@@ -684,6 +685,7 @@ if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
         SENSOR_LONGPUSH,
         SENSOR_SHORTPUSH,
     ]
+    relays_bin_sensors_entity_categories = [None, None, None]
     relays_bin_sensors_device_classes = [None, None, None]
     relays_bin_sensors_pl = [PL_1_0, None, None]
     relays_bin_sensors_topics = [None, TOPIC_INPUT_EVENT, TOPIC_INPUT_EVENT]
@@ -817,6 +819,12 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
         SENSOR_SHORTPUSH,
         SENSOR_OVERPOWER,
     ]
+    relays_bin_sensors_entity_categories = [
+        None,
+        None,
+        None,
+        ENTITY_CATEGORY_DIAGNOSTIC,
+    ]
     relays_bin_sensors_pl = [PL_1_0, None, None, None]
     relays_bin_sensors_topics = [
         None,
@@ -901,6 +909,7 @@ if model_id == MODEL_SHELLYAIR_ID or dev_id_prefix == MODEL_SHELLYAIR_PREFIX:
     relays_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [SENSOR_INPUT]
+    relays_bin_sensors_entity_categories = [None]
     relays_bin_sensors_pl = [PL_1_0]
     relays_bin_sensors_tpls = [None]
     relays_bin_sensors_device_classes = [None]
@@ -964,6 +973,7 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
         SENSOR_SHORTPUSH,
         SENSOR_OVERPOWER,
     ]
+    relays_bin_sensors_entity_categories = [None, None, ENTITY_CATEGORY_DIAGNOSTIC]
     relays_bin_sensors_pl = [None, None, None]
     relays_bin_sensors_topics = [TOPIC_INPUT_EVENT, TOPIC_INPUT_EVENT, TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_LONGPUSH, TPL_SHORTPUSH, TPL_OVERPOWER_RELAY]
@@ -1019,6 +1029,7 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         SENSOR_SHORTPUSH,
         SENSOR_OVERPOWER,
     ]
+    relays_bin_sensors_entity_categories = [None, None, ENTITY_CATEGORY_DIAGNOSTIC]
     relays_bin_sensors_pl = [None, None, None]
     relays_bin_sensors_topics = [TOPIC_INPUT_EVENT, TOPIC_INPUT_EVENT, TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_LONGPUSH, TPL_SHORTPUSH, TPL_OVERPOWER_RELAY]
@@ -1110,6 +1121,12 @@ if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
         SENSOR_SHORTPUSH,
         SENSOR_OVERPOWER,
     ]
+    relays_bin_sensors_entity_categories = [
+        None,
+        None,
+        None,
+        ENTITY_CATEGORY_DIAGNOSTIC,
+    ]
     relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
     relays_bin_sensors_topics = [
         None,
@@ -1162,6 +1179,7 @@ if (
     relays_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [SENSOR_OVERPOWER]
+    relays_bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
     relays_bin_sensors_pl = [None]
     relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
@@ -1203,6 +1221,7 @@ if model_id == MODEL_SHELLYPLUG_US_ID or dev_id_prefix == MODEL_SHELLYPLUG_US_PR
     relays_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [SENSOR_OVERPOWER]
+    relays_bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
     relays_bin_sensors_pl = [None]
     relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
@@ -1244,6 +1263,7 @@ if model_id == MODEL_SHELLYPLUG_S_ID or dev_id_prefix == MODEL_SHELLYPLUG_S_PREF
     relays_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [SENSOR_OVERPOWER]
+    relays_bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
     relays_bin_sensors_pl = [None]
     relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
@@ -1291,6 +1311,7 @@ if model_id == MODEL_SHELLY4PRO_ID or dev_id_prefix == MODEL_SHELLY4PRO_PREFIX:
     relays_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     relays_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     relays_bin_sensors = [SENSOR_OVERPOWER, SENSOR_INPUT]
+    relays_bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC, None]
     relays_bin_sensors_pl = [None, PL_1_0]
     relays_bin_sensors_topics = [TOPIC_RELAY, None]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY, None]
@@ -2305,14 +2326,13 @@ if model_id == MODEL_SHELLYVINTAGE_ID or dev_id_prefix == MODEL_SHELLYVINTAGE_PR
 if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
     model = MODEL_SHELLYEM
     relays = 1
-
+    meters = 2
     relays_bin_sensors = [SENSOR_OVERPOWER]
-    bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
+    relays_bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
     relays_bin_sensors_pl = [None]
     relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
     relays_bin_sensors_device_classes = [DEVICE_CLASS_PROBLEM]
-    meters = 2
     meters_sensors = [
         SENSOR_POWER,
         SENSOR_REACTIVE_POWER,
@@ -2388,6 +2408,7 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
     relays = 1
     meters = 3
     relays_bin_sensors = [SENSOR_OVERPOWER]
+    relays_bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
     relays_bin_sensors_pl = [None]
     relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
@@ -3016,6 +3037,10 @@ for relay_id in range(relays):
                 and push_off_delay
             ):
                 payload[KEY_OFF_DELAY] = OFF_DELAY
+            if relays_bin_sensors_entity_categories[sensor_id]:
+                payload[KEY_ENTITY_CATEGORY] = relays_bin_sensors_entity_categories[
+                    sensor_id
+                ]
             if relays_bin_sensors_tpls[bin_sensor_id]:
                 payload[KEY_VALUE_TEMPLATE] = relays_bin_sensors_tpls[bin_sensor_id]
             else:
