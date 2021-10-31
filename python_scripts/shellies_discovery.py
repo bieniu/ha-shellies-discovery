@@ -138,7 +138,7 @@ LIGHT_COLOR = "color"
 LIGHT_WHITE = "white"
 
 # Maximum light transition time in milliseconds
-MAX_TRANSITION = 4999
+MAX_TRANSITION = 5000
 
 # Firmware 1.6.5 release date
 MIN_4PRO_FIRMWARE_DATE = 20200408
