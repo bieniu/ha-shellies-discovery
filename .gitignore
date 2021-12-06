@@ -10,3 +10,4 @@ __pycache__/
 .vscode
 venv/
 home-assistant_v2.db*
+!.pre-commit-config.yaml
