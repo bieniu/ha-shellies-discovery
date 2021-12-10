@@ -2753,8 +2753,8 @@ if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
     ]
 
 device_config = get_device_config(dev_id)
-if device_config.get(f"device-name"):
-    device_name = device_config.get(f"device-name")
+if device_config.get("device-name"):
+    device_name = device_config.get("device-name")
 elif ignore_device_model:
     device_name = clean_name(dev_id)
 else:
