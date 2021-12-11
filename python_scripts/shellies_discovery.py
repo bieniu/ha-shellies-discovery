@@ -1,11 +1,18 @@
 """
 This script adds MQTT discovery support for Shellies devices.
 """
+ATTR_DEVICE_CLASS = "device_class"
+ATTR_ENABLED = "enabled"
+ATTR_ENTITY_CATEGORY = "entity_category"
 ATTR_MANUFACTURER = "Allterco Robotics"
+ATTR_PAYLOAD = "payload"
 ATTR_POWER_AC = "ac"
 ATTR_RELAY = "relay"
 ATTR_ROLLER = "roller"
 ATTR_SHELLY = "Shelly"
+ATTR_TOPIC = "topic"
+
+BUTTON_RESTART = "restart"
 
 COMP_FAN = "fan"
 COMP_LIGHT = "light"
@@ -65,6 +72,7 @@ DEVICE_CLASS_POWER_FACTOR = "power_factor"
 DEVICE_CLASS_PRESENCE = "presence"
 DEVICE_CLASS_PRESSURE = "pressure"
 DEVICE_CLASS_PROBLEM = "problem"
+DEVICE_CLASS_RESTART = "restart"
 DEVICE_CLASS_SAFETY = "safety"
 DEVICE_CLASS_SHADE = "shade"
 DEVICE_CLASS_SHUTTER = "shutter"
@@ -121,6 +129,7 @@ KEY_PAYLOAD_NOT_AVAILABLE = "pl_not_avail"
 KEY_PAYLOAD_OFF = "pl_off"
 KEY_PAYLOAD_ON = "pl_on"
 KEY_PAYLOAD_OPEN = "pl_open"
+KEY_PAYLOAD_PRESS = "payload_press"
 KEY_PAYLOAD_STOP = "pl_stop"
 KEY_POSITION_TEMPLATE = "pos_tpl"
 KEY_POSITION_TOPIC = "pos_t"
@@ -293,6 +302,8 @@ MODEL_SHELLYUNI_PREFIX = "shellyuni"
 
 OFF_DELAY = 2
 
+PL_RESTART = "reboot"
+
 SENSOR_ADC = "adc"
 SENSOR_BATTERY = "battery"
 SENSOR_CHARGER = "charger"
@@ -369,6 +380,7 @@ STATE_CLASS_TOTAL_INCREASING = "total_increasing"
 TOPIC_ADC = "adc/0"
 TOPIC_ANNOUNCE = "announce"
 TOPIC_COLOR_0_STATUS = "color/0/status"
+TOPIC_COMMAND = "command"
 TOPIC_EXT_SWITCH = "ext_switch/0"
 TOPIC_INFO = "info"
 TOPIC_INPUT_0 = "input/0"
@@ -2798,9 +2810,6 @@ if model_id == MODEL_SHELLYVALVE_ID:
         KEY_MODES: ["auto"],
         KEY_PRECISION: 1.0,
     }
-    buttons = [BUTTON_RESTART]
-    buttons_topics = [TOPIC_RESTART]
-    buttons_payload = [PL_RESTART]
     sensors = [
         SENSOR_BATTERY,
         SENSOR_RSSI,
@@ -2873,6 +2882,58 @@ if model_id == MODEL_SHELLYVALVE_ID:
         TOPIC_INFO,
     ]
     battery_powered = True
+    buttons = {
+        BUTTON_RESTART: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_RESTART,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_RESTART,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
+
+# buttons
+for button, button_options in buttons.items():
+    device_config = get_device_config(dev_id)
+    if ignore_device_model:
+        device_name = clean_name(dev_id)
+    else:
+        device_name = f"{model} {dev_id.split('-')[-1]}"
+    unique_id = f"{dev_id}-{button}".lower()
+    config_topic = f"{disc_prefix}/button/{dev_id}-{button}/config".encode(
+        "ascii", "ignore"
+    ).decode("utf-8")
+    default_topic = f"shellies/{dev_id}/"
+    availability_topic = "~online"
+    command_topic = f"~{button_options[ATTR_TOPIC]}"
+    button_name = f"{device_name} {clean_name(button)}"
+    expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_VALVE)
+
+    payload = {
+        KEY_NAME: button_name,
+        KEY_COMMAND_TOPIC: command_topic,
+        KEY_PAYLOAD_PRESS: button_options[ATTR_PAYLOAD],
+        KEY_ENABLED_BY_DEFAULT: str(button_options[ATTR_ENABLED]),
+        KEY_DEVICE_CLASS: button_options[ATTR_DEVICE_CLASS],
+        KEY_ENTITY_CATEGORY: button_options[ATTR_ENTITY_CATEGORY],
+        KEY_AVAILABILITY_TOPIC: availability_topic,
+        KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
+        KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
+        KEY_UNIQUE_ID: unique_id,
+        KEY_QOS: qos,
+        KEY_DEVICE: {
+            KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
+            KEY_NAME: device_name,
+            KEY_MODEL: model,
+            KEY_SW_VERSION: fw_ver,
+            KEY_MANUFACTURER: ATTR_MANUFACTURER,
+            KEY_CONFIGURATION_URL: f"http://{host}/",
+        },
+        "~": default_topic,
+    }
+    if dev_id.lower() in ignored:
+        payload = ""
+    mqtt_publish(config_topic, payload, retain)
 
 # clmate entities
 if climate_entity_option:
