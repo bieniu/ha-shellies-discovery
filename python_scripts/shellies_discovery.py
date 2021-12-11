@@ -3567,6 +3567,8 @@ for sensor_id in range(len(sensors)):
     availability_topic = "~online"
     if sensors[sensor_id] in (SENSOR_RSSI, SENSOR_SSID, SENSOR_ADC, SENSOR_IP):
         sensor_name = f"{device_name} {sensors[sensor_id].upper()}"
+    elif sensors[sensor_id] == SENSOR_UPTIME:
+        sensor_name = f"{device_name} Last Restart"
     else:
         sensor_name = f"{device_name} {clean_name(sensors[sensor_id])}"
     if sensors[sensor_id] == SENSOR_TEMPERATURE_F:
