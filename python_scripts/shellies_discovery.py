@@ -4,6 +4,7 @@ This script adds MQTT discovery support for Shellies devices.
 ATTR_DEVICE_CLASS = "device_class"
 ATTR_ENABLED = "enabled"
 ATTR_ENTITY_CATEGORY = "entity_category"
+ATTR_ICON = "icon"
 ATTR_MANUFACTURER = "Allterco Robotics"
 ATTR_PAYLOAD = "payload"
 ATTR_POWER_AC = "ac"
@@ -12,7 +13,10 @@ ATTR_ROLLER = "roller"
 ATTR_SHELLY = "Shelly"
 ATTR_TOPIC = "topic"
 
+BUTTON_MUTE = "mute"
 BUTTON_RESTART = "restart"
+BUTTON_SELF_TEST = "self_test"
+BUTTON_UNMUTE = "unmute"
 BUTTON_UPDATE_FIRMWARE = "update_firmware"
 
 COMP_FAN = "fan"
@@ -303,7 +307,10 @@ MODEL_SHELLYUNI_PREFIX = "shellyuni"
 
 OFF_DELAY = 2
 
+PL_MUTE = "mute"
 PL_RESTART = "reboot"
+PL_SELF_TEST = "self_test"
+PL_UNMUTE = "unmute"
 PL_UPDATE_FIRMWARE = "update_fw"
 
 SENSOR_ADC = "adc"
@@ -396,11 +403,14 @@ TOPIC_LONGPUSH = "longpush"
 TOPIC_LONGPUSH_0 = "longpush/0"
 TOPIC_LONGPUSH_1 = "longpush/1"
 TOPIC_LONGPUSH_2 = "longpush/2"
+TOPIC_MUTE = "sensor/mute"
 TOPIC_OVERPOWER_VALUE = "overpower_value"
 TOPIC_RELAY = "relay"
+TOPIC_SELF_TEST = "sensor/start_self_test"
 TOPIC_STATUS = "status"
 TOPIC_TEMPERATURE = "sensor/temperature"
 TOPIC_TEMPERATURE_STATUS = "temperature_status"
+TOPIC_UNMUTE = "sensor/unmute"
 TOPIC_VOLTAGE = "voltage"
 
 TPL_ADC = "{{value|float|round(2)}}"
@@ -1734,7 +1744,27 @@ if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
             ATTR_ENABLED: True,
             ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
             ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
-        }
+        },
+        BUTTON_SELF_TEST: {
+            ATTR_TOPIC: TOPIC_SELF_TEST,
+            ATTR_PAYLOAD: PL_SELF_TEST,
+            ATTR_ENABLED: True,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        },
+        BUTTON_MUTE: {
+            ATTR_TOPIC: TOPIC_MUTE,
+            ATTR_PAYLOAD: PL_MUTE,
+            ATTR_ENABLED: True,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+            ATTR_ICON: "mdi:volume-variant-off",
+        },
+        BUTTON_UNMUTE: {
+            ATTR_TOPIC: TOPIC_UNMUTE,
+            ATTR_PAYLOAD: PL_UNMUTE,
+            ATTR_ENABLED: True,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+            ATTR_ICON: "mdi:volume-high",
+        },
     }
 
 if (
@@ -3121,7 +3151,6 @@ for button, button_options in buttons.items():
         KEY_COMMAND_TOPIC: command_topic,
         KEY_PAYLOAD_PRESS: button_options[ATTR_PAYLOAD],
         KEY_ENABLED_BY_DEFAULT: str(button_options[ATTR_ENABLED]),
-        KEY_DEVICE_CLASS: button_options[ATTR_DEVICE_CLASS],
         KEY_ENTITY_CATEGORY: button_options[ATTR_ENTITY_CATEGORY],
         KEY_AVAILABILITY_TOPIC: availability_topic,
         KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
@@ -3138,6 +3167,10 @@ for button, button_options in buttons.items():
         },
         "~": default_topic,
     }
+    if button_options.get(ATTR_DEVICE_CLASS):
+        payload[KEY_DEVICE_CLASS] = button_options[ATTR_DEVICE_CLASS]
+    if button_options.get(ATTR_ICON):
+        payload[KEY_ICON] = button_options[ATTR_ICON]
     if dev_id.lower() in ignored:
         payload = ""
     mqtt_publish(config_topic, payload, retain)
