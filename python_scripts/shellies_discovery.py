@@ -159,6 +159,8 @@ MIN_4PRO_FIRMWARE_DATE = 20200408
 # Firmware 1.1.0 release date
 MIN_MOTION_FIRMWARE_DATE = 20210226
 
+MIN_VALVE_FIRMWARE_DATE = 20211210
+
 # Firmware 1.11.0 release date
 MIN_FIRMWARE_DATE = 20210720
 
@@ -605,8 +607,21 @@ if (
     )
 
 if (
-    dev_id_prefix not in (MODEL_SHELLY4PRO_PREFIX, MODEL_SHELLYMOTION_PREFIX)
-    and model_id not in (MODEL_SHELLY4PRO_ID, MODEL_SHELLYMOTION_ID)
+    dev_id_prefix == MODEL_SHELLYVALVE_PREFIX or MODEL_SHELLYVALVE_ID == model_id
+) and cur_ver_date < MIN_VALVE_FIRMWARE_DATE:
+    raise ValueError(
+        f"Firmware dated {MIN_VALVE_FIRMWARE_DATE} is required, please update your device {dev_id}"
+    )
+
+if (
+    dev_id_prefix
+    not in (
+        MODEL_SHELLY4PRO_PREFIX,
+        MODEL_SHELLYMOTION_PREFIX,
+        MODEL_SHELLYVALVE_PREFIX,
+    )
+    and model_id
+    not in (MODEL_SHELLY4PRO_ID, MODEL_SHELLYMOTION_ID, MODEL_SHELLYVALVE_ID)
 ) and cur_ver_date < MIN_FIRMWARE_DATE:
     raise ValueError(
         f"Firmware dated {MIN_FIRMWARE_DATE} is required, please update your device {dev_id}"
