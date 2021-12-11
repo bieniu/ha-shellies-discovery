@@ -409,7 +409,6 @@ TPL_IP_FROM_INFO = "{{value_json.wifi_sta.ip}}"
 TPL_LONGPUSH = "{%if value_json.event==^L^%}ON{%else%}OFF{%endif%}"
 TPL_LONGPUSH_SHORTPUSH = "{%if value_json.event==^LS^%}ON{%else%}OFF{%endif%}"
 TPL_LUX = "{{value|float|round}}"
-TPL_MODE_AUTO = "{{^auto^}}"
 TPL_MOTION = "{%if value_json.motion==true%}ON{%else%}OFF{%endif%}"
 TPL_NEW_FIRMWARE_FROM_ANNOUNCE = "{%if value_json.new_fw==true%}ON{%else%}OFF{%endif%}"
 TPL_NEW_FIRMWARE_FROM_INFO = (
@@ -2881,7 +2880,7 @@ if climate_entity_option:
         KEY_TEMPERATURE_COMMAND_TOPIC: command_topic,
         KEY_TEMPERATURE_COMMAND_TEMPLATE: TPL_SET_TARGET_TEMPERATURE,
         KEY_MODE_STATE_TOPIC: status_topic,
-        KEY_MODE_STATE_TEMPLATE: TPL_MODE_AUTO,
+        KEY_MODE_STATE_TEMPLATE: "auto",
         KEY_EXPIRE_AFTER: expire_after,
         KEY_UNIQUE_ID: unique_id,
         KEY_OPTIMISTIC: VALUE_FALSE,
