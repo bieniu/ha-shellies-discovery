@@ -84,12 +84,15 @@ ENTITY_CATEGORY_DIAGNOSTIC = "diagnostic"
 EXPIRE_AFTER_FOR_BATTERY_POWERED = int(1.2 * 12 * 60 * 60)  # 1.2 * 12 h
 EXPIRE_AFTER_FOR_AC_POWERED = int(2.2 * 10 * 60)  # 2.2 * 10 min
 EXPIRE_AFTER_FOR_SHELLY_MOTION = int(1.2 * 60 * 60)  # 1.2 * 60 min
+EXPIRE_AFTER_FOR_SHELLY_VALVE = int(1.2 * 60 * 60)  # 1.2 * 60 min
 
 KEY_AUTOMATION_TYPE = "atype"
 KEY_AVAILABILITY_TOPIC = "avty_t"
 KEY_COMMAND_TOPIC = "cmd_t"
 KEY_CONFIGURATION_URL = "cu"
 KEY_CONNECTIONS = "cns"
+KEY_CURRENT_TEMPERATURE_TEMPLATE = "curr_temp_tpl"
+KEY_CURRENT_TEMPERATURE_TOPIC = "curr_temp_t"
 KEY_DEVICE = "dev"
 KEY_DEVICE_CLASS = "dev_cla"
 KEY_ENABLED_BY_DEFAULT = "en"
@@ -102,7 +105,12 @@ KEY_JSON_ATTRIBUTES_TEMPLATE = "json_attr_tpl"
 KEY_JSON_ATTRIBUTES_TOPIC = "json_attr_t"
 KEY_MAC = "mac"
 KEY_MANUFACTURER = "mf"
+KEY_MAX_TEMP = "max_temp"
+KEY_MIN_TEMP = "min_temp"
+KEY_MODE_STATE_TEMPLATE = "mode_stat_tpl"
+KEY_MODE_STATE_TOPIC = "mode_stat_t"
 KEY_MODEL = "mdl"
+KEY_MODES = "modes"
 KEY_NAME = "name"
 KEY_OFF_DELAY = "off_dly"
 KEY_OPTIMISTIC = "opt"
@@ -116,6 +124,7 @@ KEY_PAYLOAD_OPEN = "pl_open"
 KEY_PAYLOAD_STOP = "pl_stop"
 KEY_POSITION_TEMPLATE = "pos_tpl"
 KEY_POSITION_TOPIC = "pos_t"
+KEY_PRECISION = "precision"
 KEY_QOS = "qos"
 KEY_RETAIN = "ret"
 KEY_SET_POSITION_TEMPLATE = "set_pos_tpl"
@@ -128,6 +137,10 @@ KEY_STATE_TEMPLATE = "stat_tpl"
 KEY_STATE_TOPIC = "stat_t"
 KEY_SUBTYPE = "stype"
 KEY_SW_VERSION = "sw"
+KEY_TEMPERATURE_COMMAND_TEMPLATE = "temp_cmd_tpl"
+KEY_TEMPERATURE_COMMAND_TOPIC = "temp_cmd_t"
+KEY_TEMPERATURE_STATE_TEMPLATE = "temp_stat_tpl"
+KEY_TEMPERATURE_STATE_TOPIC = "temp_stat_t"
 KEY_TOPIC = "t"
 KEY_TYPE = "type"
 KEY_UNIQUE_ID = "uniq_id"
@@ -145,6 +158,8 @@ MIN_4PRO_FIRMWARE_DATE = 20200408
 
 # Firmware 1.1.0 release date
 MIN_MOTION_FIRMWARE_DATE = 20210226
+
+MIN_VALVE_FIRMWARE_DATE = 20211210
 
 # Firmware 1.11.0 release date
 MIN_FIRMWARE_DATE = 20210720
@@ -178,6 +193,7 @@ MODEL_SHELLYRGBW2 = f"{ATTR_SHELLY} RGBW2"
 MODEL_SHELLYSENSE = f"{ATTR_SHELLY} Sense"
 MODEL_SHELLYSMOKE = f"{ATTR_SHELLY} Smoke"
 MODEL_SHELLYUNI = f"{ATTR_SHELLY} UNI"
+MODEL_SHELLYVALVE = f"{ATTR_SHELLY} Valve"
 MODEL_SHELLYVINTAGE = f"{ATTR_SHELLY} Vintage"
 
 MODEL_SHELLY1_ID = "SHSW-1"  # Shelly 1
@@ -265,6 +281,9 @@ MODEL_SHELLYSENSE_PREFIX = "shellysense"
 
 MODEL_SHELLYSMOKE_ID = "SHSM-01"  # Shelly Smoke
 MODEL_SHELLYSMOKE_PREFIX = "shellysmoke"
+
+MODEL_SHELLYVALVE_ID = "SHTRV-01"  # Shelly Valve
+MODEL_SHELLYVALVE_PREFIX = "shellytrv"
 
 MODEL_SHELLYVINTAGE_ID = "SHVIN-1"  # Shelly Vintage
 MODEL_SHELLYVINTAGE_PREFIX = "shellyvintage"
@@ -373,10 +392,11 @@ TOPIC_VOLTAGE = "voltage"
 TPL_ADC = "{{value|float|round(2)}}"
 TPL_BATTERY = "{{value|float|round}}"
 TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
-TPL_CLOUD = "{%if value_json[^cloud^].connected==true%}ON{%else%}OFF{%endif%}"
-TPL_CONCENTRATION = "{%if 0<=value|int<=65535%}{{value}}{%endif%}"
 TPL_CHARGER = "{%if value_json.charger==true%}ON{%else%}OFF{%endif%}"
+TPL_CLOUD = "{%if value_json.cloud.connected==true%}ON{%else%}OFF{%endif%}"
+TPL_CONCENTRATION = "{%if 0<=value|int<=65535%}{{value}}{%endif%}"
 TPL_CURRENT = "{{value|float|round(2)}}"
+TPL_CURRENT_TEMPERATURE = "{{ value_json.tmp.value }}"
 TPL_DOUBLE_SHORTPUSH = "{%if value_json.event==^SS^%}ON{%else%}OFF{%endif%}"
 TPL_ENERGY_WH = "{{(value|float/1000)|round(2)}}"
 TPL_ENERGY_WMIN = "{{(value|float/60/1000)|round(2)}}"
@@ -386,13 +406,15 @@ TPL_HUMIDITY = "{%if value!=999%}{{value|float|round(1)}}{%endif%}"
 TPL_HUMIDITY_EXT = "{%if value!=999%}{{value|float|round(1)}}{%endif%}"
 TPL_ILLUMINATION = "{{value_json.lux}}"
 TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
+TPL_IP = "{{value_json.ip}}"
+TPL_IP_FROM_INFO = "{{value_json.wifi_sta.ip}}"
 TPL_LONGPUSH = "{%if value_json.event==^L^%}ON{%else%}OFF{%endif%}"
 TPL_LONGPUSH_SHORTPUSH = "{%if value_json.event==^LS^%}ON{%else%}OFF{%endif%}"
 TPL_LUX = "{{value|float|round}}"
 TPL_MOTION = "{%if value_json.motion==true%}ON{%else%}OFF{%endif%}"
 TPL_NEW_FIRMWARE_FROM_ANNOUNCE = "{%if value_json.new_fw==true%}ON{%else%}OFF{%endif%}"
 TPL_NEW_FIRMWARE_FROM_INFO = (
-    "{%if value_json[^update^].has_update==true%}ON{%else%}OFF{%endif%}"
+    "{%if value_json.update.has_update==true%}ON{%else%}OFF{%endif%}"
 )
 TPL_OVERPOWER = "{%if value_json.overpower==true%}ON{%else%}OFF{%endif%}"
 TPL_OVERPOWER_RELAY = "{%if value==^overpower^%}ON{%else%}OFF{%endif%}"
@@ -400,17 +422,18 @@ TPL_OVERPOWER_VALUE_TO_JSON = "{{{^overpower_value^:value}|tojson}}"
 TPL_POSITION = "{%if value!=-1%}{{value}}{%endif%}"
 TPL_POWER = "{{value|float|round(1)}}"
 TPL_POWER_FACTOR = "{{value|float*100|round}}"
-TPL_RSSI = "{{value_json[^wifi_sta^].rssi}}"
-TPL_IP = "{{value_json.ip}}"
+TPL_RSSI = "{{value_json.wifi_sta.rssi}}"
+TPL_SET_TARGET_TEMPERATURE = "target_t={{value|int}}"
 TPL_SHORTPUSH = "{%if value_json.event==^S^%}ON{%else%}OFF{%endif%}"
 TPL_SHORTPUSH_LONGPUSH = "{%if value_json.event==^SL^%}ON{%else%}OFF{%endif%}"
-TPL_SSID = "{{value_json[^wifi_sta^].ssid}}"
+TPL_SSID = "{{value_json.wifi_sta.ssid}}"
+TPL_TARGET_TEMPERATURE = "{{ value_json.target_t.value }}"
 TPL_TEMPERATURE = "{%if value!=999%}{{value|float|round(1)}}{%endif%}"
 TPL_TEMPERATURE_EXT = "{%if value!=999%}{{value|float|round(1)}}{%endif%}"
 TPL_TEMPERATURE_STATUS = "{{value|lower}}"
 TPL_TILT = "{{value|float}}"
 TPL_TRIPLE_SHORTPUSH = "{%if value_json.event==^SSS^%}ON{%else%}OFF{%endif%}"
-TPL_UPDATE_TO_JSON = "{{value_json[^update^]|tojson}}"
+TPL_UPDATE_TO_JSON = "{{value_json.update|tojson}}"
 TPL_UPTIME = "{{(as_timestamp(now())-value_json.uptime)|timestamp_local}}"
 TPL_VIBRATION = "{%if value_json.vibration==true%}ON{%else%}OFF{%endif%}"
 TPL_VOLTAGE = "{{value|float|round(1)}}"
@@ -584,8 +607,21 @@ if (
     )
 
 if (
-    dev_id_prefix not in (MODEL_SHELLY4PRO_PREFIX, MODEL_SHELLYMOTION_PREFIX)
-    and model_id not in (MODEL_SHELLY4PRO_ID, MODEL_SHELLYMOTION_ID)
+    dev_id_prefix == MODEL_SHELLYVALVE_PREFIX or MODEL_SHELLYVALVE_ID == model_id
+) and cur_ver_date < MIN_VALVE_FIRMWARE_DATE:
+    raise ValueError(
+        f"Firmware dated {MIN_VALVE_FIRMWARE_DATE} is required, please update your device {dev_id}"
+    )
+
+if (
+    dev_id_prefix
+    not in (
+        MODEL_SHELLY4PRO_PREFIX,
+        MODEL_SHELLYMOTION_PREFIX,
+        MODEL_SHELLYVALVE_PREFIX,
+    )
+    and model_id
+    not in (MODEL_SHELLY4PRO_ID, MODEL_SHELLYMOTION_ID, MODEL_SHELLYVALVE_ID)
 ) and cur_ver_date < MIN_FIRMWARE_DATE:
     raise ValueError(
         f"Firmware dated {MIN_FIRMWARE_DATE} is required, please update your device {dev_id}"
@@ -669,6 +705,7 @@ sensors_topics = []
 sensors_tpls = []
 sensors_units = []
 white_lights = 0
+climate_entity_option = {}
 
 if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     model = MODEL_SHELLY1
@@ -2752,6 +2789,132 @@ if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
         TOPIC_TEMPERATURE_STATUS,
     ]
 
+if model_id == MODEL_SHELLYVALVE_ID:
+    model = MODEL_SHELLYVALVE
+    climate_entity_option = {
+        KEY_MIN_TEMP: 4,
+        KEY_MAX_TEMP: 31,
+        KEY_MODES: ["auto"],
+        KEY_PRECISION: 1.0,
+    }
+    sensors = [
+        SENSOR_BATTERY,
+        SENSOR_RSSI,
+        SENSOR_IP,
+        SENSOR_SSID,
+        SENSOR_UPTIME,
+    ]
+    sensors_entity_categories = [
+        ENTITY_CATEGORY_DIAGNOSTIC,
+        ENTITY_CATEGORY_DIAGNOSTIC,
+        ENTITY_CATEGORY_DIAGNOSTIC,
+        ENTITY_CATEGORY_DIAGNOSTIC,
+        ENTITY_CATEGORY_DIAGNOSTIC,
+    ]
+    sensors_state_classes = [
+        STATE_CLASS_MEASUREMENT,
+        None,
+        None,
+        None,
+        None,
+    ]
+    sensors_enabled = [True, False, False, False, False]
+    sensors_device_classes = [
+        DEVICE_CLASS_BATTERY,
+        DEVICE_CLASS_SIGNAL_STRENGTH,
+        None,
+        None,
+        DEVICE_CLASS_TIMESTAMP,
+    ]
+    sensors_units = [UNIT_PERCENT, UNIT_DBM, None, None, None]
+    sensors_tpls = [
+        TPL_BATTERY_FROM_JSON,
+        TPL_RSSI,
+        TPL_IP_FROM_INFO,
+        TPL_SSID,
+        TPL_UPTIME,
+    ]
+    sensors_topics = [
+        TOPIC_STATUS,
+        TOPIC_INFO,
+        TOPIC_INFO,
+        TOPIC_INFO,
+        TOPIC_INFO,
+    ]
+    bin_sensors = [
+        SENSOR_FIRMWARE_UPDATE,
+        SENSOR_CHARGER,
+        SENSOR_CLOUD,
+    ]
+    bin_sensors_entity_categories = [
+        ENTITY_CATEGORY_DIAGNOSTIC,
+        ENTITY_CATEGORY_DIAGNOSTIC,
+        ENTITY_CATEGORY_DIAGNOSTIC,
+    ]
+    bin_sensors_enabled = [True, True, False]
+    bin_sensors_device_classes = [
+        DEVICE_CLASS_UPDATE,
+        DEVICE_CLASS_BATTERY_CHARGING,
+        DEVICE_CLASS_CONNECTIVITY,
+    ]
+    bin_sensors_pl = [None, None, None]
+    bin_sensors_tpls = [
+        TPL_NEW_FIRMWARE_FROM_INFO,
+        TPL_CHARGER,
+        TPL_CLOUD,
+    ]
+    bin_sensors_topics = [
+        TOPIC_INFO,
+        TOPIC_INFO,
+        TOPIC_INFO,
+    ]
+    battery_powered = True
+
+# clmate entities
+if climate_entity_option:
+    device_config = get_device_config(dev_id)
+    if ignore_device_model:
+        device_name = clean_name(dev_id)
+    else:
+        device_name = f"{model} {dev_id.split('-')[-1]}"
+    default_topic = f"shellies/{dev_id}/"
+    status_topic = "~status"
+    command_topic = "~command"
+    availability_topic = "~online"
+    unique_id = f"{dev_id}".lower()
+    config_topic = f"{disc_prefix}/climate/{dev_id}/config".encode(
+        "ascii", "ignore"
+    ).decode("utf-8")
+    expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_VALVE)
+    payload = {
+        KEY_NAME: device_name,
+        KEY_CURRENT_TEMPERATURE_TOPIC: status_topic,
+        KEY_CURRENT_TEMPERATURE_TEMPLATE: TPL_CURRENT_TEMPERATURE,
+        KEY_TEMPERATURE_STATE_TOPIC: status_topic,
+        KEY_TEMPERATURE_STATE_TEMPLATE: TPL_TARGET_TEMPERATURE,
+        KEY_TEMPERATURE_COMMAND_TOPIC: command_topic,
+        KEY_TEMPERATURE_COMMAND_TEMPLATE: TPL_SET_TARGET_TEMPERATURE,
+        KEY_MODE_STATE_TOPIC: status_topic,
+        KEY_MODE_STATE_TEMPLATE: "auto",
+        KEY_EXPIRE_AFTER: expire_after,
+        KEY_UNIQUE_ID: unique_id,
+        KEY_OPTIMISTIC: VALUE_FALSE,
+        KEY_QOS: qos,
+        KEY_DEVICE: {
+            KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
+            KEY_NAME: device_name,
+            KEY_MODEL: model,
+            KEY_SW_VERSION: fw_ver,
+            KEY_MANUFACTURER: ATTR_MANUFACTURER,
+            KEY_CONFIGURATION_URL: f"http://{host}/",
+        },
+        "~": default_topic,
+    }
+    payload.update(climate_entity_option)
+    if dev_id.lower() in ignored:
+        payload = ""
+    mqtt_publish(config_topic, payload, retain)
+
 # rollers
 for roller_id in range(rollers):
     device_config = get_device_config(dev_id)
@@ -3117,7 +3280,13 @@ for sensor_id in range(len(sensors)):
 
     config_component = COMP_SWITCH
     if (
-        model in (MODEL_SHELLYBUTTON1, MODEL_SHELLYMOTION, MODEL_SHELLYSENSE)
+        model
+        in (
+            MODEL_SHELLYBUTTON1,
+            MODEL_SHELLYMOTION,
+            MODEL_SHELLYSENSE,
+            MODEL_SHELLYVALVE,
+        )
         and device_config.get(CONF_POWERED) == ATTR_POWER_AC
     ):
         battery_powered = False
@@ -3126,6 +3295,10 @@ for sensor_id in range(len(sensors)):
         if model == MODEL_SHELLYMOTION:
             expire_after = device_config.get(
                 CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_MOTION
+            )
+        elif model == MODEL_SHELLYVALVE:
+            expire_after = device_config.get(
+                CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_VALVE
             )
         else:
             expire_after = device_config.get(
@@ -3374,7 +3547,13 @@ for bin_sensor_id in range(len(bin_sensors)):
     if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
         push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
     if (
-        model in (MODEL_SHELLYBUTTON1, MODEL_SHELLYMOTION, MODEL_SHELLYSENSE)
+        model
+        in (
+            MODEL_SHELLYBUTTON1,
+            MODEL_SHELLYMOTION,
+            MODEL_SHELLYSENSE,
+            MODEL_SHELLYVALVE,
+        )
         and device_config.get(CONF_POWERED) == ATTR_POWER_AC
     ):
         battery_powered = False
@@ -3382,6 +3561,10 @@ for bin_sensor_id in range(len(bin_sensors)):
         if model == MODEL_SHELLYMOTION:
             expire_after = device_config.get(
                 CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_MOTION
+            )
+        elif model == MODEL_SHELLYVALVE:
+            expire_after = device_config.get(
+                CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_VALVE
             )
         else:
             expire_after = device_config.get(
