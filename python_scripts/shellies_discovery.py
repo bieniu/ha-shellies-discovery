@@ -360,6 +360,7 @@ SENSOR_TRIPLE_SHORTPUSH_0 = "triple shortpush 0"
 SENSOR_TRIPLE_SHORTPUSH_1 = "triple shortpush 1"
 SENSOR_TRIPLE_SHORTPUSH_2 = "triple shortpush 2"
 SENSOR_UPTIME = "uptime"
+SENSOR_LAST_RESTART = "last_restart"
 SENSOR_VIBRATION = "vibration"
 SENSOR_VOLTAGE = "voltage"
 
@@ -2802,7 +2803,7 @@ if model_id == MODEL_SHELLYVALVE_ID:
         SENSOR_RSSI,
         SENSOR_IP,
         SENSOR_SSID,
-        SENSOR_UPTIME,
+        SENSOR_LAST_RESTART,
     ]
     sensors_entity_categories = [
         ENTITY_CATEGORY_DIAGNOSTIC,
