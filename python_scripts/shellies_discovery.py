@@ -706,6 +706,7 @@ sensors_tpls = []
 sensors_units = []
 white_lights = 0
 climate_entity_option = {}
+buttons = []
 
 if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     model = MODEL_SHELLY1
@@ -2797,6 +2798,9 @@ if model_id == MODEL_SHELLYVALVE_ID:
         KEY_MODES: ["auto"],
         KEY_PRECISION: 1.0,
     }
+    buttons = [BUTTON_RESTART]
+    buttons_topics = [TOPIC_RESTART]
+    buttons_payload = [PL_RESTART]
     sensors = [
         SENSOR_BATTERY,
         SENSOR_RSSI,
