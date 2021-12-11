@@ -1,11 +1,23 @@
 """
 This script adds MQTT discovery support for Shellies devices.
 """
+ATTR_DEVICE_CLASS = "device_class"
+ATTR_ENABLED = "enabled"
+ATTR_ENTITY_CATEGORY = "entity_category"
+ATTR_ICON = "icon"
 ATTR_MANUFACTURER = "Allterco Robotics"
+ATTR_PAYLOAD = "payload"
 ATTR_POWER_AC = "ac"
 ATTR_RELAY = "relay"
 ATTR_ROLLER = "roller"
 ATTR_SHELLY = "Shelly"
+ATTR_TOPIC = "topic"
+
+BUTTON_MUTE = "mute"
+BUTTON_RESTART = "restart"
+BUTTON_SELF_TEST = "self_test"
+BUTTON_UNMUTE = "unmute"
+BUTTON_UPDATE_FIRMWARE = "update_firmware"
 
 COMP_FAN = "fan"
 COMP_LIGHT = "light"
@@ -65,6 +77,7 @@ DEVICE_CLASS_POWER_FACTOR = "power_factor"
 DEVICE_CLASS_PRESENCE = "presence"
 DEVICE_CLASS_PRESSURE = "pressure"
 DEVICE_CLASS_PROBLEM = "problem"
+DEVICE_CLASS_RESTART = "restart"
 DEVICE_CLASS_SAFETY = "safety"
 DEVICE_CLASS_SHADE = "shade"
 DEVICE_CLASS_SHUTTER = "shutter"
@@ -121,6 +134,7 @@ KEY_PAYLOAD_NOT_AVAILABLE = "pl_not_avail"
 KEY_PAYLOAD_OFF = "pl_off"
 KEY_PAYLOAD_ON = "pl_on"
 KEY_PAYLOAD_OPEN = "pl_open"
+KEY_PAYLOAD_PRESS = "payload_press"
 KEY_PAYLOAD_STOP = "pl_stop"
 KEY_POSITION_TEMPLATE = "pos_tpl"
 KEY_POSITION_TOPIC = "pos_t"
@@ -293,6 +307,12 @@ MODEL_SHELLYUNI_PREFIX = "shellyuni"
 
 OFF_DELAY = 2
 
+PL_MUTE = "mute"
+PL_RESTART = "reboot"
+PL_SELF_TEST = "self_test"
+PL_UNMUTE = "unmute"
+PL_UPDATE_FIRMWARE = "update_fw"
+
 SENSOR_ADC = "adc"
 SENSOR_BATTERY = "battery"
 SENSOR_CHARGER = "charger"
@@ -370,6 +390,7 @@ STATE_CLASS_TOTAL_INCREASING = "total_increasing"
 TOPIC_ADC = "adc/0"
 TOPIC_ANNOUNCE = "announce"
 TOPIC_COLOR_0_STATUS = "color/0/status"
+TOPIC_COMMAND = "command"
 TOPIC_EXT_SWITCH = "ext_switch/0"
 TOPIC_INFO = "info"
 TOPIC_INPUT_0 = "input/0"
@@ -383,11 +404,14 @@ TOPIC_LONGPUSH = "longpush"
 TOPIC_LONGPUSH_0 = "longpush/0"
 TOPIC_LONGPUSH_1 = "longpush/1"
 TOPIC_LONGPUSH_2 = "longpush/2"
+TOPIC_MUTE = "sensor/mute"
 TOPIC_OVERPOWER_VALUE = "overpower_value"
 TOPIC_RELAY = "relay"
+TOPIC_SELF_TEST = "sensor/start_self_test"
 TOPIC_STATUS = "status"
 TOPIC_TEMPERATURE = "sensor/temperature"
 TOPIC_TEMPERATURE_STATUS = "temperature_status"
+TOPIC_UNMUTE = "sensor/unmute"
 TOPIC_VOLTAGE = "voltage"
 
 TPL_ADC = "{{value|float|round(2)}}"
@@ -707,6 +731,7 @@ sensors_tpls = []
 sensors_units = []
 white_lights = 0
 climate_entity_option = {}
+buttons = []
 
 if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     model = MODEL_SHELLY1
@@ -752,7 +777,15 @@ if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_units = [UNIT_DBM, None, None, None]
-
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
     model = MODEL_SHELLY1L
@@ -843,6 +876,15 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
     sensors_topics = [None, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
     sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_units = [UNIT_CELSIUS, UNIT_DBM, None, None, None]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
     model = MODEL_SHELLY1PM
@@ -940,6 +982,15 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
     bin_sensors_topics = [None, TOPIC_INFO]
     ext_humi_sensors = 1
     ext_temp_sensors = 3
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLYAIR_ID or dev_id_prefix == MODEL_SHELLYAIR_PREFIX:
     model = MODEL_SHELLYAIR
@@ -997,6 +1048,15 @@ if model_id == MODEL_SHELLYAIR_ID or dev_id_prefix == MODEL_SHELLYAIR_PREFIX:
     bin_sensors_tpls = [None, TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [None, TOPIC_INFO]
     ext_temp_sensors = 1
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
     model = MODEL_SHELLY2
@@ -1053,6 +1113,15 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
     ]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP, TPL_VOLTAGE]
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE, TOPIC_VOLTAGE]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
     model = MODEL_SHELLY25
@@ -1151,6 +1220,15 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
     bin_sensors_pl = [PL_1_0, None, PL_1_0, PL_1_0]
     bin_sensors_tpls = [None, TPL_NEW_FIRMWARE_FROM_INFO, None, None]
     bin_sensors_topics = [None, TOPIC_INFO, TOPIC_INPUT_0, TOPIC_INPUT_1]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     model = MODEL_SHELLYUNI
@@ -1207,6 +1285,15 @@ if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_pl = [None]
     bin_sensors_topics = [TOPIC_INFO]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if (
     model_id in (MODEL_SHELLYPLUG_ID, MODEL_SHELLYPLUG_E_ID)
@@ -1252,6 +1339,15 @@ if (
     ]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLYPLUG_US_ID or dev_id_prefix == MODEL_SHELLYPLUG_US_PREFIX:
     model = MODEL_SHELLYPLUG_US
@@ -1294,6 +1390,15 @@ if model_id == MODEL_SHELLYPLUG_US_ID or dev_id_prefix == MODEL_SHELLYPLUG_US_PR
     ]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLYPLUG_S_ID or dev_id_prefix == MODEL_SHELLYPLUG_S_PREFIX:
     model = MODEL_SHELLYPLUG_S
@@ -1342,6 +1447,15 @@ if model_id == MODEL_SHELLYPLUG_S_ID or dev_id_prefix == MODEL_SHELLYPLUG_S_PREF
     bin_sensors_pl = [PL_1_0, None]
     bin_sensors_tpls = [None, TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [None, TOPIC_INFO]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLY4PRO_ID or dev_id_prefix == MODEL_SHELLY4PRO_PREFIX:
     model = MODEL_SHELLY4PRO
@@ -1374,6 +1488,15 @@ if model_id == MODEL_SHELLY4PRO_ID or dev_id_prefix == MODEL_SHELLY4PRO_PREFIX:
     sensors_units = [None]
     sensors_tpls = [TPL_IP]
     sensors_topics = [TOPIC_ANNOUNCE]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLYHT_ID or dev_id_prefix == MODEL_SHELLYHT_PREFIX:
     model = MODEL_SHELLYHT
@@ -1615,6 +1738,35 @@ if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
     bin_sensors_device_classes = [DEVICE_CLASS_UPDATE, DEVICE_CLASS_GAS]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO, TPL_GAS]
     bin_sensors_topics = [TOPIC_INFO, None]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        },
+        BUTTON_SELF_TEST: {
+            ATTR_TOPIC: TOPIC_SELF_TEST,
+            ATTR_PAYLOAD: PL_SELF_TEST,
+            ATTR_ENABLED: True,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        },
+        BUTTON_MUTE: {
+            ATTR_TOPIC: TOPIC_MUTE,
+            ATTR_PAYLOAD: PL_MUTE,
+            ATTR_ENABLED: True,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+            ATTR_ICON: "mdi:volume-variant-off",
+        },
+        BUTTON_UNMUTE: {
+            ATTR_TOPIC: TOPIC_UNMUTE,
+            ATTR_PAYLOAD: PL_UNMUTE,
+            ATTR_ENABLED: True,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+            ATTR_ICON: "mdi:volume-high",
+        },
+    }
 
 if (
     model_id in (MODEL_SHELLYBUTTON1_ID, MODEL_SHELLYBUTTON1V2_ID)
@@ -1985,6 +2137,15 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_units = [UNIT_DBM, None, None, None]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREFIX:
     model = MODEL_SHELLYDIMMER
@@ -2109,6 +2270,15 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
         DEVICE_CLASS_POWER,
     ]
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN, TPL_POWER]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PREFIX:
     model = MODEL_SHELLYDIMMER2
@@ -2233,6 +2403,15 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         DEVICE_CLASS_POWER,
     ]
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN, TPL_POWER]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLYBULB_ID or dev_id_prefix == MODEL_SHELLYBULB_PREFIX:
     model = MODEL_SHELLYBULB
@@ -2261,6 +2440,15 @@ if model_id == MODEL_SHELLYBULB_ID or dev_id_prefix == MODEL_SHELLYBULB_PREFIX:
     ]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLYBULBRGBW_ID or dev_id_prefix == MODEL_SHELLYBULBRGBW_PREFIX:
     model = MODEL_SHELLYBULBRGBW
@@ -2298,6 +2486,15 @@ if model_id == MODEL_SHELLYBULBRGBW_ID or dev_id_prefix == MODEL_SHELLYBULBRGBW_
     ]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
     model = MODEL_SHELLYDUO
@@ -2335,6 +2532,15 @@ if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
     ]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLYVINTAGE_ID or dev_id_prefix == MODEL_SHELLYVINTAGE_PREFIX:
     model = MODEL_SHELLYVINTAGE
@@ -2372,6 +2578,15 @@ if model_id == MODEL_SHELLYVINTAGE_ID or dev_id_prefix == MODEL_SHELLYVINTAGE_PR
     ]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
     model = MODEL_SHELLYEM
@@ -2452,6 +2667,15 @@ if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
     ]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
     model = MODEL_SHELLY3EM
@@ -2537,6 +2761,15 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
     ]
     sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
     sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLYFLOOD_ID or dev_id_prefix == MODEL_SHELLYFLOOD_PREFIX:
     model = MODEL_SHELLYFLOOD
@@ -2789,9 +3022,20 @@ if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
         TOPIC_ANNOUNCE,
         TOPIC_TEMPERATURE_STATUS,
     ]
+    buttons = {
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        }
+    }
 
 if model_id == MODEL_SHELLYVALVE_ID:
     model = MODEL_SHELLYVALVE
+    battery_powered = True
+
     climate_entity_option = {
         KEY_MIN_TEMP: 4,
         KEY_MAX_TEMP: 31,
@@ -2869,7 +3113,68 @@ if model_id == MODEL_SHELLYVALVE_ID:
         TOPIC_INFO,
         TOPIC_INFO,
     ]
-    battery_powered = True
+    buttons = {
+        BUTTON_RESTART: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_RESTART,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_RESTART,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        },
+        BUTTON_UPDATE_FIRMWARE: {
+            ATTR_TOPIC: TOPIC_COMMAND,
+            ATTR_PAYLOAD: PL_UPDATE_FIRMWARE,
+            ATTR_ENABLED: True,
+            ATTR_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
+            ATTR_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+        },
+    }
+
+# buttons
+for button, button_options in buttons.items():
+    device_config = get_device_config(dev_id)
+    if ignore_device_model:
+        device_name = clean_name(dev_id)
+    else:
+        device_name = f"{model} {dev_id.split('-')[-1]}"
+    unique_id = f"{dev_id}-{button}".lower()
+    config_topic = f"{disc_prefix}/button/{dev_id}-{button}/config".encode(
+        "ascii", "ignore"
+    ).decode("utf-8")
+    default_topic = f"shellies/{dev_id}/"
+    availability_topic = "~online"
+    command_topic = f"~{button_options[ATTR_TOPIC]}"
+    button_name = f"{device_name} {clean_name(button)}"
+    expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_VALVE)
+
+    payload = {
+        KEY_NAME: button_name,
+        KEY_COMMAND_TOPIC: command_topic,
+        KEY_PAYLOAD_PRESS: button_options[ATTR_PAYLOAD],
+        KEY_ENABLED_BY_DEFAULT: str(button_options[ATTR_ENABLED]),
+        KEY_ENTITY_CATEGORY: button_options[ATTR_ENTITY_CATEGORY],
+        KEY_AVAILABILITY_TOPIC: availability_topic,
+        KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
+        KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
+        KEY_UNIQUE_ID: unique_id,
+        KEY_QOS: qos,
+        KEY_DEVICE: {
+            KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
+            KEY_NAME: device_name,
+            KEY_MODEL: model,
+            KEY_SW_VERSION: fw_ver,
+            KEY_MANUFACTURER: ATTR_MANUFACTURER,
+            KEY_CONFIGURATION_URL: f"http://{host}/",
+        },
+        "~": default_topic,
+    }
+    if button_options.get(ATTR_DEVICE_CLASS):
+        payload[KEY_DEVICE_CLASS] = button_options[ATTR_DEVICE_CLASS]
+    if button_options.get(ATTR_ICON):
+        payload[KEY_ICON] = button_options[ATTR_ICON]
+    if dev_id.lower() in ignored:
+        payload = ""
+    mqtt_publish(config_topic, payload, retain)
 
 # clmate entities
 if climate_entity_option:
