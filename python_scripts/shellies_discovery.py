@@ -113,7 +113,6 @@ KEY_ENTITY_CATEGORY = "entity_category"
 KEY_EXPIRE_AFTER = "exp_aft"
 KEY_FORCE_UPDATE = "frc_upd"
 KEY_ICON = "icon"
-KEY_IDENTIFIERS = "ids"
 KEY_JSON_ATTRIBUTES_TEMPLATE = "json_attr_tpl"
 KEY_JSON_ATTRIBUTES_TOPIC = "json_attr_t"
 KEY_MAC = "mac"
@@ -3277,7 +3276,6 @@ for roller_id in range(rollers):
             KEY_OPTIMISTIC: VALUE_FALSE,
             KEY_QOS: qos,
             KEY_DEVICE: {
-                KEY_IDENTIFIERS: [mac],
                 KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                 KEY_NAME: device_name,
                 KEY_MODEL: model,
@@ -3335,7 +3333,6 @@ for relay_id in range(relays):
                 KEY_UNIQUE_ID: unique_id,
                 KEY_QOS: qos,
                 KEY_DEVICE: {
-                    KEY_IDENTIFIERS: [mac],
                     KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                     KEY_NAME: device_name,
                     KEY_MODEL: model,
@@ -3383,7 +3380,6 @@ for relay_id in range(relays):
                     KEY_UNIQUE_ID: unique_id,
                     KEY_QOS: qos,
                     KEY_DEVICE: {
-                        KEY_IDENTIFIERS: [mac],
                         KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                         KEY_NAME: device_name,
                         KEY_MODEL: model,
@@ -3435,7 +3431,6 @@ for relay_id in range(relays):
                 KEY_UNIQUE_ID: unique_id,
                 KEY_QOS: qos,
                 KEY_DEVICE: {
-                    KEY_IDENTIFIERS: [mac],
                     KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                     KEY_NAME: device_name,
                     KEY_MODEL: model,
@@ -3483,7 +3478,6 @@ for relay_id in range(relays):
                 KEY_UNIQUE_ID: unique_id,
                 KEY_QOS: qos,
                 KEY_DEVICE: {
-                    KEY_IDENTIFIERS: [mac],
                     KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                     KEY_NAME: device_name,
                     KEY_MODEL: model,
@@ -3628,7 +3622,6 @@ for sensor_id in range(len(sensors)):
         KEY_UNIQUE_ID: unique_id,
         KEY_QOS: qos,
         KEY_DEVICE: {
-            KEY_IDENTIFIERS: [mac],
             KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
             KEY_NAME: device_name,
             KEY_MODEL: model,
@@ -3700,7 +3693,6 @@ for input_id in range(inputs):
         KEY_PAYLOAD: "0",
         KEY_QOS: qos,
         KEY_DEVICE: {
-            KEY_IDENTIFIERS: [mac],
             KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
             KEY_NAME: device_name,
             KEY_MODEL: model,
@@ -3729,7 +3721,6 @@ for input_id in range(inputs):
             KEY_VALUE_TEMPLATE: "{{value_json.event}}",
             KEY_QOS: qos,
             KEY_DEVICE: {
-                KEY_IDENTIFIERS: [mac],
                 KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                 KEY_NAME: device_name,
                 KEY_MODEL: model,
@@ -3779,7 +3770,6 @@ for sensor_id in range(ext_temp_sensors):
             KEY_UNIQUE_ID: unique_id,
             KEY_QOS: qos,
             KEY_DEVICE: {
-                KEY_IDENTIFIERS: [mac],
                 KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                 KEY_NAME: device_name,
                 KEY_MODEL: model,
@@ -3830,7 +3820,6 @@ for sensor_id in range(ext_humi_sensors):
             KEY_UNIQUE_ID: unique_id,
             KEY_QOS: qos,
             KEY_DEVICE: {
-                KEY_IDENTIFIERS: [mac],
                 KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                 KEY_NAME: device_name,
                 KEY_MODEL: model,
@@ -3918,7 +3907,6 @@ for bin_sensor_id in range(len(bin_sensors)):
         KEY_UNIQUE_ID: unique_id,
         KEY_QOS: qos,
         KEY_DEVICE: {
-            KEY_IDENTIFIERS: [mac],
             KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
             KEY_NAME: device_name,
             KEY_MODEL: model,
@@ -4122,7 +4110,6 @@ for light_id in range(rgbw_lights):
                 KEY_UNIQUE_ID: unique_id,
                 KEY_QOS: qos,
                 KEY_DEVICE: {
-                    KEY_IDENTIFIERS: [mac],
                     KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                     KEY_NAME: device_name,
                     KEY_MODEL: model,
@@ -4187,7 +4174,6 @@ for light_id in range(rgbw_lights):
                 KEY_UNIQUE_ID: unique_id,
                 KEY_QOS: qos,
                 KEY_DEVICE: {
-                    KEY_IDENTIFIERS: [mac],
                     KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                     KEY_NAME: device_name,
                     KEY_MODEL: model,
@@ -4382,7 +4368,6 @@ for light_id in range(white_lights):
                     KEY_UNIQUE_ID: unique_id,
                     KEY_QOS: qos,
                     KEY_DEVICE: {
-                        KEY_IDENTIFIERS: [mac],
                         KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                         KEY_NAME: device_name,
                         KEY_MODEL: model,
@@ -4464,7 +4449,6 @@ for light_id in range(white_lights):
                 KEY_UNIQUE_ID: unique_id,
                 KEY_QOS: qos,
                 KEY_DEVICE: {
-                    KEY_IDENTIFIERS: [mac],
                     KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                     KEY_NAME: device_name,
                     KEY_MODEL: model,
@@ -4521,7 +4505,6 @@ for meter_id in range(meters):
             KEY_UNIQUE_ID: unique_id,
             KEY_QOS: qos,
             KEY_DEVICE: {
-                KEY_IDENTIFIERS: [mac],
                 KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
                 KEY_NAME: device_name,
                 KEY_MODEL: model,
