@@ -99,6 +99,8 @@ EXPIRE_AFTER_FOR_AC_POWERED = int(2.2 * 10 * 60)  # 2.2 * 10 min
 EXPIRE_AFTER_FOR_SHELLY_MOTION = int(1.2 * 60 * 60)  # 1.2 * 60 min
 EXPIRE_AFTER_FOR_SHELLY_VALVE = int(1.2 * 60 * 60)  # 1.2 * 60 min
 
+KEY_ACTION_TEMPLATE = "act_tpl"
+KEY_ACTION_TOPIC = "act_t"
 KEY_AUTOMATION_TYPE = "atype"
 KEY_AVAILABILITY_TOPIC = "avty_t"
 KEY_COMMAND_TOPIC = "cmd_t"
@@ -413,6 +415,7 @@ TOPIC_TEMPERATURE_STATUS = "temperature_status"
 TOPIC_UNMUTE = "sensor/unmute"
 TOPIC_VOLTAGE = "voltage"
 
+TPL_ACTION_TEMPLATE = "{{% if value_json.target_t.value <= {min_temp} %}}off{{% elif value_json.target_t.value < value_json.tmp.value %}}idle{{% else %}}heating{{% endif %}}"
 TPL_ADC = "{{value|float|round(2)}}"
 TPL_BATTERY = "{{value|float|round}}"
 TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
@@ -3039,7 +3042,7 @@ if model_id == MODEL_SHELLYVALVE_ID:
         KEY_MIN_TEMP: 4,
         KEY_MAX_TEMP: 31,
         KEY_MODES: ["heat"],
-        KEY_PRECISION: 1.0,
+        KEY_PRECISION: 0.1,
     }
     sensors = [
         SENSOR_BATTERY,
@@ -3193,6 +3196,10 @@ if climate_entity_option:
     expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_VALVE)
     payload = {
         KEY_NAME: device_name,
+        KEY_ACTION_TOPIC: status_topic,
+        KEY_ACTION_TEMPLATE: TPL_ACTION_TEMPLATE.format(
+            min_temp=climate_entity_option[KEY_MIN_TEMP]
+        ),
         KEY_CURRENT_TEMPERATURE_TOPIC: status_topic,
         KEY_CURRENT_TEMPERATURE_TEMPLATE: TPL_CURRENT_TEMPERATURE,
         KEY_TEMPERATURE_STATE_TOPIC: status_topic,
