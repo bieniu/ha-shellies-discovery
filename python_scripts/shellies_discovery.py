@@ -730,7 +730,7 @@ sensors_tpls = []
 sensors_units = []
 white_lights = 0
 climate_entity_option = {}
-buttons = []
+buttons = {}
 
 if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     model = MODEL_SHELLY1
