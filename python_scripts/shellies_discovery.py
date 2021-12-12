@@ -415,7 +415,7 @@ TOPIC_TEMPERATURE_STATUS = "temperature_status"
 TOPIC_UNMUTE = "sensor/unmute"
 TOPIC_VOLTAGE = "voltage"
 
-TPL_ACTION_TEMPLATE = "{{% if value_json.target_t.value <= {min_temp} %}}off{{% elif value_json.target_t.value < value_json.tmp.value %}}idle{{% else %}}heating{{% endif %}}"
+TPL_ACTION_TEMPLATE = "{{%if value_json.target_t.value<={min_temp}%}}off{{%elif value_json.target_t.value<value_json.tmp.value%}}idle{{%else%}}heating{{%endif%}}"
 TPL_ADC = "{{value|float|round(2)}}"
 TPL_BATTERY = "{{value|float|round}}"
 TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
