@@ -3038,7 +3038,7 @@ if model_id == MODEL_SHELLYVALVE_ID:
     climate_entity_option = {
         KEY_MIN_TEMP: 4,
         KEY_MAX_TEMP: 31,
-        KEY_MODES: ["auto"],
+        KEY_MODES: ["heat"],
         KEY_PRECISION: 1.0,
     }
     sensors = [
@@ -3200,7 +3200,7 @@ if climate_entity_option:
         KEY_TEMPERATURE_COMMAND_TOPIC: command_topic,
         KEY_TEMPERATURE_COMMAND_TEMPLATE: TPL_SET_TARGET_TEMPERATURE,
         KEY_MODE_STATE_TOPIC: status_topic,
-        KEY_MODE_STATE_TEMPLATE: "auto",
+        KEY_MODE_STATE_TEMPLATE: "heat",
         KEY_EXPIRE_AFTER: expire_after,
         KEY_UNIQUE_ID: unique_id,
         KEY_OPTIMISTIC: VALUE_FALSE,
