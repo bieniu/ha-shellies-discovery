@@ -3650,14 +3650,9 @@ for sensor_id in range(len(sensors)):
         payload[KEY_ICON] = "mdi:wifi"
     elif sensors[sensor_id] == SENSOR_TEMPERATURE_STATUS:
         payload[KEY_ICON] = "mdi:thermometer"
-    if battery_powered and sensors[sensor_id] not in (
-        SENSOR_SSID,
-        SENSOR_RSSI,
-        SENSOR_UPTIME,
-        SENSOR_IP,
-    ):
+    if battery_powered:
         payload[KEY_EXPIRE_AFTER] = expire_after
-    if not battery_powered:
+    else:
         payload[KEY_AVAILABILITY_TOPIC] = availability_topic
         payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
@@ -3925,13 +3920,9 @@ for bin_sensor_id in range(len(bin_sensors)):
     else:
         payload[KEY_PAYLOAD_ON] = bin_sensors_pl[bin_sensor_id][VALUE_ON]
         payload[KEY_PAYLOAD_OFF] = bin_sensors_pl[bin_sensor_id][VALUE_OFF]
-    if battery_powered and bin_sensors[bin_sensor_id] not in (
-        SENSOR_FIRMWARE_UPDATE,
-        SENSOR_OPENING,
-        SENSOR_CLOUD,
-    ):
+    if battery_powered:
         payload[KEY_EXPIRE_AFTER] = expire_after
-    if not battery_powered:
+    else:
         payload[KEY_AVAILABILITY_TOPIC] = availability_topic
         payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
