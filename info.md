@@ -35,6 +35,7 @@ This script needs Home Assistant `python_script` component so, if you never used
 - Shelly Sense (battery or USB powered)
 - Shelly Smoke
 - Shelly UNI (with external sensors)
+- Shelly Valve
 - Shelly Vintage
 
 ## How to debug
