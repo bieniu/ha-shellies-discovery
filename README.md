@@ -55,6 +55,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Sense (battery or USB powered)
 - Shelly Smoke
 - Shelly UNI (with external sensors)
+- Shelly Valve
 - Shelly Vintage
 
 ## How to debug
