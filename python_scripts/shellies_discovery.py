@@ -188,7 +188,7 @@ MODEL_SHELLY3EM = f"{ATTR_SHELLY} 3EM"
 MODEL_SHELLY4PRO = f"{ATTR_SHELLY} 4Pro"
 MODEL_SHELLYAIR = f"{ATTR_SHELLY} Air"
 MODEL_SHELLYBULB = f"{ATTR_SHELLY} Bulb"
-MODEL_SHELLYBULBRGBW = f"{ATTR_SHELLY} Bulb RGBW"
+MODEL_SHELLYBULBRGBW = f"{ATTR_SHELLY} DUO RGBW"
 MODEL_SHELLYBUTTON1 = f"{ATTR_SHELLY} Button1"
 MODEL_SHELLYDIMMER = f"{ATTR_SHELLY} Dimmer"
 MODEL_SHELLYDIMMER2 = f"{ATTR_SHELLY} Dimmer 2"
@@ -238,7 +238,7 @@ MODEL_SHELLYAIR_PREFIX = "shellyair"
 MODEL_SHELLYBULB_ID = "SHBLB-1"  # Shelly Bulb
 MODEL_SHELLYBULB_PREFIX = "shellybulb"
 
-MODEL_SHELLYBULBRGBW_ID = "SHCB-1"  # Shelly Bulb RGBW
+MODEL_SHELLYBULBRGBW_ID = "SHCB-1"  # Shelly DUO RGBW
 MODEL_SHELLYBULBRGBW_PREFIX = "shellycolorbulb"
 
 MODEL_SHELLYBUTTON1_ID = "SHBTN-1"  # Shelly Button1
@@ -4087,7 +4087,8 @@ for light_id in range(rgbw_lights):
             '"fx_tpl":"{%if value_json.effect==1%}Meteor Shower{%elif value_json.effect==2%}Gradual Change{%elif value_json.effect==3%}Flash{%else%}Off{%endif%}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
-            '"dev": {"ids": ["' + mac + '"],'
+            '"dev": {"ids":["' + mac + '"],'
+            '"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
             '"name":"' + device_name + '",'
             '"mdl":"' + model + '",'
             '"sw":"' + fw_ver + '",'
@@ -4119,7 +4120,8 @@ for light_id in range(rgbw_lights):
             '"fx_tpl":"{%if value_json.effect==1%}Meteor Shower{%elif value_json.effect==2%}Gradual Change{%elif value_json.effect==3%}Breath{%elif value_json.effect==4%}Flash{%elif value_json.effect==5%}On/Off Gradual{%elif value_json.effect==6%}Red/Green Change{%else%}Off{%endif%}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
-            '"dev": {"ids": ["' + mac + '"],'
+            '"dev": {"ids":["' + mac + '"],'
+            '"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
             '"name":"' + device_name + '",'
             '"mdl":"' + model + '",'
             '"sw":"' + fw_ver + '",'
@@ -4295,7 +4297,8 @@ for light_id in range(white_lights):
             '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
-            '"dev": {"ids": ["' + mac + '"],'
+            '"dev": {"ids":["' + mac + '"],'
+            '"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
             '"name":"' + device_name + '",'
             '"mdl":"' + model + '",'
             '"sw":"' + fw_ver + '",'
@@ -4321,7 +4324,8 @@ for light_id in range(white_lights):
             '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
-            '"dev": {"ids": ["' + mac + '"],'
+            '"dev": {"ids":["' + mac + '"],'
+            '"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
             '"name":"' + device_name + '",'
             '"mdl":"' + model + '",'
             '"sw":"' + fw_ver + '",'
@@ -4350,7 +4354,8 @@ for light_id in range(white_lights):
             '"min_mireds":153,'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
-            '"dev": {"ids": ["' + mac + '"],'
+            '"dev": {"ids":["' + mac + '"],'
+            '"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
             '"name":"' + device_name + '",'
             '"mdl":"' + model + '",'
             '"sw":"' + fw_ver + '",'
@@ -4376,7 +4381,8 @@ for light_id in range(white_lights):
             '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
-            '"dev": {"ids": ["' + mac + '"],'
+            '"dev": {"ids":["' + mac + '"],'
+            '"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
             '"name":"' + device_name + '",'
             '"mdl":"' + model + '",'
             '"sw":"' + fw_ver + '",'
