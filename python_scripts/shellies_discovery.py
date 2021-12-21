@@ -306,7 +306,7 @@ MODEL_SHELLYVINTAGE_PREFIX = "shellyvintage"
 MODEL_SHELLYUNI_ID = "SHUNI-1"  # Shelly UNI
 MODEL_SHELLYUNI_PREFIX = "shellyuni"
 
-OFF_DELAY = 2
+OFF_DELAY = 1
 
 PL_MUTE = "mute"
 PL_RESTART = "reboot"
