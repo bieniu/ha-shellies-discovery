@@ -3284,18 +3284,21 @@ if climate_entity_option:
         payload = ""
     mqtt_publish(config_topic, payload, retain)
 
+device_config = get_device_config(dev_id)
+if device_config.get("device-name"):
+    device_name = device_config.get("device-name")
+elif ignore_device_model:
+    device_name = clean_name(dev_id)
+else:
+    device_name = f"{model} {dev_id.split('-')[-1]}"
+
 # rollers
 for roller_id in range(rollers):
-    device_config = get_device_config(dev_id)
     if device_config.get(CONF_POSITION_TEMPLATE):
         position_template = device_config[CONF_POSITION_TEMPLATE]
     else:
         position_template = TPL_POSITION
     set_position_template = device_config.get(CONF_SET_POSITION_TEMPLATE, None)
-    if ignore_device_model:
-        device_name = clean_name(dev_id)
-    else:
-        device_name = f"{model} {dev_id.split('-')[-1]}"
     if device_config.get(f"roller-{roller_id}-name"):
         roller_name = device_config[f"roller-{roller_id}-name"]
     else:
@@ -3361,11 +3364,6 @@ for roller_id in range(rollers):
 
 # relays
 for relay_id in range(relays):
-    device_config = get_device_config(dev_id)
-    if ignore_device_model:
-        device_name = clean_name(dev_id)
-    else:
-        device_name = f"{model} {dev_id.split('-')[-1]}"
     if device_config.get(f"relay-{relay_id}-name"):
         relay_name = device_config[f"relay-{relay_id}-name"]
     else:
@@ -3619,10 +3617,6 @@ for sensor_id in range(len(sensors)):
     use_fahrenheit = device_config.get(CONF_USE_FAHRENHEIT)
     if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
         force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
-    if ignore_device_model:
-        device_name = clean_name(dev_id)
-    else:
-        device_name = f"{model} {dev_id.split('-')[-1]}"
     unique_id = f"{dev_id}-{sensors[sensor_id]}".lower()
     config_topic = f"{disc_prefix}/sensor/{dev_id}-{sensors[sensor_id]}/config".encode(
         "ascii", "ignore"
@@ -3738,10 +3732,6 @@ for sensor_id in range(len(sensors)):
 
 # inputs
 for input_id in range(inputs):
-    if ignore_device_model:
-        device_name = clean_name(dev_id)
-    else:
-        device_name = f"{model} {dev_id.split('-')[-1]}"
     config_topic = f"{disc_prefix}/device_automation/{dev_id}-input-{input_id}/button_release/config".encode(
         "ascii", "ignore"
     ).decode(
@@ -3802,10 +3792,6 @@ for sensor_id in range(ext_temp_sensors):
     force_update = False
     if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
         force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
-    if ignore_device_model:
-        device_name = clean_name(dev_id)
-    else:
-        device_name = f"{model} {dev_id.split('-')[-1]}"
     unique_id = f"{dev_id}-ext-temperature-{sensor_id}".lower()
     config_topic = (
         f"{disc_prefix}/sensor/{dev_id}-ext-temperature-{sensor_id}/config".encode(
@@ -3852,10 +3838,6 @@ for sensor_id in range(ext_humi_sensors):
     force_update = False
     if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
         force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
-    if ignore_device_model:
-        device_name = clean_name(dev_id)
-    else:
-        device_name = f"{model} {dev_id.split('-')[-1]}"
     unique_id = f"{dev_id}-ext-humidity-{sensor_id}".lower()
     config_topic = (
         f"{disc_prefix}/sensor/{dev_id}-ext-humidity-{sensor_id}/config".encode(
@@ -3935,10 +3917,7 @@ for bin_sensor_id in range(len(bin_sensors)):
             raise TypeError(
                 f"expire_after value {expire_after} is not an integer, check your configuration"
             )
-    if ignore_device_model:
-        device_name = clean_name(dev_id)
-    else:
-        device_name = f"{model} {dev_id.split('-')[-1]}"
+
     unique_id = f"{dev_id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}".lower()
     config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}/config".encode(
         "ascii", "ignore"
@@ -4054,10 +4033,7 @@ for bin_sensor_id in range(len(bin_sensors)):
 # color lights
 for light_id in range(rgbw_lights):
     device_config = get_device_config(dev_id)
-    if ignore_device_model:
-        device_name = clean_name(dev_id)
-    else:
-        device_name = f"{model} {dev_id.split('-')[-1]}"
+
     if device_config.get(f"light-{light_id}-name"):
         light_name = device_config[f"light-{light_id}-name"]
     else:
@@ -4255,10 +4231,7 @@ for light_id in range(rgbw_lights):
 # white lights
 for light_id in range(white_lights):
     device_config = get_device_config(dev_id)
-    if ignore_device_model:
-        device_name = clean_name(dev_id)
-    else:
-        device_name = f"{model} {dev_id.split('-')[-1]}"
+
     if device_config.get(f"light-{light_id}-name"):
         light_name = device_config[f"light-{light_id}-name"]
     else:
@@ -4533,10 +4506,7 @@ for meter_id in range(meters):
     force_update = False
     if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
         force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
-    if ignore_device_model:
-        device_name = clean_name(dev_id)
-    else:
-        device_name = f"{model} {dev_id.split('-')[-1]}"
+
     default_topic = f"shellies/{dev_id}/"
     availability_topic = "~online"
     for sensor_id in range(len(meters_sensors)):
