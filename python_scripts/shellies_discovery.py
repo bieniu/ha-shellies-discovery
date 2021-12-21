@@ -23,6 +23,7 @@ COMP_FAN = "fan"
 COMP_LIGHT = "light"
 COMP_SWITCH = "switch"
 
+CONF_DEVICE_NAME = "device_name"
 CONF_DEVELOP = "develop"
 CONF_DISCOVERY_PREFIX = "discovery_prefix"
 CONF_EXPIRE_AFTER = "expire_after"
@@ -3189,13 +3190,16 @@ if model_id == MODEL_SHELLYVALVE_ID:
         },
     }
 
+device_config = get_device_config(dev_id)
+if device_config.get(CONF_DEVICE_NAME):
+    device_name = device_config[CONF_DEVICE_NAME]
+elif ignore_device_model:
+    device_name = clean_name(dev_id)
+else:
+    device_name = f"{model} {dev_id.split('-')[-1]}"
+
 # buttons
 for button, button_options in buttons.items():
-    device_config = get_device_config(dev_id)
-    if ignore_device_model:
-        device_name = clean_name(dev_id)
-    else:
-        device_name = f"{model} {dev_id.split('-')[-1]}"
     unique_id = f"{dev_id}-{button}".lower()
     config_topic = f"{disc_prefix}/button/{dev_id}-{button}/config".encode(
         "ascii", "ignore"
@@ -3237,11 +3241,6 @@ for button, button_options in buttons.items():
 
 # climate entities
 if climate_entity_option:
-    device_config = get_device_config(dev_id)
-    if ignore_device_model:
-        device_name = clean_name(dev_id)
-    else:
-        device_name = f"{model} {dev_id.split('-')[-1]}"
     default_topic = f"shellies/{dev_id}/"
     info_topic = "~info"
     temperature_command_topic = "~thermostat/0/command/target_t"
@@ -3283,14 +3282,6 @@ if climate_entity_option:
     if dev_id.lower() in ignored:
         payload = ""
     mqtt_publish(config_topic, payload, retain)
-
-device_config = get_device_config(dev_id)
-if device_config.get("device-name"):
-    device_name = device_config.get("device-name")
-elif ignore_device_model:
-    device_name = clean_name(dev_id)
-else:
-    device_name = f"{model} {dev_id.split('-')[-1]}"
 
 # rollers
 for roller_id in range(rollers):
@@ -3413,7 +3404,6 @@ for relay_id in range(relays):
     # relay's sensors
     if relay_id == relays - 1:
         for sensor_id in range(len(relays_sensors)):
-            device_config = get_device_config(dev_id)
             force_update = False
             if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
                 force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
@@ -3462,7 +3452,6 @@ for relay_id in range(relays):
 
     # relay's sensors
     for sensor_id in range(len(relays_sensors)):
-        device_config = get_device_config(dev_id)
         force_update = False
         if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
             force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
@@ -3512,7 +3501,6 @@ for relay_id in range(relays):
 
     # relay's binary sensors
     for bin_sensor_id in range(len(relays_bin_sensors)):
-        device_config = get_device_config(dev_id)
         push_off_delay = True
         if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
             push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
@@ -3612,7 +3600,6 @@ for relay_id in range(relays):
 
 # sensors
 for sensor_id in range(len(sensors)):
-    device_config = get_device_config(dev_id)
     force_update = False
     use_fahrenheit = device_config.get(CONF_USE_FAHRENHEIT)
     if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
@@ -3788,7 +3775,6 @@ for input_id in range(inputs):
 
 # external temperature sensors
 for sensor_id in range(ext_temp_sensors):
-    device_config = get_device_config(dev_id)
     force_update = False
     if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
         force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
@@ -3834,7 +3820,6 @@ for sensor_id in range(ext_temp_sensors):
 
 # external humidity sensors
 for sensor_id in range(ext_humi_sensors):
-    device_config = get_device_config(dev_id)
     force_update = False
     if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
         force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
@@ -3880,7 +3865,6 @@ for sensor_id in range(ext_humi_sensors):
 
 # binary sensors
 for bin_sensor_id in range(len(bin_sensors)):
-    device_config = get_device_config(dev_id)
     push_off_delay = True
     if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
         push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
@@ -4032,8 +4016,6 @@ for bin_sensor_id in range(len(bin_sensors)):
 
 # color lights
 for light_id in range(rgbw_lights):
-    device_config = get_device_config(dev_id)
-
     if device_config.get(f"light-{light_id}-name"):
         light_name = device_config[f"light-{light_id}-name"]
     else:
@@ -4174,7 +4156,6 @@ for light_id in range(rgbw_lights):
 
     # color light's sensors
     for sensor_id in range(len(lights_sensors)):
-        device_config = get_device_config(dev_id)
         force_update = False
         if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
             force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
@@ -4230,8 +4211,6 @@ for light_id in range(rgbw_lights):
 
 # white lights
 for light_id in range(white_lights):
-    device_config = get_device_config(dev_id)
-
     if device_config.get(f"light-{light_id}-name"):
         light_name = device_config[f"light-{light_id}-name"]
     else:
@@ -4431,7 +4410,6 @@ for light_id in range(white_lights):
 
     # white light's sensors
     for sensor_id in range(len(lights_sensors)):
-        device_config = get_device_config(dev_id)
         force_update = False
         if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
             force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
@@ -4502,7 +4480,6 @@ for light_id in range(white_lights):
 
 # meters
 for meter_id in range(meters):
-    device_config = get_device_config(dev_id)
     force_update = False
     if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
         force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)

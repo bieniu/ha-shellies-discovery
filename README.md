@@ -242,6 +242,7 @@ key | optional | type | default | description
 
 key | optional | type | default | possible values | description
 -- | -- | -- | -- | -- | --
+`device_name` | True | string | | name of the device
 `relay-<NUM>` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay number `NUM`
 `relay-<NUM>-name` | True | string | None | string | friendly name of the relay number `NUM`
 `roller-<NUM>-name` | True | string | None | string | friendly name of the roller number `NUM`
