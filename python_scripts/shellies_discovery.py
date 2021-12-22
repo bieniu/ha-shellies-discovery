@@ -384,6 +384,7 @@ SENSOR_TRIPLE_SHORTPUSH_1 = "triple shortpush 1"
 SENSOR_TRIPLE_SHORTPUSH_2 = "triple shortpush 2"
 SENSOR_UPTIME = "uptime"
 SENSOR_LAST_RESTART = "last_restart"
+SENSOR_VALVE_POSITION = "valve_position"
 SENSOR_VIBRATION = "vibration"
 SENSOR_VOLTAGE = "voltage"
 
@@ -439,6 +440,7 @@ TPL_ILLUMINATION = "{{value_json.lux}}"
 TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
 TPL_IP = "{{value_json.ip}}"
 TPL_IP_FROM_INFO = "{{value_json.wifi_sta.ip}}"
+TPL_VALVE_POSITION = "{{value_json.thermostats.0.pos}}"
 TPL_LONGPUSH = "{%if value_json.event==^L^%}ON{%else%}OFF{%endif%}"
 TPL_LONGPUSH_SHORTPUSH = "{%if value_json.event==^LS^%}ON{%else%}OFF{%endif%}"
 TPL_LUX = "{{value|float|round}}"
@@ -728,6 +730,7 @@ relays_sensors_units = []
 rgbw_lights = 0
 rollers = 0
 sensors = []
+sensor_icons = []
 sensors_device_classes = []
 sensors_enabled = []
 sensors_entity_categories = []
@@ -3103,8 +3106,10 @@ if model_id == MODEL_SHELLYVALVE_ID:
         SENSOR_IP,
         SENSOR_SSID,
         SENSOR_LAST_RESTART,
+        SENSOR_VALVE_POSITION,
     ]
     sensors_entity_categories = [
+        ENTITY_CATEGORY_DIAGNOSTIC,
         ENTITY_CATEGORY_DIAGNOSTIC,
         ENTITY_CATEGORY_DIAGNOSTIC,
         ENTITY_CATEGORY_DIAGNOSTIC,
@@ -3117,24 +3122,29 @@ if model_id == MODEL_SHELLYVALVE_ID:
         None,
         None,
         None,
+        STATE_CLASS_MEASUREMENT,
     ]
-    sensors_enabled = [True, False, False, False, False]
+    sensors_enabled = [True, False, False, False, False, False]
     sensors_device_classes = [
         DEVICE_CLASS_BATTERY,
         DEVICE_CLASS_SIGNAL_STRENGTH,
         None,
         None,
         DEVICE_CLASS_TIMESTAMP,
+        None,
     ]
-    sensors_units = [UNIT_PERCENT, UNIT_DBM, None, None, None]
+    sensor_icons = [None, None, "mdi:ip-outline", "mdi:wifi", None, "mdi:pipe-valve"]
+    sensors_units = [UNIT_PERCENT, UNIT_DBM, None, None, None, UNIT_PERCENT]
     sensors_tpls = [
         TPL_BATTERY_FROM_INFO,
         TPL_RSSI,
         TPL_IP_FROM_INFO,
         TPL_SSID,
         TPL_UPTIME,
+        TPL_VALVE_POSITION,
     ]
     sensors_topics = [
+        TOPIC_INFO,
         TOPIC_INFO,
         TOPIC_INFO,
         TOPIC_INFO,
@@ -3691,7 +3701,9 @@ for sensor_id in range(len(sensors)):
         payload[KEY_DEVICE_CLASS] = sensors_device_classes[sensor_id]
     if sensors_tpls[sensor_id]:
         payload[KEY_VALUE_TEMPLATE] = sensors_tpls[sensor_id]
-    if sensors[sensor_id] == SENSOR_SSID:
+    if len(sensor_icons) > sensor_id:
+        payload[KEY_ICON] = sensor_icons[sensor_id]
+    elif sensors[sensor_id] == SENSOR_SSID:
         payload[KEY_ICON] = "mdi:wifi"
     elif sensors[sensor_id] == SENSOR_TEMPERATURE_STATUS:
         payload[KEY_ICON] = "mdi:thermometer"
