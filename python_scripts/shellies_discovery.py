@@ -3701,7 +3701,7 @@ for sensor_id in range(len(sensors)):
         payload[KEY_DEVICE_CLASS] = sensors_device_classes[sensor_id]
     if sensors_tpls[sensor_id]:
         payload[KEY_VALUE_TEMPLATE] = sensors_tpls[sensor_id]
-    if len(sensor_icons) > sensor_id:
+    if len(sensor_icons) > sensor_id and sensor_icons[sensor_id] is not None:
         payload[KEY_ICON] = sensor_icons[sensor_id]
     elif sensors[sensor_id] == SENSOR_SSID:
         payload[KEY_ICON] = "mdi:wifi"
