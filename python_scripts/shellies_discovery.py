@@ -99,8 +99,8 @@ KEY_ACTION_TEMPLATE = "act_tpl"
 KEY_ACTION_TOPIC = "act_t"
 KEY_AUTOMATION_TYPE = "atype"
 KEY_AVAILABILITY_TOPIC = "avty_t"
-KEY_COMMAND_TOPIC = "cmd_t"
 KEY_COMMAND_TEMPLATE = "cmd_tpl"
+KEY_COMMAND_TOPIC = "cmd_t"
 KEY_CONFIGURATION_URL = "cu"
 KEY_CONNECTIONS = "cns"
 KEY_CURRENT_TEMPERATURE_TEMPLATE = "curr_temp_tpl"
@@ -125,6 +125,7 @@ KEY_MODES = "modes"
 KEY_NAME = "name"
 KEY_OFF_DELAY = "off_dly"
 KEY_OPTIMISTIC = "opt"
+KEY_OPTIONS = "options"
 KEY_PAYLOAD = "pl"
 KEY_PAYLOAD_AVAILABLE = "pl_avail"
 KEY_PAYLOAD_CLOSE = "pl_cls"
@@ -147,7 +148,6 @@ KEY_STATE_OPENING = "stat_opening"
 KEY_STATE_STOPPED = "stat_stopped"
 KEY_STATE_TEMPLATE = "stat_tpl"
 KEY_STATE_TOPIC = "stat_t"
-KEY_OPTIONS = "options"
 KEY_SUBTYPE = "stype"
 KEY_SW_VERSION = "sw"
 KEY_TEMPERATURE_COMMAND_TEMPLATE = "temp_cmd_tpl"
@@ -338,6 +338,8 @@ SENSOR_INPUT = "input"
 SENSOR_INPUT_0 = "input 0"
 SENSOR_INPUT_1 = "input 1"
 SENSOR_INPUT_2 = "input 2"
+SENSOR_IP = "ip"
+SENSOR_LAST_RESTART = "last_restart"
 SENSOR_LOADERROR = "loaderror"
 SENSOR_LONGPUSH = "longpush"
 SENSOR_LONGPUSH_0 = "longpush 0"
@@ -359,7 +361,6 @@ SENSOR_POWER_FACTOR = "pf"
 SENSOR_REACTIVE_POWER = "reactive_power"
 SENSOR_RETURNED_ENERGY = "returned_energy"
 SENSOR_RSSI = "rssi"
-SENSOR_IP = "ip"
 SENSOR_SELF_TEST = "self_test"
 SENSOR_SHORTPUSH = "shortpush"
 SENSOR_SHORTPUSH_0 = "shortpush/0"
@@ -375,14 +376,13 @@ SENSOR_TEMPERATURE_F = "temperature_f"
 SENSOR_TEMPERATURE_STATUS = "temperature_status"
 SENSOR_TILT = "tilt"
 SENSOR_TOTAL = "total"
-SENSOR_TOTALWORKTIME = "totalworktime"
 SENSOR_TOTAL_RETURNED = "total_returned"
+SENSOR_TOTALWORKTIME = "totalworktime"
 SENSOR_TRIPLE_SHORTPUSH = "triple shortpush"
 SENSOR_TRIPLE_SHORTPUSH_0 = "triple shortpush 0"
 SENSOR_TRIPLE_SHORTPUSH_1 = "triple shortpush 1"
 SENSOR_TRIPLE_SHORTPUSH_2 = "triple shortpush 2"
 SENSOR_UPTIME = "uptime"
-SENSOR_LAST_RESTART = "last_restart"
 SENSOR_VALVE_POSITION = "valve_position"
 SENSOR_VIBRATION = "vibration"
 SENSOR_VOLTAGE = "voltage"
@@ -391,10 +391,10 @@ STATE_CLASS_MEASUREMENT = "measurement"
 STATE_CLASS_TOTAL_INCREASING = "total_increasing"
 
 TOPIC_ADC = "adc/0"
-TOPIC_COMMAND_PROFILES = "thermostat/0/command/schedule_profile"
 TOPIC_ANNOUNCE = "announce"
 TOPIC_COLOR_0_STATUS = "color/0/status"
 TOPIC_COMMAND = "command"
+TOPIC_COMMAND_PROFILES = "thermostat/0/command/schedule_profile"
 TOPIC_EXT_SWITCH = "ext_switch/0"
 TOPIC_INFO = "info"
 TOPIC_INPUT_0 = "input/0"
@@ -419,15 +419,14 @@ TOPIC_UNMUTE = "sensor/unmute"
 TOPIC_VOLTAGE = "voltage"
 
 TPL_ACTION_TEMPLATE = "{{%if value_json.thermostats.0.target_t.value<={min_temp}%}}off{{%elif value_json.thermostats.0.pos==0%}}idle{{%else%}}heating{{%endif%}}"
-TPL_PROFILES = "profile {{value_json.thermostats.0.schedule_profile}}"
-TPL_COMMAND_PROFILES = "{{value.split(^ ^)[-1]}}"
 TPL_ADC = "{{value|float|round(2)}}"
 TPL_BATTERY = "{{value|float|round}}"
-TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
 TPL_BATTERY_FROM_INFO = "{{value_json.bat.value}}"
+TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
 TPL_CALIBRATED = "{%if value_json.calibrated==true%}ON{%else%}OFF{%endif%}"
 TPL_CHARGER = "{%if value_json.charger==true%}ON{%else%}OFF{%endif%}"
 TPL_CLOUD = "{%if value_json.cloud.connected==true%}ON{%else%}OFF{%endif%}"
+TPL_COMMAND_PROFILES = "{{value.split(^ ^)[-1]}}"
 TPL_CONCENTRATION = "{%if 0<=value|int<=65535%}{{value}}{%endif%}"
 TPL_CURRENT = "{{value|float|round(2)}}"
 TPL_CURRENT_TEMPERATURE = "{{value_json.thermostats.0.tmp.value}}"
@@ -442,12 +441,13 @@ TPL_ILLUMINATION = "{{value_json.lux}}"
 TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
 TPL_IP = "{{value_json.ip}}"
 TPL_IP_FROM_INFO = "{{value_json.wifi_sta.ip}}"
-TPL_VALVE_POSITION = "{{value_json.thermostats.0.pos}}"
 TPL_LONGPUSH = "{%if value_json.event==^L^%}ON{%else%}OFF{%endif%}"
 TPL_LONGPUSH_SHORTPUSH = "{%if value_json.event==^LS^%}ON{%else%}OFF{%endif%}"
 TPL_LUX = "{{value|float|round}}"
 TPL_MOTION = "{%if value_json.motion==true%}ON{%else%}OFF{%endif%}"
 TPL_NEW_FIRMWARE_FROM_ANNOUNCE = "{%if value_json.new_fw==true%}ON{%else%}OFF{%endif%}"
+TPL_PROFILES = "profile {{value_json.thermostats.0.schedule_profile}}"
+TPL_VALVE_POSITION = "{{value_json.thermostats.0.pos}}"
 TPL_NEW_FIRMWARE_FROM_INFO = (
     "{%if value_json[^update^].has_update==true%}ON{%else%}OFF{%endif%}"
 )
@@ -694,6 +694,8 @@ bin_sensors_entity_categories = []
 bin_sensors_pl = []
 bin_sensors_topics = []
 bin_sensors_tpls = []
+buttons = {}
+climate_entity_option = {}
 ext_humi_sensors = 0
 ext_temp_sensors = 0
 inputs = 0
@@ -731,8 +733,9 @@ relays_sensors_tpls = []
 relays_sensors_units = []
 rgbw_lights = 0
 rollers = 0
-sensors = []
+selectors = {}
 sensor_icons = []
+sensors = []
 sensors_device_classes = []
 sensors_enabled = []
 sensors_entity_categories = []
@@ -741,8 +744,6 @@ sensors_topics = []
 sensors_tpls = []
 sensors_units = []
 white_lights = 0
-climate_entity_option = {}
-buttons = {}
 
 if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     model = MODEL_SHELLY1
