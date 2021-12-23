@@ -3264,7 +3264,6 @@ for switch, switch_options in switches.items():
         KEY_PAYLOAD_OFF: switch_options[KEY_PAYLOAD_OFF],
         KEY_PAYLOAD_ON: switch_options[KEY_PAYLOAD_ON],
         KEY_STATE_TOPIC: f"~{switch_options[KEY_STATE_TOPIC]}",
-        KEY_VALUE_TEMPLATE: switch_options[KEY_VALUE_TEMPLATE],
         KEY_STATE_OFF: switch_options[KEY_STATE_OFF],
         KEY_STATE_ON: switch_options[KEY_STATE_ON],
         KEY_VALUE_TEMPLATE: switch_options[KEY_VALUE_TEMPLATE],
