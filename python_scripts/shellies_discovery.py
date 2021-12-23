@@ -144,6 +144,8 @@ KEY_SET_POSITION_TEMPLATE = "set_pos_tpl"
 KEY_SET_POSITION_TOPIC = "set_pos_t"
 KEY_STATE_CLASS = "stat_cla"
 KEY_STATE_CLOSING = "stat_closing"
+KEY_STATE_OFF = "stat_off"
+KEY_STATE_ON = "stat_on"
 KEY_STATE_OPENING = "stat_opening"
 KEY_STATE_STOPPED = "stat_stopped"
 KEY_STATE_TEMPLATE = "stat_tpl"
@@ -172,7 +174,8 @@ MIN_4PRO_FIRMWARE_DATE = 20200408
 # Firmware 1.1.0 release date
 MIN_MOTION_FIRMWARE_DATE = 20210226
 
-MIN_VALVE_FIRMWARE_DATE = 20211215
+# Firmware 2.1.0rc10 release date
+MIN_VALVE_FIRMWARE_DATE = 20211221
 
 # Firmware 1.11.0 release date
 MIN_FIRMWARE_DATE = 20210720
@@ -390,11 +393,14 @@ SENSOR_VOLTAGE = "voltage"
 STATE_CLASS_MEASUREMENT = "measurement"
 STATE_CLASS_TOTAL_INCREASING = "total_increasing"
 
+SWITCH_SCHEDULE = "schedule"
+
 TOPIC_ADC = "adc/0"
 TOPIC_ANNOUNCE = "announce"
 TOPIC_COLOR_0_STATUS = "color/0/status"
 TOPIC_COMMAND = "command"
 TOPIC_COMMAND_PROFILES = "thermostat/0/command/schedule_profile"
+TOPIC_COMMAND_SCHEDULE = "thermostat/0/command/schedule"
 TOPIC_EXT_SWITCH = "ext_switch/0"
 TOPIC_INFO = "info"
 TOPIC_INPUT_0 = "input/0"
@@ -447,6 +453,7 @@ TPL_LUX = "{{value|float|round}}"
 TPL_MOTION = "{%if value_json.motion==true%}ON{%else%}OFF{%endif%}"
 TPL_NEW_FIRMWARE_FROM_ANNOUNCE = "{%if value_json.new_fw==true%}ON{%else%}OFF{%endif%}"
 TPL_PROFILES = "profile {{value_json.thermostats.0.schedule_profile}}"
+TPL_SCHEDULE = "{{value_json.thermostats.0.schedule}}"
 TPL_VALVE_POSITION = "{{value_json.thermostats.0.pos}}"
 TPL_NEW_FIRMWARE_FROM_INFO = (
     "{%if value_json[^update^].has_update==true%}ON{%else%}OFF{%endif%}"
@@ -469,7 +476,7 @@ TPL_TEMPERATURE_STATUS = "{{value|lower}}"
 TPL_TILT = "{{value|float}}"
 TPL_TRIPLE_SHORTPUSH = "{%if value_json.event==^SSS^%}ON{%else%}OFF{%endif%}"
 TPL_UPDATE_TO_JSON = "{{value_json[^update^]|tojson}}"
-TPL_UPTIME = "{{(as_timestamp(now())-value_json.uptime)|timestamp_local}}"
+TPL_UPTIME = "{{(as_timestamp(now())-value_json.uptime)|timestamp_l" "ocal}}"
 TPL_VIBRATION = "{%if value_json.vibration==true%}ON{%else%}OFF{%endif%}"
 TPL_VOLTAGE = "{{value|float|round(1)}}"
 
@@ -496,7 +503,7 @@ VALUE_BUTTON_TRIPLE_PRESS = "button_triple_press"
 VALUE_BUTTON_SHORT_RELEASE = "button_short_release"
 VALUE_CLOSE = "close"
 VALUE_CLOSE = "close"
-VALUE_FALSE = "false"
+VALUE_FALSE = str(False)
 VALUE_OFF = "off"
 VALUE_ON = "on"
 VALUE_OPEN = "open"
@@ -504,7 +511,7 @@ VALUE_OPEN = "open"
 VALUE_STOP = "stop"
 VALUE_STOP = "stop"
 VALUE_TRIGGER = "trigger"
-VALUE_TRUE = "true"
+VALUE_TRUE = str(True)
 
 DEVICE_TRIGGERS_MAP = {
     VALUE_BUTTON_DOUBLE_PRESS: "SS",
@@ -743,6 +750,7 @@ sensors_state_classes = []
 sensors_topics = []
 sensors_tpls = []
 sensors_units = []
+switches = {}
 white_lights = 0
 
 if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
@@ -3219,6 +3227,20 @@ if model_id == MODEL_SHELLYVALVE_ID:
             KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
         }
     }
+    switches = {
+        SWITCH_SCHEDULE: {
+            KEY_COMMAND_TOPIC: TOPIC_COMMAND_SCHEDULE,
+            KEY_ENABLED_BY_DEFAULT: True,
+            KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+            KEY_ICON: "mdi:store-clock-outline",
+            KEY_PAYLOAD_ON: 1,
+            KEY_PAYLOAD_OFF: 0,
+            KEY_STATE_TOPIC: TOPIC_INFO,
+            KEY_VALUE_TEMPLATE: TPL_SCHEDULE,
+            KEY_STATE_ON: VALUE_TRUE,
+            KEY_STATE_OFF: VALUE_FALSE,
+        }
+    }
 
 device_config = get_device_config(dev_id)
 if device_config.get(CONF_DEVICE_NAME):
@@ -3227,6 +3249,48 @@ elif ignore_device_model:
     device_name = clean_name(dev_id)
 else:
     device_name = f"{model} {dev_id.split('-')[-1]}"
+
+# switches (not relays)
+for switch, switch_options in switches.items():
+    config_topic = f"{disc_prefix}/switch/{dev_id}-{switch}/config".encode(
+        "ascii", "ignore"
+    ).decode("utf-8")
+    default_topic = f"shellies/{dev_id}/"
+    expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_VALVE)
+
+    payload = {
+        KEY_NAME: f"{device_name} {clean_name(switch)}",
+        KEY_COMMAND_TOPIC: f"~{switch_options[KEY_COMMAND_TOPIC]}",
+        KEY_PAYLOAD_OFF: switch_options[KEY_PAYLOAD_OFF],
+        KEY_PAYLOAD_ON: switch_options[KEY_PAYLOAD_ON],
+        KEY_STATE_TOPIC: f"~{switch_options[KEY_STATE_TOPIC]}",
+        KEY_VALUE_TEMPLATE: switch_options[KEY_VALUE_TEMPLATE],
+        KEY_STATE_OFF: switch_options[KEY_STATE_OFF],
+        KEY_STATE_ON: switch_options[KEY_STATE_ON],
+        KEY_VALUE_TEMPLATE: switch_options[KEY_VALUE_TEMPLATE],
+        KEY_ENABLED_BY_DEFAULT: str(switch_options[KEY_ENABLED_BY_DEFAULT]),
+        KEY_EXPIRE_AFTER: expire_after,
+        KEY_UNIQUE_ID: f"{dev_id}-{switch}".lower(),
+        KEY_QOS: qos,
+        KEY_DEVICE: {
+            KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
+            KEY_NAME: device_name,
+            KEY_MODEL: model,
+            KEY_SW_VERSION: fw_ver,
+            KEY_MANUFACTURER: ATTR_MANUFACTURER,
+            KEY_CONFIGURATION_URL: f"http://{host}/",
+        },
+        "~": default_topic,
+    }
+    if switch_options.get(KEY_ENTITY_CATEGORY):
+        payload[KEY_ENTITY_CATEGORY] = switch_options[KEY_ENTITY_CATEGORY]
+    if switch_options.get(KEY_DEVICE_CLASS):
+        payload[KEY_DEVICE_CLASS] = switch_options[KEY_DEVICE_CLASS]
+    if switch_options.get(ATTR_ICON):
+        payload[KEY_ICON] = switch_options[ATTR_ICON]
+    if dev_id.lower() in ignored:
+        payload = ""
+    mqtt_publish(config_topic, payload, retain)
 
 # selectors
 for select, select_options in selectors.items():
