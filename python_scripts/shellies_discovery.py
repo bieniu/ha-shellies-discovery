@@ -116,7 +116,9 @@ KEY_JSON_ATTRIBUTES_TEMPLATE = "json_attr_tpl"
 KEY_JSON_ATTRIBUTES_TOPIC = "json_attr_t"
 KEY_MAC = "mac"
 KEY_MANUFACTURER = "mf"
+KEY_MAX = "max"
 KEY_MAX_TEMP = "max_temp"
+KEY_MIN = "min"
 KEY_MIN_TEMP = "min_temp"
 KEY_MODE_STATE_TEMPLATE = "mode_stat_tpl"
 KEY_MODE_STATE_TOPIC = "mode_stat_t"
@@ -150,6 +152,7 @@ KEY_STATE_OPENING = "stat_opening"
 KEY_STATE_STOPPED = "stat_stopped"
 KEY_STATE_TEMPLATE = "stat_tpl"
 KEY_STATE_TOPIC = "stat_t"
+KEY_STEP = "step"
 KEY_SUBTYPE = "stype"
 KEY_SW_VERSION = "sw"
 KEY_TEMPERATURE_COMMAND_TEMPLATE = "temp_cmd_tpl"
@@ -307,6 +310,8 @@ MODEL_SHELLYVINTAGE_PREFIX = "shellyvintage"
 MODEL_SHELLYUNI_ID = "SHUNI-1"  # Shelly UNI
 MODEL_SHELLYUNI_PREFIX = "shellyuni"
 
+NUMBER_VALVE_POSITION = "valve_position"
+
 OFF_DELAY = 1
 
 PL_MUTE = "mute"
@@ -386,7 +391,6 @@ SENSOR_TRIPLE_SHORTPUSH_0 = "triple shortpush 0"
 SENSOR_TRIPLE_SHORTPUSH_1 = "triple shortpush 1"
 SENSOR_TRIPLE_SHORTPUSH_2 = "triple shortpush 2"
 SENSOR_UPTIME = "uptime"
-SENSOR_VALVE_POSITION = "valve_position"
 SENSOR_VIBRATION = "vibration"
 SENSOR_VOLTAGE = "voltage"
 
@@ -401,6 +405,7 @@ TOPIC_COLOR_0_STATUS = "color/0/status"
 TOPIC_COMMAND = "command"
 TOPIC_COMMAND_PROFILES = "thermostat/0/command/schedule_profile"
 TOPIC_COMMAND_SCHEDULE = "thermostat/0/command/schedule"
+TOPIC_COMMAND_VALVE_POSITION = "thermostat/0/command/valve_pos"
 TOPIC_EXT_SWITCH = "ext_switch/0"
 TOPIC_INFO = "info"
 TOPIC_INPUT_0 = "input/0"
@@ -752,6 +757,7 @@ sensors_topics = []
 sensors_tpls = []
 sensors_units = []
 switches = {}
+numbers = {}
 white_lights = 0
 
 if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
@@ -3118,10 +3124,8 @@ if model_id == MODEL_SHELLYVALVE_ID:
         SENSOR_IP,
         SENSOR_SSID,
         SENSOR_LAST_RESTART,
-        SENSOR_VALVE_POSITION,
     ]
     sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
         ENTITY_CATEGORY_DIAGNOSTIC,
         ENTITY_CATEGORY_DIAGNOSTIC,
         ENTITY_CATEGORY_DIAGNOSTIC,
@@ -3134,29 +3138,25 @@ if model_id == MODEL_SHELLYVALVE_ID:
         None,
         None,
         None,
-        STATE_CLASS_MEASUREMENT,
     ]
-    sensors_enabled = [True, False, False, False, False, False]
+    sensors_enabled = [True, False, False, False, False]
     sensors_device_classes = [
         DEVICE_CLASS_BATTERY,
         DEVICE_CLASS_SIGNAL_STRENGTH,
         None,
         None,
         DEVICE_CLASS_TIMESTAMP,
-        None,
     ]
-    sensor_icons = [None, None, "mdi:ip-outline", "mdi:wifi", None, "mdi:pipe-valve"]
-    sensors_units = [UNIT_PERCENT, UNIT_DBM, None, None, None, UNIT_PERCENT]
+    sensor_icons = [None, None, "mdi:ip-outline", "mdi:wifi", None]
+    sensors_units = [UNIT_PERCENT, UNIT_DBM, None, None, None]
     sensors_tpls = [
         TPL_BATTERY_FROM_INFO,
         TPL_RSSI,
         TPL_IP_FROM_INFO,
         TPL_SSID,
         TPL_UPTIME,
-        TPL_VALVE_POSITION,
     ]
     sensors_topics = [
-        TOPIC_INFO,
         TOPIC_INFO,
         TOPIC_INFO,
         TOPIC_INFO,
@@ -3242,6 +3242,20 @@ if model_id == MODEL_SHELLYVALVE_ID:
             KEY_STATE_OFF: VALUE_FALSE,
         }
     }
+    numbers = {
+        NUMBER_VALVE_POSITION: {
+            KEY_COMMAND_TOPIC: TOPIC_COMMAND_VALVE_POSITION,
+            KEY_ENABLED_BY_DEFAULT: False,
+            KEY_MIN: 0,
+            KEY_MAX: 100,
+            KEY_STEP: 1,
+            KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+            KEY_ICON: "mdi:pipe-valve",
+            KEY_STATE_TOPIC: TOPIC_INFO,
+            KEY_VALUE_TEMPLATE: TPL_VALVE_POSITION,
+            KEY_UNIT: UNIT_PERCENT,
+        }
+    }
 
 device_config = get_device_config(dev_id)
 if device_config.get(CONF_DEVICE_NAME):
@@ -3259,6 +3273,41 @@ device_info = {
     KEY_MANUFACTURER: ATTR_MANUFACTURER,
     KEY_CONFIGURATION_URL: f"http://{host}/",
 }
+
+# numbers
+for number, number_options in numbers.items():
+    config_topic = f"{disc_prefix}/number/{dev_id}-{number}/config".encode(
+        "ascii", "ignore"
+    ).decode("utf-8")
+    default_topic = f"shellies/{dev_id}/"
+
+    payload = {
+        KEY_NAME: f"{device_name} {clean_name(number)}",
+        KEY_COMMAND_TOPIC: f"~{number_options[KEY_COMMAND_TOPIC]}",
+        KEY_MAX: number_options[KEY_MAX],
+        KEY_MIN: number_options[KEY_MIN],
+        KEY_STEP: number_options[KEY_STEP],
+        KEY_STATE_TOPIC: f"~{number_options[KEY_STATE_TOPIC]}",
+        KEY_VALUE_TEMPLATE: number_options[KEY_VALUE_TEMPLATE],
+        KEY_UNIT: number_options[KEY_UNIT],
+        KEY_ENABLED_BY_DEFAULT: str(number_options[KEY_ENABLED_BY_DEFAULT]),
+        KEY_UNIQUE_ID: f"{dev_id}-{number}".lower(),
+        KEY_QOS: qos,
+        KEY_AVAILABILITY_TOPIC: f"~{TOPIC_ONLINE}",
+        KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
+        KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
+        KEY_DEVICE: device_info,
+        "~": default_topic,
+    }
+    if number_options.get(KEY_ENTITY_CATEGORY):
+        payload[KEY_ENTITY_CATEGORY] = number_options[KEY_ENTITY_CATEGORY]
+    if number_options.get(KEY_DEVICE_CLASS):
+        payload[KEY_DEVICE_CLASS] = number_options[KEY_DEVICE_CLASS]
+    if number_options.get(ATTR_ICON):
+        payload[KEY_ICON] = number_options[ATTR_ICON]
+    if dev_id.lower() in ignored:
+        payload = ""
+    mqtt_publish(config_topic, payload, retain)
 
 # switches (not relays)
 for switch, switch_options in switches.items():
