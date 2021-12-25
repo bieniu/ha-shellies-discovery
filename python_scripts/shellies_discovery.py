@@ -509,7 +509,7 @@ VALUE_BUTTON_TRIPLE_PRESS = "button_triple_press"
 VALUE_BUTTON_SHORT_RELEASE = "button_short_release"
 VALUE_CLOSE = "close"
 VALUE_CLOSE = "close"
-VALUE_FALSE = str(False)
+VALUE_FALSE = "false"
 VALUE_OFF = "off"
 VALUE_ON = "on"
 VALUE_OPEN = "open"
@@ -517,7 +517,7 @@ VALUE_OPEN = "open"
 VALUE_STOP = "stop"
 VALUE_STOP = "stop"
 VALUE_TRIGGER = "trigger"
-VALUE_TRUE = str(True)
+VALUE_TRUE = "true"
 
 DEVICE_TRIGGERS_MAP = {
     VALUE_BUTTON_DOUBLE_PRESS: "SS",
@@ -3290,7 +3290,7 @@ for number, number_options in numbers.items():
         KEY_STATE_TOPIC: f"~{number_options[KEY_STATE_TOPIC]}",
         KEY_VALUE_TEMPLATE: number_options[KEY_VALUE_TEMPLATE],
         KEY_UNIT: number_options[KEY_UNIT],
-        KEY_ENABLED_BY_DEFAULT: str(number_options[KEY_ENABLED_BY_DEFAULT]),
+        KEY_ENABLED_BY_DEFAULT: str(number_options[KEY_ENABLED_BY_DEFAULT]).lower(),
         KEY_UNIQUE_ID: f"{dev_id}-{number}".lower(),
         KEY_QOS: qos,
         KEY_AVAILABILITY_TOPIC: f"~{TOPIC_ONLINE}",
@@ -3325,7 +3325,7 @@ for switch, switch_options in switches.items():
         KEY_STATE_OFF: switch_options[KEY_STATE_OFF],
         KEY_STATE_ON: switch_options[KEY_STATE_ON],
         KEY_VALUE_TEMPLATE: switch_options[KEY_VALUE_TEMPLATE],
-        KEY_ENABLED_BY_DEFAULT: str(switch_options[KEY_ENABLED_BY_DEFAULT]),
+        KEY_ENABLED_BY_DEFAULT: str(switch_options[KEY_ENABLED_BY_DEFAULT]).lower(),
         KEY_UNIQUE_ID: f"{dev_id}-{switch}".lower(),
         KEY_QOS: qos,
         KEY_AVAILABILITY_TOPIC: f"~{TOPIC_ONLINE}",
@@ -3358,7 +3358,7 @@ for select, select_options in selectors.items():
         KEY_OPTIONS: select_options[KEY_OPTIONS],
         KEY_STATE_TOPIC: f"~{select_options[KEY_STATE_TOPIC]}",
         KEY_VALUE_TEMPLATE: select_options[KEY_VALUE_TEMPLATE],
-        KEY_ENABLED_BY_DEFAULT: str(select_options[KEY_ENABLED_BY_DEFAULT]),
+        KEY_ENABLED_BY_DEFAULT: str(select_options[KEY_ENABLED_BY_DEFAULT]).lower(),
         KEY_UNIQUE_ID: f"{dev_id}-{select}".lower(),
         KEY_QOS: qos,
         KEY_AVAILABILITY_TOPIC: f"~{TOPIC_ONLINE}",
@@ -3389,7 +3389,7 @@ for button, button_options in buttons.items():
         KEY_NAME: f"{device_name} {clean_name(button)}",
         KEY_COMMAND_TOPIC: f"~{button_options[KEY_COMMAND_TOPIC]}",
         KEY_PAYLOAD_PRESS: button_options[KEY_PAYLOAD_PRESS],
-        KEY_ENABLED_BY_DEFAULT: str(button_options[KEY_ENABLED_BY_DEFAULT]),
+        KEY_ENABLED_BY_DEFAULT: str(button_options[KEY_ENABLED_BY_DEFAULT]).lower(),
         KEY_UNIQUE_ID: f"{dev_id}-{button}".lower(),
         KEY_QOS: qos,
         KEY_AVAILABILITY_TOPIC: f"~{TOPIC_ONLINE}",
@@ -3575,7 +3575,7 @@ for relay_id in range(relays):
                     KEY_AVAILABILITY_TOPIC: f"~{TOPIC_ONLINE}",
                     KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
                     KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-                    KEY_FORCE_UPDATE: str(force_update),
+                    KEY_FORCE_UPDATE: str(force_update).lower(),
                     KEY_UNIQUE_ID: unique_id,
                     KEY_QOS: qos,
                     KEY_DEVICE: device_info,
@@ -3618,7 +3618,7 @@ for relay_id in range(relays):
                 KEY_AVAILABILITY_TOPIC: f"~{TOPIC_ONLINE}",
                 KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
                 KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-                KEY_FORCE_UPDATE: str(force_update),
+                KEY_FORCE_UPDATE: str(force_update).lower(),
                 KEY_UNIQUE_ID: unique_id,
                 KEY_QOS: qos,
                 KEY_DEVICE: device_info,
@@ -3789,8 +3789,8 @@ for sensor_id in range(len(sensors)):
     payload = {
         KEY_NAME: sensor_name,
         KEY_STATE_TOPIC: state_topic,
-        KEY_FORCE_UPDATE: str(force_update),
-        KEY_ENABLED_BY_DEFAULT: str(sensors_enabled[sensor_id]),
+        KEY_FORCE_UPDATE: str(force_update).lower(),
+        KEY_ENABLED_BY_DEFAULT: str(sensors_enabled[sensor_id]).lower(),
         KEY_UNIQUE_ID: unique_id,
         KEY_QOS: qos,
         KEY_DEVICE: device_info,
@@ -3901,7 +3901,7 @@ for sensor_id in range(ext_temp_sensors):
             KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
             KEY_UNIT: UNIT_CELSIUS,
             KEY_DEVICE_CLASS: SENSOR_TEMPERATURE,
-            KEY_FORCE_UPDATE: str(force_update),
+            KEY_FORCE_UPDATE: str(force_update).lower(),
             KEY_AVAILABILITY_TOPIC: f"~{TOPIC_ONLINE}",
             KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
             KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
@@ -3938,7 +3938,7 @@ for sensor_id in range(ext_humi_sensors):
             KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
             KEY_UNIT: UNIT_PERCENT,
             KEY_DEVICE_CLASS: SENSOR_HUMIDITY,
-            KEY_FORCE_UPDATE: str(force_update),
+            KEY_FORCE_UPDATE: str(force_update).lower(),
             KEY_AVAILABILITY_TOPIC: f"~{TOPIC_ONLINE}",
             KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
             KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
@@ -4016,7 +4016,7 @@ for bin_sensor_id in range(len(bin_sensors)):
     payload = {
         KEY_NAME: sensor_name,
         KEY_STATE_TOPIC: state_topic,
-        KEY_ENABLED_BY_DEFAULT: str(bin_sensors_enabled[bin_sensor_id]),
+        KEY_ENABLED_BY_DEFAULT: str(bin_sensors_enabled[bin_sensor_id]).lower(),
         KEY_UNIQUE_ID: unique_id,
         KEY_QOS: qos,
         KEY_DEVICE: device_info,
@@ -4070,7 +4070,7 @@ for bin_sensor_id in range(len(bin_sensors)):
         model in (MODEL_SHELLYDW, MODEL_SHELLYDW2)
         and bin_sensors[bin_sensor_id] == SENSOR_OPENING
     ):
-        payload[KEY_FORCE_UPDATE] = str(True)
+        payload[KEY_FORCE_UPDATE] = str(True).lower()
     if model == MODEL_SHELLYGAS and bin_sensors[bin_sensor_id] == SENSOR_GAS:
         payload[KEY_JSON_ATTRIBUTES_TOPIC] = state_topic
         payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_GAS_TO_JSON
@@ -4259,7 +4259,7 @@ for light_id in range(rgbw_lights):
                 KEY_AVAILABILITY_TOPIC: f"~{TOPIC_ONLINE}",
                 KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
                 KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-                KEY_FORCE_UPDATE: str(force_update),
+                KEY_FORCE_UPDATE: str(force_update).lower(),
                 KEY_UNIQUE_ID: unique_id,
                 KEY_QOS: qos,
                 KEY_DEVICE: device_info,
@@ -4514,7 +4514,7 @@ for light_id in range(white_lights):
                 KEY_AVAILABILITY_TOPIC: f"~{TOPIC_ONLINE}",
                 KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
                 KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-                KEY_FORCE_UPDATE: str(force_update),
+                KEY_FORCE_UPDATE: str(force_update).lower(),
                 KEY_UNIQUE_ID: unique_id,
                 KEY_QOS: qos,
                 KEY_DEVICE: device_info,
@@ -4558,7 +4558,7 @@ for meter_id in range(meters):
             KEY_AVAILABILITY_TOPIC: f"~{TOPIC_ONLINE}",
             KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
             KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-            KEY_FORCE_UPDATE: str(force_update),
+            KEY_FORCE_UPDATE: str(force_update).lower(),
             KEY_UNIQUE_ID: unique_id,
             KEY_QOS: qos,
             KEY_DEVICE: device_info,
