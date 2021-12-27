@@ -3156,8 +3156,9 @@ for relay_id in range(relays):
 # sensors
 for sensor, sensor_options in sensors.items():
     use_fahrenheit = device_config.get(CONF_USE_FAHRENHEIT)
+    force_update = False
     if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
-        force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS, False)
+        force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
     config_topic = f"{disc_prefix}/sensor/{dev_id}-{sensor}/config".encode(
         "ascii", "ignore"
     ).decode("utf-8")
