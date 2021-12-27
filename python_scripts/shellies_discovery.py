@@ -3166,20 +3166,11 @@ for sensor, sensor_options in sensors.items():
 
     config_component = COMP_SWITCH
     if (
-        model
-        in (
-            MODEL_SHELLYBUTTON1,
-            MODEL_SHELLYMOTION,
-            MODEL_SHELLYSENSE,
-            MODEL_SHELLYVALVE,
-        )
+        model in (MODEL_SHELLYBUTTON1, MODEL_SHELLYMOTION, MODEL_SHELLYSENSE)
         and device_config.get(CONF_POWERED) == ATTR_POWER_AC
     ):
         battery_powered = False
         no_battery_sensor = True
-    if device_config.get(CONF_POWERED) == ATTR_POWER_AC:
-        no_battery_sensor = True
-        expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED)
     if battery_powered:
         if model == MODEL_SHELLYMOTION:
             expire_after = device_config.get(
@@ -3192,6 +3183,11 @@ for sensor, sensor_options in sensors.items():
         else:
             expire_after = device_config.get(
                 CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED
+            )
+        if device_config.get(CONF_POWERED) == ATTR_POWER_AC:
+            no_battery_sensor = True
+            expire_after = device_config.get(
+                CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED
             )
         if not isinstance(expire_after, int):
             raise TypeError(
@@ -3366,13 +3362,7 @@ for bin_sensor_id in range(len(bin_sensors)):
     if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
         push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
     if (
-        model
-        in (
-            MODEL_SHELLYBUTTON1,
-            MODEL_SHELLYMOTION,
-            MODEL_SHELLYSENSE,
-            MODEL_SHELLYVALVE,
-        )
+        model in (MODEL_SHELLYBUTTON1, MODEL_SHELLYMOTION, MODEL_SHELLYSENSE)
         and device_config.get(CONF_POWERED) == ATTR_POWER_AC
     ):
         battery_powered = False
@@ -3390,7 +3380,6 @@ for bin_sensor_id in range(len(bin_sensors)):
                 CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED
             )
         if device_config.get(CONF_POWERED) == ATTR_POWER_AC:
-            no_battery_sensor = True
             expire_after = device_config.get(
                 CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED
             )
