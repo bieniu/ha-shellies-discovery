@@ -425,8 +425,12 @@ TOPIC_OVERPOWER_VALUE = "overpower_value"
 TOPIC_RELAY = "relay"
 TOPIC_SELF_TEST = "sensor/start_self_test"
 TOPIC_SENSOR_BATTERY = "sensor/battery"
+TOPIC_SENSOR_CONCENTRATION = "sensor/concentration"
 TOPIC_SENSOR_HUMIDITY = "sensor/humidity"
+TOPIC_SENSOR_OPERATION = "sensor/operation"
+TOPIC_SENSOR_SELF_TEST = "sensor/self_test"
 TOPIC_SENSOR_TEMPERATURE = "sensor/temperature"
+TOPIC_SENSOR_TILT = "sensor/tilt"
 TOPIC_SENSOR_UNMUTE = "sensor/unmute"
 TOPIC_STATUS = "status"
 TOPIC_TEMPERATURE = "temperature"
@@ -554,6 +558,13 @@ OPTIONS_SENSOR_IP = {
     KEY_STATE_TOPIC: TOPIC_ANNOUNCE,
     KEY_VALUE_TEMPLATE: TPL_IP,
 }
+OPTIONS_SENSOR_IP_VALVE = {
+    KEY_ENABLED_BY_DEFAULT: False,
+    KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
+    KEY_ICON: "mdi:ip-outline",
+    KEY_STATE_TOPIC: TOPIC_INFO,
+    KEY_VALUE_TEMPLATE: TPL_IP_FROM_INFO,
+}
 OPTIONS_SENSOR_DEVICE_TEMPERATURE = {
     KEY_DEVICE_CLASS: DEVICE_CLASS_TEMPERATURE,
     KEY_ENABLED_BY_DEFAULT: True,
@@ -644,6 +655,15 @@ OPTIONS_SENSOR_BATTERY_MOTION = {
     KEY_UNIT: UNIT_PERCENT,
     KEY_VALUE_TEMPLATE: TPL_BATTERY_FROM_JSON,
 }
+OPTIONS_SENSOR_BATTERY_VALVE = {
+    KEY_DEVICE_CLASS: DEVICE_CLASS_BATTERY,
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
+    KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
+    KEY_STATE_TOPIC: TOPIC_INFO,
+    KEY_UNIT: UNIT_PERCENT,
+    KEY_VALUE_TEMPLATE: TPL_BATTERY_FROM_INFO,
+}
 OPTIONS_SENSOR_LUX = {
     KEY_DEVICE_CLASS: DEVICE_CLASS_ILLUMINANCE,
     KEY_ENABLED_BY_DEFAULT: True,
@@ -651,6 +671,34 @@ OPTIONS_SENSOR_LUX = {
     KEY_STATE_TOPIC: TOPIC_STATUS,
     KEY_UNIT: UNIT_LUX,
     KEY_VALUE_TEMPLATE: TPL_ILLUMINATION,
+}
+OPTIONS_SENSOR_OPERATION = {
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
+    KEY_ICON: "mdi:format-list-bulleted",
+    KEY_STATE_TOPIC: TOPIC_SENSOR_OPERATION,
+}
+OPTIONS_SENSOR_SELF_TEST = {
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
+    KEY_ICON: "md:progress-wrench",
+    KEY_STATE_TOPIC: TOPIC_SENSOR_SELF_TEST,
+}
+OPTIONS_SENSOR_CONCENTRATION = {
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_ICON: "mdi:molecule",
+    KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
+    KEY_STATE_TOPIC: TOPIC_SENSOR_CONCENTRATION,
+    KEY_UNIT: UNIT_PPM,
+    KEY_VALUE_TEMPLATE: TPL_CONCENTRATION,
+}
+OPTIONS_SENSOR_TILT = {
+    KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_UNIT: UNIT_DEGREE,
+    KEY_VALUE_TEMPLATE: TPL_TILT,
+    KEY_STATE_TOPIC: TOPIC_SENSOR_TILT,
+    KEY_ICON: "mdi:angle-acute",
 }
 
 DEVICE_TRIGGERS_MAP = {
@@ -1529,62 +1577,15 @@ if model_id == MODEL_SHELLYMOTION_ID or dev_id_prefix == MODEL_SHELLYMOTION_PREF
 
 if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
     model = MODEL_SHELLYGAS
-    sensors = [
-        SENSOR_OPERATION,
-        SENSOR_SELF_TEST,
-        SENSOR_CONCENTRATION,
-        SENSOR_RSSI,
-        SENSOR_SSID,
-        SENSOR_UPTIME,
-        SENSOR_IP,
-    ]
-    sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        None,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [
-        None,
-        None,
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        None,
-        None,
-        None,
-    ]
-    sensors_enabled = [True, True, True, False, False, False, False]
-    sensors_device_classes = [
-        None,
-        None,
-        None,
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-        None,
-    ]
-    sensors_tpls = [
-        None,
-        None,
-        TPL_CONCENTRATION,
-        TPL_RSSI,
-        TPL_SSID,
-        TPL_UPTIME,
-        TPL_IP,
-    ]
-    sensors_topics = [
-        None,
-        None,
-        None,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_ANNOUNCE,
-    ]
-    sensors_units = [None, None, UNIT_PPM, UNIT_DBM, None, None, None]
+    sensors = {
+        SENSOR_CONCENTRATION: OPTIONS_SENSOR_CONCENTRATION,
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_OPERATION: OPTIONS_SENSOR_OPERATION,
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SELF_TEST: OPTIONS_SENSOR_SELF_TEST,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+    }
     bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_GAS]
     bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC, None]
     bin_sensors_enabled = [True, True]
@@ -1633,32 +1634,13 @@ if (
         VALUE_BUTTON_DOUBLE_PRESS,
         VALUE_BUTTON_TRIPLE_PRESS,
     ]
-    sensors = [SENSOR_BATTERY, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
-    sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        None,
-        None,
-        None,
-    ]
-    sensors_enabled = [True, False, False, False, False]
-    sensors_device_classes = [
-        DEVICE_CLASS_BATTERY,
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-        None,
-    ]
-    sensors_units = [UNIT_PERCENT, UNIT_DBM, None, None, None]
-    sensors_tpls = [TPL_BATTERY, TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
-    sensors_topics = [None, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    sensors = {
+        SENSOR_BATTERY: OPTIONS_SENSOR_BATTERY,
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+    }
     bin_sensors = [
         SENSOR_INPUT_0,
         SENSOR_SHORTPUSH,
@@ -1710,29 +1692,12 @@ if (
 
 if model_id == MODEL_SHELLYDW_ID or dev_id_prefix == MODEL_SHELLYDW_PREFIX:
     model = MODEL_SHELLYDW
-    sensors = [SENSOR_LUX, SENSOR_BATTERY, SENSOR_TILT, SENSOR_IP]
-    sensors_entity_categories = [
-        None,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        None,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        None,
-    ]
-    sensors_enabled = [True, True, True, False]
-    sensors_device_classes = [
-        DEVICE_CLASS_ILLUMINANCE,
-        DEVICE_CLASS_BATTERY,
-        None,
-        None,
-    ]
-    sensors_units = [UNIT_LUX, UNIT_PERCENT, UNIT_DEGREE, None]
-    sensors_tpls = [TPL_LUX, TPL_BATTERY, TPL_TILT, TPL_IP]
-    sensors_topics = [None, None, None, TOPIC_ANNOUNCE]
+    sensors = {
+        SENSOR_BATTERY: OPTIONS_SENSOR_BATTERY,
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_LUX: OPTIONS_SENSOR_LUX,
+        SENSOR_TILT: OPTIONS_SENSOR_TILT,
+    }
     bin_sensors = [SENSOR_OPENING, SENSOR_VIBRATION, SENSOR_FIRMWARE_UPDATE]
     bin_sensors_entity_categories = [None, None, ENTITY_CATEGORY_DIAGNOSTIC]
     bin_sensors_enabled = [True, True, True]
@@ -1748,56 +1713,14 @@ if model_id == MODEL_SHELLYDW_ID or dev_id_prefix == MODEL_SHELLYDW_PREFIX:
 
 if model_id == MODEL_SHELLYDW2_ID or dev_id_prefix == MODEL_SHELLYDW2_PREFIX:
     model = MODEL_SHELLYDW2
-    sensors = [
-        SENSOR_LUX,
-        SENSOR_BATTERY,
-        SENSOR_TILT,
-        SENSOR_TEMPERATURE,
-        SENSOR_IP,
-        SENSOR_TEMPERATURE_F,
-    ]
-    sensors_entity_categories = [
-        None,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        None,
-        None,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        None,
-    ]
-    sensors_state_classes = [
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        None,
-        STATE_CLASS_MEASUREMENT,
-    ]
-    sensors_enabled = [True, True, True, True, False, True]
-    sensors_device_classes = [
-        DEVICE_CLASS_ILLUMINANCE,
-        DEVICE_CLASS_BATTERY,
-        None,
-        DEVICE_CLASS_TEMPERATURE,
-        None,
-        DEVICE_CLASS_TEMPERATURE,
-    ]
-    sensors_units = [
-        UNIT_LUX,
-        UNIT_PERCENT,
-        UNIT_DEGREE,
-        UNIT_CELSIUS,
-        None,
-        UNIT_FAHRENHEIT,
-    ]
-    sensors_tpls = [
-        TPL_LUX,
-        TPL_BATTERY,
-        TPL_TILT,
-        TPL_TEMPERATURE,
-        TPL_IP,
-        TPL_TEMPERATURE,
-    ]
-    sensors_topics = [None, None, None, None, TOPIC_ANNOUNCE, TOPIC_SENSOR_TEMPERATURE]
+    sensors = {
+        SENSOR_BATTERY: OPTIONS_SENSOR_BATTERY,
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_LUX: OPTIONS_SENSOR_LUX,
+        SENSOR_TILT: OPTIONS_SENSOR_TILT,
+        SENSOR_TEMPERATURE: OPTIONS_SENSOR_TEMPERATURE,
+        SENSOR_TEMPERATURE_F: OPTIONS_SENSOR_TEMPERATURE_F,
+    }
     bin_sensors = [SENSOR_OPENING, SENSOR_VIBRATION, SENSOR_FIRMWARE_UPDATE]
     bin_sensors_entity_categories = [None, None, ENTITY_CATEGORY_DIAGNOSTIC]
     bin_sensors_enabled = [True, True, True]
@@ -1813,30 +1736,11 @@ if model_id == MODEL_SHELLYDW2_ID or dev_id_prefix == MODEL_SHELLYDW2_PREFIX:
 
 if model_id == MODEL_SHELLYSMOKE_ID or dev_id_prefix == MODEL_SHELLYSMOKE_PREFIX:
     model = MODEL_SHELLYSMOKE
-    sensors = [
-        SENSOR_TEMPERATURE,
-        SENSOR_BATTERY,
-        SENSOR_IP,
-    ]
-    sensors_entity_categories = [
-        None,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [STATE_CLASS_MEASUREMENT, STATE_CLASS_MEASUREMENT, None]
-    sensors_enabled = [True, True, False]
-    sensors_device_classes = [
-        DEVICE_CLASS_TEMPERATURE,
-        DEVICE_CLASS_BATTERY,
-        None,
-    ]
-    sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, UNIT_DBM, None, None, None]
-    sensors_tpls = [
-        TPL_TEMPERATURE,
-        TPL_BATTERY,
-        TPL_IP,
-    ]
-    sensors_topics = [None, None, TOPIC_ANNOUNCE]
+    sensors = {
+        SENSOR_BATTERY: OPTIONS_SENSOR_BATTERY,
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_TEMPERATURE: OPTIONS_SENSOR_TEMPERATURE,
+    }
     bin_sensors = [SENSOR_SMOKE, SENSOR_FIRMWARE_UPDATE]
     bin_sensors_entity_categories = [None, ENTITY_CATEGORY_DIAGNOSTIC]
     bin_sensors_enabled = [True, True]
@@ -1848,77 +1752,15 @@ if model_id == MODEL_SHELLYSMOKE_ID or dev_id_prefix == MODEL_SHELLYSMOKE_PREFIX
 
 if model_id == MODEL_SHELLYSENSE_ID or dev_id_prefix == MODEL_SHELLYSENSE_PREFIX:
     model = MODEL_SHELLYSENSE
-    sensors = [
-        SENSOR_TEMPERATURE,
-        SENSOR_HUMIDITY,
-        SENSOR_LUX,
-        SENSOR_BATTERY,
-        SENSOR_RSSI,
-        SENSOR_SSID,
-        SENSOR_UPTIME,
-        SENSOR_IP,
-    ]
-    sensors_entity_categories = [
-        None,
-        None,
-        None,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        None,
-        None,
-        None,
-    ]
-    sensors_enabled = [True, True, True, True, False, False, False, False]
-    sensors_device_classes = [
-        DEVICE_CLASS_TEMPERATURE,
-        DEVICE_CLASS_HUMIDITY,
-        DEVICE_CLASS_ILLUMINANCE,
-        DEVICE_CLASS_BATTERY,
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-        None,
-    ]
-    sensors_units = [
-        UNIT_CELSIUS,
-        UNIT_PERCENT,
-        UNIT_LUX,
-        UNIT_PERCENT,
-        UNIT_DBM,
-        None,
-        None,
-        None,
-    ]
-    sensors_tpls = [
-        TPL_TEMPERATURE,
-        TPL_HUMIDITY,
-        TPL_LUX,
-        TPL_BATTERY,
-        TPL_RSSI,
-        TPL_SSID,
-        TPL_UPTIME,
-        TPL_IP,
-    ]
-    sensors_topics = [
-        None,
-        None,
-        None,
-        None,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_ANNOUNCE,
-    ]
+    sensors = {
+        SENSOR_BATTERY: OPTIONS_SENSOR_BATTERY,
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_LUX: OPTIONS_SENSOR_LUX,
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_TEMPERATURE: OPTIONS_SENSOR_TEMPERATURE,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+    }
     bin_sensors = [SENSOR_MOTION, SENSOR_CHARGER, SENSOR_FIRMWARE_UPDATE]
     bin_sensors_entity_categories = [
         None,
@@ -1978,24 +1820,12 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
     lights_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
     lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
     lights_sensors_units = [UNIT_WATT, UNIT_KWH]
-    sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
-    sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None]
-    sensors_enabled = [False, False, False, False]
-    sensors_device_classes = [
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-        None,
-    ]
-    sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
-    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
-    sensors_units = [UNIT_DBM, None, None, None]
+    sensors = {
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+    }
     buttons = {
         BUTTON_UPDATE_FIRMWARE: {
             KEY_COMMAND_TOPIC: TOPIC_COMMAND,
@@ -2011,32 +1841,13 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
     white_lights = 1
     inputs = 2
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
-    sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
-    sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        None,
-        None,
-        None,
-    ]
-    sensors_enabled = [True, False, False, False, False]
-    sensors_device_classes = [
-        DEVICE_CLASS_TEMPERATURE,
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-        None,
-    ]
-    sensors_units = [UNIT_CELSIUS, UNIT_DBM, None, None, None]
-    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
-    sensors_topics = [None, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    sensors = {
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_TEMPERATURE: OPTIONS_SENSOR_DEVICE_TEMPERATURE,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+    }
     bin_sensors = [
         SENSOR_OVERTEMPERATURE,
         SENSOR_OVERLOAD,
@@ -2150,32 +1961,13 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
     inputs = 2
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     white_lights = 1
-    sensors = [SENSOR_TEMPERATURE, SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
-    sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        None,
-        None,
-        None,
-    ]
-    sensors_enabled = [True, False, False, False, False]
-    sensors_device_classes = [
-        DEVICE_CLASS_TEMPERATURE,
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-        None,
-    ]
-    sensors_units = [UNIT_CELSIUS, UNIT_DBM, None, None, None]
-    sensors_tpls = [TPL_TEMPERATURE, TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
-    sensors_topics = [None, TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    sensors = {
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_TEMPERATURE: OPTIONS_SENSOR_DEVICE_TEMPERATURE,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+    }
     bin_sensors = [
         SENSOR_OVERTEMPERATURE,
         SENSOR_OVERLOAD,
@@ -2293,24 +2085,12 @@ if model_id == MODEL_SHELLYBULB_ID or dev_id_prefix == MODEL_SHELLYBULB_PREFIX:
     bin_sensors_device_classes = [DEVICE_CLASS_UPDATE]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
-    sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
-    sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None]
-    sensors_enabled = [False, False, False, False]
-    sensors_units = [UNIT_DBM, None, None, None]
-    sensors_device_classes = [
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-        None,
-    ]
-    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
-    sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    sensors = {
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+    }
     buttons = {
         BUTTON_UPDATE_FIRMWARE: {
             KEY_COMMAND_TOPIC: TOPIC_COMMAND,
@@ -2339,24 +2119,12 @@ if model_id == MODEL_SHELLYBULBRGBW_ID or dev_id_prefix == MODEL_SHELLYBULBRGBW_
     bin_sensors_device_classes = [DEVICE_CLASS_UPDATE]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
-    sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
-    sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None]
-    sensors_enabled = [False, False, False, False]
-    sensors_units = [UNIT_DBM, None, None, None]
-    sensors_device_classes = [
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-        None,
-    ]
-    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
-    sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    sensors = {
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+    }
     buttons = {
         BUTTON_UPDATE_FIRMWARE: {
             KEY_COMMAND_TOPIC: TOPIC_COMMAND,
@@ -2385,24 +2153,12 @@ if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
     bin_sensors_device_classes = [DEVICE_CLASS_UPDATE]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
-    sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
-    sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None]
-    sensors_enabled = [False, False, False, False]
-    sensors_units = [UNIT_DBM, None, None, None]
-    sensors_device_classes = [
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-        None,
-    ]
-    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
-    sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    sensors = {
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+    }
     buttons = {
         BUTTON_UPDATE_FIRMWARE: {
             KEY_COMMAND_TOPIC: TOPIC_COMMAND,
@@ -2431,24 +2187,12 @@ if model_id == MODEL_SHELLYVINTAGE_ID or dev_id_prefix == MODEL_SHELLYVINTAGE_PR
     bin_sensors_device_classes = [DEVICE_CLASS_UPDATE]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
-    sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
-    sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None]
-    sensors_enabled = [False, False, False, False]
-    sensors_units = [UNIT_DBM, None, None, None]
-    sensors_device_classes = [
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-        None,
-    ]
-    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
-    sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    sensors = {
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+    }
     buttons = {
         BUTTON_UPDATE_FIRMWARE: {
             KEY_COMMAND_TOPIC: TOPIC_COMMAND,
@@ -2520,24 +2264,12 @@ if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
     bin_sensors_device_classes = [DEVICE_CLASS_UPDATE]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
-    sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
-    sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None]
-    sensors_enabled = [False, False, False, False]
-    sensors_units = [UNIT_DBM, None, None, None]
-    sensors_device_classes = [
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-        None,
-    ]
-    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
-    sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    sensors = {
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+    }
     buttons = {
         BUTTON_UPDATE_FIRMWARE: {
             KEY_COMMAND_TOPIC: TOPIC_COMMAND,
@@ -2614,24 +2346,12 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
     bin_sensors_device_classes = [DEVICE_CLASS_UPDATE]
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO]
     bin_sensors_topics = [TOPIC_INFO]
-    sensors = [SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME, SENSOR_IP]
-    sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None]
-    sensors_enabled = [False, False, False, False]
-    sensors_units = [UNIT_DBM, None, None, None]
-    sensors_device_classes = [
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-        None,
-    ]
-    sensors_tpls = [TPL_RSSI, TPL_SSID, TPL_UPTIME, TPL_IP]
-    sensors_topics = [TOPIC_INFO, TOPIC_INFO, TOPIC_INFO, TOPIC_ANNOUNCE]
+    sensors = {
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+    }
     buttons = {
         BUTTON_UPDATE_FIRMWARE: {
             KEY_COMMAND_TOPIC: TOPIC_COMMAND,
@@ -2644,29 +2364,12 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
 
 if model_id == MODEL_SHELLYFLOOD_ID or dev_id_prefix == MODEL_SHELLYFLOOD_PREFIX:
     model = MODEL_SHELLYFLOOD
-    sensors = [SENSOR_TEMPERATURE, SENSOR_BATTERY, SENSOR_IP, SENSOR_TEMPERATURE_F]
-    sensors_entity_categories = [
-        None,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        None,
-    ]
-    sensors_state_classes = [
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        None,
-        STATE_CLASS_MEASUREMENT,
-    ]
-    sensors_enabled = [True, True, False, True]
-    sensors_device_classes = [
-        DEVICE_CLASS_TEMPERATURE,
-        DEVICE_CLASS_BATTERY,
-        None,
-        DEVICE_CLASS_TEMPERATURE,
-    ]
-    sensors_units = [UNIT_CELSIUS, UNIT_PERCENT, None, UNIT_FAHRENHEIT]
-    sensors_tpls = [TPL_TEMPERATURE, TPL_BATTERY, TPL_IP, TPL_TEMPERATURE]
-    sensors_topics = [None, None, TOPIC_ANNOUNCE, None, TOPIC_SENSOR_TEMPERATURE]
+    sensors = {
+        SENSOR_BATTERY: OPTIONS_SENSOR_BATTERY,
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_TEMPERATURE_F: OPTIONS_SENSOR_TEMPERATURE_F,
+        SENSOR_TEMPERATURE: OPTIONS_SENSOR_TEMPERATURE,
+    }
     bin_sensors = [SENSOR_FLOOD, SENSOR_FIRMWARE_UPDATE]
     bin_sensors_entity_categories = [None, ENTITY_CATEGORY_DIAGNOSTIC]
     bin_sensors_enabled = [True, True]
@@ -2855,45 +2558,13 @@ if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
         None,
         None,
     ]
-    sensors = [
-        SENSOR_RSSI,
-        SENSOR_SSID,
-        SENSOR_UPTIME,
-        SENSOR_IP,
-        SENSOR_TEMPERATURE_STATUS,
-    ]
-    # sensor_temperature_status icon "mdi:thermometer"
-    sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [STATE_CLASS_MEASUREMENT, None, None, None, None]
-    sensors_enabled = [False, False, False, False, True]
-    sensors_units = [UNIT_DBM, None, None, None, None]
-    sensors_device_classes = [
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-        None,
-        None,
-    ]
-    sensors_tpls = [
-        TPL_RSSI,
-        TPL_SSID,
-        TPL_UPTIME,
-        TPL_IP,
-        TPL_TEMPERATURE_STATUS,
-    ]
-    sensors_topics = [
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_ANNOUNCE,
-        TOPIC_TEMPERATURE_STATUS,
-    ]
+    sensors = {
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+        SENSOR_IP: OPTIONS_SENSOR_IP_VALVE,
+        SENSOR_TEMPERATURE_STATUS: OPTIONS_SENSOR_TEMPERATURE_STATUS,
+    }
     buttons = {
         BUTTON_UPDATE_FIRMWARE: {
             KEY_COMMAND_TOPIC: TOPIC_COMMAND,
@@ -2914,51 +2585,13 @@ if model_id == MODEL_SHELLYVALVE_ID:
         KEY_MODES: ["heat"],
         KEY_PRECISION: 0.1,
     }
-    sensors = [
-        SENSOR_BATTERY,
-        SENSOR_RSSI,
-        SENSOR_IP,
-        SENSOR_SSID,
-        SENSOR_LAST_RESTART,
-    ]
-    sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    sensors_state_classes = [
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_MEASUREMENT,
-        None,
-        None,
-        None,
-    ]
-    sensors_enabled = [True, False, False, False, False]
-    sensors_device_classes = [
-        DEVICE_CLASS_BATTERY,
-        DEVICE_CLASS_SIGNAL_STRENGTH,
-        None,
-        None,
-        DEVICE_CLASS_TIMESTAMP,
-    ]
-    sensor_icons = [None, None, "mdi:ip-outline", "mdi:wifi", None]
-    sensors_units = [UNIT_PERCENT, UNIT_DBM, None, None, None]
-    sensors_tpls = [
-        TPL_BATTERY_FROM_INFO,
-        TPL_RSSI,
-        TPL_IP_FROM_INFO,
-        TPL_SSID,
-        TPL_UPTIME,
-    ]
-    sensors_topics = [
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_INFO,
-    ]
+    sensors = {
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_LAST_RESTART: OPTIONS_SENSOR_UPTIME,
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_BATTERY: OPTIONS_SENSOR_BATTERY_VALVE,
+    }
     bin_sensors = [
         SENSOR_FIRMWARE_UPDATE,
         SENSOR_CHARGER,
