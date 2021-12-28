@@ -2695,6 +2695,34 @@ device_info = {
     KEY_CONFIGURATION_URL: f"http://{host}/",
 }
 
+if battery_powered:
+    if model == MODEL_SHELLYMOTION:
+        expire_after = device_config.get(
+            CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_MOTION
+        )
+    elif model == MODEL_SHELLYVALVE:
+        expire_after = device_config.get(
+            CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_VALVE
+        )
+    elif device_config.get(CONF_POWERED) == ATTR_POWER_AC and model in (
+        MODEL_SHELLYBUTTON1,
+        MODEL_SHELLYSENSE,
+    ):
+        no_battery_sensor = True
+        battery_powered = False
+    elif device_config.get(CONF_POWERED):
+        no_battery_sensor = True
+        expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED)
+    else:
+        expire_after = device_config.get(
+            CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED
+        )
+
+if not isinstance(expire_after, int):
+    raise TypeError(
+        f"expire_after value {expire_after} is not an integer, check script configuration"
+    )
+
 # numbers
 for number, number_options in numbers.items():
     config_topic = f"{disc_prefix}/number/{dev_id}-{number}/config".encode(
@@ -2728,6 +2756,7 @@ for number, number_options in numbers.items():
         payload[KEY_ICON] = number_options[ATTR_ICON]
     if dev_id.lower() in ignored:
         payload = ""
+
     mqtt_publish(config_topic, payload, retain)
 
 # switches (not relays)
@@ -2763,6 +2792,7 @@ for switch, switch_options in switches.items():
         payload[KEY_ICON] = switch_options[ATTR_ICON]
     if dev_id.lower() in ignored:
         payload = ""
+
     mqtt_publish(config_topic, payload, retain)
 
 # selectors
@@ -2796,6 +2826,7 @@ for select, select_options in selectors.items():
         payload[KEY_ICON] = select_options[ATTR_ICON]
     if dev_id.lower() in ignored:
         payload = ""
+
     mqtt_publish(config_topic, payload, retain)
 
 # buttons
@@ -2804,7 +2835,6 @@ for button, button_options in buttons.items():
         "ascii", "ignore"
     ).decode("utf-8")
     default_topic = f"shellies/{dev_id}/"
-    expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_VALVE)
 
     payload = {
         KEY_NAME: f"{device_name} {clean_name(button)}",
@@ -2827,6 +2857,7 @@ for button, button_options in buttons.items():
         payload[KEY_ICON] = button_options[ATTR_ICON]
     if dev_id.lower() in ignored:
         payload = ""
+
     mqtt_publish(config_topic, payload, retain)
 
 # climate entities
@@ -2837,7 +2868,7 @@ if climate_entity_option:
     config_topic = f"{disc_prefix}/climate/{dev_id}/config".encode(
         "ascii", "ignore"
     ).decode("utf-8")
-    expire_after = device_config.get(CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_VALVE)
+
     payload = {
         KEY_NAME: device_name,
         KEY_ACTION_TOPIC: info_topic,
@@ -2852,7 +2883,6 @@ if climate_entity_option:
         KEY_TEMPERATURE_COMMAND_TEMPLATE: TPL_SET_TARGET_TEMPERATURE,
         KEY_MODE_STATE_TOPIC: info_topic,
         KEY_MODE_STATE_TEMPLATE: "heat",
-        KEY_EXPIRE_AFTER: expire_after,
         KEY_UNIQUE_ID: f"{dev_id}".lower(),
         KEY_OPTIMISTIC: VALUE_FALSE,
         KEY_QOS: qos,
@@ -2865,6 +2895,7 @@ if climate_entity_option:
     payload.update(climate_entity_option)
     if dev_id.lower() in ignored:
         payload = ""
+
     mqtt_publish(config_topic, payload, retain)
 
 # rollers
@@ -2927,6 +2958,7 @@ for roller_id in range(rollers):
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
+
     mqtt_publish(config_topic, payload, retain)
 
 # relays
@@ -2967,6 +2999,7 @@ for relay_id in range(relays):
             payload = ""
         if dev_id.lower() in ignored:
             payload = ""
+
         mqtt_publish(config_topic, payload, retain)
 
     # relay's sensors
@@ -3051,6 +3084,7 @@ for relay_id in range(relays):
             payload = ""
         if dev_id.lower() in ignored:
             payload = ""
+
         mqtt_publish(config_topic, payload, retain)
 
     # relay's binary sensors
@@ -3143,6 +3177,7 @@ for relay_id in range(relays):
             payload = ""
         if dev_id.lower() in ignored:
             payload = ""
+
         mqtt_publish(config_topic, payload, retain)
 
 # sensors
@@ -3164,35 +3199,6 @@ for sensor, sensor_options in sensors.items():
     else:
         sensor_name = f"{device_name} {clean_name(sensor)}"
 
-    config_component = COMP_SWITCH
-    if (
-        model in (MODEL_SHELLYBUTTON1, MODEL_SHELLYMOTION, MODEL_SHELLYSENSE)
-        and device_config.get(CONF_POWERED) == ATTR_POWER_AC
-    ):
-        battery_powered = False
-        no_battery_sensor = True
-    if battery_powered:
-        if model == MODEL_SHELLYMOTION:
-            expire_after = device_config.get(
-                CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_MOTION
-            )
-        elif model == MODEL_SHELLYVALVE:
-            expire_after = device_config.get(
-                CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_VALVE
-            )
-        else:
-            expire_after = device_config.get(
-                CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED
-            )
-        if device_config.get(CONF_POWERED) == ATTR_POWER_AC:
-            no_battery_sensor = True
-            expire_after = device_config.get(
-                CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED
-            )
-        if not isinstance(expire_after, int):
-            raise TypeError(
-                f"expire_after value {expire_after} is not an integer, check script configuration"
-            )
     payload = {
         KEY_NAME: sensor_name,
         KEY_STATE_TOPIC: f"~{sensor_options[KEY_STATE_TOPIC]}",
@@ -3238,6 +3244,7 @@ for sensor, sensor_options in sensors.items():
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
+
     mqtt_publish(config_topic, payload, retain)
 
 # inputs
@@ -3259,6 +3266,7 @@ for input_id in range(inputs):
     }
     if dev_id.lower() in ignored:
         payload = ""
+
     mqtt_publish(config_topic, payload, retain)
 
     topic = f"shellies/{dev_id}/input_event/{input_id}"
@@ -3280,6 +3288,7 @@ for input_id in range(inputs):
         }
         if dev_id.lower() in ignored:
             payload = ""
+
         mqtt_publish(config_topic, payload, retain)
 
 # external temperature sensors
@@ -3317,6 +3326,7 @@ for sensor_id in range(ext_temp_sensors):
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
+
     mqtt_publish(config_topic, payload, retain)
 
 # external humidity sensors
@@ -3354,6 +3364,7 @@ for sensor_id in range(ext_humi_sensors):
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
+
     mqtt_publish(config_topic, payload, retain)
 
 # binary sensors
@@ -3361,32 +3372,6 @@ for bin_sensor_id in range(len(bin_sensors)):
     push_off_delay = True
     if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
         push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
-    if (
-        model in (MODEL_SHELLYBUTTON1, MODEL_SHELLYMOTION, MODEL_SHELLYSENSE)
-        and device_config.get(CONF_POWERED) == ATTR_POWER_AC
-    ):
-        battery_powered = False
-    if battery_powered:
-        if model == MODEL_SHELLYMOTION:
-            expire_after = device_config.get(
-                CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_MOTION
-            )
-        elif model == MODEL_SHELLYVALVE:
-            expire_after = device_config.get(
-                CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_SHELLY_VALVE
-            )
-        else:
-            expire_after = device_config.get(
-                CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED
-            )
-        if device_config.get(CONF_POWERED) == ATTR_POWER_AC:
-            expire_after = device_config.get(
-                CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_AC_POWERED
-            )
-        if not isinstance(expire_after, int):
-            raise TypeError(
-                f"expire_after value {expire_after} is not an integer, check your configuration"
-            )
 
     unique_id = f"{dev_id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}".lower()
     config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-{bin_sensors[bin_sensor_id].replace(' ', '-').replace('/', '-')}/config".encode(
@@ -3490,6 +3475,7 @@ for bin_sensor_id in range(len(bin_sensors)):
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
+
     mqtt_publish(config_topic, payload, retain)
 
 # color lights
@@ -3574,6 +3560,7 @@ for light_id in range(rgbw_lights):
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
+
     mqtt_publish(config_topic, payload, retain)
 
     # color light's binary sensors
@@ -3623,6 +3610,7 @@ for light_id in range(rgbw_lights):
             payload = ""
         if dev_id.lower() in ignored:
             payload = ""
+
         mqtt_publish(config_topic, payload, retain)
 
     # color light's sensors
@@ -3671,6 +3659,7 @@ for light_id in range(rgbw_lights):
             payload = ""
         if dev_id.lower() in ignored:
             payload = ""
+
         mqtt_publish(config_topic, payload, retain)
 
 # white lights
@@ -3811,6 +3800,7 @@ for light_id in range(white_lights):
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
+
     mqtt_publish(config_topic, payload, retain)
 
     # white light's binary sensors
@@ -3863,6 +3853,7 @@ for light_id in range(white_lights):
                 payload = ""
             if dev_id.lower() in ignored:
                 payload = ""
+
             mqtt_publish(config_topic, payload, retain)
 
     # white light's sensors
@@ -3926,6 +3917,7 @@ for light_id in range(white_lights):
             payload = ""
         if dev_id.lower() in ignored:
             payload = ""
+
         mqtt_publish(config_topic, payload, retain)
 
 # meters
@@ -3966,4 +3958,5 @@ for meter_id in range(meters):
             payload[KEY_DEVICE_CLASS] = meters_sensors_device_classes[sensor_id]
         if dev_id.lower() in ignored:
             payload = ""
+
         mqtt_publish(config_topic, payload, retain)
