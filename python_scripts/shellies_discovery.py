@@ -2547,10 +2547,10 @@ if battery_powered:
             CONF_EXPIRE_AFTER, EXPIRE_AFTER_FOR_BATTERY_POWERED
         )
 
-if not isinstance(expire_after, int):
-    raise TypeError(
-        f"expire_after value {expire_after} is not an integer, check script configuration"
-    )
+    if not isinstance(expire_after, int):
+        raise TypeError(
+            f"expire_after value {expire_after} is not an integer, check script configuration"
+        )
 
 # numbers
 for number, number_options in numbers.items():
