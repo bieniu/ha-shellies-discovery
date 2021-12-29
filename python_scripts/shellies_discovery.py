@@ -863,6 +863,11 @@ model_id = data.get(CONF_MODEL_ID)
 mode = data.get(CONF_MODE)
 host = data.get(CONF_HOST)
 
+if not host:
+    raise ValueError(
+        "host value None is not valid, update shallies_discovery automation"
+    )
+
 use_fahrenheit = False
 
 roller_mode = False
