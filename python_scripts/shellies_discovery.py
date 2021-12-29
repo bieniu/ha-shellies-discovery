@@ -896,7 +896,7 @@ try:
     cur_ver_date = parse_version(fw_ver)
 except (IndexError, ValueError):
     raise ValueError(
-        f"Firmware version {fw_ver} is not supported, please update your device {dev_id}"
+        f"Firmware version {fw_ver} is not supported, update your device {dev_id}"
     )
 
 dev_id_prefix = dev_id.rsplit("-", 1)[0].lower()
@@ -905,21 +905,21 @@ if (
     dev_id_prefix == MODEL_SHELLY4PRO_PREFIX or MODEL_SHELLY4PRO_ID == model_id
 ) and cur_ver_date < MIN_4PRO_FIRMWARE_DATE:
     raise ValueError(
-        f"Firmware dated {MIN_4PRO_FIRMWARE_DATE} is required, please update your device {dev_id}"
+        f"Firmware dated {MIN_4PRO_FIRMWARE_DATE} is required, update your device {dev_id}"
     )
 
 if (
     dev_id_prefix == MODEL_SHELLYMOTION_PREFIX or MODEL_SHELLYMOTION_ID == model_id
 ) and cur_ver_date < MIN_MOTION_FIRMWARE_DATE:
     raise ValueError(
-        f"Firmware dated {MIN_MOTION_FIRMWARE_DATE} is required, please update your device {dev_id}"
+        f"Firmware dated {MIN_MOTION_FIRMWARE_DATE} is required, update your device {dev_id}"
     )
 
 if (
     dev_id_prefix == MODEL_SHELLYVALVE_PREFIX or MODEL_SHELLYVALVE_ID == model_id
 ) and cur_ver_date < MIN_VALVE_FIRMWARE_DATE:
     raise ValueError(
-        f"Firmware dated {MIN_VALVE_FIRMWARE_DATE} is required, please update your device {dev_id}"
+        f"Firmware dated {MIN_VALVE_FIRMWARE_DATE} is required, update your device {dev_id}"
     )
 
 if (
@@ -933,7 +933,7 @@ if (
     not in (MODEL_SHELLY4PRO_ID, MODEL_SHELLYMOTION_ID, MODEL_SHELLYVALVE_ID)
 ) and cur_ver_date < MIN_FIRMWARE_DATE:
     raise ValueError(
-        f"Firmware dated {MIN_FIRMWARE_DATE} is required, please update your device {dev_id}"
+        f"Firmware dated {MIN_FIRMWARE_DATE} is required, update your device {dev_id}"
     )
 
 logger.debug(
