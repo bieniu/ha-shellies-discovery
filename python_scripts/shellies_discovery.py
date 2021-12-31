@@ -391,6 +391,7 @@ SENSOR_TRIPLE_SHORTPUSH_0 = "triple shortpush 0"
 SENSOR_TRIPLE_SHORTPUSH_1 = "triple shortpush 1"
 SENSOR_TRIPLE_SHORTPUSH_2 = "triple shortpush 2"
 SENSOR_UPTIME = "uptime"
+SENSOR_VALVE = "valve"
 SENSOR_VIBRATION = "vibration"
 SENSOR_VOLTAGE = "voltage"
 
@@ -436,6 +437,7 @@ TOPIC_STATUS = "status"
 TOPIC_TEMPERATURE = "temperature"
 TOPIC_TEMPERATURE_STATUS = "temperature_status"
 TOPIC_TOTAL_WORK_TIME = "totalworktime"
+TOPIC_VALVE = "valve/0/state"
 TOPIC_VOLTAGE = "voltage"
 
 TPL_ACTION_TEMPLATE = "{{%if value_json.thermostats.0.target_t.value<={min_temp}%}}off{{%elif value_json.thermostats.0.pos==0%}}idle{{%else%}}heating{{%endif%}}"
@@ -468,6 +470,7 @@ TPL_MOTION = "{%if value_json.motion==true%}ON{%else%}OFF{%endif%}"
 TPL_NEW_FIRMWARE_FROM_ANNOUNCE = "{%if value_json.new_fw==true%}ON{%else%}OFF{%endif%}"
 TPL_PROFILES = "profile {{value_json.thermostats.0.schedule_profile}}"
 TPL_SCHEDULE = "{{value_json.thermostats.0.schedule}}"
+TPL_VALVE = "{{value.replace(^_^,^ ^)}}"
 TPL_VALVE_POSITION = "{{value_json.thermostats.0.pos}}"
 TPL_NEW_FIRMWARE_FROM_INFO = (
     "{%if value_json[^update^].has_update==true%}ON{%else%}OFF{%endif%}"
@@ -613,6 +616,13 @@ OPTIONS_SENSOR_UPTIME = {
     KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
     KEY_STATE_TOPIC: TOPIC_INFO,
     KEY_VALUE_TEMPLATE: TPL_UPTIME,
+}
+OPTIONS_SENSOR_VALVE = {
+    KEY_ENABLED_BY_DEFAULT: False,
+    KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
+    KEY_ICON: "mdi:pipe-valve",
+    KEY_STATE_TOPIC: TOPIC_VALVE,
+    KEY_VALUE_TEMPLATE: TPL_VALVE,
 }
 OPTIONS_SENSOR_IP = {
     KEY_ENABLED_BY_DEFAULT: False,
@@ -1570,6 +1580,7 @@ if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
         SENSOR_SELF_TEST: OPTIONS_SENSOR_SELF_TEST,
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
         SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+        SENSOR_VALVE: OPTIONS_SENSOR_VALVE,
     }
     bin_sensors = [SENSOR_FIRMWARE_UPDATE, SENSOR_GAS]
     bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC, None]
