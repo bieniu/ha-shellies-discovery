@@ -479,6 +479,7 @@ TPL_POSITION = "{%if value!=-1%}{{value}}{%endif%}"
 TPL_POWER = "{{value|float|round(1)}}"
 TPL_POWER_FACTOR = "{{value|float*100|round}}"
 TPL_RSSI = "{{value_json.wifi_sta.rssi}}"
+TPL_SELF_TEST = "{{value.replace(^_^,^ ^)}}"
 TPL_SET_TARGET_TEMPERATURE = "{{value|int}}"
 TPL_SHORTPUSH = "{%if value_json.event==^S^%}ON{%else%}OFF{%endif%}"
 TPL_SHORTPUSH_LONGPUSH = "{%if value_json.event==^SL^%}ON{%else%}OFF{%endif%}"
@@ -745,6 +746,7 @@ OPTIONS_SENSOR_SELF_TEST = {
     KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
     KEY_ICON: "md:wrench",
     KEY_STATE_TOPIC: TOPIC_SENSOR_SELF_TEST,
+    KEY_VALUE_TEMPLATE: TPL_SELF_TEST,
 }
 OPTIONS_SENSOR_CONCENTRATION = {
     KEY_ENABLED_BY_DEFAULT: True,
