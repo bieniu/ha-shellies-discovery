@@ -1,6 +1,5 @@
-"""
-This script adds MQTT discovery support for Shellies devices.
-"""
+"""This script adds MQTT discovery support for Shellies devices."""
+
 ATTR_ICON = "icon"
 ATTR_MANUFACTURER = "Allterco Robotics"
 ATTR_POWER_AC = "ac"
@@ -874,7 +873,7 @@ def mqtt_publish(topic, payload, retain):
         "retain": retain,
         "qos": 0,
     }
-    logger.debug(service_data)
+    logger.debug(service_data)  # noqa: F821
     logger.debug("Sending to MQTT broker: %s %s", topic, payload)  # noqa: F821
     hass.services.call("mqtt", "publish", service_data, False)  # noqa: F821
 
@@ -888,9 +887,9 @@ no_battery_sensor = False
 
 fw_ver = data.get(CONF_FW_VER)  # noqa: F821
 dev_id = data.get(CONF_ID)  # noqa: F821
-model_id = data.get(CONF_MODEL_ID)
-mode = data.get(CONF_MODE)
-host = data.get(CONF_HOST)
+model_id = data.get(CONF_MODEL_ID)  # noqa: F821
+mode = data.get(CONF_MODE)  # noqa: F821
+host = data.get(CONF_HOST)  # noqa: F821
 
 if not host:
     raise ValueError(
@@ -904,7 +903,7 @@ if mode == "roller":
     roller_mode = True
 
 ignored = [
-    element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])
+    element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])  # noqa: F821
 ]  # noqa: F821
 mac = data.get(CONF_MAC)  # noqa: F821
 
@@ -919,7 +918,7 @@ if not mac:
 if not fw_ver:
     raise ValueError("fw_ver value None is not valid, check script configuration")
 
-mac = str(mac).lower()  # noqa: F821
+mac = str(mac).lower()
 
 try:
     cur_ver_date = parse_version(fw_ver)
@@ -965,9 +964,9 @@ if (
         f"Firmware dated {MIN_FIRMWARE_DATE} is required, update your device {dev_id}"
     )
 
-logger.debug(
+logger.debug(  # noqa: F821
     "id: %s, mac: %s, fw_ver: %s, model: %s", dev_id, mac, fw_ver, model_id
-)  # noqa: F821
+)
 
 try:
     if int(data.get(CONF_QOS, 0)) in (0, 1, 2):  # noqa: F821
@@ -2781,9 +2780,9 @@ for roller_id in range(rollers):
             device_class = device_config[f"roller-{roller_id}-class"]
         else:
             wrong_class = device_config[f"roller-{roller_id}-class"]
-            logger.error(
+            logger.error(  # noqa: F821
                 f"{wrong_class} is the wrong roller class, the default value None was used"
-            )  # noqa: F821
+            )
     default_topic = f"shellies/{dev_id}/"
     state_topic = f"~roller/{roller_id}"
     command_topic = f"{state_topic}/command"
