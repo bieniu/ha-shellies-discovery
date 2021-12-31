@@ -3028,6 +3028,8 @@ for sensor, sensor_options in sensors.items():
         sensor_name = f"{device_name} {sensor.upper()}"
     elif sensor == SENSOR_UPTIME:
         sensor_name = f"{device_name} Last Restart"
+    elif sensor == SENSOR_RSSI:
+        sensor_name = f"{device_name} WiFi Signal"
     elif sensor == SENSOR_TEMPERATURE_F:
         sensor_name = f"{device_name} Temperature"
     else:
