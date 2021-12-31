@@ -1,0 +1,11 @@
+[flake8]
+max-line-length = 88
+# E501: line too long
+# W503: line break occurred before a binary operator
+# E203: whitespace before ':'
+# D202: no blank lines allowed after function docstring
+ignore =
+    E501,
+    W503,
+    E203,
+    D202
