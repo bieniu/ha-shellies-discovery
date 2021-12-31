@@ -13,6 +13,8 @@ BUTTON_RESTART = "restart"
 BUTTON_SELF_TEST = "self_test"
 BUTTON_UNMUTE = "unmute"
 BUTTON_UPDATE_FIRMWARE = "update_firmware"
+BUTTON_VALVE_CLOSE = "valve_close"
+BUTTON_VALVE_OPEN = "valve_open"
 
 COMP_FAN = "fan"
 COMP_LIGHT = "light"
@@ -314,7 +316,9 @@ NUMBER_VALVE_POSITION = "valve_position"
 
 OFF_DELAY = 1
 
+PL_CLOSE = "close"
 PL_MUTE = "mute"
+PL_OPEN = "open"
 PL_RESTART = "reboot"
 PL_SELF_TEST = "self_test"
 PL_UNMUTE = "unmute"
@@ -438,6 +442,7 @@ TOPIC_TEMPERATURE = "temperature"
 TOPIC_TEMPERATURE_STATUS = "temperature_status"
 TOPIC_TOTAL_WORK_TIME = "totalworktime"
 TOPIC_VALVE = "valve/0/state"
+TOPIC_VALVE_COMMAND = "valve/0/command"
 TOPIC_VOLTAGE = "voltage"
 
 TPL_ACTION_TEMPLATE = "{{%if value_json.thermostats.0.target_t.value<={min_temp}%}}off{{%elif value_json.thermostats.0.pos==0%}}idle{{%else%}}heating{{%endif%}}"
@@ -565,6 +570,18 @@ OPTIONS_BUTTON_RESTART = {
     KEY_ENABLED_BY_DEFAULT: True,
     KEY_DEVICE_CLASS: DEVICE_CLASS_RESTART,
     KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+}
+OPTIONS_BUTTON_VALVE_CLOSE = {
+    KEY_COMMAND_TOPIC: TOPIC_VALVE_COMMAND,
+    KEY_PAYLOAD_PRESS: PL_CLOSE,
+    KEY_ENABLED_BY_DEFAULT: False,
+    KEY_ICON: "mdi:progress-close",
+}
+OPTIONS_BUTTON_VALVE_OPEN = {
+    KEY_COMMAND_TOPIC: TOPIC_VALVE_COMMAND,
+    KEY_PAYLOAD_PRESS: PL_OPEN,
+    KEY_ENABLED_BY_DEFAULT: False,
+    KEY_ICON: "mdi:progress-check",
 }
 OPTIONS_NUMBER_VALVE_POSITION = {
     KEY_COMMAND_TOPIC: TOPIC_COMMAND_VALVE_POSITION,
@@ -1589,10 +1606,12 @@ if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
     bin_sensors_tpls = [TPL_NEW_FIRMWARE_FROM_INFO, TPL_GAS]
     bin_sensors_topics = [TOPIC_INFO, None]
     buttons = {
-        BUTTON_UPDATE_FIRMWARE: OPTIONS_BUTTON_UPDATE_FIRMWARE,
-        BUTTON_SELF_TEST: OPTIONS_BUTTON_SELF_TEST,
         BUTTON_MUTE: OPTIONS_BUTTON_MUTE,
+        BUTTON_SELF_TEST: OPTIONS_BUTTON_SELF_TEST,
         BUTTON_UNMUTE: OPTIONS_BUTTON_UNMUTE,
+        BUTTON_UPDATE_FIRMWARE: OPTIONS_BUTTON_UPDATE_FIRMWARE,
+        BUTTON_VALVE_CLOSE: OPTIONS_BUTTON_VALVE_CLOSE,
+        BUTTON_VALVE_OPEN: OPTIONS_BUTTON_VALVE_OPEN,
     }
 
 if (
