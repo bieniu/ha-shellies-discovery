@@ -3563,107 +3563,35 @@ for light_id in range(white_lights):
         config_topic = f"{disc_prefix}/light/{dev_id}-white-{light_id}/config".encode(
             "ascii", "ignore"
         ).decode("utf-8")
-    availability_topic = f"~{TOPIC_ONLINE}"
-    if mode == LIGHT_WHITE and model == MODEL_SHELLYRGBW2:
-        payload = (
-            '{"schema":"template",'
-            '"name":"' + light_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{%if brightness is defined%},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{%endif%}{%if white_value is defined%},\\"white\\":{{white_value}}{%endif%}{%if effect is defined%},\\"effect\\":{{effect}}{%endif%}{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"cmd_off_tpl":"{\\"turn\\":\\"off\\"{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
-            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
-    elif model in (MODEL_SHELLYDIMMER, MODEL_SHELLYDIMMER2):
-        payload = (
-            '{"schema":"template",'
-            '"name":"' + light_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{%if brightness is defined%},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{%endif%}{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"cmd_off_tpl":"{\\"turn\\":\\"off\\"{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
-            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
-    elif model == MODEL_SHELLYDUO:
-        payload = {
-            KEY_SCHEMA: VALUE_TEMPLATE,
-            KEY_NAME: light_name,
-            KEY_COMMAND_TOPIC: command_topic,
-            KEY_STATE_TOPIC: state_topic,
-            KEY_AVAILABILITY_TOPIC: availability_topic,
-            KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
-            KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-            KEY_COMMAND_ON_TEMPLATE: f"{{^turn^:^on^{{%if brightness is defined%}},^brightness^:{{{{brightness|float|multiply(0.3922)|round}}}}{{%endif%}}{{%if color_temp is defined%}},^temp^:{{{{(1000000/(color_temp|int))|round(0,^floor^)}}}}{{%endif%}}{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000), {MAX_TRANSITION})}}}}{{%endif%}}}}",
-            KEY_COMMAND_OFF_TEMPLATE: f"{{^turn^:^off^{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000),{MAX_TRANSITION})}}}}{{%endif%}}}}",
-            KEY_STATE_TEMPLATE: "{%if value_json.ison%}on{%else%}off{%endif%}",
-            KEY_BRIGHTNESS_TEMPLATE: "{{value_json.brightness|float|multiply(2.55)|round}}",
-            KEY_COLOR_TEMP_TEMPLATE: "{{((1000000/(value_json.temp|int,2700)|max)|round(0,^floor^))}}",
-            KEY_MAX_MIREDS: 370,
-            KEY_MIN_MIREDS: 153,
-            KEY_UNIQUE_ID: unique_id,
-            KEY_QOS: str(qos),
-            KEY_DEVICE_CLASS: device_info,
-            "~": default_topic,
-        }
-    elif model == MODEL_SHELLYVINTAGE:
-        payload = (
-            '{"schema":"template",'
-            '"name":"' + light_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{%if brightness is defined%},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{%endif%}{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"cmd_off_tpl":"{\\"turn\\":\\"off\\"{%if transition is defined%},\\"transition\\":{{min(transition,'
-            + str(MAX_TRANSITION)
-            + ')|multiply(1000)}}{%endif%}}",'
-            '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
-            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
-    else:
+
+    payload = {
+        KEY_SCHEMA: VALUE_TEMPLATE,
+        KEY_NAME: light_name,
+        KEY_COMMAND_TOPIC: command_topic,
+        KEY_STATE_TOPIC: state_topic,
+        KEY_AVAILABILITY_TOPIC: f"~{TOPIC_ONLINE}",
+        KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
+        KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
+        KEY_COMMAND_ON_TEMPLATE: f"{{^turn^:^on^{{%if brightness is defined%}},^brightness^:{{{{brightness|float|multiply(0.3922)|round}}}}{{%endif%}}{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000), {MAX_TRANSITION})}}}}{{%endif%}}}}",
+        KEY_COMMAND_OFF_TEMPLATE: f"{{^turn^:^off^{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000),{MAX_TRANSITION})}}}}{{%endif%}}}}",
+        KEY_STATE_TEMPLATE: "{%if value_json.ison%}on{%else%}off{%endif%}",
+        KEY_BRIGHTNESS_TEMPLATE: "{{value_json.brightness|float|multiply(2.55)|round}}",
+        KEY_UNIQUE_ID: unique_id,
+        KEY_QOS: str(qos),
+        KEY_DEVICE: device_info,
+    }
+
+    if model == MODEL_SHELLYDUO:
+        payload[
+            KEY_COMMAND_ON_TEMPLATE
+        ] = f"{{^turn^:^on^{{%if brightness is defined%}},^brightness^:{{{{brightness|float|multiply(0.3922)|round}}}}{{%endif%}}{{%if color_temp is defined%}},^temp^:{{{{(1000000/(color_temp|int))|round(0,^floor^)}}}}{{%endif%}}{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000), {MAX_TRANSITION})}}}}{{%endif%}}}}"
+        payload[
+            KEY_COLOR_TEMP_TEMPLATE
+        ] = "{{((1000000/(value_json.temp|int,2700)|max)|round(0,^floor^))}}"
+        payload[KEY_MAX_MIREDS] = 370
+        payload[KEY_MIN_MIREDS] = 153
+
+    if model == MODEL_SHELLYRGBW2 and mode == LIGHT_COLOR:
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
