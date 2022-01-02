@@ -100,6 +100,10 @@ KEY_ACTION_TEMPLATE = "act_tpl"
 KEY_ACTION_TOPIC = "act_t"
 KEY_AUTOMATION_TYPE = "atype"
 KEY_AVAILABILITY_TOPIC = "avty_t"
+KEY_BRIGHTNESS_TEMPLATE = "bri_tpl"
+KEY_COLOR_TEMP_TEMPLATE = "clr_temp_tpl"
+KEY_COMMAND_OFF_TEMPLATE = "cmd_off_tpl"
+KEY_COMMAND_ON_TEMPLATE = "cmd_on_tpl"
 KEY_COMMAND_TEMPLATE = "cmd_tpl"
 KEY_COMMAND_TOPIC = "cmd_t"
 KEY_CONFIGURATION_URL = "cu"
@@ -118,8 +122,10 @@ KEY_JSON_ATTRIBUTES_TOPIC = "json_attr_t"
 KEY_MAC = "mac"
 KEY_MANUFACTURER = "mf"
 KEY_MAX = "max"
+KEY_MAX_MIREDS = "max_mirs"
 KEY_MAX_TEMP = "max_temp"
 KEY_MIN = "min"
+KEY_MIN_MIREDS = "min_mirs"
 KEY_MIN_TEMP = "min_temp"
 KEY_MODE_STATE_TEMPLATE = "mode_stat_tpl"
 KEY_MODE_STATE_TOPIC = "mode_stat_t"
@@ -143,6 +149,7 @@ KEY_POSITION_TOPIC = "pos_t"
 KEY_PRECISION = "precision"
 KEY_QOS = "qos"
 KEY_RETAIN = "ret"
+KEY_SCHEMA = "schema"
 KEY_SET_POSITION_TEMPLATE = "set_pos_tpl"
 KEY_SET_POSITION_TOPIC = "set_pos_t"
 KEY_STATE_CLASS = "stat_cla"
@@ -419,6 +426,8 @@ TOPIC_INPUT_EVENT = "input_event"
 TOPIC_INPUT_EVENT_0 = "input_event/0"
 TOPIC_INPUT_EVENT_1 = "input_event/1"
 TOPIC_INPUT_EVENT_2 = "input_event/2"
+TOPIC_LIGHT_SET = "light/{light_id}/set"
+TOPIC_LIGHT_STATUS = "light/{light_id}/status"
 TOPIC_LONGPUSH = "longpush"
 TOPIC_LONGPUSH_0 = "longpush/0"
 TOPIC_LONGPUSH_1 = "longpush/1"
@@ -443,6 +452,8 @@ TOPIC_TOTAL_WORK_TIME = "totalworktime"
 TOPIC_VALVE = "valve/0/state"
 TOPIC_VALVE_COMMAND = "valve/0/command"
 TOPIC_VOLTAGE = "voltage"
+TOPIC_WHITE_SET = "~white/{light_id}/set"
+TOPIC_WHITE_STATUS = "~white/{light_id}/status"
 
 TPL_ACTION_TEMPLATE = "{{%if value_json.thermostats.0.target_t.value<={min_temp}%}}off{{%elif value_json.thermostats.0.pos==0%}}idle{{%else%}}heating{{%endif%}}"
 TPL_ADC = "{{value|float|round(2)}}"
@@ -452,6 +463,11 @@ TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
 TPL_CALIBRATED = "{%if value_json.calibrated==true%}ON{%else%}OFF{%endif%}"
 TPL_CHARGER = "{%if value_json.charger==true%}ON{%else%}OFF{%endif%}"
 TPL_CLOUD = "{%if value_json.cloud.connected==true%}ON{%else%}OFF{%endif%}"
+TPL_COLOR_TEMP_WHITE_LIGHT = (
+    "{{((1000000/(value_json.temp|int,2700)|max)|round(0,^floor^))}}"
+)
+TPL_COMMAND_ON_WHITE_LIGHT = "{{^turn^:^on^{{%if brightness is defined%}},^brightness^:{{{{brightness|float|multiply(0.3922)|round}}}}{{%endif%}}{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000), {max_transition})}}}}{{%endif%}}}}"
+TPL_COMMAND_ON_WHITE_LIGHT_DUO = "{{^turn^:^on^{{%if brightness is defined%}},^brightness^:{{{{brightness|float|multiply(0.3922)|round}}}}{{%endif%}}{{%if color_temp is defined%}},^temp^:{{{{(1000000/(color_temp|int))|round(0,^floor^)}}}}{{%endif%}}{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000), {max_transition})}}}}{{%endif%}}}}"
 TPL_COMMAND_PROFILES = "{{value.split(^ ^)[-1]}}"
 TPL_CONCENTRATION = "{%if 0<=value|int<=65535%}{{value}}{%endif%}"
 TPL_CURRENT = "{{value|float|round(2)}}"
@@ -521,8 +537,8 @@ VALUE_BUTTON_LONG_PRESS = "button_long_press"
 VALUE_BUTTON_LONG_SHORT_PRESS = "button_long_short_press"
 VALUE_BUTTON_SHORT_LONG_PRESS = "button_short_long_press"
 VALUE_BUTTON_SHORT_PRESS = "button_short_press"
-VALUE_BUTTON_TRIPLE_PRESS = "button_triple_press"
 VALUE_BUTTON_SHORT_RELEASE = "button_short_release"
+VALUE_BUTTON_TRIPLE_PRESS = "button_triple_press"
 VALUE_CLOSE = "close"
 VALUE_CLOSE = "close"
 VALUE_FALSE = "false"
@@ -532,6 +548,7 @@ VALUE_OPEN = "open"
 VALUE_OPEN = "open"
 VALUE_STOP = "stop"
 VALUE_STOP = "stop"
+VALUE_TEMPLATE = "template"
 VALUE_TRIGGER = "trigger"
 VALUE_TRUE = "true"
 
@@ -1039,7 +1056,7 @@ selectors = {}
 sensors = {}
 switches = {}
 numbers = {}
-white_lights = 0
+white_lights = {}
 
 if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     model = MODEL_SHELLY1
@@ -1778,6 +1795,28 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
     inputs = 1
     rgbw_lights = 1
     white_lights = 4
+    white_lights = {
+        0: {
+            KEY_COMMAND_ON_TEMPLATE: TPL_COMMAND_ON_WHITE_LIGHT,
+            KEY_COMMAND_TOPIC: TOPIC_WHITE_SET,
+            KEY_STATE_TOPIC: TOPIC_WHITE_STATUS,
+        },
+        1: {
+            KEY_COMMAND_ON_TEMPLATE: TPL_COMMAND_ON_WHITE_LIGHT,
+            KEY_COMMAND_TOPIC: TOPIC_WHITE_SET,
+            KEY_STATE_TOPIC: TOPIC_WHITE_STATUS,
+        },
+        2: {
+            KEY_COMMAND_ON_TEMPLATE: TPL_COMMAND_ON_WHITE_LIGHT,
+            KEY_COMMAND_TOPIC: TOPIC_WHITE_SET,
+            KEY_STATE_TOPIC: TOPIC_WHITE_STATUS,
+        },
+        3: {
+            KEY_COMMAND_ON_TEMPLATE: TPL_COMMAND_ON_WHITE_LIGHT,
+            KEY_COMMAND_TOPIC: TOPIC_WHITE_SET,
+            KEY_STATE_TOPIC: TOPIC_WHITE_STATUS,
+        },
+    }
 
     bin_sensors = [
         SENSOR_INPUT_0,
@@ -1821,7 +1860,13 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
 
 if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREFIX:
     model = MODEL_SHELLYDIMMER
-    white_lights = 1
+    white_lights = {
+        0: {
+            KEY_COMMAND_ON_TEMPLATE: TPL_COMMAND_ON_WHITE_LIGHT,
+            KEY_COMMAND_TOPIC: TOPIC_LIGHT_SET,
+            KEY_STATE_TOPIC: TOPIC_LIGHT_STATUS,
+        }
+    }
     inputs = 2
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     sensors = {
@@ -1935,7 +1980,13 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
     model = MODEL_SHELLYDIMMER2
     inputs = 2
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
-    white_lights = 1
+    white_lights = {
+        0: {
+            KEY_COMMAND_ON_TEMPLATE: TPL_COMMAND_ON_WHITE_LIGHT,
+            KEY_COMMAND_TOPIC: TOPIC_LIGHT_SET,
+            KEY_STATE_TOPIC: TOPIC_LIGHT_STATUS,
+        }
+    }
     sensors = {
         SENSOR_IP: OPTIONS_SENSOR_IP,
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
@@ -2088,7 +2139,16 @@ if model_id == MODEL_SHELLYBULBRGBW_ID or dev_id_prefix == MODEL_SHELLYBULBRGBW_
 
 if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
     model = MODEL_SHELLYDUO
-    white_lights = 1
+    white_lights = {
+        0: {
+            KEY_COLOR_TEMP_TEMPLATE: TPL_COLOR_TEMP_WHITE_LIGHT,
+            KEY_COMMAND_ON_TEMPLATE: TPL_COMMAND_ON_WHITE_LIGHT_DUO,
+            KEY_COMMAND_TOPIC: TOPIC_LIGHT_SET,
+            KEY_MAX_MIREDS: 370,
+            KEY_MIN_MIREDS: 153,
+            KEY_STATE_TOPIC: TOPIC_LIGHT_STATUS,
+        }
+    }
     lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
     lights_sensors_entity_categories = [None, None]
     lights_sensors_state_classes = [
@@ -2114,7 +2174,15 @@ if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
 
 if model_id == MODEL_SHELLYVINTAGE_ID or dev_id_prefix == MODEL_SHELLYVINTAGE_PREFIX:
     model = MODEL_SHELLYVINTAGE
-    white_lights = 1
+
+    white_lights = {
+        0: {
+            KEY_COMMAND_ON_TEMPLATE: TPL_COMMAND_ON_WHITE_LIGHT,
+            KEY_COMMAND_TOPIC: TOPIC_LIGHT_SET,
+            KEY_STATE_TOPIC: TOPIC_LIGHT_STATUS,
+        }
+    }
+
     lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
     lights_sensors_entity_categories = [None, None]
     lights_sensors_state_classes = [
@@ -3055,7 +3123,7 @@ for sensor, sensor_options in sensors.items():
         "ascii", "ignore"
     ).decode("utf-8")
     default_topic = f"shellies/{dev_id}/"
-    if sensor in (SENSOR_RSSI, SENSOR_SSID, SENSOR_ADC, SENSOR_IP):
+    if sensor in (SENSOR_SSID, SENSOR_ADC, SENSOR_IP):
         sensor_name = f"{device_name} {sensor.upper()}"
     elif sensor == SENSOR_UPTIME:
         sensor_name = f"{device_name} Last Restart"
@@ -3255,7 +3323,7 @@ for bin_sensor_id in range(len(bin_sensors)):
         )
     if bin_sensors_topics[bin_sensor_id]:
         state_topic = f"~{bin_sensors_topics[bin_sensor_id]}"
-    elif relays > 0 or white_lights > 0:
+    elif relays > 0 or len(white_lights) > 0:
         state_topic = f"~{bin_sensors[bin_sensor_id]}"
     elif bin_sensors[bin_sensor_id] == SENSOR_OPENING:
         state_topic = "~sensor/state"
@@ -3530,140 +3598,51 @@ for light_id in range(rgbw_lights):
         mqtt_publish(config_topic, payload, retain)
 
 # white lights
-for light_id in range(white_lights):
+for light_id, light_options in white_lights.items():
     if device_config.get(f"light-{light_id}-name"):
         light_name = device_config[f"light-{light_id}-name"]
     else:
         light_name = f"{device_name} Light {light_id}"
-    default_topic = f"shellies/{dev_id}/"
-    if model in (
-        MODEL_SHELLYDIMMER,
-        MODEL_SHELLYDIMMER2,
-        MODEL_SHELLYDUO,
-        MODEL_SHELLYVINTAGE,
-    ):
-        state_topic = f"~light/{light_id}/status"
-        command_topic = f"~light/{light_id}/set"
-        unique_id = f"{dev_id}-light-{light_id}".lower()
-        config_topic = f"{disc_prefix}/light/{dev_id}-{light_id}/config".encode(
-            "ascii", "ignore"
-        ).decode("utf-8")
-    else:
-        state_topic = f"~white/{light_id}/status"
-        command_topic = f"~white/{light_id}/set"
+
+    if model == MODEL_SHELLYRGBW2:
         unique_id = f"{dev_id}-light-white-{light_id}".lower()
         config_topic = f"{disc_prefix}/light/{dev_id}-white-{light_id}/config".encode(
             "ascii", "ignore"
         ).decode("utf-8")
-    availability_topic = f"~{TOPIC_ONLINE}"
-    if mode == LIGHT_WHITE and model == MODEL_SHELLYRGBW2:
-        payload = (
-            '{"schema":"template",'
-            '"name":"' + light_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{%if brightness is defined%},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{%endif%}{%if white_value is defined%},\\"white\\":{{white_value}}{%endif%}{%if effect is defined%},\\"effect\\":{{effect}}{%endif%}{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"cmd_off_tpl":"{\\"turn\\":\\"off\\"{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
-            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
-    elif model in (MODEL_SHELLYDIMMER, MODEL_SHELLYDIMMER2):
-        payload = (
-            '{"schema":"template",'
-            '"name":"' + light_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{%if brightness is defined%},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{%endif%}{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"cmd_off_tpl":"{\\"turn\\":\\"off\\"{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
-            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
-    elif model == MODEL_SHELLYDUO:
-        payload = (
-            '{"schema":"template",'
-            '"name":"' + light_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{%if brightness is defined%},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{%endif%}{%if color_temp is defined%},\\"temp\\":{{(1000000/(color_temp|int))|round(0,\\"floor\\")}}{%endif%}{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"cmd_off_tpl":"{\\"turn\\":\\"off\\"{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
-            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"clr_temp_tpl":"{{((1000000/(value_json.temp|int,2700)|max)|round(0,\\"floor\\"))}}",'
-            '"max_mireds":370,'
-            '"min_mireds":153,'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
-    elif model == MODEL_SHELLYVINTAGE:
-        payload = (
-            '{"schema":"template",'
-            '"name":"' + light_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{%if brightness is defined%},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{%endif%}{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"cmd_off_tpl":"{\\"turn\\":\\"off\\"{%if transition is defined%},\\"transition\\":{{min(transition,'
-            + str(MAX_TRANSITION)
-            + ')|multiply(1000)}}{%endif%}}",'
-            '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
-            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
     else:
+        unique_id = f"{dev_id}-light-{light_id}".lower()
+        config_topic = f"{disc_prefix}/light/{dev_id}-{light_id}/config".encode(
+            "ascii", "ignore"
+        ).decode("utf-8")
+
+    payload = {
+        KEY_SCHEMA: VALUE_TEMPLATE,
+        KEY_NAME: light_name,
+        KEY_COMMAND_TOPIC: light_options[KEY_COMMAND_TOPIC].format(light_id=light_id),
+        KEY_STATE_TOPIC: light_options[KEY_STATE_TOPIC].format(light_id=light_id),
+        KEY_AVAILABILITY_TOPIC: f"~{TOPIC_ONLINE}",
+        KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
+        KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
+        KEY_COMMAND_ON_TEMPLATE: light_options[KEY_COMMAND_ON_TEMPLATE].format(
+            max_transition=MAX_TRANSITION
+        ),
+        KEY_COMMAND_OFF_TEMPLATE: f"{{^turn^:^off^{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000),{MAX_TRANSITION})}}}}{{%endif%}}}}",
+        KEY_STATE_TEMPLATE: "{%if value_json.ison%}on{%else%}off{%endif%}",
+        KEY_BRIGHTNESS_TEMPLATE: "{{value_json.brightness|float|multiply(2.55)|round}}",
+        KEY_UNIQUE_ID: unique_id,
+        KEY_QOS: str(qos),
+        KEY_DEVICE: device_info,
+        "~": f"shellies/{dev_id}/",
+    }
+
+    if light_options.get(KEY_COLOR_TEMP_TEMPLATE):
+        payload[KEY_COLOR_TEMP_TEMPLATE] = TPL_COLOR_TEMP_WHITE_LIGHT
+    if light_options.get(KEY_MAX_MIREDS):
+        payload[KEY_MAX_MIREDS] = light_options[KEY_MAX_MIREDS]
+    if light_options.get(KEY_MIN_MIREDS):
+        payload[KEY_MIN_MIREDS] = light_options[KEY_MIN_MIREDS]
+
+    if model == MODEL_SHELLYRGBW2 and mode == LIGHT_COLOR:
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
