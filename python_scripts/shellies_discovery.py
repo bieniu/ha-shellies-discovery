@@ -926,6 +926,8 @@ mac = data.get(CONF_MAC)  # noqa: F821
 
 if not dev_id:
     raise ValueError("id value None is not valid, check script configuration")
+if "^" in dev_id:
+    raise ValueError("Wrong char ^ in id, change device configuration")
 if len(dev_id) > 32:
     raise ValueError(
         f"id value {dev_id} is longer than 32 characters, use shorter custom MQTT prefix"
