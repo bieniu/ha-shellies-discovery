@@ -100,6 +100,10 @@ KEY_ACTION_TEMPLATE = "act_tpl"
 KEY_ACTION_TOPIC = "act_t"
 KEY_AUTOMATION_TYPE = "atype"
 KEY_AVAILABILITY_TOPIC = "avty_t"
+KEY_BRIGHTNESS_TEMPLATE = "bri_tpl"
+KEY_COLOR_TEMP_TEMPLATE = "clr_temp_tpl"
+KEY_COMMAND_OFF_TEMPLATE = "cmd_off_tpl"
+KEY_COMMAND_ON_TEMPLATE = "cmd_on_tpl"
 KEY_COMMAND_TEMPLATE = "cmd_tpl"
 KEY_COMMAND_TOPIC = "cmd_t"
 KEY_CONFIGURATION_URL = "cu"
@@ -118,8 +122,10 @@ KEY_JSON_ATTRIBUTES_TOPIC = "json_attr_t"
 KEY_MAC = "mac"
 KEY_MANUFACTURER = "mf"
 KEY_MAX = "max"
+KEY_MAX_MIREDS = "max_mirs"
 KEY_MAX_TEMP = "max_temp"
 KEY_MIN = "min"
+KEY_MIN_MIREDS = "min_mirs"
 KEY_MIN_TEMP = "min_temp"
 KEY_MODE_STATE_TEMPLATE = "mode_stat_tpl"
 KEY_MODE_STATE_TOPIC = "mode_stat_t"
@@ -143,6 +149,7 @@ KEY_POSITION_TOPIC = "pos_t"
 KEY_PRECISION = "precision"
 KEY_QOS = "qos"
 KEY_RETAIN = "ret"
+KEY_SCHEMA = "schema"
 KEY_SET_POSITION_TEMPLATE = "set_pos_tpl"
 KEY_SET_POSITION_TOPIC = "set_pos_t"
 KEY_STATE_CLASS = "stat_cla"
@@ -521,8 +528,8 @@ VALUE_BUTTON_LONG_PRESS = "button_long_press"
 VALUE_BUTTON_LONG_SHORT_PRESS = "button_long_short_press"
 VALUE_BUTTON_SHORT_LONG_PRESS = "button_short_long_press"
 VALUE_BUTTON_SHORT_PRESS = "button_short_press"
-VALUE_BUTTON_TRIPLE_PRESS = "button_triple_press"
 VALUE_BUTTON_SHORT_RELEASE = "button_short_release"
+VALUE_BUTTON_TRIPLE_PRESS = "button_triple_press"
 VALUE_CLOSE = "close"
 VALUE_CLOSE = "close"
 VALUE_FALSE = "false"
@@ -532,6 +539,7 @@ VALUE_OPEN = "open"
 VALUE_OPEN = "open"
 VALUE_STOP = "stop"
 VALUE_STOP = "stop"
+VALUE_TEMPLATE = "template"
 VALUE_TRIGGER = "trigger"
 VALUE_TRUE = "true"
 
@@ -3609,34 +3617,26 @@ for light_id in range(white_lights):
             '"~":"' + default_topic + '"}'
         )
     elif model == MODEL_SHELLYDUO:
-        payload = (
-            '{"schema":"template",'
-            '"name":"' + light_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{%if brightness is defined%},\\"brightness\\":{{brightness|float|multiply(0.3922)|round}}{%endif%}{%if color_temp is defined%},\\"temp\\":{{(1000000/(color_temp|int))|round(0,\\"floor\\")}}{%endif%}{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"cmd_off_tpl":"{\\"turn\\":\\"off\\"{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
-            '"bri_tpl":"{{value_json.brightness|float|multiply(2.55)|round}}",'
-            '"clr_temp_tpl":"{{((1000000/(value_json.temp|int,2700)|max)|round(0,\\"floor\\"))}}",'
-            '"max_mireds":370,'
-            '"min_mireds":153,'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
+        payload = {
+            KEY_SCHEMA: VALUE_TEMPLATE,
+            KEY_NAME: light_name,
+            KEY_COMMAND_TOPIC: command_topic,
+            KEY_STATE_TOPIC: state_topic,
+            KEY_AVAILABILITY_TOPIC: availability_topic,
+            KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
+            KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
+            KEY_COMMAND_ON_TEMPLATE: f"{{^turn^:^on^{{%if brightness is defined%}},^brightness^:{{{{brightness|float|multiply(0.3922)|round}}}}{{%endif%}}{{%if color_temp is defined%}},^temp^:{{{{(1000000/(color_temp|int))|round(0,^floor^)}}}}{{%endif%}}{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000), {MAX_TRANSITION})}}}}{{%endif%}}}}",
+            KEY_COMMAND_OFF_TEMPLATE: f"{{^turn^:^off^{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000),{MAX_TRANSITION})}}}}{{%endif%}}}}",
+            KEY_STATE_TEMPLATE: "{%if value_json.ison%}on{%else%}off{%endif%}",
+            KEY_BRIGHTNESS_TEMPLATE: "{{value_json.brightness|float|multiply(2.55)|round}}",
+            KEY_COLOR_TEMP_TEMPLATE: "{{((1000000/(value_json.temp|int,2700)|max)|round(0,^floor^))}}",
+            KEY_MAX_MIREDS: 370,
+            KEY_MIN_MIREDS: 153,
+            KEY_UNIQUE_ID: unique_id,
+            KEY_QOS: str(qos),
+            KEY_DEVICE_CLASS: device_info,
+            "~": default_topic,
+        }
     elif model == MODEL_SHELLYVINTAGE:
         payload = (
             '{"schema":"template",'
