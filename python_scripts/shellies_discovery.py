@@ -426,8 +426,8 @@ TOPIC_INPUT_EVENT = "input_event"
 TOPIC_INPUT_EVENT_0 = "input_event/0"
 TOPIC_INPUT_EVENT_1 = "input_event/1"
 TOPIC_INPUT_EVENT_2 = "input_event/2"
-TOPIC_LIGHT_SET = "light/{light_id}/set"
-TOPIC_LIGHT_STATUS = "light/{light_id}/status"
+TOPIC_LIGHT_SET = "~light/{light_id}/set"
+TOPIC_LIGHT_STATUS = "~light/{light_id}/status"
 TOPIC_LONGPUSH = "longpush"
 TOPIC_LONGPUSH_0 = "longpush/0"
 TOPIC_LONGPUSH_1 = "longpush/1"
@@ -882,16 +882,20 @@ def get_device_config(dev_id):
         return result
 
 
-def mqtt_publish(topic, payload, retain):
+def mqtt_publish(topic, payload, retain, json=False):
     """Publish data to MQTT broker."""
+    if json:
+        payload_str = str(payload).replace("'", '"').replace("^", '\\"')
+    else:
+        payload_str = str(payload).replace("'", '"').replace("^", "'")
     service_data = {
         "topic": topic,
-        "payload": str(payload).replace("'", '"').replace("^", "'"),
+        "payload": payload_str,
         "retain": retain,
         "qos": 0,
     }
     logger.debug(service_data)  # noqa: F821
-    logger.debug("Sending to MQTT broker: %s %s", topic, payload)  # noqa: F821
+    logger.debug("Sending to MQTT broker: %s %s", topic, payload_str)  # noqa: F821
     hass.services.call("mqtt", "publish", service_data, False)  # noqa: F821
 
 
@@ -3649,7 +3653,7 @@ for light_id, light_options in white_lights.items():
     if dev_id.lower() in ignored:
         payload = ""
 
-    mqtt_publish(config_topic, payload, retain)
+    mqtt_publish(config_topic, payload, retain, json=True)
 
     # white light's binary sensors
     for bin_sensor_id in range(len(lights_bin_sensors)):
