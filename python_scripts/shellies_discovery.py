@@ -3063,7 +3063,7 @@ for sensor, sensor_options in sensors.items():
         "ascii", "ignore"
     ).decode("utf-8")
     default_topic = f"shellies/{dev_id}/"
-    if sensor in (SENSOR_RSSI, SENSOR_SSID, SENSOR_ADC, SENSOR_IP):
+    if sensor in (SENSOR_SSID, SENSOR_ADC, SENSOR_IP):
         sensor_name = f"{device_name} {sensor.upper()}"
     elif sensor == SENSOR_UPTIME:
         sensor_name = f"{device_name} Last Restart"
