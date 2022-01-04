@@ -428,10 +428,6 @@ TOPIC_INPUT_EVENT_1 = "~input_event/1"
 TOPIC_INPUT_EVENT_2 = "~input_event/2"
 TOPIC_LIGHT_SET = "~light/{light_id}/set"
 TOPIC_LIGHT_STATUS = "~light/{light_id}/status"
-TOPIC_LONGPUSH = "~longpush"
-TOPIC_LONGPUSH_0 = "~longpush/0"
-TOPIC_LONGPUSH_1 = "~longpush/1"
-TOPIC_LONGPUSH_2 = "~longpush/2"
 TOPIC_MUTE = "~sensor/mute"
 TOPIC_ONLINE = "~online"
 TOPIC_OVERPOWER_VALUE = "overpower_value"
@@ -3041,9 +3037,9 @@ for relay_id in range(relays):
         else:
             sensor_name = f"{device_name} {clean_name(relays_bin_sensors[bin_sensor_id])} {relay_id}"
         if relays_bin_sensors_topics and relays_bin_sensors_topics[bin_sensor_id]:
-            state_topic = f"~{relays_bin_sensors_topics[bin_sensor_id]}/{relay_id}"
+            state_topic = f"{relays_bin_sensors_topics[bin_sensor_id]}/{relay_id}"
         else:
-            state_topic = f"~{relays_bin_sensors[bin_sensor_id]}/{relay_id}"
+            state_topic = f"{relays_bin_sensors[bin_sensor_id]}/{relay_id}"
         if not roller_mode:
             payload = {
                 KEY_NAME: sensor_name,
@@ -3109,7 +3105,7 @@ for relay_id in range(relays):
             ):
                 payload[
                     KEY_JSON_ATTRIBUTES_TOPIC
-                ] = f"~{relays_bin_sensors_topics[bin_sensor_id]}/{relay_id}/{TOPIC_OVERPOWER_VALUE}"
+                ] = f"{relays_bin_sensors_topics[bin_sensor_id]}/{relay_id}/{TOPIC_OVERPOWER_VALUE}"
                 payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_OVERPOWER_VALUE_TO_JSON
         else:
             payload = ""
@@ -3327,9 +3323,9 @@ for bin_sensor_id in range(len(bin_sensors)):
             f"{device_name} {clean_name(bin_sensors[bin_sensor_id].replace('/', ' '))}"
         )
     if bin_sensors_topics[bin_sensor_id]:
-        state_topic = f"~{bin_sensors_topics[bin_sensor_id]}"
+        state_topic = f"{bin_sensors_topics[bin_sensor_id]}"
     elif relays > 0 or len(white_lights) > 0:
-        state_topic = f"~{bin_sensors[bin_sensor_id]}"
+        state_topic = f"{bin_sensors[bin_sensor_id]}"
     elif bin_sensors[bin_sensor_id] == SENSOR_OPENING:
         state_topic = "~sensor/state"
     else:
