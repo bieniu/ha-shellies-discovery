@@ -2944,9 +2944,11 @@ for relay_id in range(relays):
         force_update = False
         if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
             force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
-        config_topic = f"{disc_prefix}/sensor/{dev_id}-{sensor}/config".encode(
-            "ascii", "ignore"
-        ).decode("utf-8")
+        config_topic = (
+            f"{disc_prefix}/sensor/{dev_id}-{sensor}-{relay_id}/config".encode(
+                "ascii", "ignore"
+            ).decode("utf-8")
+        )
         default_topic = f"shellies/{dev_id}/"
 
         payload = {
