@@ -440,6 +440,7 @@ TOPIC_SELF_TEST = "~sensor/start_self_test"
 TOPIC_SENSOR_BATTERY = "~sensor/battery"
 TOPIC_SENSOR_CONCENTRATION = "~sensor/concentration"
 TOPIC_SENSOR_HUMIDITY = "~sensor/humidity"
+TOPIC_SENSOR_LUX = "~sensor/lux"
 TOPIC_SENSOR_OPERATION = "~sensor/operation"
 TOPIC_SENSOR_SELF_TEST = "~sensor/self_test"
 TOPIC_SENSOR_TEMPERATURE = "~sensor/temperature"
@@ -806,6 +807,14 @@ OPTIONS_SENSOR_LUX = {
     KEY_DEVICE_CLASS: DEVICE_CLASS_ILLUMINANCE,
     KEY_ENABLED_BY_DEFAULT: True,
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
+    KEY_STATE_TOPIC: TOPIC_SENSOR_LUX,
+    KEY_UNIT: UNIT_LUX,
+    KEY_VALUE_TEMPLATE: TPL_LUX,
+}
+OPTIONS_SENSOR_LUX_MOTION = {
+    KEY_DEVICE_CLASS: DEVICE_CLASS_ILLUMINANCE,
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_STATUS,
     KEY_UNIT: UNIT_LUX,
     KEY_VALUE_TEMPLATE: TPL_ILLUMINATION,
@@ -946,7 +955,7 @@ host = data.get(CONF_HOST)  # noqa: F821
 
 if not host:
     raise ValueError(
-        "host value None is not valid, update shallies_discovery automation"
+        "host value None is not valid, update shellies_discovery automation"
     )
 
 use_fahrenheit = False
@@ -1555,7 +1564,7 @@ if model_id == MODEL_SHELLYMOTION_ID or dev_id_prefix == MODEL_SHELLYMOTION_PREF
     sensors = {
         SENSOR_BATTERY: OPTIONS_SENSOR_BATTERY_MOTION,
         SENSOR_IP: OPTIONS_SENSOR_IP,
-        SENSOR_LUX: OPTIONS_SENSOR_LUX,
+        SENSOR_LUX: OPTIONS_SENSOR_LUX_MOTION,
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
         SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
