@@ -19,8 +19,8 @@ COMP_FAN = "fan"
 COMP_LIGHT = "light"
 COMP_SWITCH = "switch"
 
-CONF_DEVICE_NAME = "device_name"
 CONF_DEVELOP = "develop"
+CONF_DEVICE_NAME = "device_name"
 CONF_DISCOVERY_PREFIX = "discovery_prefix"
 CONF_EXPIRE_AFTER = "expire_after"
 CONF_EXT_SWITCH = "ext-switch"
@@ -29,8 +29,8 @@ CONF_FRIENDLY_NAME = "friendly_name"
 CONF_FW_VER = "fw_ver"
 CONF_HOST = "host"
 CONF_ID = "id"
-CONF_IGNORED_DEVICES = "ignored_devices"
 CONF_IGNORE_DEVICE_MODEL = "ignore_device_model"
+CONF_IGNORED_DEVICES = "ignored_devices"
 CONF_MAC = "mac"
 CONF_MODE = "mode"
 CONF_MODEL_ID = "model"
@@ -40,6 +40,7 @@ CONF_PUSH_OFF_DELAY = "push_off_delay"
 CONF_QOS = "qos"
 CONF_SET_POSITION_TEMPLATE = "set_position_template"
 CONF_USE_FAHRENHEIT = "use_fahrenheit"
+CONF_USE_KWH = "use_kwh"
 
 DEFAULT_DISC_PREFIX = "homeassistant"
 
@@ -475,7 +476,9 @@ TPL_CURRENT = "{{value|float|round(2)}}"
 TPL_CURRENT_TEMPERATURE = "{{value_json.thermostats.0.tmp.value}}"
 TPL_DOUBLE_SHORTPUSH = "{%if value_json.event==^SS^%}ON{%else%}OFF{%endif%}"
 TPL_ENERGY_WH = "{{value|float|round(2)}}"
+TPL_ENERGY_WH_KWH = "{{(value|float/1000)|round(2)}}"
 TPL_ENERGY_WMIN = "{{(value|float/60)|round(2)}}"
+TPL_ENERGY_WMIN_KWH = "{{(value|float/60/1000)|round(2)}}"
 TPL_GAS = "{%if value in [^mild^,^heavy^]%}ON{%else%}OFF{%endif%}"
 TPL_GAS_TO_JSON = "{{{^status^:value}|tojson}}"
 TPL_HUMIDITY = "{%if value!=999 and value!=0%}{{value|round(1)}}{%endif%}"
@@ -524,6 +527,7 @@ UNIT_CELSIUS = "°C"
 UNIT_DBM = "dBm"
 UNIT_DEGREE = "°"
 UNIT_FAHRENHEIT = "°F"
+UNIT_KWH = "kWh"
 UNIT_LUX = "lx"
 UNIT_PERCENT = "%"
 UNIT_PPM = "ppm"
@@ -552,6 +556,10 @@ VALUE_STOP = "stop"
 VALUE_TEMPLATE = "template"
 VALUE_TRIGGER = "trigger"
 VALUE_TRUE = "true"
+
+use_kwh = data.get(CONF_USE_KWH, False)  # noqa: F821
+if not isinstance(use_kwh, bool):
+    use_kwh = False
 
 OPTIONS_BUTTON_UPDATE_FIRMWARE = {
     KEY_COMMAND_TOPIC: TOPIC_COMMAND,
@@ -627,22 +635,40 @@ OPTIONS_SELECT_PROFILES = {
     KEY_ENABLED_BY_DEFAULT: True,
     KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
 }
-OPTIONS_SENSOR_RELAY_ENERGY = {
-    KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
-    KEY_ENABLED_BY_DEFAULT: True,
-    KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
-    KEY_STATE_TOPIC: TOPIC_RELAY_ENERGY,
-    KEY_UNIT: UNIT_WH,
-    KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN,
-}
-OPTIONS_SENSOR_ENERGY = {
-    KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
-    KEY_ENABLED_BY_DEFAULT: True,
-    KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
-    KEY_STATE_TOPIC: TOPIC_ENERGY,
-    KEY_UNIT: UNIT_WH,
-    KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN,
-}
+if use_kwh:
+    OPTIONS_SENSOR_RELAY_ENERGY = {
+        KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
+        KEY_ENABLED_BY_DEFAULT: True,
+        KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
+        KEY_STATE_TOPIC: TOPIC_RELAY_ENERGY,
+        KEY_UNIT: UNIT_KWH,
+        KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN_KWH,
+    }
+    OPTIONS_SENSOR_ENERGY = {
+        KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
+        KEY_ENABLED_BY_DEFAULT: True,
+        KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
+        KEY_STATE_TOPIC: TOPIC_ENERGY,
+        KEY_UNIT: UNIT_KWH,
+        KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN_KWH,
+    }
+else:
+    OPTIONS_SENSOR_RELAY_ENERGY = {
+        KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
+        KEY_ENABLED_BY_DEFAULT: True,
+        KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
+        KEY_STATE_TOPIC: TOPIC_RELAY_ENERGY,
+        KEY_UNIT: UNIT_WH,
+        KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN,
+    }
+    OPTIONS_SENSOR_ENERGY = {
+        KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
+        KEY_ENABLED_BY_DEFAULT: True,
+        KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
+        KEY_STATE_TOPIC: TOPIC_ENERGY,
+        KEY_UNIT: UNIT_WH,
+        KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN,
+    }
 OPTIONS_SENSOR_RELAY_POWER = {
     KEY_DEVICE_CLASS: DEVICE_CLASS_POWER,
     KEY_ENABLED_BY_DEFAULT: True,
