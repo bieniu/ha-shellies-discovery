@@ -428,6 +428,13 @@ TOPIC_INPUT_EVENT = "~input_event"
 TOPIC_INPUT_EVENT_0 = "~input_event/0"
 TOPIC_INPUT_EVENT_1 = "~input_event/1"
 TOPIC_INPUT_EVENT_2 = "~input_event/2"
+TOPIC_LIGHT_ENERGY = "~light/{light_id}/energy"
+TOPIC_LIGHT_ENERGY_RGBW2_COLOR = "~color/{light_id}/energy"
+TOPIC_LIGHT_ENERGY_RGBW2_WHITE = "~white/{light_id}/energy"
+TOPIC_LIGHT_OVERPOWER_VALUE = "~light/{light_id}/overpower_value"
+TOPIC_LIGHT_POWER = "~light/{light_id}/power"
+TOPIC_LIGHT_POWER_RGBW2_COLOR = "~color/{light_id}/power"
+TOPIC_LIGHT_POWER_RGBW2_WHITE = "~white/{light_id}/power"
 TOPIC_LIGHT_SET = "~light/{light_id}/set"
 TOPIC_LIGHT_STATUS = "~light/{light_id}/status"
 TOPIC_MUTE = "~sensor/mute"
@@ -644,6 +651,30 @@ if use_kwh:
         KEY_UNIT: UNIT_KWH,
         KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN_KWH,
     }
+    OPTIONS_SENSOR_LIGHT_ENERGY = {
+        KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
+        KEY_ENABLED_BY_DEFAULT: True,
+        KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
+        KEY_STATE_TOPIC: TOPIC_LIGHT_ENERGY,
+        KEY_UNIT: UNIT_KWH,
+        KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN_KWH,
+    }
+    OPTIONS_SENSOR_LIGHT_ENERGY_RGBW2_COLOR = {
+        KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
+        KEY_ENABLED_BY_DEFAULT: True,
+        KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
+        KEY_STATE_TOPIC: TOPIC_LIGHT_ENERGY_RGBW2_COLOR,
+        KEY_UNIT: UNIT_KWH,
+        KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN_KWH,
+    }
+    OPTIONS_SENSOR_LIGHT_ENERGY_RGBW2_WHITE = {
+        KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
+        KEY_ENABLED_BY_DEFAULT: True,
+        KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
+        KEY_STATE_TOPIC: TOPIC_LIGHT_ENERGY_RGBW2_WHITE,
+        KEY_UNIT: UNIT_KWH,
+        KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN_KWH,
+    }
     OPTIONS_SENSOR_ENERGY = {
         KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
         KEY_ENABLED_BY_DEFAULT: True,
@@ -661,6 +692,30 @@ else:
         KEY_UNIT: UNIT_WH,
         KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN,
     }
+    OPTIONS_SENSOR_LIGHT_ENERGY = {
+        KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
+        KEY_ENABLED_BY_DEFAULT: True,
+        KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
+        KEY_STATE_TOPIC: TOPIC_LIGHT_ENERGY,
+        KEY_UNIT: UNIT_WH,
+        KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN,
+    }
+    OPTIONS_SENSOR_LIGHT_ENERGY_RGBW2_COLOR = {
+        KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
+        KEY_ENABLED_BY_DEFAULT: True,
+        KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
+        KEY_STATE_TOPIC: TOPIC_LIGHT_ENERGY_RGBW2_COLOR,
+        KEY_UNIT: UNIT_WH,
+        KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN,
+    }
+    OPTIONS_SENSOR_LIGHT_ENERGY_RGBW2_WHITE = {
+        KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
+        KEY_ENABLED_BY_DEFAULT: True,
+        KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
+        KEY_STATE_TOPIC: TOPIC_LIGHT_ENERGY_RGBW2_WHITE,
+        KEY_UNIT: UNIT_WH,
+        KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN,
+    }
     OPTIONS_SENSOR_ENERGY = {
         KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
         KEY_ENABLED_BY_DEFAULT: True,
@@ -674,6 +729,36 @@ OPTIONS_SENSOR_RELAY_POWER = {
     KEY_ENABLED_BY_DEFAULT: True,
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_RELAY_POWER,
+    KEY_UNIT: UNIT_WATT,
+    KEY_VALUE_TEMPLATE: TPL_POWER,
+}
+OPTIONS_SENSOR_LIGHT_OVERPOWER_VALUE = {
+    KEY_ENABLED_BY_DEFAULT: False,
+    KEY_STATE_TOPIC: TOPIC_LIGHT_OVERPOWER_VALUE,
+    KEY_UNIT: UNIT_WATT,
+    KEY_VALUE_TEMPLATE: TPL_POWER,
+}
+OPTIONS_SENSOR_LIGHT_POWER = {
+    KEY_DEVICE_CLASS: DEVICE_CLASS_POWER,
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
+    KEY_STATE_TOPIC: TOPIC_LIGHT_POWER,
+    KEY_UNIT: UNIT_WATT,
+    KEY_VALUE_TEMPLATE: TPL_POWER,
+}
+OPTIONS_SENSOR_LIGHT_POWER_RGBW2_COLOR = {
+    KEY_DEVICE_CLASS: DEVICE_CLASS_POWER,
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
+    KEY_STATE_TOPIC: TOPIC_LIGHT_POWER_RGBW2_COLOR,
+    KEY_UNIT: UNIT_WATT,
+    KEY_VALUE_TEMPLATE: TPL_POWER,
+}
+OPTIONS_SENSOR_LIGHT_POWER_RGBW2_WHITE = {
+    KEY_DEVICE_CLASS: DEVICE_CLASS_POWER,
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
+    KEY_STATE_TOPIC: TOPIC_LIGHT_POWER_RGBW2_WHITE,
     KEY_UNIT: UNIT_WATT,
     KEY_VALUE_TEMPLATE: TPL_POWER,
 }
@@ -1096,12 +1181,6 @@ lights_bin_sensors = []
 lights_bin_sensors_device_classes = []
 lights_bin_sensors_pl = []
 lights_bin_sensors_tpls = []
-lights_sensors = []
-lights_sensors_device_classes = []
-lights_sensors_entity_categories = []
-lights_sensors_state_classes = []
-lights_sensors_tpls = []
-lights_sensors_units = []
 meters = 0
 meters_sensors = []
 meters_sensors_device_classes = []
@@ -1119,6 +1198,7 @@ relays_bin_sensors_pl = []
 relays_bin_sensors_topics = []
 relays_bin_sensors_tpls = []
 relay_sensors = {}
+light_sensors = {}
 rgbw_lights = 0
 rollers = 0
 selectors = {}
@@ -1872,15 +1952,16 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
     lights_bin_sensors_pl = [None]
     lights_bin_sensors_topics = [None]
     lights_bin_sensors_tpls = [TPL_OVERPOWER]
-    lights_sensors = [SENSOR_POWER, SENSOR_ENERGY]
-    lights_sensors_entity_categories = [None, None]
-    lights_sensors_state_classes = [
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_TOTAL_INCREASING,
-    ]
-    lights_sensors_device_classes = [DEVICE_CLASS_POWER, DEVICE_CLASS_ENERGY]
-    lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN]
-    lights_sensors_units = [UNIT_WATT, UNIT_WH]
+    if mode == LIGHT_COLOR:
+        light_sensors = {
+            SENSOR_POWER: OPTIONS_SENSOR_LIGHT_POWER_RGBW2_COLOR,
+            SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY_RGBW2_COLOR,
+        }
+    else:
+        light_sensors = {
+            SENSOR_POWER: OPTIONS_SENSOR_LIGHT_POWER_RGBW2_WHITE,
+            SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY_RGBW2_WHITE,
+        }
     sensors = {
         SENSOR_IP: OPTIONS_SENSOR_IP,
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
@@ -1991,20 +2072,11 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
         TOPIC_INPUT_EVENT_1,
         TOPIC_INFO,
     ]
-    lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER_VALUE]
-    lights_sensors_entity_categories = [None, None, ENTITY_CATEGORY_DIAGNOSTIC]
-    lights_sensors_state_classes = [
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_TOTAL_INCREASING,
-        None,
-    ]
-    lights_sensors_units = [UNIT_WATT, UNIT_WH, UNIT_WATT]
-    lights_sensors_device_classes = [
-        DEVICE_CLASS_POWER,
-        DEVICE_CLASS_ENERGY,
-        DEVICE_CLASS_POWER,
-    ]
-    lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN, TPL_POWER]
+    light_sensors = {
+        SENSOR_POWER: OPTIONS_SENSOR_LIGHT_POWER,
+        SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY,
+        SENSOR_OVERPOWER_VALUE: OPTIONS_SENSOR_LIGHT_OVERPOWER_VALUE,
+    }
     buttons = {BUTTON_UPDATE_FIRMWARE: OPTIONS_BUTTON_UPDATE_FIRMWARE}
 
 if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PREFIX:
@@ -2109,20 +2181,11 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         TOPIC_INPUT_EVENT_1,
         TOPIC_INFO,
     ]
-    lights_sensors = [SENSOR_POWER, SENSOR_ENERGY, SENSOR_OVERPOWER_VALUE]
-    lights_sensors_entity_categories = [None, None, ENTITY_CATEGORY_DIAGNOSTIC]
-    lights_sensors_state_classes = [
-        STATE_CLASS_MEASUREMENT,
-        STATE_CLASS_TOTAL_INCREASING,
-        None,
-    ]
-    lights_sensors_units = [UNIT_WATT, UNIT_WH, UNIT_WATT]
-    lights_sensors_device_classes = [
-        DEVICE_CLASS_POWER,
-        DEVICE_CLASS_ENERGY,
-        DEVICE_CLASS_POWER,
-    ]
-    lights_sensors_tpls = [TPL_POWER, TPL_ENERGY_WMIN, TPL_POWER]
+    light_sensors = {
+        SENSOR_POWER: OPTIONS_SENSOR_LIGHT_POWER,
+        SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY,
+        SENSOR_OVERPOWER_VALUE: OPTIONS_SENSOR_LIGHT_OVERPOWER_VALUE,
+    }
     buttons = {BUTTON_UPDATE_FIRMWARE: OPTIONS_BUTTON_UPDATE_FIRMWARE}
 
 if model_id == MODEL_SHELLYBULB_ID or dev_id_prefix == MODEL_SHELLYBULB_PREFIX:
@@ -2145,15 +2208,10 @@ if model_id == MODEL_SHELLYBULB_ID or dev_id_prefix == MODEL_SHELLYBULB_PREFIX:
 if model_id == MODEL_SHELLYBULBRGBW_ID or dev_id_prefix == MODEL_SHELLYBULBRGBW_PREFIX:
     model = MODEL_SHELLYBULBRGBW
     rgbw_lights = 1
-    lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
-    lights_sensors_entity_categories = [None, None]
-    lights_sensors_state_classes = [
-        STATE_CLASS_TOTAL_INCREASING,
-        STATE_CLASS_MEASUREMENT,
-    ]
-    lights_sensors_units = [UNIT_WH, UNIT_WATT]
-    lights_sensors_device_classes = [DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
-    lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
+    light_sensors = {
+        SENSOR_POWER: OPTIONS_SENSOR_LIGHT_POWER,
+        SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY,
+    }
     bin_sensors = [SENSOR_FIRMWARE_UPDATE]
     bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
     bin_sensors_enabled = [True]
@@ -2180,15 +2238,10 @@ if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
             KEY_STATE_TOPIC: TOPIC_LIGHT_STATUS,
         }
     }
-    lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
-    lights_sensors_entity_categories = [None, None]
-    lights_sensors_state_classes = [
-        STATE_CLASS_TOTAL_INCREASING,
-        STATE_CLASS_MEASUREMENT,
-    ]
-    lights_sensors_units = [UNIT_WH, UNIT_WATT]
-    lights_sensors_device_classes = [DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
-    lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
+    light_sensors = {
+        SENSOR_POWER: OPTIONS_SENSOR_LIGHT_POWER,
+        SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY,
+    }
     bin_sensors = [SENSOR_FIRMWARE_UPDATE]
     bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
     bin_sensors_enabled = [True]
@@ -2213,16 +2266,10 @@ if model_id == MODEL_SHELLYVINTAGE_ID or dev_id_prefix == MODEL_SHELLYVINTAGE_PR
             KEY_STATE_TOPIC: TOPIC_LIGHT_STATUS,
         }
     }
-
-    lights_sensors = [SENSOR_ENERGY, SENSOR_POWER]
-    lights_sensors_entity_categories = [None, None]
-    lights_sensors_state_classes = [
-        STATE_CLASS_TOTAL_INCREASING,
-        STATE_CLASS_MEASUREMENT,
-    ]
-    lights_sensors_units = [UNIT_WH, UNIT_WATT]
-    lights_sensors_device_classes = [DEVICE_CLASS_ENERGY, DEVICE_CLASS_POWER]
-    lights_sensors_tpls = [TPL_ENERGY_WMIN, TPL_POWER]
+    light_sensors = {
+        SENSOR_POWER: OPTIONS_SENSOR_LIGHT_POWER,
+        SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY,
+    }
     bin_sensors = [SENSOR_FIRMWARE_UPDATE]
     bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
     bin_sensors_enabled = [True]
@@ -3539,51 +3586,46 @@ for light_id in range(rgbw_lights):
 
         mqtt_publish(config_topic, payload, retain)
 
-    # color light's sensors
-    for sensor_id in range(len(lights_sensors)):
+    # color light sensors
+    for sensor, sensor_options in light_sensors.items():
         force_update = False
         if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
             force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
-        unique_id = f"{dev_id}-color-{lights_sensors[sensor_id]}-{light_id}".lower()
-        config_topic = f"{disc_prefix}/sensor/{dev_id}-color-{lights_sensors[sensor_id]}-{light_id}/config".encode(
-            "ascii", "ignore"
-        ).decode(
-            "utf-8"
+        config_topic = (
+            f"{disc_prefix}/sensor/{dev_id}-color-{sensor}-{light_id}/config".encode(
+                "ascii", "ignore"
+            ).decode("utf-8")
         )
-        sensor_name = (
-            f"{device_name} {clean_name(lights_sensors[sensor_id])} {light_id}"
-        )
-        if model == MODEL_SHELLYBULBRGBW:
-            state_topic = f"~light/{light_id}/{lights_sensors[sensor_id]}"
-        elif model == MODEL_SHELLYRGBW2:
-            state_topic = f"~color/{light_id}/{lights_sensors[sensor_id]}"
-        else:
-            state_topic = f"~color/{light_id}/status"
-        if mode == LIGHT_COLOR:
-            payload = {
-                KEY_NAME: sensor_name,
-                KEY_STATE_TOPIC: state_topic,
-                KEY_UNIT: lights_sensors_units[sensor_id],
-                KEY_VALUE_TEMPLATE: lights_sensors_tpls[sensor_id],
-                KEY_DEVICE_CLASS: lights_sensors_device_classes[sensor_id],
-                KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
-                KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
-                KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-                KEY_FORCE_UPDATE: str(force_update).lower(),
-                KEY_UNIQUE_ID: unique_id,
-                KEY_QOS: qos,
-                KEY_DEVICE: device_info,
-                "~": default_topic,
-            }
-            if lights_sensors_state_classes[sensor_id]:
-                payload[KEY_STATE_CLASS] = lights_sensors_state_classes[sensor_id]
-            if lights_sensors_entity_categories[sensor_id]:
-                payload[KEY_ENTITY_CATEGORY] = lights_sensors_entity_categories[
-                    sensor_id
-                ]
-        else:
-            payload = ""
+        default_topic = f"shellies/{dev_id}/"
+
+        payload = {
+            KEY_NAME: f"{device_name} {clean_name(sensor)} {light_id}",
+            KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(light_id=light_id),
+            KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
+            KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
+            KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
+            KEY_FORCE_UPDATE: str(force_update).lower(),
+            KEY_ENABLED_BY_DEFAULT: str(sensor_options[KEY_ENABLED_BY_DEFAULT]).lower(),
+            KEY_UNIQUE_ID: f"{dev_id}-color-{sensor}-{light_id}".lower(),
+            KEY_QOS: qos,
+            KEY_DEVICE: device_info,
+            "~": default_topic,
+        }
+        if sensor_options.get(KEY_ENTITY_CATEGORY):
+            payload[KEY_ENTITY_CATEGORY] = sensor_options[KEY_ENTITY_CATEGORY]
+        if sensor_options.get(KEY_DEVICE_CLASS):
+            payload[KEY_DEVICE_CLASS] = sensor_options[KEY_DEVICE_CLASS]
+        if sensor_options.get(KEY_STATE_CLASS):
+            payload[KEY_STATE_CLASS] = sensor_options[KEY_STATE_CLASS]
+        if sensor_options.get(KEY_UNIT):
+            payload[KEY_UNIT] = sensor_options[KEY_UNIT]
+        if sensor_options.get(KEY_VALUE_TEMPLATE):
+            payload[KEY_VALUE_TEMPLATE] = sensor_options[KEY_VALUE_TEMPLATE]
+        if sensor_options.get(ATTR_ICON):
+            payload[KEY_ICON] = sensor_options[ATTR_ICON]
         if dev_id.lower() in ignored:
+            payload = ""
+        if mode == LIGHT_WHITE:
             payload = ""
 
         mqtt_publish(config_topic, payload, retain)
@@ -3693,66 +3735,46 @@ for light_id, light_options in white_lights.items():
 
             mqtt_publish(config_topic, payload, retain)
 
-    # white light's sensors
-    for sensor_id in range(len(lights_sensors)):
+    # white light sensors
+    for sensor, sensor_options in light_sensors.items():
         force_update = False
         if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
             force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
-        unique_id = f"{dev_id}-white-{lights_sensors[sensor_id]}-{light_id}".lower()
-        config_topic = f"{disc_prefix}/sensor/{dev_id}-white-{lights_sensors[sensor_id]}-{light_id}/config".encode(
-            "ascii", "ignore"
-        ).decode(
-            "utf-8"
+        config_topic = (
+            f"{disc_prefix}/sensor/{dev_id}-white-{sensor}-{light_id}/config".encode(
+                "ascii", "ignore"
+            ).decode("utf-8")
         )
-        sensor_name = (
-            f"{device_name} {clean_name(lights_sensors[sensor_id])} {light_id}"
-        )
-        if model in (
-            MODEL_SHELLYDIMMER,
-            MODEL_SHELLYDIMMER2,
-            MODEL_SHELLYDUO,
-            MODEL_SHELLYVINTAGE,
-        ):
-            state_topic = f"~light/{light_id}/{lights_sensors[sensor_id]}"
-        elif model == MODEL_SHELLYRGBW2:
-            state_topic = f"~white/{light_id}/{lights_sensors[sensor_id]}"
-        else:
-            state_topic = f"~white/{light_id}/status"
-        if (
-            model
-            in (
-                MODEL_SHELLYDIMMER,
-                MODEL_SHELLYDIMMER2,
-                MODEL_SHELLYDUO,
-                MODEL_SHELLYVINTAGE,
-                MODEL_SHELLYRGBW2,
-            )
-            and mode != LIGHT_COLOR
-        ):
-            payload = {
-                KEY_NAME: sensor_name,
-                KEY_STATE_TOPIC: state_topic,
-                KEY_UNIT: lights_sensors_units[sensor_id],
-                KEY_VALUE_TEMPLATE: lights_sensors_tpls[sensor_id],
-                KEY_DEVICE_CLASS: lights_sensors_device_classes[sensor_id],
-                KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
-                KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
-                KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-                KEY_FORCE_UPDATE: str(force_update).lower(),
-                KEY_UNIQUE_ID: unique_id,
-                KEY_QOS: qos,
-                KEY_DEVICE: device_info,
-                "~": default_topic,
-            }
-            if lights_sensors_entity_categories[sensor_id]:
-                payload[KEY_ENTITY_CATEGORY] = lights_sensors_entity_categories[
-                    sensor_id
-                ]
-            if lights_sensors_state_classes[sensor_id]:
-                payload[KEY_STATE_CLASS] = lights_sensors_state_classes[sensor_id]
-        else:
-            payload = ""
+        default_topic = f"shellies/{dev_id}/"
+
+        payload = {
+            KEY_NAME: f"{device_name} {clean_name(sensor)} {light_id}",
+            KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(light_id=light_id),
+            KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
+            KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
+            KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
+            KEY_FORCE_UPDATE: str(force_update).lower(),
+            KEY_ENABLED_BY_DEFAULT: str(sensor_options[KEY_ENABLED_BY_DEFAULT]).lower(),
+            KEY_UNIQUE_ID: f"{dev_id}-white-{sensor}-{light_id}".lower(),
+            KEY_QOS: qos,
+            KEY_DEVICE: device_info,
+            "~": default_topic,
+        }
+        if sensor_options.get(KEY_ENTITY_CATEGORY):
+            payload[KEY_ENTITY_CATEGORY] = sensor_options[KEY_ENTITY_CATEGORY]
+        if sensor_options.get(KEY_DEVICE_CLASS):
+            payload[KEY_DEVICE_CLASS] = sensor_options[KEY_DEVICE_CLASS]
+        if sensor_options.get(KEY_STATE_CLASS):
+            payload[KEY_STATE_CLASS] = sensor_options[KEY_STATE_CLASS]
+        if sensor_options.get(KEY_UNIT):
+            payload[KEY_UNIT] = sensor_options[KEY_UNIT]
+        if sensor_options.get(KEY_VALUE_TEMPLATE):
+            payload[KEY_VALUE_TEMPLATE] = sensor_options[KEY_VALUE_TEMPLATE]
+        if sensor_options.get(ATTR_ICON):
+            payload[KEY_ICON] = sensor_options[ATTR_ICON]
         if dev_id.lower() in ignored:
+            payload = ""
+        if mode == LIGHT_COLOR:
             payload = ""
 
         mqtt_publish(config_topic, payload, retain)
