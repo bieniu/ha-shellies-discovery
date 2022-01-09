@@ -841,7 +841,7 @@ OPTIONS_SENSOR_TEMPERATURE_STATUS = {
 }
 OPTIONS_SENSOR_VOLTAGE = {
     KEY_DEVICE_CLASS: DEVICE_CLASS_VOLTAGE,
-    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_ENABLED_BY_DEFAULT: False,
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_VOLTAGE,
     KEY_UNIT: UNIT_VOLT,
@@ -857,7 +857,7 @@ OPTIONS_SENSOR_TOTALWORKTIME = {
 }
 OPTIONS_SENSOR_VOLTAGE = {
     KEY_DEVICE_CLASS: DEVICE_CLASS_VOLTAGE,
-    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_ENABLED_BY_DEFAULT: False,
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_VOLTAGE,
     KEY_UNIT: UNIT_VOLT,
@@ -3157,7 +3157,7 @@ for sensor, sensor_options in sensors.items():
         "ascii", "ignore"
     ).decode("utf-8")
     default_topic = f"shellies/{dev_id}/"
-    if model == MODEL_SHELLY2:
+    if model == MODEL_SHELLY2 and sensor in (SENSOR_ENERGY, SENSOR_POWER):
         unique_id = f"{dev_id}-relay-{sensor}".lower()
     else:
         unique_id = f"{dev_id}-{sensor}".lower()
