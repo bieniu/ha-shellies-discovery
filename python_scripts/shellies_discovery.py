@@ -2356,6 +2356,11 @@ if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
         UNIT_WH,
         UNIT_WH,
     ]
+    if use_kwh:
+        meters_sensors_units[3] = UNIT_KWH
+        meters_sensors_units[4] = UNIT_KWH
+        meters_sensors_units[5] = UNIT_KWH
+        meters_sensors_units[6] = UNIT_KWH
     meters_sensors_device_classes = [
         DEVICE_CLASS_POWER,
         None,
@@ -2374,6 +2379,11 @@ if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
         TPL_ENERGY_WH,
         TPL_ENERGY_WH,
     ]
+    if use_kwh:
+        meters_sensors_tpls[3] = TPL_ENERGY_WMIN_KWH
+        meters_sensors_tpls[4] = TPL_ENERGY_WMIN_KWH
+        meters_sensors_tpls[5] = TPL_ENERGY_WH_KWH
+        meters_sensors_tpls[6] = TPL_ENERGY_WH_KWH
     bin_sensors = [SENSOR_FIRMWARE_UPDATE]
     bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
     bin_sensors_enabled = [True]
@@ -2428,6 +2438,11 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
         UNIT_WH,
         UNIT_WH,
     ]
+    if use_kwh:
+        meters_sensors_units[4] = UNIT_KWH
+        meters_sensors_units[5] = UNIT_KWH
+        meters_sensors_units[6] = UNIT_KWH
+        meters_sensors_units[7] = UNIT_KWH
     meters_sensors_device_classes = [
         DEVICE_CLASS_CURRENT,
         DEVICE_CLASS_POWER,
@@ -2448,6 +2463,11 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
         TPL_ENERGY_WH,
         TPL_ENERGY_WH,
     ]
+    if use_kwh:
+        meters_sensors_tpls[4] = TPL_ENERGY_WMIN_KWH
+        meters_sensors_tpls[5] = TPL_ENERGY_WMIN_KWH
+        meters_sensors_tpls[6] = TPL_ENERGY_WH_KWH
+        meters_sensors_tpls[7] = TPL_ENERGY_WH_KWH
     bin_sensors = [SENSOR_FIRMWARE_UPDATE]
     bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
     bin_sensors_enabled = [True]

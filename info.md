@@ -216,6 +216,7 @@ key | optional | type | default | description
 `qos` | True | integer | `0` | MQTT QoS, you can use `0`, `1` or `2`
 `ignored_devices` | True | list | `None` | list of devices to ignore
 `ignore_device_model` | True | boolean | `false` | ignore device model to generate device name
+`use_kwh` | True | boolean | `false` | `true`, `false` | does energy sensors use kWh unit instead of Wh
 
 ## Device arguments
 
@@ -235,7 +236,6 @@ key | optional | type | default | possible values | description
 `powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for Shelly H&T, Motion, Sense and Button1
 `expire_after` | True | integer | 51840 | | [expire after](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#expire_after) for battery powered sensors in seconds
 `use_fahrenheit` | True | boolean | `false` | `true`, `false` | does H&T, Food or DW2 temperature sensor use the Fahrenheit scale
-`use_kwh` | True | boolean | `false` | `true`, `false` | does energy sensors use kWh unit instead of Wh
 
 
 [forum]: https://community.home-assistant.io/t/shellies-discovery-script/94048
