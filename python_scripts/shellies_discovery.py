@@ -1499,6 +1499,9 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         SENSOR_TEMPERATURE_STATUS: OPTIONS_SENSOR_TEMPERATURE_STATUS,
         SENSOR_VOLTAGE: OPTIONS_SENSOR_VOLTAGE,
     }
+    if roller_mode:
+        sensors[SENSOR_ENERGY] = OPTIONS_SENSOR_ROLLER_ENERGY
+        sensors[SENSOR_POWER] = OPTIONS_SENSOR_ROLLER_POWER
     bin_sensors = [
         SENSOR_OVERTEMPERATURE,
         SENSOR_FIRMWARE_UPDATE,
@@ -3082,6 +3085,8 @@ for relay_id in range(relays):
         if sensor_options.get(ATTR_ICON):
             payload[KEY_ICON] = sensor_options[ATTR_ICON]
         if dev_id.lower() in ignored:
+            payload = ""
+        if roller_mode:
             payload = ""
 
         mqtt_publish(config_topic, payload, retain)
