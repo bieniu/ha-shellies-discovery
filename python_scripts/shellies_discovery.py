@@ -444,6 +444,8 @@ TOPIC_POWER = "~relay/power"
 TOPIC_RELAY = "~relay"
 TOPIC_RELAY_ENERGY = "~relay/{relay_id}/energy"
 TOPIC_RELAY_POWER = "~relay/{relay_id}/power"
+TOPIC_ROLLER_ENERGY = "~roller/0/energy"
+TOPIC_ROLLER_POWER = "~roller/0/power"
 TOPIC_SELF_TEST = "~sensor/start_self_test"
 TOPIC_SENSOR_BATTERY = "~sensor/battery"
 TOPIC_SENSOR_CONCENTRATION = "~sensor/concentration"
@@ -651,6 +653,14 @@ if use_kwh:
         KEY_UNIT: UNIT_KWH,
         KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN_KWH,
     }
+    OPTIONS_SENSOR_ROLLER_ENERGY = {
+        KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
+        KEY_ENABLED_BY_DEFAULT: True,
+        KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
+        KEY_STATE_TOPIC: TOPIC_ROLLER_ENERGY,
+        KEY_UNIT: UNIT_KWH,
+        KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN_KWH,
+    }
     OPTIONS_SENSOR_LIGHT_ENERGY = {
         KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
         KEY_ENABLED_BY_DEFAULT: True,
@@ -692,6 +702,14 @@ else:
         KEY_UNIT: UNIT_WH,
         KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN,
     }
+    OPTIONS_SENSOR_ROLLER_ENERGY = {
+        KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
+        KEY_ENABLED_BY_DEFAULT: True,
+        KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
+        KEY_STATE_TOPIC: TOPIC_ROLLER_ENERGY,
+        KEY_UNIT: UNIT_WH,
+        KEY_VALUE_TEMPLATE: TPL_ENERGY_WMIN,
+    }
     OPTIONS_SENSOR_LIGHT_ENERGY = {
         KEY_DEVICE_CLASS: DEVICE_CLASS_ENERGY,
         KEY_ENABLED_BY_DEFAULT: True,
@@ -729,6 +747,14 @@ OPTIONS_SENSOR_RELAY_POWER = {
     KEY_ENABLED_BY_DEFAULT: True,
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_RELAY_POWER,
+    KEY_UNIT: UNIT_WATT,
+    KEY_VALUE_TEMPLATE: TPL_POWER,
+}
+OPTIONS_SENSOR_ROLLER_POWER = {
+    KEY_DEVICE_CLASS: DEVICE_CLASS_POWER,
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
+    KEY_STATE_TOPIC: TOPIC_ROLLER_POWER,
     KEY_UNIT: UNIT_WATT,
     KEY_VALUE_TEMPLATE: TPL_POWER,
 }
@@ -1436,6 +1462,12 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
         SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
         SENSOR_VOLTAGE: OPTIONS_SENSOR_VOLTAGE,
     }
+    if roller_mode:
+        sensors[SENSOR_ENERGY] = OPTIONS_SENSOR_ROLLER_ENERGY
+        sensors[SENSOR_POWER] = OPTIONS_SENSOR_ROLLER_POWER
+    else:
+        sensors[SENSOR_ENERGY] = OPTIONS_SENSOR_ENERGY
+        sensors[SENSOR_POWER] = OPTIONS_SENSOR_POWER
     buttons = {BUTTON_UPDATE_FIRMWARE: OPTIONS_BUTTON_UPDATE_FIRMWARE}
 
 if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
@@ -1466,7 +1498,10 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         SENSOR_TEMPERATURE: OPTIONS_SENSOR_DEVICE_TEMPERATURE,
         SENSOR_TEMPERATURE_STATUS: OPTIONS_SENSOR_TEMPERATURE_STATUS,
         SENSOR_VOLTAGE: OPTIONS_SENSOR_VOLTAGE,
+        SENSOR_ENERGY: OPTIONS_SENSOR_ROLLER_ENERGY,
+        SENSOR_POWER: OPTIONS_SENSOR_ROLLER_POWER,
     }
+
     bin_sensors = [
         SENSOR_OVERTEMPERATURE,
         SENSOR_FIRMWARE_UPDATE,
@@ -3051,6 +3086,8 @@ for relay_id in range(relays):
             payload[KEY_ICON] = sensor_options[ATTR_ICON]
         if dev_id.lower() in ignored:
             payload = ""
+        if roller_mode:
+            payload = ""
 
         mqtt_publish(config_topic, payload, retain)
 
@@ -3157,7 +3194,10 @@ for sensor, sensor_options in sensors.items():
         "ascii", "ignore"
     ).decode("utf-8")
     default_topic = f"shellies/{dev_id}/"
-    if model == MODEL_SHELLY2 and sensor in (SENSOR_ENERGY, SENSOR_POWER):
+    if model in (MODEL_SHELLY2, MODEL_SHELLY25) and sensor in (
+        SENSOR_ENERGY,
+        SENSOR_POWER,
+    ):
         unique_id = f"{dev_id}-relay-{sensor}".lower()
     else:
         unique_id = f"{dev_id}-{sensor}".lower()
@@ -3214,6 +3254,12 @@ for sensor, sensor_options in sensors.items():
     if use_fahrenheit and sensor == SENSOR_TEMPERATURE:
         payload = ""
     if not use_fahrenheit and sensor == SENSOR_TEMPERATURE_F:
+        payload = ""
+    if (
+        model == MODEL_SHELLY25
+        and sensor in (SENSOR_ENERGY, SENSOR_POWER)
+        and not roller_mode
+    ):
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
