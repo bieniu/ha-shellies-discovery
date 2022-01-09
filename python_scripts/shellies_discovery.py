@@ -1498,10 +1498,10 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         SENSOR_TEMPERATURE: OPTIONS_SENSOR_DEVICE_TEMPERATURE,
         SENSOR_TEMPERATURE_STATUS: OPTIONS_SENSOR_TEMPERATURE_STATUS,
         SENSOR_VOLTAGE: OPTIONS_SENSOR_VOLTAGE,
+        SENSOR_ENERGY: OPTIONS_SENSOR_ROLLER_ENERGY,
+        SENSOR_POWER: OPTIONS_SENSOR_ROLLER_POWER,
     }
-    if roller_mode:
-        sensors[SENSOR_ENERGY] = OPTIONS_SENSOR_ROLLER_ENERGY
-        sensors[SENSOR_POWER] = OPTIONS_SENSOR_ROLLER_POWER
+
     bin_sensors = [
         SENSOR_OVERTEMPERATURE,
         SENSOR_FIRMWARE_UPDATE,
@@ -3194,7 +3194,10 @@ for sensor, sensor_options in sensors.items():
         "ascii", "ignore"
     ).decode("utf-8")
     default_topic = f"shellies/{dev_id}/"
-    if model == MODEL_SHELLY2 and sensor in (SENSOR_ENERGY, SENSOR_POWER):
+    if model in (MODEL_SHELLY2, MODEL_SHELLY25) and sensor in (
+        SENSOR_ENERGY,
+        SENSOR_POWER,
+    ):
         unique_id = f"{dev_id}-relay-{sensor}".lower()
     else:
         unique_id = f"{dev_id}-{sensor}".lower()
@@ -3251,6 +3254,12 @@ for sensor, sensor_options in sensors.items():
     if use_fahrenheit and sensor == SENSOR_TEMPERATURE:
         payload = ""
     if not use_fahrenheit and sensor == SENSOR_TEMPERATURE_F:
+        payload = ""
+    if (
+        model == MODEL_SHELLY25
+        and sensor in (SENSOR_ENERGY, SENSOR_POWER)
+        and not roller_mode
+    ):
         payload = ""
     if dev_id.lower() in ignored:
         payload = ""
