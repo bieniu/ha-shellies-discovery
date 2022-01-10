@@ -1,8 +1,0 @@
-shellies/announce {"id":"shellyplug-s-7AECF4","mac":"XXXXXXXXXXXX","ip":"xxx.xxx.xxx.xxx","new_fw":false, "fw_ver":"20190821-095311/v1.5.2@4148d2b7"}
-
-shellies/shellyplug-s-7AECF4/relay/0 on
-shellies/shellyplug-s-7AECF4/relay/0/power 37.71
-shellies/shellyplug-s-7AECF4/relay/0/energy 2803153
-shellies/shellyplug-s-7AECF4/temperature 39.18
-shellies/shellyplug-s-7AECF4/temperature_f 102.53
-shellies/shellyplug-s-7AECF4/overtemperature 0
