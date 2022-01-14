@@ -3036,6 +3036,7 @@ for relay_id in range(relays):
         relay_name = device_config[f"relay-{relay_id}-name"]
     else:
         relay_name = f"{device_name} Relay {relay_id}"
+    state_topic = f"~relay/{relay_id}"
     config_component = COMP_SWITCH
     if device_config.get(f"relay-{relay_id}"):
         config_component = device_config[f"relay-{relay_id}"]
@@ -3049,7 +3050,7 @@ for relay_id in range(relays):
             payload = {
                 KEY_NAME: relay_name,
                 KEY_COMMAND_TOPIC: f"{state_topic}/command",
-                KEY_STATE_TOPIC: f"~relay/{relay_id}",
+                KEY_STATE_TOPIC: state_topic,
                 KEY_PAYLOAD_OFF: VALUE_OFF,
                 KEY_PAYLOAD_ON: VALUE_ON,
                 KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
