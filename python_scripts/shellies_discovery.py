@@ -2993,31 +2993,27 @@ for roller_id in range(rollers):
                 f"{wrong_class} is the wrong roller class, the default value None was used"
             )
     state_topic = f"~roller/{roller_id}"
-    command_topic = f"{state_topic}/command"
-    position_topic = f"{state_topic}/pos"
-    set_position_topic = f"{state_topic}/command/pos"
-    unique_id = f"{dev_id}-roller-{roller_id}".lower()
     config_topic = f"{disc_prefix}/cover/{dev_id}-roller-{roller_id}/config".encode(
         "ascii", "ignore"
     ).decode("utf-8")
     if roller_mode:
         payload = {
             KEY_NAME: roller_name,
-            KEY_COMMAND_TOPIC: command_topic,
-            KEY_POSITION_TOPIC: position_topic,
+            KEY_COMMAND_TOPIC: f"{state_topic}/command",
+            KEY_POSITION_TOPIC: f"{state_topic}/pos",
             KEY_STATE_TOPIC: state_topic,
             KEY_STATE_CLOSING: VALUE_CLOSE,
             KEY_STATE_OPENING: VALUE_OPEN,
             KEY_STATE_STOPPED: VALUE_STOP,
             KEY_POSITION_TEMPLATE: position_template,
-            KEY_SET_POSITION_TOPIC: set_position_topic,
+            KEY_SET_POSITION_TOPIC: f"{state_topic}/command/pos",
             KEY_PAYLOAD_OPEN: VALUE_OPEN,
             KEY_PAYLOAD_CLOSE: VALUE_CLOSE,
             KEY_PAYLOAD_STOP: VALUE_STOP,
             KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
             KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
             KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-            KEY_UNIQUE_ID: unique_id,
+            KEY_UNIQUE_ID: f"{dev_id}-roller-{roller_id}".lower(),
             KEY_OPTIMISTIC: VALUE_FALSE,
             KEY_QOS: qos,
             KEY_DEVICE: device_info,
@@ -3040,9 +3036,6 @@ for relay_id in range(relays):
         relay_name = device_config[f"relay-{relay_id}-name"]
     else:
         relay_name = f"{device_name} Relay {relay_id}"
-    state_topic = f"~relay/{relay_id}"
-    command_topic = f"{state_topic}/command"
-    unique_id = f"{dev_id}-relay-{relay_id}".lower()
     config_component = COMP_SWITCH
     if device_config.get(f"relay-{relay_id}"):
         config_component = device_config[f"relay-{relay_id}"]
@@ -3055,14 +3048,14 @@ for relay_id in range(relays):
         if component == config_component and not roller_mode:
             payload = {
                 KEY_NAME: relay_name,
-                KEY_COMMAND_TOPIC: command_topic,
-                KEY_STATE_TOPIC: state_topic,
+                KEY_COMMAND_TOPIC: f"{state_topic}/command",
+                KEY_STATE_TOPIC: f"~relay/{relay_id}",
                 KEY_PAYLOAD_OFF: VALUE_OFF,
                 KEY_PAYLOAD_ON: VALUE_ON,
                 KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
                 KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
                 KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-                KEY_UNIQUE_ID: unique_id,
+                KEY_UNIQUE_ID: f"{dev_id}-relay-{relay_id}".lower(),
                 KEY_QOS: qos,
                 KEY_DEVICE: device_info,
                 "~": default_topic,
