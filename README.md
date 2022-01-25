@@ -11,6 +11,9 @@
 
 This script adds MQTT discovery support for Shelly devices in the [Home Assistant](https://home-assistant.io/).
 
+### Gen2 devices information
+Pro/Plus devies are supported by [Shellies Discovery Gen2 script](https://github.com/bieniu/ha-shellies-discovery-gen2).
+
 ## Prerequisites
 
 This script needs Home Assistant `python_script` component so, if you never used it, I strongly suggest you to follow the [official instruction](https://www.home-assistant.io/integrations/python_script#writing-your-first-script) and check that `python_script` is properly configured and it's working.
