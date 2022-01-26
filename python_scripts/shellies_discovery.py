@@ -319,6 +319,7 @@ MODEL_SHELLYVINTAGE_PREFIX = "shellyvintage"
 MODEL_SHELLYUNI_ID = "SHUNI-1"  # Shelly UNI
 MODEL_SHELLYUNI_PREFIX = "shellyuni"
 
+NUMBER_MINIMAL_VALVE_POSITION = "minimal_valve_position"
 NUMBER_VALVE_POSITION = "valve_position"
 
 OFF_DELAY = 1
@@ -419,6 +420,7 @@ TOPIC_COMMAND = "~command"
 TOPIC_COMMAND_ACCELERATED_HEATING = "~thermostat/0/command/accelerated_heating"
 TOPIC_COMMAND_PROFILES = "~thermostat/0/command/schedule_profile"
 TOPIC_COMMAND_SCHEDULE = "~thermostat/0/command/schedule"
+TOPIC_COMMAND_VALVE_MIN = "~thermostat/0/command/valve_min_percent"
 TOPIC_COMMAND_VALVE_POSITION = "~thermostat/0/command/valve_pos"
 TOPIC_ENERGY = "~relay/energy"
 TOPIC_EXT_SWITCH = "~ext_switch/0"
@@ -517,6 +519,7 @@ TPL_NEW_FIRMWARE_FROM_ANNOUNCE = "{%if value_json.new_fw==true%}ON{%else%}OFF{%e
 TPL_PROFILES = "profile {{value_json.thermostats.0.schedule_profile}}"
 TPL_SCHEDULE = "{{value_json.thermostats.0.schedule}}"
 TPL_VALVE = "{{value.replace(^_^,^ ^)}}"
+TPL_VALVE_MIN_POSITION = "{{value_json.thermostats.0.valve_min_percent}}"
 TPL_VALVE_POSITION = "{{value_json.thermostats.0.pos}}"
 TPL_NEW_FIRMWARE_FROM_INFO = (
     "{%if value_json[^update^].has_update==true%}ON{%else%}OFF{%endif%}"
@@ -640,6 +643,18 @@ OPTIONS_NUMBER_VALVE_POSITION = {
     KEY_ICON: "mdi:pipe-valve",
     KEY_STATE_TOPIC: TOPIC_INFO,
     KEY_VALUE_TEMPLATE: TPL_VALVE_POSITION,
+    KEY_UNIT: UNIT_PERCENT,
+}
+OPTIONS_NUMBER_MINIMAL_VALVE_POSITION = {
+    KEY_COMMAND_TOPIC: TOPIC_COMMAND_VALVE_MIN,
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_MIN: 0,
+    KEY_MAX: 10,
+    KEY_STEP: 1,
+    KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+    KEY_ICON: "mdi:filter-minus-outline",
+    KEY_STATE_TOPIC: TOPIC_SETTINGS,
+    KEY_VALUE_TEMPLATE: TPL_VALVE_MIN_POSITION,
     KEY_UNIT: UNIT_PERCENT,
 }
 OPTIONS_SELECT_PROFILES = {
@@ -2773,7 +2788,10 @@ if model_id == MODEL_SHELLYVALVE_ID:
         SWITCH_SCHEDULE: OPTIONS_SWITCH_SCHEDULE,
         SWITCH_ACCELERATED_HEATING: OPTIONS_SWITCH_ACCELERATED_HEATING,
     }
-    numbers = {NUMBER_VALVE_POSITION: OPTIONS_NUMBER_VALVE_POSITION}
+    numbers = {
+        NUMBER_VALVE_POSITION: OPTIONS_NUMBER_VALVE_POSITION,
+        NUMBER_MINIMAL_VALVE_POSITION: OPTIONS_NUMBER_MINIMAL_VALVE_POSITION,
+    }
 
 device_config = get_device_config(dev_id)
 if device_config.get(CONF_DEVICE_NAME):
