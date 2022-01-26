@@ -319,6 +319,7 @@ MODEL_SHELLYVINTAGE_PREFIX = "shellyvintage"
 MODEL_SHELLYUNI_ID = "SHUNI-1"  # Shelly UNI
 MODEL_SHELLYUNI_PREFIX = "shellyuni"
 
+NUMBER_BOOST_TIME = "boost_time"
 NUMBER_MINIMAL_VALVE_POSITION = "minimal_valve_position"
 NUMBER_VALVE_POSITION = "valve_position"
 
@@ -418,6 +419,7 @@ TOPIC_ANNOUNCE = "~announce"
 TOPIC_COLOR_0_STATUS = "~color/0/status"
 TOPIC_COMMAND = "~command"
 TOPIC_COMMAND_ACCELERATED_HEATING = "~thermostat/0/command/accelerated_heating"
+TOPIC_COMMAND_BOOST_MINUTES = "~thermostat/0/command/boost_minutes"
 TOPIC_COMMAND_PROFILES = "~thermostat/0/command/schedule_profile"
 TOPIC_COMMAND_SCHEDULE = "~thermostat/0/command/schedule"
 TOPIC_COMMAND_VALVE_MIN = "~thermostat/0/command/valve_min_percent"
@@ -486,6 +488,7 @@ TPL_ADC = "{{value|float|round(2)}}"
 TPL_BATTERY = "{{value|float|round}}"
 TPL_BATTERY_FROM_INFO = "{{value_json.bat.value}}"
 TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
+TPL_BOOST_MINUTES = "{{value_json.thermostats.0.boost_minutes}}"
 TPL_CALIBRATED = "{%if value_json.calibrated==true%}ON{%else%}OFF{%endif%}"
 TPL_CHARGER = "{%if value_json.charger==true%}ON{%else%}OFF{%endif%}"
 TPL_CLOUD = "{%if value_json.cloud.connected==true%}ON{%else%}OFF{%endif%}"
@@ -554,6 +557,7 @@ UNIT_DEGREE = "°"
 UNIT_FAHRENHEIT = "°F"
 UNIT_KWH = "kWh"
 UNIT_LUX = "lx"
+UNIT_MINUTES = "min"
 UNIT_PERCENT = "%"
 UNIT_PPM = "ppm"
 UNIT_SECOND = "s"
@@ -656,6 +660,18 @@ OPTIONS_NUMBER_MINIMAL_VALVE_POSITION = {
     KEY_STATE_TOPIC: TOPIC_SETTINGS,
     KEY_VALUE_TEMPLATE: TPL_VALVE_MIN_POSITION,
     KEY_UNIT: UNIT_PERCENT,
+}
+OPTIONS_BOOST_TIME = {
+    KEY_COMMAND_TOPIC: TOPIC_COMMAND_BOOST_MINUTES,
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_MIN: 0,
+    KEY_MAX: 1440,
+    KEY_STEP: 1,
+    KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+    KEY_ICON: "mdi:clock-fast",
+    KEY_STATE_TOPIC: TOPIC_INFO,
+    KEY_VALUE_TEMPLATE: TPL_BOOST_MINUTES,
+    KEY_UNIT: UNIT_MINUTES,
 }
 OPTIONS_SELECT_PROFILES = {
     KEY_COMMAND_TOPIC: TOPIC_COMMAND_PROFILES,
@@ -2791,6 +2807,7 @@ if model_id == MODEL_SHELLYVALVE_ID:
     numbers = {
         NUMBER_VALVE_POSITION: OPTIONS_NUMBER_VALVE_POSITION,
         NUMBER_MINIMAL_VALVE_POSITION: OPTIONS_NUMBER_MINIMAL_VALVE_POSITION,
+        NUMBER_BOOST_TIME: OPTIONS_BOOST_TIME,
     }
 
 device_config = get_device_config(dev_id)
