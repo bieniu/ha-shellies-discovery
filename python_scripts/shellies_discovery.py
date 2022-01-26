@@ -186,8 +186,8 @@ MIN_4PRO_FIRMWARE_DATE = 20200408
 # Firmware 1.1.0 release date
 MIN_MOTION_FIRMWARE_DATE = 20210226
 
-# Firmware 2.1.0 release date
-MIN_VALVE_FIRMWARE_DATE = 20211223
+# Firmware 2.1.3-rc2 release date
+MIN_VALVE_FIRMWARE_DATE = 20220126
 
 # Firmware 1.11.0 release date
 MIN_FIRMWARE_DATE = 20210720
@@ -409,12 +409,14 @@ SENSOR_VOLTAGE = "voltage"
 STATE_CLASS_MEASUREMENT = "measurement"
 STATE_CLASS_TOTAL_INCREASING = "total_increasing"
 
+SWITCH_ACCELERATED_HEATING = "accelerated_heating"
 SWITCH_SCHEDULE = "schedule"
 
 TOPIC_ADC = "~adc/0"
 TOPIC_ANNOUNCE = "~announce"
 TOPIC_COLOR_0_STATUS = "~color/0/status"
 TOPIC_COMMAND = "~command"
+TOPIC_COMMAND_ACCELERATED_HEATING = "~thermostat/0/command/accelerated_heating"
 TOPIC_COMMAND_PROFILES = "~thermostat/0/command/schedule_profile"
 TOPIC_COMMAND_SCHEDULE = "~thermostat/0/command/schedule"
 TOPIC_COMMAND_VALVE_POSITION = "~thermostat/0/command/valve_pos"
@@ -465,6 +467,7 @@ TOPIC_SENSOR_SELF_TEST = "~sensor/self_test"
 TOPIC_SENSOR_TEMPERATURE = "~sensor/temperature"
 TOPIC_SENSOR_TILT = "~sensor/tilt"
 TOPIC_SENSOR_UNMUTE = "~sensor/unmute"
+TOPIC_SETTINGS = "~settings"
 TOPIC_STATUS = "~status"
 TOPIC_TEMPERATURE = "~temperature"
 TOPIC_TEMPERATURE_STATUS = "~temperature_status"
@@ -475,6 +478,7 @@ TOPIC_VOLTAGE = "~voltage"
 TOPIC_WHITE_SET = "~white/{light_id}/set"
 TOPIC_WHITE_STATUS = "~white/{light_id}/status"
 
+TPL_ACCELERATED_HEATING = "{{value_json.thermostats.0.target_t.accelerated_heating}}"
 TPL_ACTION_TEMPLATE = "{{%if value_json.thermostats.0.target_t.value<={min_temp}%}}off{{%elif value_json.thermostats.0.pos==0%}}idle{{%else%}}heating{{%endif%}}"
 TPL_ADC = "{{value|float|round(2)}}"
 TPL_BATTERY = "{{value|float|round}}"
@@ -1107,6 +1111,18 @@ OPTIONS_SWITCH_SCHEDULE = {
     KEY_PAYLOAD_OFF: 0,
     KEY_STATE_TOPIC: TOPIC_INFO,
     KEY_VALUE_TEMPLATE: TPL_SCHEDULE,
+    KEY_STATE_ON: VALUE_TRUE,
+    KEY_STATE_OFF: VALUE_FALSE,
+}
+OPTIONS_SWITCH_ACCELERATED_HEATING = {
+    KEY_COMMAND_TOPIC: TOPIC_COMMAND_ACCELERATED_HEATING,
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+    KEY_ICON: "mdi:thermometer-chevron-up",
+    KEY_PAYLOAD_ON: 1,
+    KEY_PAYLOAD_OFF: 0,
+    KEY_STATE_TOPIC: TOPIC_SETTINGS,
+    KEY_VALUE_TEMPLATE: TPL_ACCELERATED_HEATING,
     KEY_STATE_ON: VALUE_TRUE,
     KEY_STATE_OFF: VALUE_FALSE,
 }
@@ -2753,7 +2769,10 @@ if model_id == MODEL_SHELLYVALVE_ID:
         BUTTON_UPDATE_FIRMWARE: OPTIONS_BUTTON_UPDATE_FIRMWARE,
     }
     selectors = {SELECT_PROFILES: OPTIONS_SELECT_PROFILES}
-    switches = {SWITCH_SCHEDULE: OPTIONS_SWITCH_SCHEDULE}
+    switches = {
+        SWITCH_SCHEDULE: OPTIONS_SWITCH_SCHEDULE,
+        SWITCH_ACCELERATED_HEATING: OPTIONS_SWITCH_ACCELERATED_HEATING,
+    }
     numbers = {NUMBER_VALVE_POSITION: OPTIONS_NUMBER_VALVE_POSITION}
 
 device_config = get_device_config(dev_id)
