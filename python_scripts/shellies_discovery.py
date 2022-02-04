@@ -186,8 +186,8 @@ MIN_4PRO_FIRMWARE_DATE = 20200408
 # Firmware 1.1.0 release date
 MIN_MOTION_FIRMWARE_DATE = 20210226
 
-# Firmware 2.1.3-rc2 release date
-MIN_VALVE_FIRMWARE_DATE = 20220126
+# Firmware 2.1.3 release date
+MIN_VALVE_FIRMWARE_DATE = 20220202
 
 # Firmware 1.11.0 release date
 MIN_FIRMWARE_DATE = 20210720
