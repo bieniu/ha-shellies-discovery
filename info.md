@@ -98,7 +98,7 @@ python_script:
       id: '{{ trigger.payload_json.id }}'
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
-      model: '{{ trigger.payload_json.model }}'
+      model: '{{ trigger.payload_json.model | default }}'
       mode: '{{ trigger.payload_json.mode | default }}'
       host: '{{ trigger.payload_json.ip }}'
 ```
@@ -136,7 +136,7 @@ python_script:
       id: '{{ trigger.payload_json.id }}'
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
-      model: '{{ trigger.payload_json.model }}'
+      model: '{{ trigger.payload_json.model | default }}'
       mode: '{{ trigger.payload_json.mode | default }}'
       host: '{{ trigger.payload_json.ip }}'
       discovery_prefix: 'hass'
