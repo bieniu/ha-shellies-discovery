@@ -52,6 +52,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly H&T (battery or USB powered)
 - Shelly i3
 - Shelly Motion (battery or USB powered)
+- Shelly Motion 2 (battery or USB powered)
 - Shelly Plug
 - Shelly Plug S
 - Shelly Plug US
