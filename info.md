@@ -28,6 +28,7 @@ This script needs Home Assistant `python_script` component so, if you never used
 - Shelly H&T (battery or USB powered)
 - Shelly i3
 - Shelly Motion (battery or USB powered)
+- Shelly Motion 2 (battery or USB powered)
 - Shelly Plug
 - Shelly Plug S
 - Shelly Plug US
