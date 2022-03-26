@@ -1697,10 +1697,11 @@ relay_sensors = {}
 light_sensors = {}
 rgbw_lights = 0
 rollers = 0
+binary_sensors = {}
+numbers = {}
 selectors = {}
 sensors = {}
 switches = {}
-numbers = {}
 white_lights = {}
 
 if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
