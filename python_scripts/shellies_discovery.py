@@ -3407,8 +3407,12 @@ for sensor, sensor_options in binary_sensors.items():
     if sensor_options.get(KEY_VALUE_TEMPLATE):
         payload[KEY_VALUE_TEMPLATE] = sensor_options[KEY_VALUE_TEMPLATE]
     else:
-        payload[KEY_PAYLOAD_ON] = sensor_options[KEY_PAYLOAD][VALUE_ON]
-        payload[KEY_PAYLOAD_OFF] = sensor_options[KEY_PAYLOAD][VALUE_OFF]
+        if sensor_options.get(KEY_PAYLOAD):
+            payload[KEY_PAYLOAD_ON] = sensor_options[KEY_PAYLOAD][VALUE_ON]
+            payload[KEY_PAYLOAD_OFF] = sensor_options[KEY_PAYLOAD][VALUE_OFF]
+        else:
+            payload[KEY_PAYLOAD_ON] = sensor_options[KEY_PAYLOAD_ON]
+            payload[KEY_PAYLOAD_OFF] = sensor_options[KEY_PAYLOAD_OFF]
     if battery_powered:
         payload[KEY_EXPIRE_AFTER] = expire_after
     else:
