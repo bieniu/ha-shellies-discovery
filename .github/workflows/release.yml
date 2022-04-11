@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
       - name: ZIP files
         run: |
           cd /home/runner/work/ha-shellies-discovery/ha-shellies-discovery/python_scripts
