@@ -571,7 +571,7 @@ TPL_SHORTPUSH = "{%if value_json.event==^S^%}ON{%else%}OFF{%endif%}"
 TPL_SHORTPUSH_LONGPUSH = "{%if value_json.event==^SL^%}ON{%else%}OFF{%endif%}"
 TPL_SSID = "{{value_json.wifi_sta.ssid}}"
 TPL_TARGET_TEMPERATURE = "{{value_json.thermostats.0.target_t.value}}"
-TPL_TEMPERATURE = "{%if is_number(value) and -100<value|int<900%}{{value|round(1)}}{%else%}unknown{%endif%}"
+TPL_TEMPERATURE = "{%if is_number(value) and -100<value|int<999%}{{value|round(1)}}{%else%}unknown{%endif%}"
 TPL_TEMPERATURE_MOTION2 = "{{value_json.tmp.value}}"
 TPL_TEMPERATURE_EXT = "{%if is_number(value) and -100<value|int<999%}{{value|float|round(1)}}{%else%}unknown{%endif%}"
 TPL_TEMPERATURE_STATUS = "{{value|lower}}"
@@ -3413,9 +3413,9 @@ for sensor, sensor_options in binary_sensors.items():
     else:
         payload[KEY_PAYLOAD_ON] = sensor_options[KEY_PAYLOAD_ON]
         payload[KEY_PAYLOAD_OFF] = sensor_options[KEY_PAYLOAD_OFF]
-    if battery_powered:
+    if battery_powered and model not in (MODEL_SHELLYDW, MODEL_SHELLYDW2):
         payload[KEY_EXPIRE_AFTER] = expire_after
-    else:
+    elif not battery_powered:
         payload[KEY_AVAILABILITY_TOPIC] = TOPIC_ONLINE
         payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
