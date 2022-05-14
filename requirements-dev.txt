@@ -1,0 +1,3 @@
+-r requirements-test.txt
+homeassistant
+pre-commit==2.19.0
