@@ -3223,12 +3223,6 @@ for sensor, sensor_options in sensors.items():
         payload[KEY_AVAILABILITY_TOPIC] = TOPIC_ONLINE
         payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
-    if (
-        model in (MODEL_SHELLYBUTTON1, MODEL_SHELLYSENSE, MODEL_SHELLYHT)
-        and sensor in (SENSOR_RSSI, SENSOR_SSID, SENSOR_UPTIME)
-        and device_config.get(CONF_POWERED) != ATTR_POWER_AC
-    ):
-        payload = ""
     if no_battery_sensor and sensor == SENSOR_BATTERY:
         payload = ""
     if use_fahrenheit and sensor == SENSOR_TEMPERATURE:
