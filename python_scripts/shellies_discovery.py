@@ -2152,43 +2152,13 @@ if model_id == MODEL_SHELLYMOTION2_ID or dev_id_prefix == MODEL_SHELLYMOTION2_PR
         SENSOR_TEMPERATURE: OPTIONS_SENSOR_TEMPERATURE_MOTION2,
         SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
     }
-    bin_sensors = [
-        SENSOR_FIRMWARE_UPDATE,
-        SENSOR_MOTION,
-        SENSOR_VIBRATION,
-        SENSOR_CHARGER,
-        SENSOR_CLOUD,
-    ]
-    bin_sensors_entity_categories = [
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        None,
-        None,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    bin_sensors_enabled = [True, True, True, True, False]
-    bin_sensors_device_classes = [
-        DEVICE_CLASS_UPDATE,
-        DEVICE_CLASS_MOTION,
-        DEVICE_CLASS_VIBRATION,
-        DEVICE_CLASS_BATTERY_CHARGING,
-        DEVICE_CLASS_CONNECTIVITY,
-    ]
-    bin_sensors_pl = [None, None, None, None, None]
-    bin_sensors_tpls = [
-        TPL_NEW_FIRMWARE_FROM_INFO,
-        TPL_MOTION_MOTION2,
-        TPL_VIBRATION_MOTION2,
-        TPL_CHARGER,
-        TPL_CLOUD,
-    ]
-    bin_sensors_topics = [
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_INFO,
-        TOPIC_INFO,
-    ]
+    binary_sensors = {
+        SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE,
+        SENSOR_MOTION: OPTIONS_SENSOR_MOTION,
+        SENSOR_VIBRATION: OPTIONS_SENSOR_VIBRATION,
+        SENSOR_CHARGER: OPTIONS_SENSOR_CHARGER,
+        SENSOR_CLOUD: OPTIONS_SENSOR_CLOUD,
+    }
     battery_powered = True
 
 if model_id == MODEL_SHELLYGAS_ID or dev_id_prefix == MODEL_SHELLYGAS_PREFIX:
