@@ -426,6 +426,7 @@ SENSOR_UPTIME = "uptime"
 SENSOR_VALVE = "valve"
 SENSOR_VIBRATION = "vibration"
 SENSOR_VOLTAGE = "voltage"
+SENSOR_RETURNING = "returning"
 
 STATE_CLASS_MEASUREMENT = "measurement"
 STATE_CLASS_TOTAL_INCREASING = "total_increasing"
@@ -584,6 +585,7 @@ TPL_UPTIME = "{{(as_timestamp(now())-value_json.uptime)|timestamp_l" "ocal}}"
 TPL_VIBRATION = "{%if value_json.vibration==true%}ON{%else%}OFF{%endif%}"
 TPL_VIBRATION_MOTION = "{%if value_json.sensor.vibration==true%}ON{%else%}OFF{%endif%}"
 TPL_VOLTAGE = "{{value|float|round(1)}}"
+TPL_RETURNING = "{%if value|float|round(1)<0%}ON{%else%}OFF{%endif%}"
 
 UNIT_AMPERE = "A"
 UNIT_CELSIUS = "°C"
@@ -1519,6 +1521,12 @@ ROLLER_DEVICE_CLASSES = [
     DEVICE_CLASS_WINDOW,
 ]
 
+OPTIONS_SENSOR_RETURNING = {
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_STATE_TOPIC: TOPIC_METER_POWER,
+    KEY_ICON: "mdi:home-export-outline",
+    KEY_VALUE_TEMPLATE: TPL_RETURNING,
+}
 
 def clean_name(string):
     """Clean entity/device name."""
@@ -1683,6 +1691,7 @@ lights_bin_sensors_device_classes = []
 lights_bin_sensors_pl = []
 lights_bin_sensors_tpls = []
 meters = 0
+meter_bin_sensors = {}
 meter_sensors = {}
 model = None
 relay_components = [COMP_SWITCH, COMP_LIGHT, COMP_FAN]
@@ -2557,6 +2566,9 @@ if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
     relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
     relays_bin_sensors_device_classes = [DEVICE_CLASS_PROBLEM]
+    meter_bin_sensors = {
+        SENSOR_RETURNING: OPTIONS_SENSOR_RETURNING,
+    }
     meter_sensors = {
         SENSOR_ENERGY: OPTIONS_SENSOR_ENERGY_METER,
         SENSOR_POWER: OPTIONS_SENSOR_POWER_METER,
@@ -2590,6 +2602,9 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
     relays_bin_sensors_topics = [TOPIC_RELAY]
     relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
     relays_bin_sensors_device_classes = [DEVICE_CLASS_PROBLEM]
+    meter_bin_sensors = {
+        SENSOR_RETURNING: OPTIONS_SENSOR_RETURNING,
+    }
     meter_sensors = {
         SENSOR_CURRENT: OPTIONS_SENSOR_CURRENT_METER,
         SENSOR_ENERGY: OPTIONS_SENSOR_ENERGY_METER,
@@ -3782,6 +3797,44 @@ for meter_id in range(meters):
     force_update = False
     if isinstance(device_config.get(CONF_FORCE_UPDATE_SENSORS), bool):
         force_update = device_config.get(CONF_FORCE_UPDATE_SENSORS)
+
+    for bin_sensor, sensor_options in meter_bin_sensors.items():
+        config_topic = (
+            f"{disc_prefix}/binary_sensor/{dev_id}-emeter-{bin_sensor}-{meter_id}/config".encode(
+                "ascii", "ignore"
+            ).decode("utf-8")
+        )
+
+        payload = {
+            KEY_NAME: f"{device_name} {clean_name(bin_sensor)} {meter_id}",
+            KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(meter_id=meter_id),
+            KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
+            KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
+            KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
+            KEY_FORCE_UPDATE: str(force_update).lower(),
+            KEY_ENABLED_BY_DEFAULT: str(sensor_options[KEY_ENABLED_BY_DEFAULT]).lower(),
+            KEY_UNIQUE_ID: f"{dev_id}-emeter-{bin_sensor}-{meter_id}".lower(),
+            KEY_QOS: qos,
+            KEY_DEVICE: device_info,
+            "~": default_topic,
+        }
+        if sensor_options.get(KEY_ENTITY_CATEGORY):
+            payload[KEY_ENTITY_CATEGORY] = sensor_options[KEY_ENTITY_CATEGORY]
+        if sensor_options.get(KEY_DEVICE_CLASS):
+            payload[KEY_DEVICE_CLASS] = sensor_options[KEY_DEVICE_CLASS]
+        if sensor_options.get(KEY_VALUE_TEMPLATE):
+            payload[KEY_VALUE_TEMPLATE] = sensor_options[KEY_VALUE_TEMPLATE]
+        else:
+            payload[KEY_PAYLOAD_ON] = sensor_options[VALUE_ON]
+            payload[KEY_PAYLOAD_OFF] = sensor_options[VALUE_OFF]
+        if sensor_options.get(ATTR_ICON):
+            payload[KEY_ICON] = sensor_options[ATTR_ICON]
+        if dev_id.lower() in ignored:
+            payload = ""
+
+        mqtt_publish(config_topic, payload, retain)
+
+
     for sensor, sensor_options in meter_sensors.items():
         config_topic = (
             f"{disc_prefix}/sensor/{dev_id}-emeter-{sensor}-{meter_id}/config".encode(
