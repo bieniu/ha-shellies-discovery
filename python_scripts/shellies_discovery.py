@@ -361,10 +361,6 @@ SENSOR_CHARGER = "charger"
 SENSOR_CLOUD = "cloud"
 SENSOR_CONCENTRATION = "concentration"
 SENSOR_CURRENT = "current"
-SENSOR_DOUBLE_SHORTPUSH = "double shortpush"
-SENSOR_DOUBLE_SHORTPUSH_0 = "double shortpush 0"
-SENSOR_DOUBLE_SHORTPUSH_1 = "double shortpush 1"
-SENSOR_DOUBLE_SHORTPUSH_2 = "double shortpush 2"
 SENSOR_ENERGY = "energy"
 SENSOR_EXT_HUMIDITY = "ext_humidity"
 SENSOR_EXT_SWITCH = "ext_switch"
@@ -374,20 +370,9 @@ SENSOR_FLOOD = "flood"
 SENSOR_GAS = "gas"
 SENSOR_HUMIDITY = "humidity"
 SENSOR_ILLUMINATION = "illumination"
-SENSOR_INPUT = "input"
-SENSOR_INPUT_0 = "input 0"
-SENSOR_INPUT_1 = "input 1"
-SENSOR_INPUT_2 = "input 2"
 SENSOR_IP = "ip"
 SENSOR_LAST_RESTART = "last_restart"
 SENSOR_LOADERROR = "loaderror"
-SENSOR_LONGPUSH = "longpush"
-SENSOR_LONGPUSH_0 = "longpush 0"
-SENSOR_LONGPUSH_1 = "longpush 1"
-SENSOR_LONGPUSH_2 = "longpush 2"
-SENSOR_LONGPUSH_SHORTPUSH_0 = "longpush shortpush 0"
-SENSOR_LONGPUSH_SHORTPUSH_1 = "longpush shortpush 1"
-SENSOR_LONGPUSH_SHORTPUSH_2 = "longpush shortpush 2"
 SENSOR_LUX = "lux"
 SENSOR_MOTION = "motion"
 SENSOR_OPENING = "opening"
@@ -402,13 +387,6 @@ SENSOR_REACTIVE_POWER = "reactive_power"
 SENSOR_RETURNED_ENERGY = "returned_energy"
 SENSOR_RSSI = "rssi"
 SENSOR_SELF_TEST = "self_test"
-SENSOR_SHORTPUSH = "shortpush"
-SENSOR_SHORTPUSH_0 = "shortpush/0"
-SENSOR_SHORTPUSH_1 = "shortpush/1"
-SENSOR_SHORTPUSH_2 = "shortpush/2"
-SENSOR_SHORTPUSH_LONGPUSH_0 = "shortpush longpush 0"
-SENSOR_SHORTPUSH_LONGPUSH_1 = "shortpush longpush 1"
-SENSOR_SHORTPUSH_LONGPUSH_2 = "shortpush longpush 2"
 SENSOR_SMOKE = "smoke"
 SENSOR_SSID = "ssid"
 SENSOR_TEMPERATURE = "temperature"
@@ -418,10 +396,6 @@ SENSOR_TILT = "tilt"
 SENSOR_TOTAL = "total"
 SENSOR_TOTAL_RETURNED = "total_returned"
 SENSOR_TOTALWORKTIME = "totalworktime"
-SENSOR_TRIPLE_SHORTPUSH = "triple shortpush"
-SENSOR_TRIPLE_SHORTPUSH_0 = "triple shortpush 0"
-SENSOR_TRIPLE_SHORTPUSH_1 = "triple shortpush 1"
-SENSOR_TRIPLE_SHORTPUSH_2 = "triple shortpush 2"
 SENSOR_UPTIME = "uptime"
 SENSOR_VALVE = "valve"
 SENSOR_VIBRATION = "vibration"
@@ -447,13 +421,6 @@ TOPIC_COMMAND_VALVE_POSITION = "~thermostat/0/command/valve_pos"
 TOPIC_ENERGY = "~relay/energy"
 TOPIC_EXT_SWITCH = "~ext_switch/0"
 TOPIC_INFO = "~info"
-TOPIC_INPUT_0 = "~input/0"
-TOPIC_INPUT_1 = "~input/1"
-TOPIC_INPUT_2 = "~input/2"
-TOPIC_INPUT_EVENT = "~input_event"
-TOPIC_INPUT_EVENT_0 = "~input_event/0"
-TOPIC_INPUT_EVENT_1 = "~input_event/1"
-TOPIC_INPUT_EVENT_2 = "~input_event/2"
 TOPIC_LIGHT_ENERGY = "~light/{light_id}/energy"
 TOPIC_LIGHT_ENERGY_RGBW2_COLOR = "~color/{light_id}/energy"
 TOPIC_LIGHT_ENERGY_RGBW2_WHITE = "~white/{light_id}/energy"
@@ -533,7 +500,6 @@ TPL_CONCENTRATION = (
 )
 TPL_CURRENT = "{{value|float|round(2)}}"
 TPL_CURRENT_TEMPERATURE = "{{value_json.thermostats.0.tmp.value}}"
-TPL_DOUBLE_SHORTPUSH = "{%if value_json.event==^SS^%}ON{%else%}OFF{%endif%}"
 TPL_ENERGY_WH = "{{value|float|round(2)}}"
 TPL_ENERGY_WH_KWH = "{{(value|float/1000)|round(2)}}"
 TPL_ENERGY_WMIN = "{{(value|float/60)|round(2)}}"
@@ -547,8 +513,6 @@ TPL_ILLUMINATION_MOTION = "{{value_json.lux.value}}"
 TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
 TPL_IP = "{{value_json.ip}}"
 TPL_IP_FROM_INFO = "{{value_json.wifi_sta.ip}}"
-TPL_LONGPUSH = "{%if value_json.event==^L^%}ON{%else%}OFF{%endif%}"
-TPL_LONGPUSH_SHORTPUSH = "{%if value_json.event==^LS^%}ON{%else%}OFF{%endif%}"
 TPL_LUX = "{{value|float|round}}"
 TPL_MOTION = "{%if value_json.motion==true%}ON{%else%}OFF{%endif%}"
 TPL_MOTION_MOTION = "{%if value_json.sensor.motion==true%}ON{%else%}OFF{%endif%}"
@@ -570,8 +534,6 @@ TPL_POWER_FACTOR = "{{value|float*100|round}}"
 TPL_RSSI = "{%if value_json.wifi_sta.rssi!=0%}{{value_json.wifi_sta.rssi}}{%else%}unknown{%endif%}"
 TPL_SELF_TEST = "{{value.replace(^_^,^ ^)}}"
 TPL_SET_TARGET_TEMPERATURE = "{{value}}"
-TPL_SHORTPUSH = "{%if value_json.event==^S^%}ON{%else%}OFF{%endif%}"
-TPL_SHORTPUSH_LONGPUSH = "{%if value_json.event==^SL^%}ON{%else%}OFF{%endif%}"
 TPL_SSID = "{{value_json.wifi_sta.ssid}}"
 TPL_TARGET_TEMPERATURE = "{{value_json.thermostats.0.target_t.value}}"
 TPL_TEMPERATURE = "{%if is_number(value) and -100<value|int<900%}{{value|round(1)}}{%else%}unknown{%endif%}"
@@ -579,7 +541,6 @@ TPL_TEMPERATURE_MOTION = "{{value_json.tmp.value}}"
 TPL_TEMPERATURE_EXT = "{%if is_number(value) and -100<value|int<999%}{{value|float|round(1)}}{%else%}unknown{%endif%}"
 TPL_TEMPERATURE_STATUS = "{{value|lower}}"
 TPL_TILT = "{{value|float}}"
-TPL_TRIPLE_SHORTPUSH = "{%if value_json.event==^SSS^%}ON{%else%}OFF{%endif%}"
 TPL_UPDATE_TO_JSON = "{{value_json[^update^]|tojson}}"
 TPL_UPTIME = "{{(as_timestamp(now())-value_json.uptime)|timestamp_l" "ocal}}"
 TPL_VIBRATION = "{%if value_json.vibration==true%}ON{%else%}OFF{%endif%}"
@@ -1306,119 +1267,6 @@ OPTIONS_SENSOR_EXT_SWITCH = {
     KEY_PAYLOAD_ON: VALUE_1,
     KEY_STATE_TOPIC: TOPIC_EXT_SWITCH,
 }
-OPTIONS_SENSOR_INPUT_0 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_PAYLOAD_OFF: VALUE_0,
-    KEY_PAYLOAD_ON: VALUE_1,
-    KEY_STATE_TOPIC: TOPIC_INPUT_0,
-}
-OPTIONS_SENSOR_INPUT_1 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_PAYLOAD_OFF: VALUE_0,
-    KEY_PAYLOAD_ON: VALUE_1,
-    KEY_STATE_TOPIC: TOPIC_INPUT_1,
-}
-OPTIONS_SENSOR_INPUT_2 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_PAYLOAD_OFF: VALUE_0,
-    KEY_PAYLOAD_ON: VALUE_1,
-    KEY_STATE_TOPIC: TOPIC_INPUT_2,
-}
-OPTIONS_SENSOR_SHORTPUSH = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_0,
-    KEY_VALUE_TEMPLATE: TPL_SHORTPUSH,
-}
-OPTIONS_SENSOR_DOUBLE_SHORTPUSH = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_0,
-    KEY_VALUE_TEMPLATE: TPL_DOUBLE_SHORTPUSH,
-}
-OPTIONS_SENSOR_TRIPLE_SHORTPUSH = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_0,
-    KEY_VALUE_TEMPLATE: TPL_TRIPLE_SHORTPUSH,
-}
-OPTIONS_SENSOR_DOUBLE_SHORTPUSH_0 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_0,
-    KEY_VALUE_TEMPLATE: TPL_DOUBLE_SHORTPUSH,
-}
-OPTIONS_SENSOR_DOUBLE_SHORTPUSH_1 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_1,
-    KEY_VALUE_TEMPLATE: TPL_DOUBLE_SHORTPUSH,
-}
-OPTIONS_SENSOR_DOUBLE_SHORTPUSH_2 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_2,
-    KEY_VALUE_TEMPLATE: TPL_DOUBLE_SHORTPUSH,
-}
-OPTIONS_SENSOR_TRIPLE_SHORTPUSH_0 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_0,
-    KEY_VALUE_TEMPLATE: TPL_TRIPLE_SHORTPUSH,
-}
-OPTIONS_SENSOR_TRIPLE_SHORTPUSH_1 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_1,
-    KEY_VALUE_TEMPLATE: TPL_TRIPLE_SHORTPUSH,
-}
-OPTIONS_SENSOR_TRIPLE_SHORTPUSH_2 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_2,
-    KEY_VALUE_TEMPLATE: TPL_TRIPLE_SHORTPUSH,
-}
-OPTIONS_SENSOR_LONGPUSH_SHORTPUSH_0 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_0,
-    KEY_VALUE_TEMPLATE: TPL_LONGPUSH_SHORTPUSH,
-}
-OPTIONS_SENSOR_LONGPUSH_SHORTPUSH_1 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_1,
-    KEY_VALUE_TEMPLATE: TPL_LONGPUSH_SHORTPUSH,
-}
-OPTIONS_SENSOR_LONGPUSH_SHORTPUSH_2 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_2,
-    KEY_VALUE_TEMPLATE: TPL_LONGPUSH_SHORTPUSH,
-}
-OPTIONS_SENSOR_SHORTPUSH_0 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_0,
-    KEY_VALUE_TEMPLATE: TPL_SHORTPUSH,
-}
-OPTIONS_SENSOR_SHORTPUSH_1 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_1,
-    KEY_VALUE_TEMPLATE: TPL_SHORTPUSH,
-}
-OPTIONS_SENSOR_SHORTPUSH_2 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_2,
-    KEY_VALUE_TEMPLATE: TPL_SHORTPUSH,
-}
-OPTIONS_SENSOR_LONGPUSH = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_0,
-    KEY_VALUE_TEMPLATE: TPL_LONGPUSH,
-}
-OPTIONS_SENSOR_LONGPUSH_0 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_0,
-    KEY_VALUE_TEMPLATE: TPL_LONGPUSH,
-}
-OPTIONS_SENSOR_LONGPUSH_1 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_1,
-    KEY_VALUE_TEMPLATE: TPL_LONGPUSH,
-}
-OPTIONS_SENSOR_LONGPUSH_2 = {
-    KEY_ENABLED_BY_DEFAULT: False,
-    KEY_STATE_TOPIC: TOPIC_INPUT_EVENT_2,
-    KEY_VALUE_TEMPLATE: TPL_LONGPUSH,
-}
 OPTIONS_SENSOR_CLOUD = {
     KEY_DEVICE_CLASS: DEVICE_CLASS_CONNECTIVITY,
     KEY_ENABLED_BY_DEFAULT: False,
@@ -1761,13 +1609,13 @@ if model_id == MODEL_SHELLY1L_ID or dev_id_prefix == MODEL_SHELLY1L_PREFIX:
 
     binary_sensors = {
         SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE,
-        SENSOR_INPUT_0: OPTIONS_SENSOR_INPUT_0,
-        SENSOR_INPUT_1: OPTIONS_SENSOR_INPUT_1,
-        SENSOR_LONGPUSH_0: OPTIONS_SENSOR_LONGPUSH_0,
-        SENSOR_LONGPUSH_1: OPTIONS_SENSOR_LONGPUSH_1,
+        "input 0": {},
+        "input 1": {},
+        "longpush 0": {},
+        "longpush 1": {},
         SENSOR_OVERTEMPERATURE: OPTIONS_SENSOR_OVERTEMPERATURE,
-        SENSOR_SHORTPUSH_0: OPTIONS_SENSOR_SHORTPUSH_0,
-        SENSOR_SHORTPUSH_1: OPTIONS_SENSOR_SHORTPUSH_1,
+        "shortpush/0": {},
+        "shortpush/1": {},
     }
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     relay_sensors = {
@@ -1865,8 +1713,8 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
     }
     binary_sensors = {
         SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE,
-        SENSOR_INPUT_0: OPTIONS_SENSOR_INPUT_0,
-        SENSOR_INPUT_1: OPTIONS_SENSOR_INPUT_1,
+        "input 0": {},
+        "input 1": {},
     }
     sensors = {
         SENSOR_ENERGY: OPTIONS_SENSOR_ENERGY,
@@ -1918,8 +1766,8 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
     }
     binary_sensors = {
         SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE,
-        SENSOR_INPUT_0: OPTIONS_SENSOR_INPUT_0,
-        SENSOR_INPUT_1: OPTIONS_SENSOR_INPUT_1,
+        "input 0": {},
+        "input 1": {},
         SENSOR_OVERTEMPERATURE: OPTIONS_SENSOR_OVERTEMPERATURE,
     }
     buttons = {
@@ -2160,11 +2008,11 @@ if (
         SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
     }
     binary_sensors = {
-        SENSOR_INPUT_0: OPTIONS_SENSOR_INPUT_0,
-        SENSOR_SHORTPUSH: OPTIONS_SENSOR_SHORTPUSH,
-        SENSOR_DOUBLE_SHORTPUSH: OPTIONS_SENSOR_DOUBLE_SHORTPUSH,
-        SENSOR_TRIPLE_SHORTPUSH: OPTIONS_SENSOR_TRIPLE_SHORTPUSH,
-        SENSOR_LONGPUSH: OPTIONS_SENSOR_LONGPUSH,
+        "input 0": {},
+        "shortpush": {},
+        "double shortpush": {},
+        "triple shortpush": {},
+        "longpush": {},
         SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE,
         SENSOR_CHARGER: OPTIONS_SENSOR_CHARGER_BUTTON,
     }
@@ -2285,9 +2133,9 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
 
     binary_sensors = {
         SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE,
-        SENSOR_INPUT_0: OPTIONS_SENSOR_INPUT_0,
-        SENSOR_LONGPUSH_0: OPTIONS_SENSOR_LONGPUSH_0,
-        SENSOR_SHORTPUSH_0: OPTIONS_SENSOR_SHORTPUSH_0,
+        "input 0": {},
+        "longpush 0": {},
+        "shortpush/0": {},
     }
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
     if mode == LIGHT_COLOR:
@@ -2337,12 +2185,12 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
         SENSOR_OVERTEMPERATURE: OPTIONS_SENSOR_OVERTEMPERATURE,
         SENSOR_OVERLOAD: OPTIONS_SENSOR_OVERLOAD,
         SENSOR_LOADERROR: OPTIONS_SENSOR_LOADERROR,
-        SENSOR_INPUT_0: OPTIONS_SENSOR_INPUT_0,
-        SENSOR_INPUT_1: OPTIONS_SENSOR_INPUT_1,
-        SENSOR_LONGPUSH_0: OPTIONS_SENSOR_LONGPUSH_0,
-        SENSOR_LONGPUSH_1: OPTIONS_SENSOR_LONGPUSH_1,
-        SENSOR_SHORTPUSH_0: OPTIONS_SENSOR_SHORTPUSH_0,
-        SENSOR_SHORTPUSH_1: OPTIONS_SENSOR_SHORTPUSH_1,
+        "input 0": {},
+        "input 1": {},
+        "longpush 0": {},
+        "longpush 1": {},
+        "shortpush/0": {},
+        "shortpush/1": {},
         SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE,
     }
 
@@ -2380,12 +2228,12 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         SENSOR_OVERTEMPERATURE: OPTIONS_SENSOR_OVERTEMPERATURE,
         SENSOR_OVERLOAD: OPTIONS_SENSOR_OVERLOAD,
         SENSOR_LOADERROR: OPTIONS_SENSOR_LOADERROR,
-        SENSOR_INPUT_0: OPTIONS_SENSOR_INPUT_0,
-        SENSOR_INPUT_1: OPTIONS_SENSOR_INPUT_1,
-        SENSOR_LONGPUSH_0: OPTIONS_SENSOR_LONGPUSH_0,
-        SENSOR_LONGPUSH_1: OPTIONS_SENSOR_LONGPUSH_1,
-        SENSOR_SHORTPUSH_0: OPTIONS_SENSOR_SHORTPUSH_0,
-        SENSOR_SHORTPUSH_1: OPTIONS_SENSOR_SHORTPUSH_1,
+        "input 0": {},
+        "input 1": {},
+        "longpush 0": {},
+        "longpush 1": {},
+        "shortpush/0": {},
+        "shortpush/1": {},
         SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE,
     }
 
@@ -2581,24 +2429,24 @@ if model_id == MODEL_SHELLYI3_ID or dev_id_prefix == MODEL_SHELLYI3_PREFIX:
         VALUE_BUTTON_LONG_SHORT_PRESS,
     ]
     binary_sensors = {
-        SENSOR_INPUT_0: OPTIONS_SENSOR_INPUT_0,
-        SENSOR_INPUT_1: OPTIONS_SENSOR_INPUT_1,
-        SENSOR_INPUT_2: OPTIONS_SENSOR_INPUT_2,
-        SENSOR_SHORTPUSH_0: OPTIONS_SENSOR_SHORTPUSH_0,
-        SENSOR_SHORTPUSH_1: OPTIONS_SENSOR_SHORTPUSH_1,
-        SENSOR_SHORTPUSH_2: OPTIONS_SENSOR_SHORTPUSH_2,
-        SENSOR_DOUBLE_SHORTPUSH_0: OPTIONS_SENSOR_DOUBLE_SHORTPUSH_0,
-        SENSOR_DOUBLE_SHORTPUSH_1: OPTIONS_SENSOR_DOUBLE_SHORTPUSH_1,
-        SENSOR_DOUBLE_SHORTPUSH_2: OPTIONS_SENSOR_DOUBLE_SHORTPUSH_2,
-        SENSOR_TRIPLE_SHORTPUSH_0: OPTIONS_SENSOR_TRIPLE_SHORTPUSH_0,
-        SENSOR_TRIPLE_SHORTPUSH_1: OPTIONS_SENSOR_TRIPLE_SHORTPUSH_1,
-        SENSOR_TRIPLE_SHORTPUSH_2: OPTIONS_SENSOR_TRIPLE_SHORTPUSH_2,
-        SENSOR_LONGPUSH_0: OPTIONS_SENSOR_LONGPUSH_0,
-        SENSOR_LONGPUSH_1: OPTIONS_SENSOR_LONGPUSH_1,
-        SENSOR_LONGPUSH_2: OPTIONS_SENSOR_LONGPUSH_2,
-        SENSOR_LONGPUSH_SHORTPUSH_0: OPTIONS_SENSOR_LONGPUSH_SHORTPUSH_0,
-        SENSOR_LONGPUSH_SHORTPUSH_1: OPTIONS_SENSOR_LONGPUSH_SHORTPUSH_1,
-        SENSOR_LONGPUSH_SHORTPUSH_2: OPTIONS_SENSOR_LONGPUSH_SHORTPUSH_2,
+        "input 0": {},
+        "input 1": {},
+        "input 2": {},
+        "shortpush/0": {},
+        "shortpush/1": {},
+        "shortpush/2": {},
+        "double shortpush 0": {},
+        "double shortpush 1": {},
+        "double shortpush 2": {},
+        "triple shortpush 0": {},
+        "triple shortpush 1": {},
+        "triple shortpush 2": {},
+        "longpush 0": {},
+        "longpush 1": {},
+        "longpush 2": {},
+        "longpush shortpush 0": {},
+        "longpush shortpush 1": {},
+        "longpush shortpush 2": {},
         SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE,
     }
     sensors = {
@@ -3282,11 +3130,12 @@ for sensor, sensor_options in binary_sensors.items():
         sensor_name = f"{device_name} External Switch"
     else:
         sensor_name = f"{device_name} {clean_name(sensor)}"
-    state_topic = sensor_options[KEY_STATE_TOPIC]
     payload = {
         KEY_NAME: sensor_name,
-        KEY_STATE_TOPIC: state_topic,
-        KEY_ENABLED_BY_DEFAULT: str(sensor_options[KEY_ENABLED_BY_DEFAULT]).lower(),
+        KEY_STATE_TOPIC: sensor_options.get(KEY_STATE_TOPIC),
+        KEY_ENABLED_BY_DEFAULT: str(
+            sensor_options.get(KEY_ENABLED_BY_DEFAULT, "")
+        ).lower(),
         KEY_UNIQUE_ID: f"{dev_id}-{make_id(sensor)}".lower(),
         KEY_QOS: qos,
         KEY_DEVICE: device_info,
@@ -3297,8 +3146,8 @@ for sensor, sensor_options in binary_sensors.items():
     if sensor_options.get(KEY_VALUE_TEMPLATE):
         payload[KEY_VALUE_TEMPLATE] = sensor_options[KEY_VALUE_TEMPLATE]
     else:
-        payload[KEY_PAYLOAD_ON] = sensor_options[KEY_PAYLOAD_ON]
-        payload[KEY_PAYLOAD_OFF] = sensor_options[KEY_PAYLOAD_OFF]
+        payload[KEY_PAYLOAD_ON] = sensor_options.get(KEY_PAYLOAD_ON)
+        payload[KEY_PAYLOAD_OFF] = sensor_options.get(KEY_PAYLOAD_OFF)
     if battery_powered and model not in (MODEL_SHELLYDW, MODEL_SHELLYDW2):
         payload[KEY_EXPIRE_AFTER] = expire_after
     elif not battery_powered:
@@ -3307,29 +3156,6 @@ for sensor, sensor_options in binary_sensors.items():
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
     if sensor_options.get(KEY_DEVICE_CLASS):
         payload[KEY_DEVICE_CLASS] = sensor_options[KEY_DEVICE_CLASS]
-    if (
-        sensor
-        in (
-            SENSOR_LONGPUSH,
-            SENSOR_LONGPUSH_0,
-            SENSOR_LONGPUSH_1,
-            SENSOR_LONGPUSH_2,
-            SENSOR_SHORTPUSH,
-            SENSOR_SHORTPUSH_0,
-            SENSOR_SHORTPUSH_1,
-            SENSOR_SHORTPUSH_2,
-            SENSOR_DOUBLE_SHORTPUSH,
-            SENSOR_DOUBLE_SHORTPUSH_0,
-            SENSOR_DOUBLE_SHORTPUSH_1,
-            SENSOR_DOUBLE_SHORTPUSH_2,
-            SENSOR_TRIPLE_SHORTPUSH,
-            SENSOR_TRIPLE_SHORTPUSH_0,
-            SENSOR_TRIPLE_SHORTPUSH_1,
-            SENSOR_TRIPLE_SHORTPUSH_2,
-        )
-        and push_off_delay
-    ):
-        payload[KEY_OFF_DELAY] = OFF_DELAY
     if (
         model == MODEL_SHELLYRGBW2
         and mode == LIGHT_WHITE
@@ -3360,6 +3186,8 @@ for sensor, sensor_options in binary_sensors.items():
     ):
         payload = ""
     if dev_id.lower() in ignored:
+        payload = ""
+    if not sensor_options:
         payload = ""
 
     mqtt_publish(config_topic, payload, retain)
