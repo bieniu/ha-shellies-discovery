@@ -11,3 +11,4 @@ __pycache__/
 venv/
 home-assistant_v2.db*
 !.pre-commit-config.yaml
+custom_components/
