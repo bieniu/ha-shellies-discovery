@@ -583,9 +583,6 @@ use_kwh = data.get(CONF_USE_KWH, False)  # noqa: F821
 if not isinstance(use_kwh, bool):
     use_kwh = False
 
-PL_0_1 = {VALUE_ON: "0", VALUE_OFF: "1"}
-PL_1_0 = {VALUE_ON: "1", VALUE_OFF: "0"}
-
 OPTIONS_BUTTON_UPDATE_FIRMWARE = {
     KEY_COMMAND_TOPIC: TOPIC_COMMAND,
     KEY_DEVICE_CLASS: DEVICE_CLASS_UPDATE,
