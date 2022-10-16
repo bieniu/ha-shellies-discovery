@@ -1496,7 +1496,7 @@ except (IndexError, ValueError):
         f"Firmware version {fw_ver} is not supported, update your device {dev_id}"
     )
 
-min_ver_date = DEVICE_FIRMWARE_MAP[model_id]
+min_ver_date = DEVICE_FIRMWARE_MAP.get(model_id, 0)
 
 if cur_ver_date < min_ver_date:
     raise ValueError(
