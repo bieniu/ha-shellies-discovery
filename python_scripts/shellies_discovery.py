@@ -1495,6 +1495,13 @@ OPTIONS_SENSOR_OVERLOAD = {
     KEY_PAYLOAD_ON: 1,
     KEY_STATE_TOPIC: TOPIC_OVERLOAD,
 }
+OPTIONS_SENSOR_OVERPOWER = {
+    KEY_DEVICE_CLASS: DEVICE_CLASS_PROBLEM,
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
+    KEY_STATE_TOPIC: TOPIC_RELAY,
+    KEY_VALUE_TEMPLATE: TPL_OVERPOWER_RELAY,
+}
 
 OPTIONS_SENSOR_LOADERROR = {
     KEY_DEVICE_CLASS: DEVICE_CLASS_PROBLEM,
@@ -1602,7 +1609,7 @@ if mode == "roller":
 
 ignored = [
     element.lower() for element in data.get(CONF_IGNORED_DEVICES, [])  # noqa: F821
-]  # noqa: F821
+]
 mac = data.get(CONF_MAC)  # noqa: F821
 
 if not dev_id:
@@ -1687,12 +1694,6 @@ meter_sensors = {}
 model = None
 relay_components = [COMP_SWITCH, COMP_LIGHT, COMP_FAN]
 relays = 0
-relays_bin_sensors = []
-relays_bin_sensors_device_classes = []
-relays_bin_sensors_entity_categories = []
-relays_bin_sensors_pl = []
-relays_bin_sensors_topics = []
-relays_bin_sensors_tpls = []
 relay_sensors = {}
 light_sensors = {}
 rgbw_lights = 0
@@ -1717,16 +1718,11 @@ if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
         SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE,
     }
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
-    relays_bin_sensors = [
-        SENSOR_INPUT,
-        SENSOR_LONGPUSH,
-        SENSOR_SHORTPUSH,
-    ]
-    relays_bin_sensors_entity_categories = [None, None, None]
-    relays_bin_sensors_device_classes = [None, None, None]
-    relays_bin_sensors_pl = [PL_1_0, None, None]
-    relays_bin_sensors_topics = [None, TOPIC_INPUT_EVENT, TOPIC_INPUT_EVENT]
-    relays_bin_sensors_tpls = [None, TPL_LONGPUSH, TPL_SHORTPUSH]
+    relay_binary_sensors = {
+        "input": {},
+        "longpush": {},
+        "shortpush": {},
+    }
     sensors = {
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
@@ -1786,27 +1782,12 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
         SENSOR_POWER: OPTIONS_SENSOR_RELAY_POWER,
         SENSOR_ENERGY: OPTIONS_SENSOR_RELAY_ENERGY,
     }
-    relays_bin_sensors = [
-        SENSOR_INPUT,
-        SENSOR_LONGPUSH,
-        SENSOR_SHORTPUSH,
-        SENSOR_OVERPOWER,
-    ]
-    relays_bin_sensors_entity_categories = [
-        None,
-        None,
-        None,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    relays_bin_sensors_pl = [PL_1_0, None, None, None]
-    relays_bin_sensors_topics = [
-        None,
-        TOPIC_INPUT_EVENT,
-        TOPIC_INPUT_EVENT,
-        TOPIC_RELAY,
-    ]
-    relays_bin_sensors_tpls = [None, TPL_LONGPUSH, TPL_SHORTPUSH, TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_device_classes = [None, None, None, DEVICE_CLASS_PROBLEM]
+    relay_binary_sensors = {
+        SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER,
+        "input": {},
+        "longpush": {},
+        "shortpush": {},
+    }
     sensors = {
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
@@ -1833,11 +1814,7 @@ if model_id == MODEL_SHELLYAIR_ID or dev_id_prefix == MODEL_SHELLYAIR_PREFIX:
         SENSOR_POWER: OPTIONS_SENSOR_RELAY_POWER,
         SENSOR_ENERGY: OPTIONS_SENSOR_RELAY_ENERGY,
     }
-    relays_bin_sensors = [SENSOR_INPUT]
-    relays_bin_sensors_entity_categories = [None]
-    relays_bin_sensors_pl = [PL_1_0]
-    relays_bin_sensors_tpls = [None]
-    relays_bin_sensors_device_classes = [None]
+    relay_binary_sensors = {"input": {}}
     sensors = {
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
@@ -1864,16 +1841,11 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
     inputs = 2
 
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
-    relays_bin_sensors = [
-        SENSOR_LONGPUSH,
-        SENSOR_SHORTPUSH,
-        SENSOR_OVERPOWER,
-    ]
-    relays_bin_sensors_entity_categories = [None, None, ENTITY_CATEGORY_DIAGNOSTIC]
-    relays_bin_sensors_pl = [None, None, None]
-    relays_bin_sensors_topics = [TOPIC_INPUT_EVENT, TOPIC_INPUT_EVENT, TOPIC_RELAY]
-    relays_bin_sensors_tpls = [TPL_LONGPUSH, TPL_SHORTPUSH, TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_device_classes = [None, None, DEVICE_CLASS_PROBLEM]
+    relay_binary_sensors = {
+        SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER,
+        "longpush": {},
+        "shortpush": {},
+    }
     binary_sensors = {
         SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE,
         SENSOR_INPUT_0: OPTIONS_SENSOR_INPUT_0,
@@ -1911,16 +1883,11 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         SENSOR_POWER: OPTIONS_SENSOR_RELAY_POWER,
         SENSOR_ENERGY: OPTIONS_SENSOR_RELAY_ENERGY,
     }
-    relays_bin_sensors = [
-        SENSOR_LONGPUSH,
-        SENSOR_SHORTPUSH,
-        SENSOR_OVERPOWER,
-    ]
-    relays_bin_sensors_entity_categories = [None, None, ENTITY_CATEGORY_DIAGNOSTIC]
-    relays_bin_sensors_pl = [None, None, None]
-    relays_bin_sensors_topics = [TOPIC_INPUT_EVENT, TOPIC_INPUT_EVENT, TOPIC_RELAY]
-    relays_bin_sensors_tpls = [TPL_LONGPUSH, TPL_SHORTPUSH, TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_device_classes = [None, None, DEVICE_CLASS_PROBLEM]
+    relay_binary_sensors = {
+        SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER,
+        "longpush": {},
+        "shortpush": {},
+    }
     sensors = {
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
@@ -1952,27 +1919,12 @@ if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     ext_temp_sensors = 3
 
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
-    relays_bin_sensors = [
-        SENSOR_INPUT,
-        SENSOR_LONGPUSH,
-        SENSOR_SHORTPUSH,
-        SENSOR_OVERPOWER,
-    ]
-    relays_bin_sensors_entity_categories = [
-        None,
-        None,
-        None,
-        ENTITY_CATEGORY_DIAGNOSTIC,
-    ]
-    relays_bin_sensors_pl = [PL_1_0, PL_1_0, PL_0_1, None]
-    relays_bin_sensors_topics = [
-        None,
-        TOPIC_INPUT_EVENT,
-        TOPIC_INPUT_EVENT,
-        TOPIC_RELAY,
-    ]
-    relays_bin_sensors_tpls = [None, TPL_LONGPUSH, TPL_SHORTPUSH, TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_device_classes = [None, None, None, DEVICE_CLASS_PROBLEM]
+    relay_binary_sensors = {
+        SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER,
+        "input": {},
+        "longpush": {},
+        "shortpush": {},
+    }
     sensors = {
         SENSOR_ADC: OPTIONS_SENSOR_ADC,
         SENSOR_IP: OPTIONS_SENSOR_IP,
@@ -1998,13 +1950,7 @@ if (
         SENSOR_POWER: OPTIONS_SENSOR_RELAY_POWER,
         SENSOR_ENERGY: OPTIONS_SENSOR_RELAY_ENERGY,
     }
-    relays_bin_sensors = [SENSOR_OVERPOWER]
-    relays_bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
-    relays_bin_sensors_pl = [None]
-    relays_bin_sensors_topics = [TOPIC_RELAY]
-    relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_device_classes = [DEVICE_CLASS_PROBLEM]
-    binary_sensors = {SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE}
+    relay_binary_sensors = {SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER}
     sensors = {
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
@@ -2022,12 +1968,7 @@ if model_id == MODEL_SHELLYPLUG_US_ID or dev_id_prefix == MODEL_SHELLYPLUG_US_PR
         SENSOR_POWER: OPTIONS_SENSOR_RELAY_POWER,
         SENSOR_ENERGY: OPTIONS_SENSOR_RELAY_ENERGY,
     }
-    relays_bin_sensors = [SENSOR_OVERPOWER]
-    relays_bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
-    relays_bin_sensors_pl = [None]
-    relays_bin_sensors_topics = [TOPIC_RELAY]
-    relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_device_classes = [DEVICE_CLASS_PROBLEM]
+    relay_binary_sensors = {SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER}
     binary_sensors = {SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE}
     sensors = {
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
@@ -2049,12 +1990,7 @@ if model_id == MODEL_SHELLYPLUG_S_ID or dev_id_prefix == MODEL_SHELLYPLUG_S_PREF
         SENSOR_POWER: OPTIONS_SENSOR_RELAY_POWER,
         SENSOR_ENERGY: OPTIONS_SENSOR_RELAY_ENERGY,
     }
-    relays_bin_sensors = [SENSOR_OVERPOWER]
-    relays_bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
-    relays_bin_sensors_pl = [None]
-    relays_bin_sensors_topics = [TOPIC_RELAY]
-    relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_device_classes = [DEVICE_CLASS_PROBLEM]
+    relay_binary_sensors = {SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER}
     sensors = {
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
@@ -2080,12 +2016,10 @@ if model_id == MODEL_SHELLY4PRO_ID or dev_id_prefix == MODEL_SHELLY4PRO_PREFIX:
         SENSOR_POWER: OPTIONS_SENSOR_RELAY_POWER,
         SENSOR_ENERGY: OPTIONS_SENSOR_RELAY_ENERGY,
     }
-    relays_bin_sensors = [SENSOR_OVERPOWER, SENSOR_INPUT]
-    relays_bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC, None]
-    relays_bin_sensors_pl = [None, PL_1_0]
-    relays_bin_sensors_topics = [TOPIC_RELAY, None]
-    relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY, None]
-    relays_bin_sensors_device_classes = [DEVICE_CLASS_PROBLEM, None]
+    relay_binary_sensors = {
+        SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER,
+        "input": {},
+    }
     binary_sensors = {SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE}
     bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
     bin_sensors_enabled = [True]
@@ -2551,12 +2485,7 @@ if model_id == MODEL_SHELLYEM_ID or dev_id_prefix == MODEL_SHELLYEM_PREFIX:
     relays = 1
     meters = 2
 
-    relays_bin_sensors = [SENSOR_OVERPOWER]
-    relays_bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
-    relays_bin_sensors_pl = [None]
-    relays_bin_sensors_topics = [TOPIC_RELAY]
-    relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_device_classes = [DEVICE_CLASS_PROBLEM]
+    relay_binary_sensors = {SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER}
     meter_sensors = {
         SENSOR_ENERGY: OPTIONS_SENSOR_ENERGY_METER,
         SENSOR_POWER: OPTIONS_SENSOR_POWER_METER,
@@ -2584,12 +2513,7 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
     relays = 1
     meters = 3
 
-    relays_bin_sensors = [SENSOR_OVERPOWER]
-    relays_bin_sensors_entity_categories = [ENTITY_CATEGORY_DIAGNOSTIC]
-    relays_bin_sensors_pl = [None]
-    relays_bin_sensors_topics = [TOPIC_RELAY]
-    relays_bin_sensors_tpls = [TPL_OVERPOWER_RELAY]
-    relays_bin_sensors_device_classes = [DEVICE_CLASS_PROBLEM]
+    relay_binary_sensors = {SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER}
     meter_sensors = {
         SENSOR_CURRENT: OPTIONS_SENSOR_CURRENT_METER,
         SENSOR_ENERGY: OPTIONS_SENSOR_ENERGY_METER,
@@ -3073,74 +2997,46 @@ for relay_id in range(relays):
         mqtt_publish(config_topic, payload, retain)
 
     # relay's binary sensors
-    for bin_sensor_id in range(len(relays_bin_sensors)):
+    for sensor, sensor_options in relay_binary_sensors.items():
         push_off_delay = True
         if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
             push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
-        unique_id = f"{dev_id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}".lower()
-        config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-{relays_bin_sensors[bin_sensor_id]}-{relay_id}/config".encode(
+        config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-{make_id(sensor)}-{relay_id}/config".encode(
             "ascii", "ignore"
         ).decode(
             "utf-8"
         )
         if device_config.get(f"relay-{relay_id}-name"):
-            sensor_name = f"{device_config[f'relay-{relay_id}-name']} {clean_name(relays_bin_sensors[bin_sensor_id])}"
+            sensor_name = (
+                f"{device_config[f'relay-{relay_id}-name']} {clean_name(sensor)}"
+            )
         else:
-            sensor_name = f"{device_name} {clean_name(relays_bin_sensors[bin_sensor_id])} {relay_id}"
-        if relays_bin_sensors_topics and relays_bin_sensors_topics[bin_sensor_id]:
-            state_topic = f"{relays_bin_sensors_topics[bin_sensor_id]}/{relay_id}"
-        else:
-            state_topic = f"~{relays_bin_sensors[bin_sensor_id]}/{relay_id}"
+            sensor_name = f"{device_name} {clean_name(sensor)} {relay_id}"
+        state_topic = sensor_options[KEY_STATE_TOPIC]
         if not roller_mode:
             payload = {
                 KEY_NAME: sensor_name,
                 KEY_STATE_TOPIC: state_topic,
+                KEY_ENABLED_BY_DEFAULT: str(
+                    sensor_options[KEY_ENABLED_BY_DEFAULT]
+                ).lower(),
                 KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
                 KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
                 KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-                KEY_UNIQUE_ID: unique_id,
+                KEY_UNIQUE_ID: f"{dev_id}-{make_id(sensor)}-{relay_id}".lower(),
                 KEY_QOS: qos,
                 KEY_DEVICE: device_info,
                 "~": default_topic,
             }
-            if (
-                relays_bin_sensors[bin_sensor_id]
-                in (
-                    SENSOR_LONGPUSH,
-                    SENSOR_LONGPUSH_0,
-                    SENSOR_LONGPUSH_1,
-                    SENSOR_LONGPUSH_2,
-                    SENSOR_SHORTPUSH,
-                    SENSOR_SHORTPUSH_0,
-                    SENSOR_SHORTPUSH_1,
-                    SENSOR_SHORTPUSH_2,
-                    SENSOR_DOUBLE_SHORTPUSH,
-                    SENSOR_DOUBLE_SHORTPUSH_0,
-                    SENSOR_DOUBLE_SHORTPUSH_1,
-                    SENSOR_DOUBLE_SHORTPUSH_2,
-                    SENSOR_TRIPLE_SHORTPUSH,
-                    SENSOR_TRIPLE_SHORTPUSH_0,
-                    SENSOR_TRIPLE_SHORTPUSH_1,
-                    SENSOR_TRIPLE_SHORTPUSH_2,
-                )
-                and push_off_delay
-            ):
-                payload[KEY_OFF_DELAY] = OFF_DELAY
-            if relays_bin_sensors_entity_categories[bin_sensor_id]:
-                payload[KEY_ENTITY_CATEGORY] = relays_bin_sensors_entity_categories[
-                    bin_sensor_id
-                ]
-            if relays_bin_sensors_tpls[bin_sensor_id]:
-                payload[KEY_VALUE_TEMPLATE] = relays_bin_sensors_tpls[bin_sensor_id]
+            if sensor_options.get(KEY_ENTITY_CATEGORY):
+                payload[KEY_ENTITY_CATEGORY] = sensor_options[KEY_ENTITY_CATEGORY]
+            if sensor_options.get(KEY_VALUE_TEMPLATE):
+                payload[KEY_VALUE_TEMPLATE] = sensor_options[KEY_VALUE_TEMPLATE]
             else:
-                payload[KEY_PAYLOAD_ON] = relays_bin_sensors_pl[bin_sensor_id][VALUE_ON]
-                payload[KEY_PAYLOAD_OFF] = relays_bin_sensors_pl[bin_sensor_id][
-                    VALUE_OFF
-                ]
-            if relays_bin_sensors_device_classes[bin_sensor_id]:
-                payload[KEY_DEVICE_CLASS] = relays_bin_sensors_device_classes[
-                    bin_sensor_id
-                ]
+                payload[KEY_PAYLOAD_ON] = sensor_options[KEY_PAYLOAD_ON]
+                payload[KEY_PAYLOAD_OFF] = sensor_options[KEY_PAYLOAD_OFF]
+            if sensor_options.get(KEY_DEVICE_CLASS):
+                payload[KEY_DEVICE_CLASS] = sensor_options[KEY_DEVICE_CLASS]
             if (
                 model
                 in (
@@ -3152,11 +3048,11 @@ for relay_id in range(relays):
                     MODEL_SHELLYPLUG_S,
                     MODEL_SHELLYPLUG_US,
                 )
-                and relays_bin_sensors[bin_sensor_id] == SENSOR_OVERPOWER
+                and sensor == SENSOR_OVERPOWER
             ):
                 payload[
                     KEY_JSON_ATTRIBUTES_TOPIC
-                ] = f"{relays_bin_sensors_topics[bin_sensor_id]}/{relay_id}/{TOPIC_OVERPOWER_VALUE}"
+                ] = f"{sensor}/{relay_id}/{TOPIC_OVERPOWER_VALUE}"
                 payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_OVERPOWER_VALUE_TO_JSON
         else:
             payload = ""
