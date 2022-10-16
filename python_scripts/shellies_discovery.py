@@ -215,8 +215,6 @@ MODEL_SHELLY25 = f"{ATTR_SHELLY} 2.5"
 MODEL_SHELLY3EM = f"{ATTR_SHELLY} 3EM"
 MODEL_SHELLY4PRO = f"{ATTR_SHELLY} 4Pro"
 MODEL_SHELLYAIR = f"{ATTR_SHELLY} Air"
-MODEL_SHELLYBULB = f"{ATTR_SHELLY} Bulb"
-MODEL_SHELLYBULBRGBW = f"{ATTR_SHELLY} DUO RGBW"
 MODEL_SHELLYBUTTON1 = f"{ATTR_SHELLY} Button1"
 MODEL_SHELLYDIMMER = f"{ATTR_SHELLY} Dimmer"
 MODEL_SHELLYDIMMER2 = f"{ATTR_SHELLY} Dimmer 2"
@@ -263,12 +261,6 @@ MODEL_SHELLY4PRO_PREFIX = "shelly4pro"
 
 MODEL_SHELLYAIR_ID = "SHAIR-1"  # Shelly Air
 MODEL_SHELLYAIR_PREFIX = "shellyair"
-
-MODEL_SHELLYBULB_ID = "SHBLB-1"  # Shelly Bulb
-MODEL_SHELLYBULB_PREFIX = "shellybulb"
-
-MODEL_SHELLYBULBRGBW_ID = "SHCB-1"  # Shelly DUO RGBW
-MODEL_SHELLYBULBRGBW_PREFIX = "shellycolorbulb"
 
 MODEL_SHELLYBUTTON1_ID = "SHBTN-1"  # Shelly Button1
 MODEL_SHELLYBUTTON1V2_ID = "SHBTN-2"  # Shelly Button1 v2
@@ -1194,8 +1186,6 @@ DEVICE_FIRMWARE_MAP = {
     MODEL_SHELLY3EM_ID: MIN_FIRMWARE_DATE,
     MODEL_SHELLY4PRO_ID: MIN_4PRO_FIRMWARE_DATE,
     MODEL_SHELLYAIR_ID: MIN_FIRMWARE_DATE,
-    MODEL_SHELLYBULB_ID: MIN_FIRMWARE_DATE,
-    MODEL_SHELLYBULBRGBW_ID: MIN_FIRMWARE_DATE,
     MODEL_SHELLYBUTTON1_ID: MIN_FIRMWARE_DATE,
     MODEL_SHELLYBUTTON1V2_ID: MIN_FIRMWARE_DATE,
     MODEL_SHELLYDIMMER_ID: MIN_DIMMER_FIRMWARE_DATE,
@@ -2247,44 +2237,6 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         BUTTON_RESTART: OPTIONS_BUTTON_RESTART,
     }
 
-if model_id == MODEL_SHELLYBULB_ID or dev_id_prefix == MODEL_SHELLYBULB_PREFIX:
-    model = MODEL_SHELLYBULB
-
-    rgbw_lights = 1
-
-    binary_sensors = {SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE}
-    sensors = {
-        SENSOR_IP: OPTIONS_SENSOR_IP,
-        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
-        SENSOR_SSID: OPTIONS_SENSOR_SSID,
-        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
-    }
-    buttons = {
-        BUTTON_UPDATE_FIRMWARE: OPTIONS_BUTTON_UPDATE_FIRMWARE,
-        BUTTON_RESTART: OPTIONS_BUTTON_RESTART,
-    }
-
-if model_id == MODEL_SHELLYBULBRGBW_ID or dev_id_prefix == MODEL_SHELLYBULBRGBW_PREFIX:
-    model = MODEL_SHELLYBULBRGBW
-
-    rgbw_lights = 1
-
-    light_sensors = {
-        SENSOR_POWER: OPTIONS_SENSOR_LIGHT_POWER,
-        SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY,
-    }
-    binary_sensors = {SENSOR_FIRMWARE_UPDATE: OPTIONS_SENSOR_FIRMWARE_UPDATE}
-    sensors = {
-        SENSOR_IP: OPTIONS_SENSOR_IP,
-        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
-        SENSOR_SSID: OPTIONS_SENSOR_SSID,
-        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
-    }
-    buttons = {
-        BUTTON_UPDATE_FIRMWARE: OPTIONS_BUTTON_UPDATE_FIRMWARE,
-        BUTTON_RESTART: OPTIONS_BUTTON_RESTART,
-    }
-
 if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
     model = MODEL_SHELLYDUO
 
@@ -3227,37 +3179,6 @@ for light_id in range(rgbw_lights):
             '"g_tpl":"{{value_json.green}}",'
             '"b_tpl":"{{value_json.blue}}",'
             '"fx_tpl":"{%if value_json.effect==1%}Meteor Shower{%elif value_json.effect==2%}Gradual Change{%elif value_json.effect==3%}Flash{%else%}Off{%endif%}",'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
-    elif model in (MODEL_SHELLYBULB, MODEL_SHELLYBULBRGBW):
-        payload = (
-            '{"schema":"template",'
-            '"name":"' + light_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"fx_list":["Off", "Meteor Shower", "Gradual Change", "Breath", "Flash", "On/Off Gradual", "Red/Green Change"],'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\",\\"mode\\":\\"color\\",{%if red is defined and green is defined and blue is defined%}\\"red\\":{{red}},\\"green\\":{{green}},\\"blue\\":{{blue}},{%endif%}{%if brightness is defined%}\\"gain\\":{{brightness|float|multiply(0.3922)|round}},{%endif%}{%if effect is defined%}{%if effect == \\"Meteor Shower\\"%}\\"effect\\":1{%elif effect == \\"Gradual Change\\"%}\\"effect\\":2{%elif effect == \\"Breath\\"%}\\"effect\\":3{%elif effect == \\"Flash\\"%}\\"effect\\":4{%elif effect == \\"On/Off Gradual\\"%}\\"effect\\":5{%elif effect == \\"Red/Green Change\\"%}\\"effect\\":6{%else%}\\"effect\\":0{%endif%}{%else%}\\"effect\\":0{%endif%}{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"cmd_off_tpl":"{\\"turn\\":\\"off\\",\\"mode\\":\\"color\\",\\"effect\\": 0{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"stat_tpl":"{%if value_json.ison==true and value_json.mode==\\"color\\"%}on{%else%}off{%endif%}",'
-            '"bri_tpl":"{{value_json.gain|float|multiply(2.55)|round}}",'
-            '"r_tpl":"{{value_json.red}}",'
-            '"g_tpl":"{{value_json.green}}",'
-            '"b_tpl":"{{value_json.blue}}",'
-            '"fx_tpl":"{%if value_json.effect==1%}Meteor Shower{%elif value_json.effect==2%}Gradual Change{%elif value_json.effect==3%}Breath{%elif value_json.effect==4%}Flash{%elif value_json.effect==5%}On/Off Gradual{%elif value_json.effect==6%}Red/Green Change{%else%}Off{%endif%}",'
             '"uniq_id":"' + unique_id + '",'
             '"qos":"' + str(qos) + '",'
             '"dev": {"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
