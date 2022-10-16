@@ -3082,9 +3082,10 @@ for sensor, sensor_options in binary_sensors.items():
         sensor_name = f"{device_name} External Switch"
     else:
         sensor_name = f"{device_name} {clean_name(sensor)}"
+    state_topic = sensor_options.get(KEY_STATE_TOPIC)
     payload = {
         KEY_NAME: sensor_name,
-        KEY_STATE_TOPIC: sensor_options.get(KEY_STATE_TOPIC),
+        KEY_STATE_TOPIC: state_topic,
         KEY_ENABLED_BY_DEFAULT: str(
             sensor_options.get(KEY_ENABLED_BY_DEFAULT, "")
         ).lower(),
