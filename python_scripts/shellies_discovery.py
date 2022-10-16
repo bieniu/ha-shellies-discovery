@@ -3037,8 +3037,8 @@ for relay_id in range(relays):
             if sensor_options.get(KEY_VALUE_TEMPLATE):
                 payload[KEY_VALUE_TEMPLATE] = sensor_options[KEY_VALUE_TEMPLATE]
             else:
-                payload[KEY_PAYLOAD_ON] = sensor_options[KEY_PAYLOAD_ON]
-                payload[KEY_PAYLOAD_OFF] = sensor_options[KEY_PAYLOAD_OFF]
+                payload[KEY_PAYLOAD_ON] = sensor_options.get(KEY_PAYLOAD_ON)
+                payload[KEY_PAYLOAD_OFF] = sensor_options.get(KEY_PAYLOAD_OFF)
             if sensor_options.get(KEY_DEVICE_CLASS):
                 payload[KEY_DEVICE_CLASS] = sensor_options[KEY_DEVICE_CLASS]
             if (
