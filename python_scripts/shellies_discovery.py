@@ -3586,7 +3586,9 @@ for light_id, light_options in white_lights.items():
         if mode != LIGHT_COLOR:
             payload = {
                 KEY_NAME: f"{device_name} {clean_name(sensor)} {light_id}",
-                KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(light_id=light_id),
+                KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(
+                    light_id=light_id
+                ),
                 KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
                 KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
                 KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
