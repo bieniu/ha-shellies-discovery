@@ -476,6 +476,7 @@ TOPIC_METER_VOLTAGE = "~emeter/{meter_id}/voltage"
 TOPIC_MUTE = "~sensor/mute"
 TOPIC_ONLINE = "~online"
 TOPIC_OVERLOAD = "~overload"
+TOPIC_OVERPOWER = "~overpower"
 TOPIC_OVERPOWER_VALUE = "overpower_value"
 TOPIC_OVERTEMPERATURE = "~overtemperature"
 TOPIC_POWER = "~relay/power"
@@ -1502,6 +1503,13 @@ OPTIONS_SENSOR_OVERPOWER = {
     KEY_STATE_TOPIC: TOPIC_RELAY,
     KEY_VALUE_TEMPLATE: TPL_OVERPOWER_RELAY,
 }
+OPTIONS_SENSOR_LIGHT_OVERPOWER = {
+    KEY_DEVICE_CLASS: DEVICE_CLASS_PROBLEM,
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
+    KEY_STATE_TOPIC: TOPIC_OVERPOWER,
+    KEY_VALUE_TEMPLATE: TPL_OVERPOWER,
+}
 
 OPTIONS_SENSOR_LOADERROR = {
     KEY_DEVICE_CLASS: DEVICE_CLASS_PROBLEM,
@@ -2272,13 +2280,8 @@ if model_id == MODEL_SHELLYRGBW2_ID or dev_id_prefix == MODEL_SHELLYRGBW2_PREFIX
         SENSOR_LONGPUSH_0: OPTIONS_SENSOR_LONGPUSH_0,
         SENSOR_SHORTPUSH_0: OPTIONS_SENSOR_SHORTPUSH_0,
     }
-
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
-    lights_bin_sensors = [SENSOR_OVERPOWER]
-    lights_bin_sensors_device_classes = [DEVICE_CLASS_PROBLEM]
-    lights_bin_sensors_pl = [None]
-    lights_bin_sensors_topics = [None]
-    lights_bin_sensors_tpls = [TPL_OVERPOWER]
+    light_binary_sensors = {SENSOR_OVERPOWER: OPTIONS_SENSOR_LIGHT_OVERPOWER}
     if mode == LIGHT_COLOR:
         light_sensors = {
             SENSOR_POWER: OPTIONS_SENSOR_LIGHT_POWER_RGBW2_COLOR,
@@ -3433,48 +3436,33 @@ for light_id in range(rgbw_lights):
     mqtt_publish(config_topic, payload, retain)
 
     # color light's binary sensors
-    for bin_sensor_id in range(len(lights_bin_sensors)):
-        sensor_name = (
-            f"{device_name} {clean_name(lights_bin_sensors[bin_sensor_id])} {light_id}"
-        )
-        config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config".encode(
+    for sensor, sensor_options in light_binary_sensors.items():
+        config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-color-{sensor}-{light_id}/config".encode(
             "ascii", "ignore"
         ).decode(
             "utf-8"
         )
-        unique_id = (
-            f"{dev_id}-color-{lights_bin_sensors[bin_sensor_id]}-{light_id}".lower()
-        )
-        if lights_bin_sensors[bin_sensor_id] == SENSOR_INPUT:
-            state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
-        else:
-            state_topic = f"~color/{light_id}/status"
         if mode == LIGHT_COLOR:
             payload = {
-                KEY_NAME: sensor_name,
-                KEY_STATE_TOPIC: state_topic,
+                KEY_NAME: f"{device_name} {clean_name(sensor)} {light_id}",
+                KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC],
                 KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
                 KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
                 KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-                KEY_UNIQUE_ID: unique_id,
+                KEY_UNIQUE_ID: f"{dev_id}-color-{sensor}-{light_id}".lower(),
                 KEY_QOS: qos,
                 KEY_DEVICE: device_info,
                 "~": default_topic,
             }
-            if (
-                lights_bin_sensors_device_classes
-                and lights_bin_sensors_device_classes[bin_sensor_id]
-            ):
-                payload[KEY_DEVICE_CLASS] = lights_bin_sensors_device_classes[
-                    bin_sensor_id
-                ]
-            if lights_bin_sensors_tpls and lights_bin_sensors_tpls[bin_sensor_id]:
-                payload[KEY_VALUE_TEMPLATE] = lights_bin_sensors_tpls[bin_sensor_id]
+            if sensor_options.get(KEY_ENTITY_CATEGORY):
+                payload[KEY_ENTITY_CATEGORY] = sensor_options[KEY_ENTITY_CATEGORY]
+            if sensor_options.get(KEY_DEVICE_CLASS):
+                payload[KEY_DEVICE_CLASS] = sensor_options[KEY_DEVICE_CLASS]
+            if sensor_options.get(KEY_VALUE_TEMPLATE):
+                payload[KEY_VALUE_TEMPLATE] = sensor_options[KEY_VALUE_TEMPLATE]
             else:
-                payload[KEY_PAYLOAD_ON] = lights_bin_sensors_pl[bin_sensor_id][VALUE_ON]
-                payload[KEY_PAYLOAD_OFF] = lights_bin_sensors_pl[bin_sensor_id][
-                    VALUE_OFF
-                ]
+                payload[KEY_PAYLOAD_ON] = sensor_options[KEY_PAYLOAD_ON]
+                payload[KEY_PAYLOAD_OFF] = sensor_options[KEY_PAYLOAD_OFF]
         else:
             payload = ""
         if dev_id.lower() in ignored:
@@ -3578,57 +3566,39 @@ for light_id, light_options in white_lights.items():
     mqtt_publish(config_topic, payload, retain, json=True)
 
     # white light's binary sensors
-    for bin_sensor_id in range(len(lights_bin_sensors)):
-        if (
-            lights_bin_sensors[bin_sensor_id] == SENSOR_INPUT and light_id == 0
-        ) or lights_bin_sensors[bin_sensor_id] != SENSOR_INPUT:
-            unique_id = (
-                f"{dev_id}-white-{lights_bin_sensors[bin_sensor_id]}-{light_id}".lower()
-            )
-            config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-white-{lights_bin_sensors[bin_sensor_id]}-{light_id}/config".encode(
-                "ascii", "ignore"
-            ).decode(
-                "utf-8"
-            )
-            if lights_bin_sensors[bin_sensor_id] == SENSOR_INPUT:
-                state_topic = f"~{lights_bin_sensors[bin_sensor_id]}/{light_id}"
+    for sensor, sensor_options in light_binary_sensors.items():
+        config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-white-{sensor}-{light_id}/config".encode(
+            "ascii", "ignore"
+        ).decode(
+            "utf-8"
+        )
+        if mode != LIGHT_COLOR:
+            payload = {
+                KEY_NAME: f"{device_name} {clean_name(sensor)} {light_id}",
+                KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC],
+                KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
+                KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
+                KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
+                KEY_UNIQUE_ID: f"{dev_id}-white-{sensor}-{light_id}".lower(),
+                KEY_QOS: qos,
+                KEY_DEVICE: device_info,
+                "~": default_topic,
+            }
+            if sensor_options.get(KEY_ENTITY_CATEGORY):
+                payload[KEY_ENTITY_CATEGORY] = sensor_options[KEY_ENTITY_CATEGORY]
+            if sensor_options.get(KEY_DEVICE_CLASS):
+                payload[KEY_DEVICE_CLASS] = sensor_options[KEY_DEVICE_CLASS]
+            if sensor_options.get(KEY_VALUE_TEMPLATE):
+                payload[KEY_VALUE_TEMPLATE] = sensor_options[KEY_VALUE_TEMPLATE]
             else:
-                state_topic = f"~white/{light_id}/status"
-            sensor_name = f"{device_name} {clean_name(lights_bin_sensors[bin_sensor_id])} {light_id}"
-            if mode != LIGHT_COLOR:
-                payload = {
-                    KEY_NAME: sensor_name,
-                    KEY_STATE_TOPIC: state_topic,
-                    KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
-                    KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
-                    KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
-                    KEY_UNIQUE_ID: unique_id,
-                    KEY_QOS: qos,
-                    KEY_DEVICE: device_info,
-                    "~": default_topic,
-                }
-                if (
-                    lights_bin_sensors_device_classes
-                    and lights_bin_sensors_device_classes[bin_sensor_id]
-                ):
-                    payload[KEY_DEVICE_CLASS] = lights_bin_sensors_device_classes[
-                        bin_sensor_id
-                    ]
-                if lights_bin_sensors_tpls and lights_bin_sensors_tpls[bin_sensor_id]:
-                    payload[KEY_VALUE_TEMPLATE] = lights_bin_sensors_tpls[bin_sensor_id]
-                else:
-                    payload[KEY_PAYLOAD_ON] = lights_bin_sensors_pl[bin_sensor_id][
-                        VALUE_ON
-                    ]
-                    payload[KEY_PAYLOAD_OFF] = lights_bin_sensors_pl[bin_sensor_id][
-                        VALUE_OFF
-                    ]
-            else:
-                payload = ""
-            if dev_id.lower() in ignored:
-                payload = ""
+                payload[KEY_PAYLOAD_ON] = sensor_options[KEY_PAYLOAD_ON]
+                payload[KEY_PAYLOAD_OFF] = sensor_options[KEY_PAYLOAD_OFF]
+        else:
+            payload = ""
+        if dev_id.lower() in ignored:
+            payload = ""
 
-            mqtt_publish(config_topic, payload, retain)
+        mqtt_publish(config_topic, payload, retain)
 
     # white light sensors
     for sensor, sensor_options in light_sensors.items():
