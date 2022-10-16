@@ -38,8 +38,6 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly 3EM
 - Shelly 4Pro
 - Shelly Air
-- Shelly Bulb
-- Shelly Bulb RGBW
 - Shelly Button1 (battery or USB powered)
 - Shelly Dimmer
 - Shelly Dimmer 2
