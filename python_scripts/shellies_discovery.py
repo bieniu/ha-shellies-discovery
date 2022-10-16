@@ -3015,13 +3015,12 @@ for relay_id in range(relays):
             )
         else:
             sensor_name = f"{device_name} {clean_name(sensor)} {relay_id}"
-        state_topic = sensor_options[KEY_STATE_TOPIC]
         if not roller_mode:
             payload = {
                 KEY_NAME: sensor_name,
-                KEY_STATE_TOPIC: state_topic,
+                KEY_STATE_TOPIC: sensor_options.get(KEY_STATE_TOPIC),
                 KEY_ENABLED_BY_DEFAULT: str(
-                    sensor_options[KEY_ENABLED_BY_DEFAULT]
+                    sensor_options.get(KEY_ENABLED_BY_DEFAULT, "")
                 ).lower(),
                 KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
                 KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
@@ -3060,6 +3059,8 @@ for relay_id in range(relays):
         else:
             payload = ""
         if dev_id.lower() in ignored:
+            payload = ""
+        if not sensor_options:
             payload = ""
 
         mqtt_publish(config_topic, payload, retain)
