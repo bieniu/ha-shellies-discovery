@@ -232,7 +232,6 @@ key | optional | type | default | possible values | description
 `ext-humidity-<NUM>` | True | boolean | `false` | `true`, `false` | presence of humidity sensor number `NUM`
 `ext-switch` | True | boolean | `false` | `true`, `false` | presence of external switch
 `force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) for sensors
-`push_off_delay` | True | boolean | `true` | `true`, `false` | [off delay](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#off_delay) (2 sec) for `longpush`/`shortpush`/`double shortpush`/`triple shortpush` binary sensors
 `powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for Shelly H&T, Motion, Sense and Button1
 `expire_after` | True | integer | 51840 | | [expire after](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#expire_after) for battery powered sensors in seconds
 `use_fahrenheit` | True | boolean | `false` | `true`, `false` | does H&T, Food or DW2 temperature sensor use the Fahrenheit scale

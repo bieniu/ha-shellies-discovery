@@ -37,7 +37,6 @@ CONF_MODEL_ID = "model"
 CONF_OPTIMISTIC = "optimistic"
 CONF_POSITION_TEMPLATE = "position_template"
 CONF_POWERED = "powered"
-CONF_PUSH_OFF_DELAY = "push_off_delay"
 CONF_QOS = "qos"
 CONF_SET_POSITION_TEMPLATE = "set_position_template"
 CONF_USE_FAHRENHEIT = "use_fahrenheit"
@@ -2843,9 +2842,6 @@ for relay_id in range(relays):
 
     # relay's binary sensors
     for sensor, sensor_options in relay_binary_sensors.items():
-        push_off_delay = True
-        if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
-            push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
         config_topic = f"{disc_prefix}/binary_sensor/{dev_id}-{make_id(sensor)}-{relay_id}/config".encode(
             "ascii", "ignore"
         ).decode(
@@ -3102,9 +3098,6 @@ for sensor_id in range(ext_humi_sensors):
 
 # binary sensors
 for sensor, sensor_options in binary_sensors.items():
-    push_off_delay = True
-    if isinstance(device_config.get(CONF_PUSH_OFF_DELAY), bool):
-        push_off_delay = device_config.get(CONF_PUSH_OFF_DELAY)
     config_topic = (
         f"{disc_prefix}/binary_sensor/{dev_id}-{make_id(sensor)}/config".encode(
             "ascii", "ignore"
@@ -3141,11 +3134,6 @@ for sensor, sensor_options in binary_sensors.items():
         payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
     if sensor_options.get(KEY_DEVICE_CLASS):
         payload[KEY_DEVICE_CLASS] = sensor_options[KEY_DEVICE_CLASS]
-    if (
-        sensor in (SENSOR_INPUT_0, SENSOR_INPUT_1, SENSOR_INPUT_2, SENSOR_INPUT_3)
-        and push_off_delay
-    ):
-        payload[KEY_OFF_DELAY] = OFF_DELAY
     if (
         model == MODEL_SHELLYRGBW2
         and mode == LIGHT_WHITE
