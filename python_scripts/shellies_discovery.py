@@ -118,7 +118,6 @@ KEY_EXPIRE_AFTER = "exp_aft"
 KEY_FORCE_UPDATE = "frc_upd"
 KEY_HW_VERSION = "hw"
 KEY_ICON = "icon"
-KEY_INSTALLED_VERSION_TEMPLATE = "i_ver_tpl"
 KEY_JSON_ATTRIBUTES_TEMPLATE = "json_attr_tpl"
 KEY_JSON_ATTRIBUTES_TOPIC = "json_attr_t"
 KEY_LATEST_VERSION_TEMPLATE = "l_ver_tpl"
@@ -398,7 +397,7 @@ SENSOR_VALVE = "valve"
 SENSOR_VIBRATION = "vibration"
 SENSOR_VOLTAGE = "voltage"
 
-UPDATE_FIRMWARE = "update_firmware"
+UPDATE_FIRMWARE = "firmware"
 
 STATE_CLASS_MEASUREMENT = "measurement"
 STATE_CLASS_TOTAL_INCREASING = "total_increasing"
@@ -517,7 +516,7 @@ TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
 TPL_INSTALLED_VERSION = "{{value_json[^update^].old_version}}"
 TPL_IP = "{{value_json.ip}}"
 TPL_IP_FROM_INFO = "{{value_json.wifi_sta.ip}}"
-TPL_LATEST_VERSION = "{%if value_json[^update^].new_version!=^^%}{{value_json[^update^].new_version}}{%else%}{{value_json[^update^].old_version}}{%endif%}"
+TPL_LATEST_VERSION = "{{value_json[^update^].new_version}}"
 TPL_LUX = "{{value|float|round}}"
 TPL_MOTION = "{%if value_json.motion==true%}ON{%else%}OFF{%endif%}"
 TPL_MOTION_MOTION = "{%if value_json.sensor.motion==true%}ON{%else%}OFF{%endif%}"
@@ -1382,7 +1381,7 @@ OPTIONS_UPDATE_FIRMWARE = {
     KEY_DEVICE_CLASS: "firmware",
     KEY_ENABLED_BY_DEFAULT: True,
     KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
-    KEY_INSTALLED_VERSION_TEMPLATE: TPL_INSTALLED_VERSION,
+    KEY_VALUE_TEMPLATE: TPL_INSTALLED_VERSION,
     KEY_LATEST_VERSION_TEMPLATE: TPL_LATEST_VERSION,
     KEY_LATEST_VERSION_TOPIC: TOPIC_INFO,
     KEY_NAME: "Firmware",
@@ -1393,7 +1392,7 @@ OPTIONS_UPDATE_FIRMWARE_BATTERY_POWERED = {
     KEY_DEVICE_CLASS: "firmware",
     KEY_ENABLED_BY_DEFAULT: True,
     KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
-    KEY_INSTALLED_VERSION_TEMPLATE: TPL_INSTALLED_VERSION,
+    KEY_VALUE_TEMPLATE: TPL_INSTALLED_VERSION,
     KEY_LATEST_VERSION_TEMPLATE: TPL_LATEST_VERSION,
     KEY_LATEST_VERSION_TOPIC: TOPIC_INFO,
     KEY_NAME: "Firmware",
@@ -2580,21 +2579,25 @@ for update, update_options in updates.items():
 
     payload = {
         KEY_NAME: f"{device_name} {clean_name(update)}",
-        KEY_COMMAND_TOPIC: update_options[KEY_COMMAND_TOPIC],
-        KEY_PAYLOAD_INSTALL: update_options[KEY_PAYLOAD_INSTALL],
         KEY_STATE_TOPIC: update_options[KEY_STATE_TOPIC],
-        KEY_INSTALLED_VERSION_TEMPLATE: update_options[KEY_INSTALLED_VERSION_TEMPLATE],
+        KEY_VALUE_TEMPLATE: update_options[KEY_VALUE_TEMPLATE],
         KEY_LATEST_VERSION_TOPIC: update_options[KEY_LATEST_VERSION_TOPIC],
         KEY_LATEST_VERSION_TEMPLATE: update_options[KEY_LATEST_VERSION_TEMPLATE],
         KEY_ENABLED_BY_DEFAULT: str(update_options[KEY_ENABLED_BY_DEFAULT]).lower(),
         KEY_UNIQUE_ID: f"{dev_id}-{update}".lower(),
         KEY_QOS: qos,
-        KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
-        KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
-        KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
         KEY_DEVICE: device_info,
         "~": default_topic,
     }
+    if battery_powered and model not in (MODEL_SHELLYDW, MODEL_SHELLYDW2):
+        payload[KEY_EXPIRE_AFTER] = expire_after
+    elif not battery_powered:
+        payload[KEY_AVAILABILITY_TOPIC] = TOPIC_ONLINE
+        payload[KEY_PAYLOAD_AVAILABLE] = VALUE_TRUE
+        payload[KEY_PAYLOAD_NOT_AVAILABLE] = VALUE_FALSE
+    if update_options.get(KEY_COMMAND_TOPIC):
+        payload[KEY_COMMAND_TOPIC] = update_options[KEY_COMMAND_TOPIC]
+        payload[KEY_PAYLOAD_INSTALL] = update_options[KEY_PAYLOAD_INSTALL]
     if update_options.get(KEY_ENTITY_CATEGORY):
         payload[KEY_ENTITY_CATEGORY] = update_options[KEY_ENTITY_CATEGORY]
     if update_options.get(KEY_DEVICE_CLASS):
