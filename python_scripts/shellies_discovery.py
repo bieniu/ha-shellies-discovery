@@ -1371,7 +1371,7 @@ OPTIONS_SENSOR_LOADERROR = {
     KEY_DEVICE_CLASS: DEVICE_CLASS_PROBLEM,
     KEY_ENABLED_BY_DEFAULT: False,
     KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
-    KEY_NAME: "Load Error",
+    KEY_NAME: "Load error",
     KEY_PAYLOAD_OFF: 0,
     KEY_PAYLOAD_ON: 1,
     KEY_STATE_TOPIC: TOPIC_LOADERROR,
@@ -1414,8 +1414,13 @@ ROLLER_DEVICE_CLASSES = [
 ]
 
 
-def clean_name(string):
-    """Clean entity/device name."""
+def format_entity_name(string):
+    """Clean entity name."""
+    return string.replace("-", " ").replace("_", " ").replace("/", " ").capitalize()
+
+
+def format_device_name(string):
+    """Format device name."""
     return string.replace("-", " ").replace("_", " ").replace("/", " ").title()
 
 
@@ -2528,7 +2533,7 @@ device_config = get_device_config(dev_id)
 if device_config.get(CONF_DEVICE_NAME):
     device_name = device_config[CONF_DEVICE_NAME]
 elif ignore_device_model:
-    device_name = clean_name(dev_id)
+    device_name = format_device_name(dev_id)
 else:
     device_name = f"{model} {dev_id.split('-')[-1]}"
 
@@ -2579,7 +2584,7 @@ for update, update_options in updates.items():
     ).decode("utf-8")
 
     payload = {
-        KEY_NAME: f"{device_name} {clean_name(update)}",
+        KEY_NAME: f"{device_name} {format_entity_name(update)}",
         KEY_STATE_TOPIC: update_options[KEY_STATE_TOPIC],
         KEY_VALUE_TEMPLATE: update_options[KEY_VALUE_TEMPLATE],
         KEY_LATEST_VERSION_TOPIC: update_options[KEY_LATEST_VERSION_TOPIC],
@@ -2615,7 +2620,7 @@ for number, number_options in numbers.items():
     ).decode("utf-8")
 
     payload = {
-        KEY_NAME: f"{device_name} {clean_name(number)}",
+        KEY_NAME: f"{device_name} {format_entity_name(number)}",
         KEY_COMMAND_TOPIC: number_options[KEY_COMMAND_TOPIC],
         KEY_MAX: number_options[KEY_MAX],
         KEY_MIN: number_options[KEY_MIN],
@@ -2650,7 +2655,7 @@ for switch, switch_options in switches.items():
     ).decode("utf-8")
 
     payload = {
-        KEY_NAME: f"{device_name} {clean_name(switch)}",
+        KEY_NAME: f"{device_name} {format_entity_name(switch)}",
         KEY_COMMAND_TOPIC: switch_options[KEY_COMMAND_TOPIC],
         KEY_PAYLOAD_OFF: switch_options[KEY_PAYLOAD_OFF],
         KEY_PAYLOAD_ON: switch_options[KEY_PAYLOAD_ON],
@@ -2685,7 +2690,7 @@ for select, select_options in selectors.items():
     ).decode("utf-8")
 
     payload = {
-        KEY_NAME: f"{device_name} {clean_name(select)}",
+        KEY_NAME: f"{device_name} {format_entity_name(select)}",
         KEY_COMMAND_TOPIC: select_options[KEY_COMMAND_TOPIC],
         KEY_COMMAND_TEMPLATE: TPL_COMMAND_PROFILES,
         KEY_OPTIONS: select_options[KEY_OPTIONS],
@@ -2718,7 +2723,7 @@ for button, button_options in buttons.items():
     ).decode("utf-8")
 
     payload = {
-        KEY_NAME: f"{device_name} {clean_name(button)}",
+        KEY_NAME: f"{device_name} {format_entity_name(button)}",
         KEY_COMMAND_TOPIC: button_options.get(KEY_COMMAND_TOPIC),
         KEY_PAYLOAD_PRESS: button_options.get(KEY_PAYLOAD_PRESS),
         KEY_ENABLED_BY_DEFAULT: str(button_options.get(KEY_ENABLED_BY_DEFAULT)).lower(),
@@ -2888,7 +2893,7 @@ for relay_id in range(relays):
         )
 
         payload = {
-            KEY_NAME: f"{device_name} {clean_name(sensor)} {relay_id}",
+            KEY_NAME: f"{device_name} {format_entity_name(sensor)} {relay_id}",
             KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(relay_id=relay_id),
             KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
             KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
@@ -2927,11 +2932,9 @@ for relay_id in range(relays):
             "utf-8"
         )
         if device_config.get(f"relay-{relay_id}-name"):
-            sensor_name = (
-                f"{device_config[f'relay-{relay_id}-name']} {clean_name(sensor)}"
-            )
+            sensor_name = f"{device_config[f'relay-{relay_id}-name']} {format_entity_name(sensor)}"
         else:
-            sensor_name = f"{device_name} {clean_name(sensor)} {relay_id}"
+            sensor_name = f"{device_name} {format_entity_name(sensor)} {relay_id}"
         if not roller_mode:
             payload = {
                 KEY_NAME: sensor_name,
@@ -3001,13 +3004,13 @@ for sensor, sensor_options in sensors.items():
     if sensor in (SENSOR_SSID, SENSOR_ADC, SENSOR_IP):
         sensor_name = f"{device_name} {sensor.upper()}"
     elif sensor == SENSOR_UPTIME:
-        sensor_name = f"{device_name} Last Restart"
+        sensor_name = f"{device_name} Last restart"
     elif sensor == SENSOR_RSSI:
-        sensor_name = f"{device_name} WiFi Signal"
+        sensor_name = f"{device_name} WiFi signal"
     elif sensor == SENSOR_TEMPERATURE_F:
         sensor_name = f"{device_name} Temperature"
     else:
-        sensor_name = f"{device_name} {clean_name(sensor)}"
+        sensor_name = f"{device_name} {format_entity_name(sensor)}"
 
     payload = {
         KEY_NAME: sensor_name,
@@ -3112,7 +3115,7 @@ for sensor_id in range(ext_temp_sensors):
             "ascii", "ignore"
         ).decode("utf-8")
     )
-    sensor_name = f"{device_name} External Temperature {sensor_id}"
+    sensor_name = f"{device_name} External temperature {sensor_id}"
     state_topic = f"~{SENSOR_EXT_TEMPERATURE}/{sensor_id}"
     if device_config.get(f"ext-temperature-{sensor_id}"):
         payload = {
@@ -3149,7 +3152,7 @@ for sensor_id in range(ext_humi_sensors):
             "ascii", "ignore"
         ).decode("utf-8")
     )
-    sensor_name = f"{device_name} External Humidity {sensor_id}"
+    sensor_name = f"{device_name} External humidity {sensor_id}"
     state_topic = f"~{SENSOR_EXT_HUMIDITY}/{sensor_id}"
     if device_config.get(f"ext-temperature-{sensor_id}"):
         payload = {
@@ -3183,9 +3186,9 @@ for sensor, sensor_options in binary_sensors.items():
         ).decode("utf-8")
     )
     if sensor == SENSOR_EXT_SWITCH:
-        sensor_name = f"{device_name} External Switch"
+        sensor_name = f"{device_name} External switch"
     else:
-        sensor_name = f"{device_name} {clean_name(sensor)}"
+        sensor_name = f"{device_name} {format_entity_name(sensor)}"
     state_topic = sensor_options.get(KEY_STATE_TOPIC)
     payload = {
         KEY_NAME: sensor_name,
@@ -3303,7 +3306,7 @@ for light_id in range(rgbw_lights):
         )
         if mode == LIGHT_COLOR:
             payload = {
-                KEY_NAME: f"{device_name} {clean_name(sensor)} {light_id}",
+                KEY_NAME: f"{device_name} {format_entity_name(sensor)} {light_id}",
                 KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC],
                 KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
                 KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
@@ -3341,7 +3344,7 @@ for light_id in range(rgbw_lights):
         )
 
         payload = {
-            KEY_NAME: f"{device_name} {clean_name(sensor)} {light_id}",
+            KEY_NAME: f"{device_name} {format_entity_name(sensor)} {light_id}",
             KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(light_id=light_id),
             KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
             KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
@@ -3433,7 +3436,7 @@ for light_id, light_options in white_lights.items():
         )
         if mode != LIGHT_COLOR:
             payload = {
-                KEY_NAME: f"{device_name} {clean_name(sensor)} {light_id}",
+                KEY_NAME: f"{device_name} {format_entity_name(sensor)} {light_id}",
                 KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(
                     light_id=light_id
                 ),
@@ -3473,7 +3476,7 @@ for light_id, light_options in white_lights.items():
         )
 
         payload = {
-            KEY_NAME: f"{device_name} {clean_name(sensor)} {light_id}",
+            KEY_NAME: f"{device_name} {format_entity_name(sensor)} {light_id}",
             KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(light_id=light_id),
             KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
             KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
@@ -3517,7 +3520,7 @@ for meter_id in range(meters):
         )
 
         payload = {
-            KEY_NAME: f"{device_name} {clean_name(sensor)} {meter_id}",
+            KEY_NAME: f"{device_name} {format_entity_name(sensor)} {meter_id}",
             KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(meter_id=meter_id),
             KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
             KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
