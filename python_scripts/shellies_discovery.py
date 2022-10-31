@@ -516,8 +516,7 @@ TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
 TPL_INSTALLED_VERSION = "{{value_json[^update^].old_version}}"
 TPL_IP = "{{value_json.ip}}"
 TPL_IP_FROM_INFO = "{{value_json.wifi_sta.ip}}"
-TPL_LATEST_VERSION = "{{value_json[^update^].new_version}}"
-TPL_LATEST_VERSION_BATT = "{%if value_json[^update^].new_version%}{{value_json[^update^].new_version}}{%else%}{{value_json[^update^].old_version}}{%endif%}"
+TPL_LATEST_VERSION = "{%if value_json[^update^].new_version%}{{value_json[^update^].new_version}}{%else%}{{value_json[^update^].old_version}}{%endif%}"
 TPL_LUX = "{{value|float|round}}"
 TPL_MOTION = "{%if value_json.motion==true%}ON{%else%}OFF{%endif%}"
 TPL_MOTION_MOTION = "{%if value_json.sensor.motion==true%}ON{%else%}OFF{%endif%}"
@@ -1394,7 +1393,7 @@ OPTIONS_UPDATE_FIRMWARE_BATTERY_POWERED = {
     KEY_ENABLED_BY_DEFAULT: True,
     KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
     KEY_VALUE_TEMPLATE: TPL_INSTALLED_VERSION,
-    KEY_LATEST_VERSION_TEMPLATE: TPL_LATEST_VERSION_BATT,
+    KEY_LATEST_VERSION_TEMPLATE: TPL_LATEST_VERSION,
     KEY_LATEST_VERSION_TOPIC: TOPIC_INFO,
     KEY_NAME: "Firmware",
     KEY_STATE_TOPIC: TOPIC_INFO,
