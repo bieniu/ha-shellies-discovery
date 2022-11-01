@@ -114,6 +114,7 @@ KEY_DEVICE = "dev"
 KEY_DEVICE_CLASS = "dev_cla"
 KEY_ENABLED_BY_DEFAULT = "en"
 KEY_ENTITY_CATEGORY = "entity_category"
+KEY_ENTITY_PICTURE = "ent_pic"
 KEY_EXPIRE_AFTER = "exp_aft"
 KEY_FORCE_UPDATE = "frc_upd"
 KEY_HW_VERSION = "hw"
@@ -152,6 +153,7 @@ KEY_POSITION_TEMPLATE = "pos_tpl"
 KEY_POSITION_TOPIC = "pos_t"
 KEY_PRECISION = "precision"
 KEY_QOS = "qos"
+KEY_RELEASE_URL = "rel_u"
 KEY_RETAIN = "ret"
 KEY_SCHEMA = "schema"
 KEY_SET_POSITION_TEMPLATE = "set_pos_tpl"
@@ -172,6 +174,7 @@ KEY_TEMPERATURE_COMMAND_TEMPLATE = "temp_cmd_tpl"
 KEY_TEMPERATURE_COMMAND_TOPIC = "temp_cmd_t"
 KEY_TEMPERATURE_STATE_TEMPLATE = "temp_stat_tpl"
 KEY_TEMPERATURE_STATE_TOPIC = "temp_stat_t"
+KEY_TITLE = "tit"
 KEY_TOPIC = "t"
 KEY_TYPE = "type"
 KEY_UNIQUE_ID = "uniq_id"
@@ -2588,6 +2591,9 @@ for update, update_options in updates.items():
         KEY_VALUE_TEMPLATE: update_options[KEY_VALUE_TEMPLATE],
         KEY_LATEST_VERSION_TOPIC: update_options[KEY_LATEST_VERSION_TOPIC],
         KEY_LATEST_VERSION_TEMPLATE: update_options[KEY_LATEST_VERSION_TEMPLATE],
+        KEY_ENTITY_PICTURE: "https://brands.home-assistant.io/_/shelly/icon.png",
+        KEY_RELEASE_URL: "https://shelly-api-docs.shelly.cloud/gen1/#changelog",
+        KEY_TITLE: f"{device_name} Firmware",
         KEY_ENABLED_BY_DEFAULT: str(update_options[KEY_ENABLED_BY_DEFAULT]).lower(),
         KEY_UNIQUE_ID: f"{dev_id}-{update}".lower(),
         KEY_QOS: qos,
