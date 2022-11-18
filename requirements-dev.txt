@@ -1,3 +1,8 @@
 -r requirements-test.txt
 homeassistant
 pre-commit==2.20.0
+aiohttp>=3.8.0 # not directly required, pinned by Snyk to avoid a vulnerability
+cryptography>=3.3.2 # not directly required, pinned by Snyk to avoid a vulnerability
+httpx>=0.23.0 # not directly required, pinned by Snyk to avoid a vulnerability
+pyjwt>=2.4.0 # not directly required, pinned by Snyk to avoid a vulnerability
+pyyaml>=5.4 # not directly required, pinned by Snyk to avoid a vulnerability
