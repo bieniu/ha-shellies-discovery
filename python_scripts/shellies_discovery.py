@@ -375,7 +375,7 @@ SENSOR_LOADERROR = "loaderror"
 SENSOR_LUX = "lux"
 SENSOR_MOTION = "motion"
 SENSOR_OPENING = "opening"
-SENSOR_OPEN_WINDOW_REPORT = 'open_window_report'
+SENSOR_OPEN_WINDOW_REPORT = "open_window_report"
 SENSOR_OPERATION = "operation"
 SENSOR_OVERLOAD = "overload"
 SENSOR_OVERPOWER = "overpower"
@@ -400,7 +400,7 @@ SENSOR_UPTIME = "uptime"
 SENSOR_VALVE = "valve"
 SENSOR_VIBRATION = "vibration"
 SENSOR_VOLTAGE = "voltage"
-SENSOR_WINDOW_OPEN = 'window_open'
+SENSOR_WINDOW_OPEN = "window_open"
 
 UPDATE_FIRMWARE = "firmware"
 
@@ -526,13 +526,17 @@ TPL_LUX = "{{value|float|round}}"
 TPL_MOTION = "{%if value_json.motion==true%}ON{%else%}OFF{%endif%}"
 TPL_MOTION_MOTION = "{%if value_json.sensor.motion==true%}ON{%else%}OFF{%endif%}"
 TPL_NEW_FIRMWARE_FROM_ANNOUNCE = "{%if value_json.new_fw==true%}ON{%else%}OFF{%endif%}"
-TPL_OPEN_WINDOW_REPORT = "{%if value_json.thermostats.0.open_window_report==true%}ON{%else%}OFF{%endif%}"
+TPL_OPEN_WINDOW_REPORT = (
+    "{%if value_json.thermostats.0.open_window_report==true%}ON{%else%}OFF{%endif%}"
+)
 TPL_PROFILES = "profile {{value_json.thermostats.0.schedule_profile}}"
 TPL_SCHEDULE = "{{value_json.thermostats.0.schedule}}"
 TPL_VALVE = "{{value.replace(^_^,^ ^)}}"
 TPL_VALVE_MIN_POSITION = "{{value_json.thermostats.0.valve_min_percent}}"
 TPL_VALVE_POSITION = "{{value_json.thermostats.0.pos}}"
-TPL_WINDOW_OPEN = "{%if value_json.thermostats.0.window_open==true%}ON{%else%}OFF{%endif%}"
+TPL_WINDOW_OPEN = (
+    "{%if value_json.thermostats.0.window_open==true%}ON{%else%}OFF{%endif%}"
+)
 TPL_NEW_FIRMWARE_FROM_INFO = (
     "{%if value_json[^update^].has_update==true%}ON{%else%}OFF{%endif%}"
 )
