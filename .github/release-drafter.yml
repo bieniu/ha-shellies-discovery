@@ -1,0 +1,35 @@
+change-template: "- #$NUMBER $TITLE @$AUTHOR"
+sort-direction: ascending
+
+categories:
+  - title: ":boom: Breaking Changes"
+    label: "breaking-change"
+
+  - title: ":sparkles: New Features"
+    label: "new-feature"
+
+  - title: ":recycle: Refactor"
+    label: "refactor"
+
+  - title: ":green_heart: CI"
+    label: "ci"
+
+  - title: ":bug: Bug Fixes"
+    label: "bugfix"
+
+  - title: ":arrow_up: Dependency Updates"
+    label: "dependencies"
+    collapse-after: 1
+
+include-labels:
+  - "breaking-change"
+  - "refactor"
+  - "new-feature"
+  - "bugfix"
+  - "dependencies"
+  - "ci"
+
+template: |
+  [![Downloads for this release](https://img.shields.io/github/downloads/bieniu/ha-shellies-discovery/x.x.x/total.svg)](https://github.com/bieniu/ha-shellies-discovery/releases/x.x.x)
+  
+  $CHANGES
