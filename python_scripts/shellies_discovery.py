@@ -454,7 +454,7 @@ TOPIC_OVERPOWER = "~overpower"
 TOPIC_OVERPOWER_VALUE = "overpower_value"
 TOPIC_OVERTEMPERATURE = "~overtemperature"
 TOPIC_POWER = "~relay/power"
-TOPIC_RELAY = "~relay"
+TOPIC_RELAY = "~relay/{relay_id}"
 TOPIC_RELAY_ENERGY = "~relay/{relay_id}/energy"
 TOPIC_RELAY_POWER = "~relay/{relay_id}/power"
 TOPIC_ROLLER_ENERGY = "~roller/0/energy"
@@ -1641,10 +1641,6 @@ if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
         SENSOR_INPUT_0: OPTIONS_SENSOR_INPUT_0,
     }
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
-    relay_binary_sensors = {
-        "longpush": {},
-        "shortpush": {},
-    }
     sensors = {
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
@@ -1706,11 +1702,7 @@ if model_id == MODEL_SHELLY1PM_ID or dev_id_prefix == MODEL_SHELLY1PM_PREFIX:
         SENSOR_POWER: OPTIONS_SENSOR_RELAY_POWER,
         SENSOR_ENERGY: OPTIONS_SENSOR_RELAY_ENERGY,
     }
-    relay_binary_sensors = {
-        SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER,
-        "longpush": {},
-        "shortpush": {},
-    }
+    relay_binary_sensors = {SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER}
     sensors = {
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
@@ -1766,11 +1758,7 @@ if model_id == MODEL_SHELLY2_ID or dev_id_prefix == MODEL_SHELLY2_PREFIX:
     inputs = 2
 
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
-    relay_binary_sensors = {
-        SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER,
-        "longpush": {},
-        "shortpush": {},
-    }
+    relay_binary_sensors = {SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER}
     binary_sensors = {
         "firmware update": {},
         SENSOR_INPUT_0: OPTIONS_SENSOR_INPUT_0,
@@ -1809,11 +1797,7 @@ if model_id == MODEL_SHELLY25_ID or dev_id_prefix == MODEL_SHELLY25_PREFIX:
         SENSOR_POWER: OPTIONS_SENSOR_RELAY_POWER,
         SENSOR_ENERGY: OPTIONS_SENSOR_RELAY_ENERGY,
     }
-    relay_binary_sensors = {
-        SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER,
-        "longpush": {},
-        "shortpush": {},
-    }
+    relay_binary_sensors = {SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER}
     sensors = {
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
@@ -1846,11 +1830,7 @@ if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
     ext_temp_sensors = 3
 
     inputs_types = [VALUE_BUTTON_LONG_PRESS, VALUE_BUTTON_SHORT_PRESS]
-    relay_binary_sensors = {
-        SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER,
-        "longpush": {},
-        "shortpush": {},
-    }
+    relay_binary_sensors = {SENSOR_OVERPOWER: OPTIONS_SENSOR_OVERPOWER}
     sensors = {
         SENSOR_ADC: OPTIONS_SENSOR_ADC,
         SENSOR_IP: OPTIONS_SENSOR_IP,
@@ -2970,9 +2950,11 @@ for relay_id in range(relays):
         if not roller_mode:
             payload = {
                 KEY_NAME: sensor_name,
-                KEY_STATE_TOPIC: sensor_options.get(KEY_STATE_TOPIC),
+                KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(
+                    relay_id=relay_id
+                ),
                 KEY_ENABLED_BY_DEFAULT: str(
-                    sensor_options.get(KEY_ENABLED_BY_DEFAULT, "")
+                    sensor_options[KEY_ENABLED_BY_DEFAULT]
                 ).lower(),
                 KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
                 KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
@@ -2987,8 +2969,8 @@ for relay_id in range(relays):
             if sensor_options.get(KEY_VALUE_TEMPLATE):
                 payload[KEY_VALUE_TEMPLATE] = sensor_options[KEY_VALUE_TEMPLATE]
             else:
-                payload[KEY_PAYLOAD_ON] = sensor_options.get(KEY_PAYLOAD_ON)
-                payload[KEY_PAYLOAD_OFF] = sensor_options.get(KEY_PAYLOAD_OFF)
+                payload[KEY_PAYLOAD_ON] = sensor_options[KEY_PAYLOAD_ON]
+                payload[KEY_PAYLOAD_OFF] = sensor_options[KEY_PAYLOAD_OFF]
             if sensor_options.get(KEY_DEVICE_CLASS):
                 payload[KEY_DEVICE_CLASS] = sensor_options[KEY_DEVICE_CLASS]
             if (
@@ -3006,7 +2988,7 @@ for relay_id in range(relays):
             ):
                 payload[
                     KEY_JSON_ATTRIBUTES_TOPIC
-                ] = f"{sensor}/{relay_id}/{TOPIC_OVERPOWER_VALUE}"
+                ] = f"~{sensor}/{relay_id}/{TOPIC_OVERPOWER_VALUE}"
                 payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_OVERPOWER_VALUE_TO_JSON
         else:
             payload = ""
