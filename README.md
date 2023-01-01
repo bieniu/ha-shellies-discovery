@@ -247,7 +247,7 @@ key | optional | type | default | description
 
 key | optional | type | default | possible values | description
 -- | -- | -- | -- | -- | --
-`device_name` | True | string | | name of the device
+`device_name` | True | string | | | name of the device
 `relay-<NUM>` | True | string | `switch` | `switch`, `light`, `fan` | component to use with the relay number `NUM`
 `relay-<NUM>-name` | True | string | None | string | friendly name of the relay number `NUM`
 `roller-<NUM>-name` | True | string | None | string | friendly name of the roller number `NUM`
@@ -259,8 +259,7 @@ key | optional | type | default | possible values | description
 `force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) for sensors
 `powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for Shelly H&T, Motion, Sense and Button1
 `expire_after` | True | integer | 51840 | | [expire after](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#expire_after) for battery powered sensors in seconds
-`use_fahrenheit` | True | boolean | `false` | `true`, `false` | does H&T, Food or DW2 temperature sensor use the Fahrenheit scale
-
+`use_fahrenheit` | True | boolean | `false` | `true`, `false` | whether the temperature sensor is configured in Fahrenheit for H&T, Flood, Motion2 or DW2
 
 [releases]: https://github.com/bieniu/ha-shellies-discovery/releases
 [releases-shield]: https://img.shields.io/github/release/bieniu/ha-shellies-discovery.svg?style=popout
