@@ -3124,44 +3124,44 @@ for light_id in range(rgbw_lights):
         light_name = device_config[f"light-{light_id}-name"]
     else:
         light_name = f"{device_name} Light {light_id}"
-    state_topic = f"~color/{light_id}/status"
-    command_topic = f"~color/{light_id}/set"
+    state_topic = f"~color/{light_id}"
+    status_topic = f"~color/{light_id}/status"
+    set_topic = f"~color/{light_id}/set"
+    command_topic = f"~color/{light_id}/command"
     availability_topic = TOPIC_ONLINE
     unique_id = f"{dev_id}-light-{light_id}".lower()
     config_topic = f"{disc_prefix}/light/{dev_id}-{light_id}/config".encode(
         "ascii", "ignore"
     ).decode("utf-8")
     if mode == LIGHT_COLOR and model == MODEL_SHELLYRGBW2:
-        payload = (
-            '{"schema":"template",'
-            '"name":"' + light_name + '",'
-            '"cmd_t":"' + command_topic + '",'
-            '"stat_t":"' + state_topic + '",'
-            '"avty_t":"' + availability_topic + '",'
-            '"pl_avail":"true",'
-            '"pl_not_avail":"false",'
-            '"fx_list":["Off", "Meteor Shower", "Gradual Change", "Flash"],'
-            '"cmd_on_tpl":"{\\"turn\\":\\"on\\"{%if brightness is defined%},\\"gain\\":{{brightness|float|multiply(0.3922)|round}}{%endif%}{%if red is defined and green is defined and blue is defined%},\\"red\\":{{red}},\\"green\\":{{green}},\\"blue\\":{{blue}}{%endif%}{%if effect is defined%}{%if effect==\\"Meteor Shower\\"%}\\"effect\\":1{%elif effect==\\"Gradual Change\\"%}\\"effect\\":2{%elif effect==\\"Flash\\"%}\\"effect\\":3{%else%}\\"effect\\":0{%endif%}{%else%}\\"effect\\":0{%endif%}{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"cmd_off_tpl":"{\\"turn\\":\\"off\\"{%if transition is defined%},\\"transition\\":{{min(transition|multiply(1000),'
-            + str(MAX_TRANSITION)
-            + ')}}{%endif%}}",'
-            '"stat_tpl":"{%if value_json.ison%}on{%else%}off{%endif%}",'
-            '"bri_tpl":"{{value_json.gain|float|multiply(2.55)|round}}",'
-            '"r_tpl":"{{value_json.red}}",'
-            '"g_tpl":"{{value_json.green}}",'
-            '"b_tpl":"{{value_json.blue}}",'
-            '"fx_tpl":"{%if value_json.effect==1%}Meteor Shower{%elif value_json.effect==2%}Gradual Change{%elif value_json.effect==3%}Flash{%else%}Off{%endif%}",'
-            '"uniq_id":"' + unique_id + '",'
-            '"qos":"' + str(qos) + '",'
-            '"dev": {"cns":[["' + KEY_MAC + '","' + format_mac(mac) + '"]],'
-            '"name":"' + device_name + '",'
-            '"mdl":"' + model + '",'
-            '"sw":"' + fw_ver + '",'
-            '"mf":"' + ATTR_MANUFACTURER + '"},'
-            '"~":"' + default_topic + '"}'
-        )
+        payload = {
+            KEY_NAME: light_name,
+            KEY_AVAILABILITY_TOPIC: availability_topic,
+            KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
+            KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
+            KEY_COMMAND_TOPIC: command_topic,
+            KEY_STATE_TOPIC: state_topic,
+            "state_value_template": "{{value.lower()}}",
+            KEY_PAYLOAD_ON: VALUE_ON,
+            KEY_PAYLOAD_OFF: VALUE_OFF,
+            "rgbw_cmd_t": set_topic,
+            "rgbw_cmd_tpl": "{^red^:{{red}},^green^:{{green}},^blue^:{{blue}},^white^:{{white}}}",
+            "rgbw_stat_t": status_topic,
+            "rgbw_val_tpl": "{{value_json.red}},{{value_json.green}},{{value_json.blue}},{{value_json.white}}",
+            "bri_stat_t": status_topic,
+            "bri_val_tpl": "{{value_json.gain|float|multiply(2.55)|round(0)}}",
+            "bri_cmd_t": set_topic,
+            "bri_cmd_tpl": "{^gain^:{{value|float|multiply(0.3922)|round(0)}}}",
+            "fx_cmd_t": set_topic,
+            "fx_cmd_tpl": "{ {%if value==^Off^%}^effect^:0{%elif value==^Meteor Shower^%}^effect^:1{%elif value==^Gradual Change^%}^effect^:2{%elif value==^Flash^%}^effect^:3{%endif%} }",
+            "fx_list": ["Off", "Meteor Shower", "Gradual Change", "Flash"],
+            "fx_stat_t": status_topic,
+            "fx_val_tpl": "{%if value_json.effect==1%}Meteor Shower{%elif value_json.effect==2%}Gradual Change{%elif value_json.effect==3%}Flash{%else%}Off{%endif%}",
+            KEY_UNIQUE_ID: unique_id,
+            KEY_QOS: qos,
+            KEY_DEVICE: device_info,
+            "~": default_topic,
+        }
     else:
         payload = ""
     if dev_id.lower() in ignored:
