@@ -3167,7 +3167,7 @@ for light_id in range(rgbw_lights):
     if dev_id.lower() in ignored:
         payload = ""
 
-    mqtt_publish(config_topic, payload, retain)
+    mqtt_publish(config_topic, payload, retain, json=True)
 
     # color light's binary sensors
     for sensor, sensor_options in light_binary_sensors.items():
