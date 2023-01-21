@@ -100,7 +100,11 @@ KEY_ACTION_TEMPLATE = "act_tpl"
 KEY_ACTION_TOPIC = "act_t"
 KEY_AUTOMATION_TYPE = "atype"
 KEY_AVAILABILITY_TOPIC = "avty_t"
+KEY_BRIGHTNESS_COMMAND_TEMPLATE = "bri_cmd_tpl"
+KEY_BRIGHTNESS_COMMAND_TOPIC = "bri_cmd_t"
+KEY_BRIGHTNESS_STATE_TOPIC = "bri_stat_t"
 KEY_BRIGHTNESS_TEMPLATE = "bri_tpl"
+KEY_BRIGHTNESS_VALUE_TEMPLATE = "bri_val_tpl"
 KEY_COLOR_TEMP_TEMPLATE = "clr_temp_tpl"
 KEY_COMMAND_OFF_TEMPLATE = "cmd_off_tpl"
 KEY_COMMAND_ON_TEMPLATE = "cmd_on_tpl"
@@ -112,6 +116,11 @@ KEY_CURRENT_TEMPERATURE_TEMPLATE = "curr_temp_tpl"
 KEY_CURRENT_TEMPERATURE_TOPIC = "curr_temp_t"
 KEY_DEVICE = "dev"
 KEY_DEVICE_CLASS = "dev_cla"
+KEY_EFFECT_COMMAND_TEMPLATE = "fx_cmd_tpl"
+KEY_EFFECT_COMMAND_TOPIC = "fx_cmd_t"
+KEY_EFFECT_LIST = "fx_list"
+KEY_EFFECT_STATE_TOPIC = "fx_stat_t"
+KEY_EFFECT_VALUE_TEMPLATE = "fx_val_tpl"
 KEY_ENABLED_BY_DEFAULT = "en"
 KEY_ENTITY_CATEGORY = "ent_cat"
 KEY_ENTITY_PICTURE = "ent_pic"
@@ -155,6 +164,10 @@ KEY_PRECISION = "precision"
 KEY_QOS = "qos"
 KEY_RELEASE_URL = "rel_u"
 KEY_RETAIN = "ret"
+KEY_RGBW_COMMAND_TEMPLATE = "rgbw_cmd_tpl"
+KEY_RGBW_COMMAND_TOPIC = "rgbw_cmd_t"
+KEY_RGBW_STATE_TOPIC = "rgbw_stat_t"
+KEY_RGBW_VALUE_TEMPLATE = "rgbw_val_tpl"
 KEY_SCHEMA = "schema"
 KEY_SET_POSITION_TEMPLATE = "set_pos_tpl"
 KEY_SET_POSITION_TOPIC = "set_pos_t"
@@ -166,6 +179,7 @@ KEY_STATE_OPENING = "stat_opening"
 KEY_STATE_STOPPED = "stat_stopped"
 KEY_STATE_TEMPLATE = "stat_tpl"
 KEY_STATE_TOPIC = "stat_t"
+KEY_STATE_VALUE_TEMPLATE = "stat_val_tpl"
 KEY_STEP = "step"
 KEY_SUBTYPE = "stype"
 KEY_SW_VERSION = "sw"
@@ -3141,22 +3155,22 @@ for light_id in range(rgbw_lights):
             KEY_PAYLOAD_NOT_AVAILABLE: VALUE_FALSE,
             KEY_COMMAND_TOPIC: command_topic,
             KEY_STATE_TOPIC: state_topic,
-            "state_value_template": "{{value.lower()}}",
+            KEY_STATE_VALUE_TEMPLATE: "{{value.lower()}}",
             KEY_PAYLOAD_ON: VALUE_ON,
             KEY_PAYLOAD_OFF: VALUE_OFF,
-            "rgbw_cmd_t": set_topic,
-            "rgbw_cmd_tpl": "{^red^:{{red}},^green^:{{green}},^blue^:{{blue}},^white^:{{white}}}",
-            "rgbw_stat_t": status_topic,
-            "rgbw_val_tpl": "{{value_json.red}},{{value_json.green}},{{value_json.blue}},{{value_json.white}}",
-            "bri_stat_t": status_topic,
-            "bri_val_tpl": "{{value_json.gain|float|multiply(2.55)|round(0)}}",
-            "bri_cmd_t": set_topic,
-            "bri_cmd_tpl": "{^gain^:{{value|float|multiply(0.3922)|round(0)}}}",
-            "fx_cmd_t": set_topic,
-            "fx_cmd_tpl": "{ {%if value==^Off^%}^effect^:0{%elif value==^Meteor Shower^%}^effect^:1{%elif value==^Gradual Change^%}^effect^:2{%elif value==^Flash^%}^effect^:3{%endif%} }",
-            "fx_list": ["Off", "Meteor Shower", "Gradual Change", "Flash"],
-            "fx_stat_t": status_topic,
-            "fx_val_tpl": "{%if value_json.effect==1%}Meteor Shower{%elif value_json.effect==2%}Gradual Change{%elif value_json.effect==3%}Flash{%else%}Off{%endif%}",
+            KEY_RGBW_COMMAND_TOPIC: set_topic,
+            KEY_RGBW_COMMAND_TEMPLATE: "{^red^:{{red}},^green^:{{green}},^blue^:{{blue}},^white^:{{white}}}",
+            KEY_RGBW_STATE_TOPIC: status_topic,
+            KEY_RGBW_VALUE_TEMPLATE: "{{value_json.red}},{{value_json.green}},{{value_json.blue}},{{value_json.white}}",
+            KEY_BRIGHTNESS_STATE_TOPIC: status_topic,
+            KEY_BRIGHTNESS_VALUE_TEMPLATE: "{{value_json.gain|float|multiply(2.55)|round(0)}}",
+            KEY_BRIGHTNESS_COMMAND_TOPIC: set_topic,
+            KEY_BRIGHTNESS_COMMAND_TEMPLATE: "{^gain^:{{value|float|multiply(0.3922)|round(0)}}}",
+            KEY_EFFECT_COMMAND_TOPIC: set_topic,
+            KEY_EFFECT_COMMAND_TEMPLATE: "{ {%if value==^Off^%}^effect^:0{%elif value==^Meteor Shower^%}^effect^:1{%elif value==^Gradual Change^%}^effect^:2{%elif value==^Flash^%}^effect^:3{%endif%} }",
+            KEY_EFFECT_LIST: ["Off", "Meteor Shower", "Gradual Change", "Flash"],
+            KEY_EFFECT_STATE_TOPIC: status_topic,
+            KEY_EFFECT_VALUE_TEMPLATE: "{%if value_json.effect==1%}Meteor Shower{%elif value_json.effect==2%}Gradual Change{%elif value_json.effect==3%}Flash{%else%}Off{%endif%}",
             KEY_UNIQUE_ID: unique_id,
             KEY_QOS: qos,
             KEY_DEVICE: device_info,
