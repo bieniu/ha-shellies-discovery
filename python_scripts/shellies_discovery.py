@@ -2210,9 +2210,7 @@ if model_id == MODEL_SHELLYDIMMER_ID or dev_id_prefix == MODEL_SHELLYDIMMER_PREF
         SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY,
         SENSOR_OVERPOWER_VALUE: OPTIONS_SENSOR_LIGHT_OVERPOWER_VALUE,
     }
-    light_numbers = {
-        NUMBER_LIGHT_BRIGHTNESS: OPTIONS_NUMBER_LIGHT_BRIGHTNESS
-    }
+    light_numbers = {NUMBER_LIGHT_BRIGHTNESS: OPTIONS_NUMBER_LIGHT_BRIGHTNESS}
     buttons = {BUTTON_RESTART: OPTIONS_BUTTON_RESTART}
     updates = {UPDATE_FIRMWARE: OPTIONS_UPDATE_FIRMWARE}
 
@@ -2248,9 +2246,7 @@ if model_id == MODEL_SHELLYDIMMER2_ID or dev_id_prefix == MODEL_SHELLYDIMMER2_PR
         SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY,
         SENSOR_OVERPOWER_VALUE: OPTIONS_SENSOR_LIGHT_OVERPOWER_VALUE,
     }
-    light_numbers = {
-        NUMBER_LIGHT_BRIGHTNESS: OPTIONS_NUMBER_LIGHT_BRIGHTNESS
-    }
+    light_numbers = {NUMBER_LIGHT_BRIGHTNESS: OPTIONS_NUMBER_LIGHT_BRIGHTNESS}
     buttons = {BUTTON_RESTART: OPTIONS_BUTTON_RESTART}
     updates = {UPDATE_FIRMWARE: OPTIONS_UPDATE_FIRMWARE}
 
@@ -3416,13 +3412,17 @@ for light_id, light_options in white_lights.items():
 
     # white light numbers
     for number, number_options in light_numbers.items():
-        config_topic = f"{disc_prefix}/number/{dev_id}-white-{number}-{light_id}/config".encode(
-            "ascii", "ignore"
-        ).decode("utf-8")
+        config_topic = (
+            f"{disc_prefix}/number/{dev_id}-white-{number}-{light_id}/config".encode(
+                "ascii", "ignore"
+            ).decode("utf-8")
+        )
 
         payload = {
             KEY_NAME: f"{device_name} {format_entity_name(number)} {light_id}",
-            KEY_COMMAND_TOPIC: number_options[KEY_COMMAND_TOPIC].format(light_id=light_id),
+            KEY_COMMAND_TOPIC: number_options[KEY_COMMAND_TOPIC].format(
+                light_id=light_id
+            ),
             KEY_COMMAND_TEMPLATE: number_options[KEY_COMMAND_TEMPLATE].format(),
             KEY_MAX: number_options[KEY_MAX],
             KEY_MIN: number_options[KEY_MIN],
