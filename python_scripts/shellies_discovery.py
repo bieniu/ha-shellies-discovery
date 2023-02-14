@@ -3413,7 +3413,7 @@ for light_id, light_options in white_lights.items():
     # light numbers
     for number, number_options in light_numbers.items():
         config_topic = (
-            f"{disc_prefix}/number/{dev_id}-white-{number}-{light_id}/config".encode(
+            f"{disc_prefix}/number/{dev_id}-{light_id}-{number}/config".encode(
                 "ascii", "ignore"
             ).decode("utf-8")
         )
