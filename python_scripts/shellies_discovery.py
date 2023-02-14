@@ -3410,7 +3410,7 @@ for light_id, light_options in white_lights.items():
 
         mqtt_publish(config_topic, payload, retain)
 
-    # white light numbers
+    # light numbers
     for number, number_options in light_numbers.items():
         config_topic = (
             f"{disc_prefix}/number/{dev_id}-white-{number}-{light_id}/config".encode(
