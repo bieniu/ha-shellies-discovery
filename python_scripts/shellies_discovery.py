@@ -3431,7 +3431,7 @@ for light_id, light_options in white_lights.items():
             KEY_VALUE_TEMPLATE: number_options[KEY_VALUE_TEMPLATE],
             KEY_UNIT: number_options[KEY_UNIT],
             KEY_ENABLED_BY_DEFAULT: str(number_options[KEY_ENABLED_BY_DEFAULT]).lower(),
-            KEY_UNIQUE_ID: f"{dev_id}-white-{number}-{light_id}".lower(),
+            KEY_UNIQUE_ID: f"{dev_id}-{light_id}-{number}".lower(),
             KEY_QOS: qos,
             KEY_AVAILABILITY_TOPIC: TOPIC_ONLINE,
             KEY_PAYLOAD_AVAILABLE: VALUE_TRUE,
