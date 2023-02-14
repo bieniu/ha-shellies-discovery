@@ -3419,7 +3419,7 @@ for light_id, light_options in white_lights.items():
         )
 
         payload = {
-            KEY_NAME: f"{device_name} {format_entity_name(number)} {light_id}",
+            KEY_NAME: f"{device_name} Light {light_id} {number}",
             KEY_COMMAND_TOPIC: number_options[KEY_COMMAND_TOPIC].format(
                 light_id=light_id
             ),
