@@ -164,6 +164,8 @@ python_script:
       host: '{{ trigger.payload_json.ip }}'
       discovery_prefix: 'hass'
       qos: 2
+      shellytrv-84FD75:
+        default_heating_temperature: 21
       shelly1-AABB9900:
         relay-0: "light"
         ext-temperature-0: true
@@ -260,6 +262,7 @@ key | optional | type | default | possible values | description
 `powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for Shelly H&T, Motion, Sense and Button1
 `expire_after` | True | integer | 51840 | | [expire after](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#expire_after) for battery powered sensors in seconds
 `use_fahrenheit` | True | boolean | `false` | `true`, `false` | whether the temperature sensor is configured in Fahrenheit for H&T, Flood, Motion2 or DW2
+`default_heating_temperature` | True | float | `20` | | default target temperature after changing from OFF to HEAT mode
 
 [releases]: https://github.com/bieniu/ha-shellies-discovery/releases
 [releases-shield]: https://img.shields.io/github/release/bieniu/ha-shellies-discovery.svg?style=popout

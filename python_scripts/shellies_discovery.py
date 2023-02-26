@@ -18,6 +18,7 @@ COMP_FAN = "fan"
 COMP_LIGHT = "light"
 COMP_SWITCH = "switch"
 
+CONF_DEFAULT_HEAT_TEMP = "default_heating_temperature"
 CONF_DEVELOP = "develop"
 CONF_DEVICE_NAME = "device_name"
 CONF_DISCOVERY_PREFIX = "discovery_prefix"
@@ -140,6 +141,8 @@ KEY_MAX_TEMP = "max_temp"
 KEY_MIN = "min"
 KEY_MIN_MIREDS = "min_mirs"
 KEY_MIN_TEMP = "min_temp"
+KEY_MODE_COMMAND_TEMPLATE = "mode_cmd_tpl"
+KEY_MODE_COMMAND_TOPIC = "mode_cmd_t"
 KEY_MODE_STATE_TEMPLATE = "mode_stat_tpl"
 KEY_MODE_STATE_TOPIC = "mode_stat_t"
 KEY_MODEL = "mdl"
@@ -368,6 +371,7 @@ PL_UPDATE_FIRMWARE = "update_fw"
 SELECT_PROFILES = "profiles"
 
 SENSOR_ADC = "adc"
+SENSOR_AUTOMATIC_TEMPERATURE_CONTROL = "automatic_temperature_control"
 SENSOR_BATTERY = "battery"
 SENSOR_CALIBRATED = "calibrated"
 SENSOR_CHARGER = "charger"
@@ -506,6 +510,9 @@ TOPIC_WHITE_STATUS = "~white/{light_id}/status"
 TPL_ACCELERATED_HEATING = "{{value_json.thermostats.0.target_t.accelerated_heating}}"
 TPL_ACTION_TEMPLATE = "{{%if value_json.thermostats.0.target_t.value<={min_temp}%}}off{{%elif value_json.thermostats.0.pos==0%}}idle{{%else%}}heating{{%endif%}}"
 TPL_ADC = "{{value|float|round(2)}}"
+TPL_AUTOMATIC_TEMPERATURE_CONTROL = (
+    "{%if value_json.target_t.enabled==true%}ON{%else%}OFF{%endif%}"
+)
 TPL_BATTERY = "{{value|float|round}}"
 TPL_BATTERY_FROM_INFO = "{{value_json.bat.value}}"
 TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
@@ -541,6 +548,8 @@ TPL_IP = "{{value_json.ip}}"
 TPL_IP_FROM_INFO = "{{value_json.wifi_sta.ip}}"
 TPL_LATEST_VERSION = "{%if value_json[^update^].new_version%}{{value_json[^update^].new_version}}{%else%}{{value_json[^update^].old_version}}{%endif%}"
 TPL_LUX = "{{value|float|round}}"
+TPL_MODE = "{%if value_json.thermostats.0.target_t.value==4%}off{%else%}heat{%endif%}"
+TPL_MODE_SET = "{{{{^4^ if value==^off^ else ^{default_heat_temp}^}}}}"
 TPL_MOTION = "{%if value_json.motion==true%}ON{%else%}OFF{%endif%}"
 TPL_MOTION_MOTION = "{%if value_json.sensor.motion==true%}ON{%else%}OFF{%endif%}"
 TPL_NEW_FIRMWARE_FROM_ANNOUNCE = "{%if value_json.new_fw==true%}ON{%else%}OFF{%endif%}"
@@ -1465,6 +1474,15 @@ OPTIONS_SENSOR_WINDOW_STATE_REPORTING = {
     KEY_VALUE_TEMPLATE: TPL_WINDOW_STATE_REPORTING,
 }
 
+OPTIONS_SENSOR_AUTOMATIC_TEMPERATURE_CONTROL = {
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+    KEY_NAME: "Automatic temperature control",
+    KEY_STATE_TOPIC: TOPIC_STATUS,
+    KEY_VALUE_TEMPLATE: TPL_AUTOMATIC_TEMPERATURE_CONTROL,
+    KEY_ICON: "mdi:thermostat-auto",
+}
+
 ROLLER_DEVICE_CLASSES = [
     DEVICE_CLASS_AWNING,
     DEVICE_CLASS_BLIND,
@@ -1512,8 +1530,10 @@ def get_device_config(dev_id):
     """Get device configuration."""
     result = data.get(dev_id, data.get(dev_id.lower(), {}))  # noqa: F821
 
-    if not result:
+    if result is None:
         raise TypeError(f"Wrong configuration for {dev_id}")
+
+    return result
 
 
 def mqtt_publish(topic, payload, retain, json=False):
@@ -2393,7 +2413,7 @@ if model_id == MODEL_SHELLYVALVE_ID:
     climate_entity_option = {
         KEY_MAX_TEMP: 31,
         KEY_MIN_TEMP: 4,
-        KEY_MODES: ["heat"],
+        KEY_MODES: ["heat", "off"],
         KEY_PRECISION: 0.1,
         KEY_TEMP_STEP: 0.5,
     }
@@ -2410,6 +2430,7 @@ if model_id == MODEL_SHELLYVALVE_ID:
         SENSOR_CALIBRATED: OPTIONS_SENSOR_CALIBRATED,
         SENSOR_REPORTED_WINDOW_STATE: OPTIONS_SENSOR_REPORTED_WINDOW_STATE,
         SENSOR_WINDOW_STATE_REPORTING: OPTIONS_SENSOR_WINDOW_STATE_REPORTING,
+        SENSOR_AUTOMATIC_TEMPERATURE_CONTROL: OPTIONS_SENSOR_AUTOMATIC_TEMPERATURE_CONTROL,
     }
     buttons = {BUTTON_RESTART: OPTIONS_BUTTON_RESTART}
     selectors = {SELECT_PROFILES: OPTIONS_SELECT_PROFILES}
@@ -2646,6 +2667,15 @@ for button, button_options in buttons.items():
 
 # climate entities
 if climate_entity_option:
+    default_heat_temp = 20
+    if device_config.get(CONF_DEFAULT_HEAT_TEMP):
+        value = device_config[CONF_DEFAULT_HEAT_TEMP]
+        if (
+            climate_entity_option[KEY_MIN_TEMP]
+            < value
+            < climate_entity_option[KEY_MAX_TEMP]
+        ):
+            default_heat_temp = value
     temperature_command_topic = "~thermostat/0/command/target_t"
     config_topic = f"{disc_prefix}/climate/{dev_id}/config".encode(
         "ascii", "ignore"
@@ -2665,7 +2695,11 @@ if climate_entity_option:
         KEY_TEMPERATURE_COMMAND_TEMPLATE: TPL_SET_TARGET_TEMPERATURE,
         KEY_TEMP_STEP: climate_entity_option[KEY_TEMP_STEP],
         KEY_MODE_STATE_TOPIC: TOPIC_INFO,
-        KEY_MODE_STATE_TEMPLATE: "heat",
+        KEY_MODE_COMMAND_TOPIC: temperature_command_topic,
+        KEY_MODE_COMMAND_TEMPLATE: TPL_MODE_SET.format(
+            default_heat_temp=default_heat_temp
+        ),
+        KEY_MODE_STATE_TEMPLATE: TPL_MODE,
         KEY_UNIQUE_ID: f"{dev_id}".lower(),
         KEY_OPTIMISTIC: VALUE_FALSE,
         KEY_QOS: qos,
@@ -3098,6 +3132,8 @@ for sensor, sensor_options in binary_sensors.items():
         KEY_DEVICE: device_info,
         "~": default_topic,
     }
+    if sensor_options.get(KEY_ICON):
+        payload[KEY_ICON] = sensor_options[KEY_ICON]
     if sensor_options.get(KEY_ENTITY_CATEGORY):
         payload[KEY_ENTITY_CATEGORY] = sensor_options[KEY_ENTITY_CATEGORY]
     if sensor_options.get(KEY_VALUE_TEMPLATE):
