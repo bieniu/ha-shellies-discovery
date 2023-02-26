@@ -371,6 +371,7 @@ PL_UPDATE_FIRMWARE = "update_fw"
 SELECT_PROFILES = "profiles"
 
 SENSOR_ADC = "adc"
+SENSOR_AUTOMATIC_TEMPERATURE_CONTROL = "automatic_temperature_control"
 SENSOR_BATTERY = "battery"
 SENSOR_CALIBRATED = "calibrated"
 SENSOR_CHARGER = "charger"
@@ -509,6 +510,9 @@ TOPIC_WHITE_STATUS = "~white/{light_id}/status"
 TPL_ACCELERATED_HEATING = "{{value_json.thermostats.0.target_t.accelerated_heating}}"
 TPL_ACTION_TEMPLATE = "{{%if value_json.thermostats.0.target_t.value<={min_temp}%}}off{{%elif value_json.thermostats.0.pos==0%}}idle{{%else%}}heating{{%endif%}}"
 TPL_ADC = "{{value|float|round(2)}}"
+TPL_AUTOMATIC_TEMPERATURE_CONTROL = (
+    "{%if value_json.target_t.enabled==true%}ON{%else%}OFF{%endif%}"
+)
 TPL_BATTERY = "{{value|float|round}}"
 TPL_BATTERY_FROM_INFO = "{{value_json.bat.value}}"
 TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
@@ -1470,6 +1474,15 @@ OPTIONS_SENSOR_WINDOW_STATE_REPORTING = {
     KEY_VALUE_TEMPLATE: TPL_WINDOW_STATE_REPORTING,
 }
 
+OPTIONS_SENSOR_AUTOMATIC_TEMPERATURE_CONTROL = {
+    KEY_ENABLED_BY_DEFAULT: True,
+    KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_CONFIG,
+    KEY_NAME: "Automatic temperature control",
+    KEY_STATE_TOPIC: TOPIC_INFO,
+    KEY_VALUE_TEMPLATE: TPL_AUTOMATIC_TEMPERATURE_CONTROL,
+    KEY_ICON: "mdi:thermostat-auto",
+}
+
 ROLLER_DEVICE_CLASSES = [
     DEVICE_CLASS_AWNING,
     DEVICE_CLASS_BLIND,
@@ -2417,6 +2430,7 @@ if model_id == MODEL_SHELLYVALVE_ID:
         SENSOR_CALIBRATED: OPTIONS_SENSOR_CALIBRATED,
         SENSOR_REPORTED_WINDOW_STATE: OPTIONS_SENSOR_REPORTED_WINDOW_STATE,
         SENSOR_WINDOW_STATE_REPORTING: OPTIONS_SENSOR_WINDOW_STATE_REPORTING,
+        SENSOR_AUTOMATIC_TEMPERATURE_CONTROL: OPTIONS_SENSOR_AUTOMATIC_TEMPERATURE_CONTROL,
     }
     buttons = {BUTTON_RESTART: OPTIONS_BUTTON_RESTART}
     selectors = {SELECT_PROFILES: OPTIONS_SELECT_PROFILES}
@@ -3118,6 +3132,8 @@ for sensor, sensor_options in binary_sensors.items():
         KEY_DEVICE: device_info,
         "~": default_topic,
     }
+    if sensor_options.get(KEY_ICON):
+        payload[KEY_ICON] = sensor_options[KEY_ICON]
     if sensor_options.get(KEY_ENTITY_CATEGORY):
         payload[KEY_ENTITY_CATEGORY] = sensor_options[KEY_ENTITY_CATEGORY]
     if sensor_options.get(KEY_VALUE_TEMPLATE):
