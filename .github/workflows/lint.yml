@@ -30,14 +30,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements-test.txt
 
+    - name: Lint with ruff
+      run: |
+        ruff python_scripts
+
     - name: Check with Black Code Formatter
       run: |
         black python_scripts --check
-
-    - name: Lint with flake8
-      run: |
-        flake8 python_scripts
-
-    - name: Lint with pydocstyle
-      run: |
-        pydocstyle python_scripts

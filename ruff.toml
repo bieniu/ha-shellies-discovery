@@ -1,0 +1,63 @@
+target-version = "py310"
+
+select = [
+    "A",       # flake8-builtins
+    "ARG",     # flake8-unused-arguments
+    "B",       # flake8-bugbear
+    "BLE",     # flake8-blind-except
+    "C",       # complexity
+    "C4",      # flake8-comprehensions
+    "C90",     # mccabe
+    "D",       # docstrings
+    "DTZ",     # flake8-datetimez
+    "E",       # pycodestyle
+    "ERA",     # eradicate
+    "EXE",     # flake8-executable
+    "F",       # pyflakes/autoflake
+    "FBT",     # flake8-boolean-trap
+    "G",       # flake8-logging-format
+    "I",       # isort
+    "ICN",     # flake8-import-conventions
+    "INP",     # flake8-no-pep420
+    "ISC",     # flake8-implicit-str-concat
+    "N",       # pep8-naming
+    "PGH",     # pygrep-hooks
+    "PIE",     # flake8-pie
+    "PL",      # Pylint
+    "PT",      # flake8-pytest-style
+    "PYI",     # flake8-pyi
+    "Q",       # flake8-quotes
+    "RET",     # flake8-return
+    "RSE",     # flake8-raise
+    "RUF",     # Ruff-specific rules
+    "S",       # flake8-bandit
+    "SIM",     # flake8-simplify
+    "SLF",     # flake8-self
+    "T10",     # flake8-debugger
+    "T20",     # flake8-print
+    "TID",     # flake8-tidy-imports
+    "TRY",     # tryceratops
+    "UP",      # pyupgrade
+    "W",       # pycodestyle
+    "YTT",     # flake8-2020
+]
+
+ignore = [
+    "D203",     # 1 blank line required before class docstring
+    "D213",     # Multi-line docstring summary should start at the second line
+    "D404",     # First word of the docstring should not be This
+    "D406",     # Section name should end with a newline
+    "D407",     # Section name underlining
+    "D411",     # Missing blank line before section
+    "E501",     # Line too long
+    "FBT002",   # Boolean default value in function definition
+    "FBT003",   # Boolean positional value in function call
+    "INP001",   # Add an `__init__.py`
+    "TRY003",   # Avoid specifying long messages outside the exception class
+]
+
+[pyupgrade]
+keep-runtime-typing = true
+
+[mccabe]
+max-complexity = 25
