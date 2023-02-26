@@ -225,6 +225,8 @@ MIN_HT_FIRMWARE_DATE = 20211109
 # Firmware 1.11.8 release date
 MIN_FIRMWARE_DATE = 20220209
 
+MAX_MQTT_TOPIC_LENGTH = 32
+
 MODEL_SHELLY1 = f"{ATTR_SHELLY} 1"
 MODEL_SHELLY1L = f"{ATTR_SHELLY} 1L"
 MODEL_SHELLY1PM = f"{ATTR_SHELLY} 1PM"
@@ -574,7 +576,7 @@ TPL_TEMPERATURE_EXT = "{%if is_number(value) and -100<value|int<999%}{{value|flo
 TPL_TEMPERATURE_STATUS = "{{value|lower}}"
 TPL_TILT = "{{value|float}}"
 TPL_UPDATE_TO_JSON = "{{value_json[^update^]|tojson}}"
-TPL_UPTIME = "{{(as_timestamp(now())-value_json.uptime)|timestamp_l" "ocal}}"
+TPL_UPTIME = "{{(as_timestamp(now())-value_json.uptime)|timestamp_local}}"
 TPL_VIBRATION = "{%if value_json.vibration==true%}ON{%else%}OFF{%endif%}"
 TPL_VIBRATION_MOTION = "{%if value_json.sensor.vibration==true%}ON{%else%}OFF{%endif%}"
 TPL_VOLTAGE = "{{value|float|round(1)}}"
@@ -1509,16 +1511,9 @@ def parse_version(version):
 def get_device_config(dev_id):
     """Get device configuration."""
     result = data.get(dev_id, data.get(dev_id.lower(), {}))  # noqa: F821
+
     if not result:
-        result = {}
-    try:
-        if len(result) > 0:
-            result[0]
-    except TypeError:
-        logger.error("Wrong configuration for %s", dev_id)  # noqa: F821
-        result = {}
-    finally:
-        return result
+        raise TypeError(f"Wrong configuration for {dev_id}")
 
 
 def mqtt_publish(topic, payload, retain, json=False):
@@ -1553,7 +1548,7 @@ host = data.get(CONF_HOST)  # noqa: F821
 
 if not host:
     raise ValueError(
-        "host value None is not valid, update shellies_discovery automation"
+        f"host value {host} is not valid, update shellies_discovery automation"
     )
 
 use_fahrenheit = False
@@ -1568,17 +1563,17 @@ ignored = [
 mac = data.get(CONF_MAC)  # noqa: F821
 
 if not dev_id:
-    raise ValueError("id value None is not valid, check script configuration")
+    raise ValueError(f"id value {dev_id} is not valid, check script configuration")
 if "^" in dev_id:
-    raise ValueError("Wrong char ^ in id, change device configuration")
-if len(dev_id) > 32:
+    raise ValueError("Wrong char ^ in the device ID, change device configuration")
+if len(dev_id) > MAX_MQTT_TOPIC_LENGTH:
     raise ValueError(
         f"id value {dev_id} is longer than 32 characters, use shorter custom MQTT prefix"
     )
 if not mac:
-    raise ValueError("mac value None is not valid, check script configuration")
+    raise ValueError(f"mac value {mac} is not valid, check script configuration")
 if not fw_ver:
-    raise ValueError("fw_ver value None is not valid, check script configuration")
+    raise ValueError(f"fw_ver value {fw_ver} is not valid, check script configuration")
 
 mac = str(mac).lower()
 
@@ -1593,10 +1588,10 @@ if not model_id:
 
 try:
     cur_ver_date = parse_version(fw_ver)
-except (IndexError, ValueError):
+except (IndexError, ValueError) as exc:
     raise ValueError(
         f"Firmware version {fw_ver} is not supported, update your device {dev_id}"
-    )
+    ) from exc
 
 min_ver_date = DEVICE_FIRMWARE_MAP.get(model_id, 0)
 
@@ -1609,13 +1604,9 @@ logger.debug(  # noqa: F821
     "id: %s, mac: %s, fw_ver: %s, model: %s", dev_id, mac, fw_ver, model_id
 )
 
-try:
-    if int(data.get(CONF_QOS, 0)) in (0, 1, 2):  # noqa: F821
-        qos = int(data.get(CONF_QOS, 0))  # noqa: F821
-    else:
-        raise ValueError()
-except ValueError:
-    logger.error("Not valid qos value, the default value 0 was used")  # noqa: F821
+qos = data.get(CONF_QOS, 0)  # noqa: F821
+if qos not in (0, 1, 2):
+    raise ValueError(f"QoS value {qos} is not valid, check script configuration")
 
 optimistic = data.get(CONF_OPTIMISTIC, False)  # noqa: F821
 if not isinstance(optimistic, bool):
@@ -2555,7 +2546,7 @@ for number, number_options in numbers.items():
 
     mqtt_publish(config_topic, payload, retain)
 
-# switches (not relays)
+# switches (not relays)  # noqa: ERA001
 for switch, switch_options in switches.items():
     config_topic = f"{disc_prefix}/switch/{dev_id}-{switch}/config".encode(
         "ascii", "ignore"
@@ -2708,7 +2699,8 @@ for roller_id in range(rollers):
         else:
             wrong_class = device_config[f"roller-{roller_id}-class"]
             logger.error(  # noqa: F821
-                f"{wrong_class} is the wrong roller class, the default value None was used"
+                "%s is the wrong roller class, the default value None was used",
+                wrong_class,
             )
     state_topic = f"~roller/{roller_id}"
     config_topic = f"{disc_prefix}/cover/{dev_id}-roller-{roller_id}/config".encode(
