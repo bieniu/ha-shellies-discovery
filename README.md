@@ -242,7 +242,6 @@ key | optional | type | default | description
 `qos` | True | integer | `0` | MQTT QoS, you can use `0`, `1` or `2`
 `ignored_devices` | True | list | `None` | list of devices to ignore
 `ignore_device_model` | True | boolean | `false` | ignore device model to generate device name
-`use_kwh` | True | boolean | `false` | `true`, `false` | does energy sensors use kWh unit instead of Wh
 `optimistic` | True | boolean | `false` | `optimistic` | `optimistic` option for cover entities
 
 ## Device arguments
