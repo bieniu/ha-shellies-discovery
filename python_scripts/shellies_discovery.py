@@ -510,11 +510,9 @@ TOPIC_WHITE_STATUS = "~white/{light_id}/status"
 
 TPL_ACCELERATED_HEATING = "{{value_json.thermostats.0.target_t.accelerated_heating}}"
 TPL_ACTION_TEMPLATE = "{{%if value_json.thermostats.0.target_t.value<={min_temp}%}}off{{%elif value_json.thermostats.0.pos==0%}}idle{{%else%}}heating{{%endif%}}"
-TPL_ADC = "{{value|float}}"
 TPL_AUTOMATIC_TEMPERATURE_CONTROL = (
     "{%if value_json.target_t.enabled==true%}ON{%else%}OFF{%endif%}"
 )
-TPL_BATTERY = "{{value|float}}"
 TPL_BATTERY_FROM_INFO = "{{value_json.bat.value}}"
 TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
 TPL_BOOST_MINUTES = "{{value_json.thermostats.0.boost_minutes}}"
@@ -528,23 +526,15 @@ TPL_COMMAND_ON_WHITE_LIGHT = "{{^turn^:^on^{{%if brightness is defined%}},^brigh
 TPL_COMMAND_SET_BRIGHTNESS_WHITE_LIGHT = "{{^brightness^:{{{{value|float|round}}}}}}"
 TPL_COMMAND_ON_WHITE_LIGHT_DUO = "{{^turn^:^on^{{%if brightness is defined%}},^brightness^:{{{{brightness|float|multiply(0.3922)|round}}}}{{%endif%}}{{%if color_temp is defined%}},^temp^:{{{{(1000000/(color_temp|int))|round(0,^floor^)}}}}{{%endif%}}{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000), {max_transition})}}}}{{%endif%}}}}"
 TPL_COMMAND_PROFILES = "{{value.split(^ ^)[-1]}}"
-TPL_CONCENTRATION = (
-    "{%if is_number(value) and 0<=value|int<=65535%}{{value}}{%else%}unknown{%endif%}"
-)
-TPL_CURRENT = "{{value|float}}"
+TPL_CONCENTRATION = "{%if is_number(value) and 0<=value|int<=65535%}{{value}}{%endif%}"
 TPL_CURRENT_TEMPERATURE = "{{value_json.thermostats.0.tmp.value}}"
-TPL_ENERGY_WH = "{{value|float}}"
 TPL_ENERGY_WH_KWH = "{{value|float/1000}}"
 TPL_ENERGY_WMIN = "{{value|float/60}}"
 TPL_ENERGY_WMIN_KWH = "{{value|float/60/1000}}"
 TPL_GAS = "{%if value in [^mild^,^heavy^]%}ON{%else%}OFF{%endif%}"
 TPL_GAS_TO_JSON = "{{{^status^:value}|tojson}}"
-TPL_HUMIDITY = (
-    "{%if is_number(value) and 0<value|int<999%}{{value}}{%else%}unknown{%endif%}"
-)
-TPL_HUMIDITY_EXT = (
-    "{%if is_number(value) and 0<value|int<999%}{{value|float}}{%else%}unknown{%endif%}"
-)
+TPL_HUMIDITY = "{%if is_number(value) and 0<value|int<999%}{{value}}{%endif%}"
+TPL_HUMIDITY_EXT = "{%if is_number(value) and 0<value|int<999%}{{value}}{%endif%}"
 TPL_ILLUMINATION = "{{value_json.lux}}"
 TPL_ILLUMINATION_MOTION = "{{value_json.lux.value}}"
 TPL_ILLUMINATION_TO_JSON = "{{{^illumination^:value}|tojson}}"
@@ -552,7 +542,6 @@ TPL_INSTALLED_VERSION = "{{value_json[^update^].old_version}}"
 TPL_IP = "{{value_json.ip}}"
 TPL_IP_FROM_INFO = "{{value_json.wifi_sta.ip}}"
 TPL_LATEST_VERSION = "{%if value_json[^update^].new_version%}{{value_json[^update^].new_version}}{%else%}{{value_json[^update^].old_version}}{%endif%}"
-TPL_LUX = "{{value|float}}"
 TPL_MODE = "{%if value_json.thermostats.0.target_t.value==4%}off{%else%}heat{%endif%}"
 TPL_MODE_SET = "{{{{^4^ if value==^off^ else ^{default_heat_temp}^}}}}"
 TPL_MOTION = "{%if value_json.motion==true%}ON{%else%}OFF{%endif%}"
@@ -577,25 +566,20 @@ TPL_OVERPOWER = "{%if value_json.overpower==true%}ON{%else%}OFF{%endif%}"
 TPL_OVERPOWER_RELAY = "{%if value==^overpower^%}ON{%else%}OFF{%endif%}"
 TPL_OVERPOWER_VALUE_TO_JSON = "{{{^overpower_value^:value}|tojson}}"
 TPL_POSITION = "{%if value!=-1%}{{value}}{%endif%}"
-TPL_POWER = "{{value|float}}"
 TPL_POWER_FACTOR = "{{value|float*100}}"
-TPL_RSSI = "{%if value_json.wifi_sta.rssi!=0%}{{value_json.wifi_sta.rssi}}{%else%}unknown{%endif%}"
+TPL_RSSI = "{%if value_json.wifi_sta.rssi!=0%}{{value_json.wifi_sta.rssi}}{%endif%}"
 TPL_SELF_TEST = "{{value.replace(^_^,^ ^)}}"
 TPL_SET_TARGET_TEMPERATURE = "{{value}}"
 TPL_SSID = "{{value_json.wifi_sta.ssid}}"
 TPL_TARGET_TEMPERATURE = "{{value_json.thermostats.0.target_t.value}}"
-TPL_TEMPERATURE = (
-    "{%if is_number(value) and -100<value|int<900%}{{value}}{%else%}unknown{%endif%}"
-)
+TPL_TEMPERATURE = "{%if is_number(value) and -100<value|int<900%}{{value}}{%endif%}"
 TPL_TEMPERATURE_MOTION = "{{value_json.tmp.value}}"
-TPL_TEMPERATURE_EXT = "{%if is_number(value) and -100<value|int<999%}{{value|float}}{%else%}unknown{%endif%}"
+TPL_TEMPERATURE_EXT = "{%if is_number(value) and -100<value|int<999%}{{value}}{%endif%}"
 TPL_TEMPERATURE_STATUS = "{{value|lower}}"
-TPL_TILT = "{{value|float}}"
 TPL_UPDATE_TO_JSON = "{{value_json[^update^]|tojson}}"
 TPL_UPTIME = "{{(as_timestamp(now())-value_json.uptime)|timestamp_local}}"
 TPL_VIBRATION = "{%if value_json.vibration==true%}ON{%else%}OFF{%endif%}"
 TPL_VIBRATION_MOTION = "{%if value_json.sensor.vibration==true%}ON{%else%}OFF{%endif%}"
-TPL_VOLTAGE = "{{value|float}}"
 
 UNIT_AMPERE = "A"
 UNIT_CELSIUS = "°C"
@@ -869,7 +853,6 @@ else:
         KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
         KEY_STATE_TOPIC: TOPIC_METER_TOTAL,
         KEY_UNIT: UNIT_WH,
-        KEY_VALUE_TEMPLATE: TPL_ENERGY_WH,
         KEY_SUGGESTED_DISPLAY_PRECISION: 1,
     }
     OPTIONS_SENSOR_TOTAL_RETURNED_METER = {
@@ -878,7 +861,6 @@ else:
         KEY_STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
         KEY_STATE_TOPIC: TOPIC_METER_TOTAL_RETURNED,
         KEY_UNIT: UNIT_WH,
-        KEY_VALUE_TEMPLATE: TPL_ENERGY_WH,
         KEY_SUGGESTED_DISPLAY_PRECISION: 1,
     }
     OPTIONS_SENSOR_ROLLER_ENERGY = {
@@ -932,7 +914,6 @@ OPTIONS_SENSOR_RELAY_POWER = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_RELAY_POWER,
     KEY_UNIT: UNIT_WATT,
-    KEY_VALUE_TEMPLATE: TPL_POWER,
     KEY_SUGGESTED_DISPLAY_PRECISION: 1,
 }
 OPTIONS_SENSOR_ROLLER_POWER = {
@@ -941,14 +922,12 @@ OPTIONS_SENSOR_ROLLER_POWER = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_ROLLER_POWER,
     KEY_UNIT: UNIT_WATT,
-    KEY_VALUE_TEMPLATE: TPL_POWER,
     KEY_SUGGESTED_DISPLAY_PRECISION: 1,
 }
 OPTIONS_SENSOR_LIGHT_OVERPOWER_VALUE = {
     KEY_ENABLED_BY_DEFAULT: False,
     KEY_STATE_TOPIC: TOPIC_LIGHT_OVERPOWER_VALUE,
     KEY_UNIT: UNIT_WATT,
-    KEY_VALUE_TEMPLATE: TPL_POWER,
     KEY_SUGGESTED_DISPLAY_PRECISION: 1,
 }
 OPTIONS_SENSOR_LIGHT_POWER = {
@@ -957,7 +936,6 @@ OPTIONS_SENSOR_LIGHT_POWER = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_LIGHT_POWER,
     KEY_UNIT: UNIT_WATT,
-    KEY_VALUE_TEMPLATE: TPL_POWER,
     KEY_SUGGESTED_DISPLAY_PRECISION: 1,
 }
 OPTIONS_SENSOR_LIGHT_POWER_RGBW2_COLOR = {
@@ -966,7 +944,6 @@ OPTIONS_SENSOR_LIGHT_POWER_RGBW2_COLOR = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_LIGHT_POWER_RGBW2_COLOR,
     KEY_UNIT: UNIT_WATT,
-    KEY_VALUE_TEMPLATE: TPL_POWER,
     KEY_SUGGESTED_DISPLAY_PRECISION: 1,
 }
 OPTIONS_SENSOR_LIGHT_POWER_RGBW2_WHITE = {
@@ -975,7 +952,6 @@ OPTIONS_SENSOR_LIGHT_POWER_RGBW2_WHITE = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_LIGHT_POWER_RGBW2_WHITE,
     KEY_UNIT: UNIT_WATT,
-    KEY_VALUE_TEMPLATE: TPL_POWER,
     KEY_SUGGESTED_DISPLAY_PRECISION: 1,
 }
 OPTIONS_SENSOR_POWER = {
@@ -984,7 +960,6 @@ OPTIONS_SENSOR_POWER = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_POWER,
     KEY_UNIT: UNIT_WATT,
-    KEY_VALUE_TEMPLATE: TPL_POWER,
     KEY_SUGGESTED_DISPLAY_PRECISION: 1,
 }
 OPTIONS_SENSOR_POWER_METER = {
@@ -993,7 +968,6 @@ OPTIONS_SENSOR_POWER_METER = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_METER_POWER,
     KEY_UNIT: UNIT_WATT,
-    KEY_VALUE_TEMPLATE: TPL_POWER,
     KEY_SUGGESTED_DISPLAY_PRECISION: 1,
 }
 OPTIONS_SENSOR_REACTIVE_POWER_METER = {
@@ -1002,7 +976,6 @@ OPTIONS_SENSOR_REACTIVE_POWER_METER = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_METER_REACTIVE_POWER,
     KEY_UNIT: UNIT_VAR,
-    KEY_VALUE_TEMPLATE: TPL_POWER,
     KEY_SUGGESTED_DISPLAY_PRECISION: 1,
 }
 OPTIONS_SENSOR_POWER_FACTOR_METER = {
@@ -1020,7 +993,6 @@ OPTIONS_SENSOR_VOLTAGE_METER = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_METER_VOLTAGE,
     KEY_UNIT: UNIT_VOLT,
-    KEY_VALUE_TEMPLATE: TPL_VOLTAGE,
     KEY_SUGGESTED_DISPLAY_PRECISION: 1,
 }
 OPTIONS_SENSOR_CURRENT_METER = {
@@ -1029,7 +1001,6 @@ OPTIONS_SENSOR_CURRENT_METER = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_METER_CURRENT,
     KEY_UNIT: UNIT_AMPERE,
-    KEY_VALUE_TEMPLATE: TPL_CURRENT,
     KEY_SUGGESTED_DISPLAY_PRECISION: 1,
 }
 OPTIONS_SENSOR_RSSI = {
@@ -1125,7 +1096,6 @@ OPTIONS_SENSOR_VOLTAGE = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_VOLTAGE,
     KEY_UNIT: UNIT_VOLT,
-    KEY_VALUE_TEMPLATE: TPL_VOLTAGE,
     KEY_SUGGESTED_DISPLAY_PRECISION: 1,
 }
 OPTIONS_SENSOR_TOTALWORKTIME = {
@@ -1142,7 +1112,6 @@ OPTIONS_SENSOR_VOLTAGE = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_VOLTAGE,
     KEY_UNIT: UNIT_VOLT,
-    KEY_VALUE_TEMPLATE: TPL_VOLTAGE,
     KEY_SUGGESTED_DISPLAY_PRECISION: 1,
 }
 OPTIONS_SENSOR_ADC = {
@@ -1150,7 +1119,6 @@ OPTIONS_SENSOR_ADC = {
     KEY_ENABLED_BY_DEFAULT: True,
     KEY_DEVICE_CLASS: DEVICE_CLASS_VOLTAGE,
     KEY_UNIT: UNIT_VOLT,
-    KEY_VALUE_TEMPLATE: TPL_ADC,
     KEY_STATE_TOPIC: TOPIC_ADC,
     KEY_SUGGESTED_DISPLAY_PRECISION: 2,
 }
@@ -1179,7 +1147,6 @@ OPTIONS_SENSOR_BATTERY = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_SENSOR_BATTERY,
     KEY_UNIT: UNIT_PERCENT,
-    KEY_VALUE_TEMPLATE: TPL_BATTERY,
     KEY_SUGGESTED_DISPLAY_PRECISION: 0,
 }
 OPTIONS_SENSOR_BATTERY_MOTION = {
@@ -1206,7 +1173,6 @@ OPTIONS_SENSOR_LUX = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_SENSOR_LUX,
     KEY_UNIT: UNIT_LUX,
-    KEY_VALUE_TEMPLATE: TPL_LUX,
     KEY_SUGGESTED_DISPLAY_PRECISION: 0,
 }
 OPTIONS_SENSOR_LUX_MOTION = {
@@ -1242,7 +1208,6 @@ OPTIONS_SENSOR_TILT = {
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_ENABLED_BY_DEFAULT: True,
     KEY_UNIT: UNIT_DEGREE,
-    KEY_VALUE_TEMPLATE: TPL_TILT,
     KEY_STATE_TOPIC: TOPIC_SENSOR_TILT,
     KEY_ICON: "mdi:angle-acute",
 }
