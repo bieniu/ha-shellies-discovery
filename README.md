@@ -115,6 +115,9 @@ python_script:
   trigger:
     platform: mqtt
     topic: shellies/announce
+  condition:
+    - condition: template
+      value_template: "{{ trigger.payload_json.gen is not defined }}"
   action:
     service: python_script.shellies_discovery
     data:
@@ -153,6 +156,9 @@ python_script:
   trigger:
     platform: mqtt
     topic: shellies/announce
+  condition:
+    - condition: template
+      value_template: "{{ trigger.payload_json.gen is not defined }}"
   action:
     service: python_script.shellies_discovery
     data:
