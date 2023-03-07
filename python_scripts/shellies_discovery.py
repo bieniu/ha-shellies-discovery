@@ -2407,18 +2407,17 @@ if battery_powered:
             f"expire_after value {expire_after} is not an integer, check script configuration"
         )
 
-else:
-    availability = [
-        {
-            KEY_TOPIC: TOPIC_ONLINE,
-            KEY_PAYLOAD_AVAILABLE: "true",
-            KEY_PAYLOAD_NOT_AVAILABLE: "false",
-        },
-        {
-            KEY_TOPIC: TOPIC_INFO,
-            KEY_VALUE_TEMPLATE: TPL_MQTT_CONNECTED,
-        },
-    ]
+availability = [
+    {
+        KEY_TOPIC: TOPIC_ONLINE,
+        KEY_PAYLOAD_AVAILABLE: "true",
+        KEY_PAYLOAD_NOT_AVAILABLE: "false",
+    },
+    {
+        KEY_TOPIC: TOPIC_INFO,
+        KEY_VALUE_TEMPLATE: TPL_MQTT_CONNECTED,
+    },
+]
 
 # updates
 for update, update_options in updates.items():
