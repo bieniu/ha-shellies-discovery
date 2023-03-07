@@ -22,3 +22,9 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CATEGORY: "python_script"
+          
+      - name: HACS Action
+        uses: hacs/action@22.5.0
+        with:
+          category: "python_script"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
