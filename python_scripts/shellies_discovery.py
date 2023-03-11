@@ -7,6 +7,8 @@ ATTR_RELAY = "relay"
 ATTR_ROLLER = "roller"
 ATTR_SHELLY = "Shelly"
 
+ATTR_AVAILABILITY_EXTRA = "availability_extra"
+
 BUTTON_MUTE = "mute"
 BUTTON_RESTART = "restart"
 BUTTON_SELF_TEST = "self_test"
@@ -517,6 +519,9 @@ TPL_BATTERY_FROM_INFO = "{{value_json.bat.value}}"
 TPL_BATTERY_FROM_JSON = "{{value_json.bat}}"
 TPL_BOOST_MINUTES = "{{value_json.thermostats.0.boost_minutes}}"
 TPL_CALIBRATED = "{%if value_json.calibrated==true%}ON{%else%}OFF{%endif%}"
+TPL_CALIBRATED_AVAILABILITY = (
+    "{%if value_json.calibrated==true%}online{%else%}offline{%endif%}"
+)
 TPL_CHARGER = "{%if value_json.charger==true%}ON{%else%}OFF{%endif%}"
 TPL_CLOUD = "{%if value_json.cloud.connected==true%}ON{%else%}OFF{%endif%}"
 TPL_COLOR_TEMP_WHITE_LIGHT = (
@@ -670,6 +675,10 @@ OPTIONS_NUMBER_VALVE_POSITION = {
     KEY_STATE_TOPIC: TOPIC_INFO,
     KEY_VALUE_TEMPLATE: TPL_VALVE_POSITION,
     KEY_UNIT: UNIT_PERCENT,
+    ATTR_AVAILABILITY_EXTRA: {
+        KEY_TOPIC: TOPIC_INFO,
+        KEY_VALUE_TEMPLATE: TPL_CALIBRATED_AVAILABILITY,
+    },
 }
 OPTIONS_NUMBER_MINIMAL_VALVE_POSITION = {
     KEY_COMMAND_TOPIC: TOPIC_COMMAND_VALVE_MIN,
@@ -2466,6 +2475,9 @@ for number, number_options in numbers.items():
         "ascii", "ignore"
     ).decode("utf-8")
 
+    if number_options.get(ATTR_AVAILABILITY_EXTRA):
+        availability.append(number_options[ATTR_AVAILABILITY_EXTRA])
+
     payload = {
         KEY_NAME: f"{device_name} {format_entity_name(number)}",
         KEY_COMMAND_TOPIC: number_options[KEY_COMMAND_TOPIC],
@@ -2600,6 +2612,13 @@ if climate_entity_option:
     config_topic = f"{disc_prefix}/climate/{dev_id}/config".encode(
         "ascii", "ignore"
     ).decode("utf-8")
+
+    availability.append(
+        {
+            KEY_TOPIC: TOPIC_INFO,
+            KEY_VALUE_TEMPLATE: TPL_CALIBRATED_AVAILABILITY,
+        }
+    )
 
     payload = {
         KEY_NAME: device_name,
