@@ -56,8 +56,5 @@ ignore = [
     "TRY003",   # Avoid specifying long messages outside the exception class
 ]
 
-[pyupgrade]
-keep-runtime-typing = true
-
 [mccabe]
 max-complexity = 25
