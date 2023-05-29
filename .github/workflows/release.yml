@@ -18,7 +18,7 @@ jobs:
           zip shellies-discovery.zip -r ./
 
       - name: Upload zip to release
-        uses: svenstaro/upload-release-action@2.5.0
+        uses: svenstaro/upload-release-action@2.6.0
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: /home/runner/work/ha-shellies-discovery/ha-shellies-discovery/python_scripts/shellies-discovery.zip
