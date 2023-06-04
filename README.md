@@ -44,6 +44,7 @@ Go to [HA community](https://community.home-assistant.io/t/shellies-discovery-sc
 - Shelly Door/Window
 - Shelly Door/Window 2
 - Shelly DUO
+- Shelly DUO RGBW
 - Shelly EM
 - Shelly Flood
 - Shelly Gas

@@ -20,6 +20,7 @@ This script needs Home Assistant `python_script` component so, if you never used
 - Shelly Door/Window
 - Shelly Door/Window 2
 - Shelly DUO
+- Shelly DUO RGBW
 - Shelly EM
 - Shelly Flood
 - Shelly Gas
