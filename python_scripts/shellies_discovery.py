@@ -394,10 +394,12 @@ SENSOR_INPUT_1 = "input 1"
 SENSOR_INPUT_2 = "input 2"
 SENSOR_INPUT_3 = "input 3"
 SENSOR_IP = "ip"
+SENSOR_IX_SUM_CURRENT = "ix_sum_current"
 SENSOR_LAST_RESTART = "last_restart"
 SENSOR_LOADERROR = "loaderror"
 SENSOR_LUX = "lux"
 SENSOR_MOTION = "motion"
+SENSOR_N_CURRENT = "n_current"
 SENSOR_OPENING = "opening"
 SENSOR_OPERATION = "operation"
 SENSOR_OVERLOAD = "overload"
@@ -452,6 +454,7 @@ TOPIC_INPUT_0 = "~input/0"
 TOPIC_INPUT_1 = "~input/1"
 TOPIC_INPUT_2 = "~input/2"
 TOPIC_INPUT_3 = "~input/3"
+TOPIC_IX_SUM_CURRENT = "~emeter_n/ixsum"
 TOPIC_LIGHT_ENERGY = "~light/{light_id}/energy"
 TOPIC_LIGHT_ENERGY_RGBW2_COLOR = "~color/{light_id}/energy"
 TOPIC_LIGHT_ENERGY_RGBW2_WHITE = "~white/{light_id}/energy"
@@ -472,6 +475,7 @@ TOPIC_METER_TOTAL = "~emeter/{meter_id}/total"
 TOPIC_METER_TOTAL_RETURNED = "~emeter/{meter_id}/total_returned"
 TOPIC_METER_VOLTAGE = "~emeter/{meter_id}/voltage"
 TOPIC_MUTE = "~sensor/mute"
+TOPIC_N_CURRENT = "~emeter_n/current"
 TOPIC_ONLINE = "~online"
 TOPIC_OVERLOAD = "~overload"
 TOPIC_OVERPOWER = "~overpower"
@@ -911,6 +915,22 @@ OPTIONS_SENSOR_CURRENT_METER = {
     KEY_ENABLED_BY_DEFAULT: False,
     KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
     KEY_STATE_TOPIC: TOPIC_METER_CURRENT,
+    KEY_UNIT: UNIT_AMPERE,
+    KEY_SUGGESTED_DISPLAY_PRECISION: 1,
+}
+OPTIONS_SENSOR_N_CURRENT = {
+    KEY_DEVICE_CLASS: DEVICE_CLASS_CURRENT,
+    KEY_ENABLED_BY_DEFAULT: False,
+    KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
+    KEY_STATE_TOPIC: TOPIC_N_CURRENT,
+    KEY_UNIT: UNIT_AMPERE,
+    KEY_SUGGESTED_DISPLAY_PRECISION: 1,
+}
+OPTIONS_SENSOR_IX_SUM_CURRENT = {
+    KEY_DEVICE_CLASS: DEVICE_CLASS_CURRENT,
+    KEY_ENABLED_BY_DEFAULT: False,
+    KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
+    KEY_STATE_TOPIC: TOPIC_IX_SUM_CURRENT,
     KEY_UNIT: UNIT_AMPERE,
     KEY_SUGGESTED_DISPLAY_PRECISION: 1,
 }
@@ -2284,6 +2304,8 @@ if model_id == MODEL_SHELLY3EM_ID or dev_id_prefix == MODEL_SHELLY3EM_PREFIX:
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
         SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+        SENSOR_N_CURRENT: OPTIONS_SENSOR_N_CURRENT,
+        SENSOR_IX_SUM_CURRENT: OPTIONS_SENSOR_IX_SUM_CURRENT,
     }
     buttons = {BUTTON_RESTART: OPTIONS_BUTTON_RESTART}
     updates = {UPDATE_FIRMWARE: OPTIONS_UPDATE_FIRMWARE}
@@ -2869,6 +2891,8 @@ for sensor, sensor_options in sensors.items():
         unique_id = f"{dev_id}-{sensor}".lower()
     if sensor in (SENSOR_SSID, SENSOR_ADC, SENSOR_IP):
         sensor_name = f"{device_name} {sensor.upper()}"
+    elif sensor == SENSOR_IX_SUM_CURRENT:
+        sensor_name = f"{device_name} IX sum current"
     elif sensor == SENSOR_UPTIME:
         sensor_name = f"{device_name} Last restart"
     elif sensor == SENSOR_RSSI:
