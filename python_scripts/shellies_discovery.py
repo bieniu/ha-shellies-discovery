@@ -562,7 +562,9 @@ TPL_REPORTED_WINDOW_STATE = (
 TPL_SCHEDULE = "{{value_json.thermostats.0.schedule}}"
 TPL_VALVE = "{{value.replace(^_^,^ ^)}}"
 TPL_VALVE_MIN_POSITION = "{{value_json.thermostats.0.valve_min_percent}}"
-TPL_VALVE_POSITION = "{{value_json.thermostats.0.pos}}"
+TPL_VALVE_POSITION = (
+    "{%if value_json.thermostats.0.pos!=-1%}{{value_json.thermostats.0.pos}}{%endif%}"
+)
 TPL_WINDOW_STATE_REPORTING = (
     "{%if value_json.thermostats.0.open_window_report%}ON{%else%}OFF{%endif%}"
 )
