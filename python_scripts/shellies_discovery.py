@@ -49,6 +49,7 @@ DEVICE_CLASS_AWNING = "awning"
 DEVICE_CLASS_BATTERY = "battery"
 DEVICE_CLASS_BATTERY_CHARGING = "battery_charging"
 DEVICE_CLASS_BLIND = "blind"
+DEVICE_CLASS_BUTTON = "button"
 DEVICE_CLASS_COLD = "cold"
 DEVICE_CLASS_CONNECTIVITY = "connectivity"
 DEVICE_CLASS_CURRENT = "current"
@@ -127,6 +128,7 @@ KEY_EFFECT_VALUE_TEMPLATE = "fx_val_tpl"
 KEY_ENABLED_BY_DEFAULT = "en"
 KEY_ENTITY_CATEGORY = "ent_cat"
 KEY_ENTITY_PICTURE = "ent_pic"
+KEY_EVENT_TYPES = "evt_typ"
 KEY_EXPIRE_AFTER = "exp_aft"
 KEY_FORCE_UPDATE = "frc_upd"
 KEY_HW_VERSION = "hw"
@@ -538,6 +540,7 @@ TPL_COMMAND_PROFILES = "{{value.split(^ ^)[-1]}}"
 TPL_CONCENTRATION = "{%if is_number(value) and 0<=value|int<=65535%}{{value}}{%endif%}"
 TPL_CURRENT_TEMPERATURE = "{{value_json.thermostats.0.tmp.value}}"
 TPL_ENERGY_WMIN = "{{value|float/60}}"
+TPL_EVENT = "{{{^event_type^:value_json.event}|to_json}}"
 TPL_GAS = "{%if value in [^mild^,^heavy^]%}ON{%else%}OFF{%endif%}"
 TPL_GAS_TO_JSON = "{{{^status^:value}|tojson}}"
 TPL_HUMIDITY = "{%if is_number(value) and 0<value|int<999%}{{value}}{%endif%}"
@@ -2996,6 +2999,30 @@ for input_id in range(inputs):
             payload = ""
 
         mqtt_publish(config_topic, payload, retain)
+
+    # events
+    config_topic = f"{disc_prefix}/event/{dev_id}-input-{input_id}/config".encode(
+        "ascii", "ignore"
+    ).decode("utf-8")
+    unique_id = f"{dev_id}-input-{input_id}".lower()
+
+    payload = {
+        KEY_NAME: f"Button {input_id}",
+        KEY_STATE_TOPIC: f"~input_event/{input_id}",
+        KEY_EVENT_TYPES: list(DEVICE_TRIGGERS_MAP.values()),
+        KEY_VALUE_TEMPLATE: TPL_EVENT,
+        KEY_DEVICE_CLASS: DEVICE_CLASS_BUTTON,
+        KEY_AVAILABILITY: availability,
+        KEY_UNIQUE_ID: unique_id,
+        KEY_QOS: qos,
+        KEY_DEVICE: device_info,
+        "~": default_topic,
+    }
+
+    if dev_id.lower() in ignored:
+        payload = ""
+
+    mqtt_publish(config_topic, payload, retain)
 
 # external temperature sensors
 for sensor_id in range(ext_temp_sensors):
