@@ -3000,6 +3000,7 @@ for input_id in range(inputs):
 
         mqtt_publish(config_topic, payload, retain)
 
+    # events
     config_topic = f"{disc_prefix}/event/{dev_id}-input-{input_id}/config".encode(
         "ascii", "ignore"
     ).decode("utf-8")
