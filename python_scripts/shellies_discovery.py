@@ -2978,7 +2978,7 @@ for input_id in range(inputs):
 
     mqtt_publish(config_topic, payload, retain)
 
-    input_event_topic = f"shellies/{dev_id}/input_event/{input_id}"
+    topic = f"shellies/{dev_id}/input_event/{input_id}"
     for event in inputs_types:
         config_topic = f"{disc_prefix}/device_automation/{dev_id}-input-{input_id}/{event}/config".encode(
             "ascii", "ignore"
@@ -2987,7 +2987,7 @@ for input_id in range(inputs):
         )
         payload = {
             KEY_AUTOMATION_TYPE: VALUE_TRIGGER,
-            KEY_TOPIC: input_event_topic,
+            KEY_TOPIC: topic,
             KEY_PAYLOAD: DEVICE_TRIGGERS_MAP[event],
             KEY_VALUE_TEMPLATE: "{{value_json.event}}",
             KEY_QOS: qos,
@@ -3007,7 +3007,7 @@ for input_id in range(inputs):
 
     payload = {
         KEY_NAME: f"Button {input_id}",
-        KEY_STATE_TOPIC: input_event_topic,
+        KEY_STATE_TOPIC: f"~input_event/{input_id}",
         KEY_EVENT_TYPES: list(DEVICE_TRIGGERS_MAP.values()),
         KEY_VALUE_TEMPLATE: TPL_EVENT,
         KEY_DEVICE_CLASS: DEVICE_CLASS_BUTTON,
