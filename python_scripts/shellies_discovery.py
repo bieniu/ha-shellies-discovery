@@ -58,6 +58,7 @@ DEVICE_CLASS_DAMPER = "damper"
 DEVICE_CLASS_DOOR = "door"
 DEVICE_CLASS_ENERGY = "energy"
 DEVICE_CLASS_ENUM = "enum"
+DEVICE_CLASS_FIRMWARE = "firmware"
 DEVICE_CLASS_GARAGE = "garage"
 DEVICE_CLASS_GARAGE_DOOR = "garage_door"
 DEVICE_CLASS_GAS = "gas"
@@ -1389,24 +1390,20 @@ OPTIONS_SENSOR_LOADERROR = {
 
 OPTIONS_UPDATE_FIRMWARE = {
     KEY_COMMAND_TOPIC: TOPIC_COMMAND,
-    KEY_DEVICE_CLASS: "firmware",
     KEY_ENABLED_BY_DEFAULT: True,
     KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
     KEY_VALUE_TEMPLATE: TPL_INSTALLED_VERSION,
     KEY_LATEST_VERSION_TEMPLATE: TPL_LATEST_VERSION,
     KEY_LATEST_VERSION_TOPIC: TOPIC_INFO,
-    KEY_NAME: "Firmware",
     KEY_PAYLOAD_INSTALL: PL_UPDATE_FIRMWARE,
     KEY_STATE_TOPIC: TOPIC_INFO,
 }
 OPTIONS_UPDATE_FIRMWARE_BATTERY_POWERED = {
-    KEY_DEVICE_CLASS: "firmware",
     KEY_ENABLED_BY_DEFAULT: True,
     KEY_ENTITY_CATEGORY: ENTITY_CATEGORY_DIAGNOSTIC,
     KEY_VALUE_TEMPLATE: TPL_INSTALLED_VERSION,
     KEY_LATEST_VERSION_TEMPLATE: TPL_LATEST_VERSION,
     KEY_LATEST_VERSION_TOPIC: TOPIC_INFO,
-    KEY_NAME: "Firmware",
     KEY_STATE_TOPIC: TOPIC_INFO,
 }
 OPTIONS_SENSOR_REPORTED_WINDOW_STATE = {
@@ -2474,6 +2471,7 @@ for update, update_options in updates.items():
         KEY_ENTITY_PICTURE: "https://brands.home-assistant.io/_/shelly/icon.png",
         KEY_RELEASE_URL: "https://shelly-api-docs.shelly.cloud/gen1/#changelog",
         KEY_TITLE: "Firmware",
+        KEY_DEVICE_CLASS: DEVICE_CLASS_FIRMWARE,
         KEY_ENABLED_BY_DEFAULT: str(update_options[KEY_ENABLED_BY_DEFAULT]).lower(),
         KEY_UNIQUE_ID: f"{dev_id}-{update}".lower(),
         KEY_QOS: qos,
@@ -2489,8 +2487,6 @@ for update, update_options in updates.items():
         payload[KEY_PAYLOAD_INSTALL] = update_options[KEY_PAYLOAD_INSTALL]
     if update_options.get(KEY_ENTITY_CATEGORY):
         payload[KEY_ENTITY_CATEGORY] = update_options[KEY_ENTITY_CATEGORY]
-    if update_options.get(KEY_DEVICE_CLASS):
-        payload[KEY_DEVICE_CLASS] = update_options[KEY_DEVICE_CLASS]
     if dev_id.lower() in ignored:
         payload = ""
 
@@ -2893,8 +2889,10 @@ for sensor, sensor_options in sensors.items():
         unique_id = f"{dev_id}-relay-{sensor}".lower()
     else:
         unique_id = f"{dev_id}-{sensor}".lower()
-    if sensor in (SENSOR_SSID, SENSOR_ADC, SENSOR_IP):
+    if sensor in (SENSOR_SSID, SENSOR_ADC):
         sensor_name = sensor.upper()
+    elif sensor == SENSOR_IP:
+        sensor_name = "IP address"
     elif sensor == SENSOR_IX_SUM_CURRENT:
         sensor_name = "IX sum current"
     elif sensor == SENSOR_UPTIME:
