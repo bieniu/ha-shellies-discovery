@@ -2463,14 +2463,14 @@ for update, update_options in updates.items():
     ).decode("utf-8")
 
     payload = {
-        KEY_NAME: f"{device_name} {format_entity_name(update)}",
+        KEY_NAME: format_entity_name(update),
         KEY_STATE_TOPIC: update_options[KEY_STATE_TOPIC],
         KEY_VALUE_TEMPLATE: update_options[KEY_VALUE_TEMPLATE],
         KEY_LATEST_VERSION_TOPIC: update_options[KEY_LATEST_VERSION_TOPIC],
         KEY_LATEST_VERSION_TEMPLATE: update_options[KEY_LATEST_VERSION_TEMPLATE],
         KEY_ENTITY_PICTURE: "https://brands.home-assistant.io/_/shelly/icon.png",
         KEY_RELEASE_URL: "https://shelly-api-docs.shelly.cloud/gen1/#changelog",
-        KEY_TITLE: f"{device_name} Firmware",
+        KEY_TITLE: "Firmware",
         KEY_ENABLED_BY_DEFAULT: str(update_options[KEY_ENABLED_BY_DEFAULT]).lower(),
         KEY_UNIQUE_ID: f"{dev_id}-{update}".lower(),
         KEY_QOS: qos,
@@ -2503,7 +2503,7 @@ for number, number_options in numbers.items():
         availability.append(number_options[ATTR_AVAILABILITY_EXTRA])
 
     payload = {
-        KEY_NAME: f"{device_name} {format_entity_name(number)}",
+        KEY_NAME: format_entity_name(number),
         KEY_COMMAND_TOPIC: number_options[KEY_COMMAND_TOPIC],
         KEY_MAX: number_options[KEY_MAX],
         KEY_MIN: number_options[KEY_MIN],
@@ -2536,7 +2536,7 @@ for switch, switch_options in switches.items():
     ).decode("utf-8")
 
     payload = {
-        KEY_NAME: f"{device_name} {format_entity_name(switch)}",
+        KEY_NAME: format_entity_name(switch),
         KEY_COMMAND_TOPIC: switch_options[KEY_COMMAND_TOPIC],
         KEY_PAYLOAD_OFF: switch_options[KEY_PAYLOAD_OFF],
         KEY_PAYLOAD_ON: switch_options[KEY_PAYLOAD_ON],
@@ -2569,7 +2569,7 @@ for select, select_options in selectors.items():
     ).decode("utf-8")
 
     payload = {
-        KEY_NAME: f"{device_name} {format_entity_name(select)}",
+        KEY_NAME: format_entity_name(select),
         KEY_COMMAND_TOPIC: select_options[KEY_COMMAND_TOPIC],
         KEY_COMMAND_TEMPLATE: TPL_COMMAND_PROFILES,
         KEY_OPTIONS: select_options[KEY_OPTIONS],
@@ -2600,7 +2600,7 @@ for button, button_options in buttons.items():
     ).decode("utf-8")
 
     payload = {
-        KEY_NAME: f"{device_name} {format_entity_name(button)}",
+        KEY_NAME: format_entity_name(button),
         KEY_COMMAND_TOPIC: button_options[KEY_COMMAND_TOPIC],
         KEY_PAYLOAD_PRESS: button_options[KEY_PAYLOAD_PRESS],
         KEY_ENABLED_BY_DEFAULT: str(button_options[KEY_ENABLED_BY_DEFAULT]).lower(),
@@ -2645,7 +2645,6 @@ if climate_entity_option:
     )
 
     payload = {
-        KEY_NAME: device_name,
         KEY_ACTION_TOPIC: TOPIC_INFO,
         KEY_ACTION_TEMPLATE: TPL_ACTION_TEMPLATE.format(
             min_temp=climate_entity_option[KEY_MIN_TEMP]
@@ -2686,7 +2685,7 @@ for roller_id in range(rollers):
     if device_config.get(f"roller-{roller_id}-name"):
         roller_name = device_config[f"roller-{roller_id}-name"]
     else:
-        roller_name = f"{device_name} Roller {roller_id}"
+        roller_name = f"Roller {roller_id}"
     device_class = None
     if device_config.get(f"roller-{roller_id}-class"):
         if device_config[f"roller-{roller_id}-class"] in ROLLER_DEVICE_CLASSES:
@@ -2738,7 +2737,7 @@ for relay_id in range(relays):
     if device_config.get(f"relay-{relay_id}-name"):
         relay_name = device_config[f"relay-{relay_id}-name"]
     else:
-        relay_name = f"{device_name} Relay {relay_id}"
+        relay_name = f"Relay {relay_id}"
     state_topic = f"~relay/{relay_id}"
     config_component = COMP_SWITCH
     if device_config.get(f"relay-{relay_id}"):
@@ -2781,7 +2780,7 @@ for relay_id in range(relays):
         )
 
         payload = {
-            KEY_NAME: f"{device_name} {format_entity_name(sensor)} {relay_id}",
+            KEY_NAME: f"{format_entity_name(sensor)} {relay_id}",
             KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(relay_id=relay_id),
             KEY_AVAILABILITY: availability,
             KEY_FORCE_UPDATE: str(force_update).lower(),
@@ -2824,7 +2823,7 @@ for relay_id in range(relays):
         if device_config.get(f"relay-{relay_id}-name"):
             sensor_name = f"{device_config[f'relay-{relay_id}-name']} {format_entity_name(sensor)}"
         else:
-            sensor_name = f"{device_name} {format_entity_name(sensor)} {relay_id}"
+            sensor_name = f"{format_entity_name(sensor)} {relay_id}"
         if not roller_mode:
             payload = {
                 KEY_NAME: sensor_name,
@@ -2892,17 +2891,17 @@ for sensor, sensor_options in sensors.items():
     else:
         unique_id = f"{dev_id}-{sensor}".lower()
     if sensor in (SENSOR_SSID, SENSOR_ADC, SENSOR_IP):
-        sensor_name = f"{device_name} {sensor.upper()}"
+        sensor_name = sensor.upper()
     elif sensor == SENSOR_IX_SUM_CURRENT:
-        sensor_name = f"{device_name} IX sum current"
+        sensor_name = "IX sum current"
     elif sensor == SENSOR_UPTIME:
-        sensor_name = f"{device_name} Last restart"
+        sensor_name = "Last restart"
     elif sensor == SENSOR_RSSI:
-        sensor_name = f"{device_name} WiFi signal"
+        sensor_name = "WiFi signal"
     elif sensor == SENSOR_TEMPERATURE_F:
-        sensor_name = f"{device_name} Temperature"
+        sensor_name = "Temperature"
     else:
-        sensor_name = f"{device_name} {format_entity_name(sensor)}"
+        sensor_name = format_entity_name(sensor)
 
     payload = {
         KEY_NAME: sensor_name,
@@ -3009,7 +3008,7 @@ for sensor_id in range(ext_temp_sensors):
             "ascii", "ignore"
         ).decode("utf-8")
     )
-    sensor_name = f"{device_name} External temperature {sensor_id}"
+    sensor_name = f"External temperature {sensor_id}"
     state_topic = f"~{SENSOR_EXT_TEMPERATURE}/{sensor_id}"
     if device_config.get(f"ext-temperature-{sensor_id}"):
         payload = {
@@ -3045,7 +3044,7 @@ for sensor_id in range(ext_humi_sensors):
             "ascii", "ignore"
         ).decode("utf-8")
     )
-    sensor_name = f"{device_name} External humidity {sensor_id}"
+    sensor_name = f"External humidity {sensor_id}"
     state_topic = f"~{SENSOR_EXT_HUMIDITY}/{sensor_id}"
     if device_config.get(f"ext-temperature-{sensor_id}"):
         payload = {
@@ -3078,9 +3077,9 @@ for sensor, sensor_options in binary_sensors.items():
         ).decode("utf-8")
     )
     if sensor == SENSOR_EXT_SWITCH:
-        sensor_name = f"{device_name} External switch"
+        sensor_name = "External switch"
     else:
-        sensor_name = f"{device_name} {format_entity_name(sensor)}"
+        sensor_name = format_entity_name(sensor)
     state_topic = sensor_options[KEY_STATE_TOPIC]
     payload = {
         KEY_NAME: sensor_name,
@@ -3139,7 +3138,7 @@ for light_id in range(rgbw_lights):
     if device_config.get(f"light-{light_id}-name"):
         light_name = device_config[f"light-{light_id}-name"]
     else:
-        light_name = f"{device_name} Light {light_id}"
+        light_name = f"Light {light_id}"
     state_topic = f"~color/{light_id}"
     status_topic = f"~color/{light_id}/status"
     set_topic = f"~color/{light_id}/set"
@@ -3191,7 +3190,7 @@ for light_id in range(rgbw_lights):
         )
         if mode == LIGHT_COLOR:
             payload = {
-                KEY_NAME: f"{device_name} {format_entity_name(sensor)} {light_id}",
+                KEY_NAME: f"{format_entity_name(sensor)} {light_id}",
                 KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC],
                 KEY_AVAILABILITY: availability,
                 KEY_UNIQUE_ID: f"{dev_id}-color-{sensor}-{light_id}".lower(),
@@ -3227,7 +3226,7 @@ for light_id in range(rgbw_lights):
         )
 
         payload = {
-            KEY_NAME: f"{device_name} {format_entity_name(sensor)} {light_id}",
+            KEY_NAME: f"{format_entity_name(sensor)} {light_id}",
             KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(light_id=light_id),
             KEY_AVAILABILITY: availability,
             KEY_FORCE_UPDATE: str(force_update).lower(),
@@ -3265,7 +3264,7 @@ for light_id, light_options in white_lights.items():
     if device_config.get(f"light-{light_id}-name"):
         light_name = device_config[f"light-{light_id}-name"]
     else:
-        light_name = f"{device_name} Light {light_id}"
+        light_name = f"Light {light_id}"
 
     if model == MODEL_SHELLYRGBW2:
         unique_id = f"{dev_id}-light-white-{light_id}".lower()
@@ -3319,7 +3318,7 @@ for light_id, light_options in white_lights.items():
         )
         if mode != LIGHT_COLOR:
             payload = {
-                KEY_NAME: f"{device_name} {format_entity_name(sensor)} {light_id}",
+                KEY_NAME: f"{format_entity_name(sensor)} {light_id}",
                 KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(
                     light_id=light_id
                 ),
@@ -3357,7 +3356,7 @@ for light_id, light_options in white_lights.items():
         )
 
         payload = {
-            KEY_NAME: f"{device_name} {format_entity_name(sensor)} {light_id}",
+            KEY_NAME: f"{format_entity_name(sensor)} {light_id}",
             KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(light_id=light_id),
             KEY_AVAILABILITY: availability,
             KEY_FORCE_UPDATE: str(force_update).lower(),
@@ -3399,7 +3398,7 @@ for light_id, light_options in white_lights.items():
         )
 
         payload = {
-            KEY_NAME: f"{device_name} {format_entity_name(number)} {light_id}",
+            KEY_NAME: f"{format_entity_name(number)} {light_id}",
             KEY_COMMAND_TOPIC: number_options[KEY_COMMAND_TOPIC].format(
                 light_id=light_id
             ),
@@ -3441,7 +3440,7 @@ for meter_id in range(meters):
         )
 
         payload = {
-            KEY_NAME: f"{device_name} {format_entity_name(sensor)} {meter_id}",
+            KEY_NAME: f"{format_entity_name(sensor)} {meter_id}",
             KEY_STATE_TOPIC: sensor_options[KEY_STATE_TOPIC].format(meter_id=meter_id),
             KEY_AVAILABILITY: availability,
             KEY_FORCE_UPDATE: str(force_update).lower(),
