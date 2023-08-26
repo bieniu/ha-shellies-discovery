@@ -2417,9 +2417,9 @@ device_info = {
     KEY_CONFIGURATION_URL: f"http://{host}/",
 }
 origin_info = {
-    KEY_NAME: "Shellies Discovery Gen2",
+    KEY_NAME: "Shellies Discovery",
     KEY_SW_VERSION: VERSION,
-    KEY_SUPPORT_URL: "https://github.com/bieniu/ha-shellies-discovery-gen2",
+    KEY_SUPPORT_URL: "https://github.com/bieniu/ha-shellies-discovery",
 }
 
 default_topic = f"shellies/{dev_id}/"
