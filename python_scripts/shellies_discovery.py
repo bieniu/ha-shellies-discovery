@@ -1,5 +1,5 @@
 """This script adds MQTT discovery support for Shellies devices."""
-VERSION = "4.5.1"
+VERSION = "4.5.2"
 
 ATTR_ICON = "icon"
 ATTR_MANUFACTURER = "Allterco Robotics"
