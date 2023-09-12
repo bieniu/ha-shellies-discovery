@@ -1,5 +1,5 @@
 """This script adds MQTT discovery support for Shellies devices."""
-VERSION = "4.5.1"
+VERSION = "4.5.2"
 
 ATTR_ICON = "icon"
 ATTR_MANUFACTURER = "Allterco Robotics"
@@ -1810,7 +1810,10 @@ if model_id == MODEL_SHELLYUNI_ID or dev_id_prefix == MODEL_SHELLYUNI_PREFIX:
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
         SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
     }
-    binary_sensors = {SENSOR_INPUT_0: OPTIONS_SENSOR_INPUT_0}
+    binary_sensors = {
+        SENSOR_INPUT_0: OPTIONS_SENSOR_INPUT_0,
+        SENSOR_INPUT_1: OPTIONS_SENSOR_INPUT_1,
+    }
     buttons = {BUTTON_RESTART: OPTIONS_BUTTON_RESTART}
     updates = {UPDATE_FIRMWARE: OPTIONS_UPDATE_FIRMWARE}
 
