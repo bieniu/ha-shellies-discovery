@@ -19,6 +19,8 @@ Pro/Plus devies are supported by [Shellies Discovery Gen2 script](https://github
 
 This script needs Home Assistant `python_script` component so, if you never used it, I strongly suggest you to follow the [official instruction](https://www.home-assistant.io/integrations/python_script#writing-your-first-script) and check that `python_script` is properly configured and it's working.
 
+MQTT integration must be configured in Home Assistant.
+
 ## Installation
 
 You can download `shellies_discovery.py` file and save it in `<config>/python_scripts` folder or install the script via [HACS](https://hacs.xyz/).
