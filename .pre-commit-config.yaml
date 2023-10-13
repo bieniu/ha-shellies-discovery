@@ -15,7 +15,7 @@ repos:
           - --quiet
         files: ^((python_scripts)/.+)?[^/]+\.py$
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: no-commit-to-branch
         args:
