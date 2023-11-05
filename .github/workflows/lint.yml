@@ -34,6 +34,6 @@ jobs:
       run: |
         ruff python_scripts
 
-    - name: Check formatting with ruff
+    - name: Check the formatting with ruff
       run: |
         ruff format --check python_scripts
