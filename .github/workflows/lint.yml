@@ -34,6 +34,6 @@ jobs:
       run: |
         ruff python_scripts
 
-    - name: Check with Black Code Formatter
+    - name: Check the formatting with ruff
       run: |
-        black python_scripts --check
+        ruff format --check python_scripts
