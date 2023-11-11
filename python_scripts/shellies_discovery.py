@@ -35,7 +35,7 @@ CONF_ID = "id"
 CONF_IGNORE_DEVICE_MODEL = "ignore_device_model"
 CONF_IGNORED_DEVICES = "ignored_devices"
 CONF_MAC = "mac"
-CONF_MINIMUM_VALVE_POSITION = "minimum_valve_position"
+CONF_MINIMAL_VALVE_POSITION = "minimal_valve_position"
 CONF_MODE = "mode"
 CONF_MODEL_ID = "model"
 CONF_OPTIMISTIC = "optimistic"
@@ -2643,10 +2643,10 @@ for button, button_options in buttons.items():
 # climate entities
 if climate_entity_option:
     default_heat_temp = 20
-    minimum_valve_position = device_config.get(CONF_MINIMUM_VALVE_POSITION, 0)
-    if not isinstance(minimum_valve_position, int):
+    minimal_valve_position = device_config.get(CONF_MINIMAL_VALVE_POSITION, 0)
+    if not isinstance(minimal_valve_position, int):
         raise TypeError(
-            f"minimum_valve_position value {minimum_valve_position} is not an integer, check script configuration"
+            f"minimal_valve_position value {minimal_valve_position} is not an integer, check script configuration"
         )
     if device_config.get(CONF_DEFAULT_HEAT_TEMP):
         value = device_config[CONF_DEFAULT_HEAT_TEMP]
@@ -2672,7 +2672,7 @@ if climate_entity_option:
         KEY_ACTION_TOPIC: TOPIC_INFO,
         KEY_ACTION_TEMPLATE: TPL_ACTION_TEMPLATE.format(
             min_temp=climate_entity_option[KEY_MIN_TEMP],
-            min_pos=minimum_valve_position,
+            min_pos=minimal_valve_position,
         ),
         KEY_CURRENT_TEMPERATURE_TOPIC: TOPIC_INFO,
         KEY_CURRENT_TEMPERATURE_TEMPLATE: TPL_CURRENT_TEMPERATURE,

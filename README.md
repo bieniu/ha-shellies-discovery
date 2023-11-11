@@ -267,9 +267,11 @@ key | optional | type | default | possible values | description
 `ext-switch` | True | boolean | `false` | `true`, `false` | presence of external switch
 `force_update_sensors` | True | boolean | `false` | `true`, `false` | [force update](https://www.home-assistant.io/integrations/sensor.mqtt/#force_update) for sensors
 `powered` | True | string | `battery` | `ac`, `battery` | `ac` or `battery` powered for Shelly H&T, Motion, Sense and Button1
-`expire_after` | True | integer | 51840 | | [expire after](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#expire_after) for battery powered sensors in seconds
+`expire_after` | True | integer | `51840` | | [expire after](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#expire_after) for battery powered sensors in seconds
 `use_fahrenheit` | True | boolean | `false` | `true`, `false` | whether the temperature sensor is configured in Fahrenheit for H&T, Flood, Motion2 or DW2
 `default_heating_temperature` | True | float | `20` | | default target temperature after changing from OFF to HEAT mode
+`minimal_valve_position` | True | int | `0` | | this value should be equal to the MINIMAL VALVE POSITION LIMIT from Shelly Valve configuration
+
 
 [releases]: https://github.com/bieniu/ha-shellies-discovery/releases
 [releases-shield]: https://img.shields.io/github/release/bieniu/ha-shellies-discovery.svg?style=popout
