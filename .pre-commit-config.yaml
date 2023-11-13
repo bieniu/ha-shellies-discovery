@@ -3,6 +3,8 @@ repos:
     rev: v0.1.5
     hooks:
       - id: ruff
+        args:
+          - --fix
         files: ^((python_scripts)/.+)?[^/]+\.py$
       - id: ruff-format
         files: ^((python_scripts)/.+)?[^/]+\.py$
