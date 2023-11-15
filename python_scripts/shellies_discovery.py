@@ -1,5 +1,5 @@
 """This script adds MQTT discovery support for Shellies devices."""
-VERSION = "4.5.4"
+VERSION = "4.5.4 - SHCB-1"
 
 ATTR_ICON = "icon"
 ATTR_MANUFACTURER = "Allterco Robotics"
@@ -106,6 +106,7 @@ KEY_ACTION_TEMPLATE = "act_tpl"
 KEY_ACTION_TOPIC = "act_t"
 KEY_AUTOMATION_TYPE = "atype"
 KEY_AVAILABILITY = "avty"
+KEY_BLUE_TEMPLATE = "b_tpl"
 KEY_BRIGHTNESS_COMMAND_TEMPLATE = "bri_cmd_tpl"
 KEY_BRIGHTNESS_COMMAND_TOPIC = "bri_cmd_t"
 KEY_BRIGHTNESS_STATE_TOPIC = "bri_stat_t"
@@ -126,6 +127,7 @@ KEY_EFFECT_COMMAND_TEMPLATE = "fx_cmd_tpl"
 KEY_EFFECT_COMMAND_TOPIC = "fx_cmd_t"
 KEY_EFFECT_LIST = "fx_list"
 KEY_EFFECT_STATE_TOPIC = "fx_stat_t"
+KEY_EFFECT_TEMPLATE = "fx_tpl"
 KEY_EFFECT_VALUE_TEMPLATE = "fx_val_tpl"
 KEY_ENABLED_BY_DEFAULT = "en"
 KEY_ENTITY_CATEGORY = "ent_cat"
@@ -133,6 +135,7 @@ KEY_ENTITY_PICTURE = "ent_pic"
 KEY_EVENT_TYPES = "evt_typ"
 KEY_EXPIRE_AFTER = "exp_aft"
 KEY_FORCE_UPDATE = "frc_upd"
+KEY_GREEN_TEMPLATE = "g_tpl"
 KEY_HW_VERSION = "hw"
 KEY_ICON = "icon"
 KEY_JSON_ATTRIBUTES_TEMPLATE = "json_attr_tpl"
@@ -172,6 +175,7 @@ KEY_POSITION_TEMPLATE = "pos_tpl"
 KEY_POSITION_TOPIC = "pos_t"
 KEY_PRECISION = "precision"
 KEY_QOS = "qos"
+KEY_RED_TEMPLATE = "r_tpl"
 KEY_RELEASE_URL = "rel_u"
 KEY_RETAIN = "ret"
 KEY_RGBW_COMMAND_TEMPLATE = "rgbw_cmd_tpl"
@@ -251,6 +255,7 @@ MODEL_SHELLYBUTTON1 = f"{ATTR_SHELLY} Button1"
 MODEL_SHELLYDIMMER = f"{ATTR_SHELLY} Dimmer"
 MODEL_SHELLYDIMMER2 = f"{ATTR_SHELLY} Dimmer 2"
 MODEL_SHELLYDUO = f"{ATTR_SHELLY} DUO"
+MODEL_SHELLYDUORGBW = f"{ATTR_SHELLY} DUO RGBW"
 MODEL_SHELLYDW = f"{ATTR_SHELLY} Door/Window"
 MODEL_SHELLYDW2 = f"{ATTR_SHELLY} Door/Window 2"
 MODEL_SHELLYEM = f"{ATTR_SHELLY} EM"
@@ -306,6 +311,9 @@ MODEL_SHELLYDIMMER2_PREFIX = "shellydimmer2"
 
 MODEL_SHELLYDUO_ID = "SHBDUO-1"  # Shelly Duo
 MODEL_SHELLYDUO_PREFIX = "shellybulbduo"
+
+MODEL_SHELLYDUORGBW_ID = "SHCB-1"  # Shelly Duo RGBW
+MODEL_SHELLYDUORGBW_PREFIX = "shellycolorbulb"
 
 MODEL_SHELLYDW_ID = "SHDW-1"  # Shelly Door/Window
 MODEL_SHELLYDW_PREFIX = "shellydw"
@@ -446,6 +454,8 @@ TOPIC_ADC = "~adc/0"
 TOPIC_ANNOUNCE = "~announce"
 TOPIC_CHARGER = "~charger"
 TOPIC_COLOR_0_STATUS = "~color/0/status"
+TOPIC_COLOR_LIGHT_SET = "~color/{light_id}/set"
+TOPIC_COLOR_LIGHT_STATUS = "~color/{light_id}/status"
 TOPIC_COMMAND = "~command"
 TOPIC_COMMAND_ACCELERATED_HEATING = "~thermostat/0/command/accelerated_heating"
 TOPIC_COMMAND_BOOST_MINUTES = "~thermostat/0/command/boost_minutes"
@@ -1234,6 +1244,7 @@ DEVICE_FIRMWARE_MAP = {
     MODEL_SHELLYDIMMER_ID: MIN_DIMMER_FIRMWARE_DATE,
     MODEL_SHELLYDIMMER2_ID: MIN_DIMMER_FIRMWARE_DATE,
     MODEL_SHELLYDUO_ID: MIN_FIRMWARE_DATE,
+    MODEL_SHELLYDUORGBW_ID: MIN_FIRMWARE_DATE,
     MODEL_SHELLYDW_ID: MIN_FIRMWARE_DATE,
     MODEL_SHELLYDW2_ID: MIN_FIRMWARE_DATE,
     MODEL_SHELLYEM_ID: MIN_FIRMWARE_DATE,
@@ -1629,6 +1640,7 @@ selectors = {}
 sensors = {}
 switches = {}
 white_lights = {}
+color_lights = {}
 
 if model_id == MODEL_SHELLY1_ID or dev_id_prefix == MODEL_SHELLY1_PREFIX:
     model = MODEL_SHELLY1
@@ -2238,6 +2250,32 @@ if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
     }
     sensors = {
         SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+    }
+    buttons = {BUTTON_RESTART: OPTIONS_BUTTON_RESTART}
+    updates = {UPDATE_FIRMWARE: OPTIONS_UPDATE_FIRMWARE}
+
+if model_id == MODEL_SHELLYDUORGBW_ID or dev_id_prefix == MODEL_SHELLYDUORGBW_PREFIX:
+    model = MODEL_SHELLYDUORGBW
+    color_lights = 1
+    color_lights = {
+        0: {
+            KEY_COMMAND_TOPIC: TOPIC_COLOR_LIGHT_SET,
+            KEY_MAX_MIREDS: 333,
+            KEY_MIN_MIREDS: 154,
+            KEY_STATE_TOPIC: TOPIC_COLOR_LIGHT_STATUS,
+        }
+    }
+    light_sensors = {
+        SENSOR_POWER: OPTIONS_SENSOR_LIGHT_POWER,
+        SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY,
+    }
+    sensors = {
+        SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY,
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_POWER: OPTIONS_SENSOR_LIGHT_POWER,
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
         SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
@@ -3229,6 +3267,70 @@ for light_id in range(rgbw_lights):
         payload = ""
 
     mqtt_publish(config_topic, payload, retain, json=True)
+
+
+# color lights
+for light_id, light_options in color_lights.items():
+    if device_config.get(f"light-{light_id}-name"):
+        light_name = device_config[f"light-{light_id}-name"]
+    else:
+        light_name = f"{device_name} Light {light_id}"
+
+    unique_id = f"{dev_id}-light-{light_id}".lower()
+    config_topic = f"{disc_prefix}/light/{dev_id}-{light_id}/config".encode(
+        "ascii", "ignore"
+    ).decode("utf-8")
+
+    payload = {
+        KEY_SCHEMA: VALUE_TEMPLATE,
+        KEY_NAME: light_name,
+        KEY_COMMAND_TOPIC: light_options[KEY_COMMAND_TOPIC].format(light_id=light_id),
+        KEY_STATE_TOPIC: light_options[KEY_STATE_TOPIC].format(light_id=light_id),
+        KEY_AVAILABILITY: availability,
+        KEY_COMMAND_ON_TEMPLATE: (
+            "{^turn^:^on^"
+            "{%if red is defined and green is defined and blue is defined%}"
+            ",^mode^:^color^,^red^:{{red}},^green^:{{green}},^blue^:{{blue}}"
+            "{%endif%}"
+            "{%if brightness is defined%}"
+            ",^gain^:{{brightness|float|multiply(0.3922)|round}},"
+            "^brightness^:{{brightness|float|multiply(0.3922)|round}}"
+            "{%endif%}"
+            "{%if effect is defined%}"
+            "{%if effect==^Meteor Shower^%},^effect^:1"
+            "{%elif effect==^Gradual Change^%},^effect^:2"
+            "{%elif effect==^Flash^%},^effect^:4"
+            "{%else%},^effect^:0"
+            "{%endif%}"
+            "{%else%},^effect^:0"
+            "{%endif%}"
+            "{%if color_temp is defined%},^mode^:^white^,"
+            "^temp^:{{(1/(color_temp|float))|multiply(1000000)|round}}"
+            "{%endif%}}"
+        ),
+        KEY_EFFECT_LIST: ["Off", "Meteor Shower", "Gradual Change", "Flash"],
+        KEY_COMMAND_OFF_TEMPLATE: "{^effect^:0,^turn^:^off^}",
+        KEY_STATE_TEMPLATE: "{%if value_json.ison%}on{%else%}off{%endif%}",
+        KEY_BRIGHTNESS_TEMPLATE: (
+            "{{value_json.brightness|float|multiply(2.55)|round(0)}}"
+        ),
+        KEY_COLOR_TEMP_TEMPLATE: (
+            "{% if value_json.ison and value_json.mode==^white^ %} {{ 1000000|multiply(1/(value_json.temp|float))|round(0) }} {%else%} 0 {%endif%}"
+        ),
+        KEY_RED_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^ %} {{value_json.red}} {%else%} 0 {%endif%}",
+        KEY_GREEN_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^ %} {{value_json.green}} {%else%} 0 {%endif%}",
+        KEY_BLUE_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^ %} {{value_json.blue}} {%else%} 0 {%endif%}",
+        KEY_EFFECT_TEMPLATE: "{{value_json.effect}}",
+        KEY_MAX_MIREDS: light_options[KEY_MAX_MIREDS],
+        KEY_MIN_MIREDS: light_options[KEY_MIN_MIREDS],
+        KEY_UNIQUE_ID: unique_id,
+        KEY_QOS: str(qos),
+        KEY_DEVICE: device_info,
+        "~": default_topic,
+    }
+
+    mqtt_publish(config_topic, payload, retain, json=True)
+    
 
     # color light's binary sensors
     for sensor, sensor_options in light_binary_sensors.items():
