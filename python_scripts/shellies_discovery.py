@@ -3313,7 +3313,7 @@ for light_id, light_options in color_lights.items():
             "{{value_json.brightness|float|multiply(2.55)|round(0)}}"
         ),
         KEY_COLOR_TEMP_TEMPLATE: (
-            "{% if value_json.ison and value_json.mode==^white^ %} {{ 1000000|multiply(1/(value_json.temp|float))|round(0) }} {%else%} 0 {%endif%}"
+            "{%if value_json.ison and value_json.mode==^white^%}{{1000000|multiply(1/(value_json.temp|float))|round(0)}}{%else%}0{%endif%}"
         ),
         KEY_RED_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^ %} {{value_json.red}} {%else%} 0 {%endif%}",
         KEY_GREEN_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^ %} {{value_json.green}} {%else%} 0 {%endif%}",
