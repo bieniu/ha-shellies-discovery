@@ -3316,7 +3316,7 @@ for light_id, light_options in color_lights.items():
             "{%if value_json.ison and value_json.mode==^white^%}{{1000000|multiply(1/(value_json.temp|float))|round(0)}}{%else%}0{%endif%}"
         ),
         KEY_RED_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^ %} {{value_json.red}} {%else%} 0 {%endif%}",
-        KEY_GREEN_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^ %} {{value_json.green}} {%else%} 0 {%endif%}",
+        KEY_GREEN_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^ %}{{value_json.green}}{%else%}0{%endif%}",
         KEY_BLUE_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^ %} {{value_json.blue}} {%else%} 0 {%endif%}",
         KEY_EFFECT_TEMPLATE: "{{value_json.effect}}",
         KEY_MAX_MIREDS: light_options[KEY_MAX_MIREDS],
