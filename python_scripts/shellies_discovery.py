@@ -2273,7 +2273,9 @@ if model_id == MODEL_SHELLYDUORGBW_ID or dev_id_prefix == MODEL_SHELLYDUORGBW_PR
         SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY,
     }
     sensors = {
+        SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY,
         SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_POWER: OPTIONS_SENSOR_LIGHT_POWER,
         SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
         SENSOR_SSID: OPTIONS_SENSOR_SSID,
         SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
@@ -3266,7 +3268,6 @@ for light_id in range(rgbw_lights):
 
     mqtt_publish(config_topic, payload, retain, json=True)
 
-
 # color lights
 for light_id, light_options in color_lights.items():
     if device_config.get(f"light-{light_id}-name"):
@@ -3306,19 +3307,16 @@ for light_id, light_options in color_lights.items():
             "^temp^:{{(1/(color_temp|float))|multiply(1000000)|round}}"
             "{%endif%}}"
         ),
-        KEY_EFFECT_LIST: ["Off", "Meteor Shower", "Gradual Change", "Flash"],
         KEY_COMMAND_OFF_TEMPLATE: "{^effect^:0,^turn^:^off^}",
         KEY_STATE_TEMPLATE: "{%if value_json.ison%}on{%else%}off{%endif%}",
-        KEY_BRIGHTNESS_TEMPLATE: (
-            "{{value_json.brightness|float|multiply(2.55)|round(0)}}"
-        ),
-        KEY_COLOR_TEMP_TEMPLATE: (
-            "{%if value_json.ison and value_json.mode==^white^%}{{1000000|multiply(1/(value_json.temp|float))|round(0)}}{%else%}0{%endif%}"
-        ),
-        KEY_RED_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^ %}{{value_json.red}}{%else%}0{%endif%}",
-        KEY_GREEN_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^ %}{{value_json.green}}{%else%}0{%endif%}",
-        KEY_BLUE_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^ %}{{value_json.blue}}{%else%}0{%endif%}",
-        KEY_EFFECT_TEMPLATE: "{{value_json.effect}}",
+        KEY_BRIGHTNESS_TEMPLATE: "{%if value_json.ison and value_json.mode==^white^%}{{value_json.brightness|float|multiply(2.55)|round(0)}}{%else%}{{value_json.gain|float|multiply(2.55)|round(0)}}{%endif%}",
+        KEY_RED_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^%}{{value_json.red}}{%else%}0{%endif%}",
+        KEY_GREEN_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^%}{{value_json.green}}{%else%}0{%endif%}",
+        KEY_BLUE_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^%}{{value_json.blue}}{%else%}0{%endif%}",
+        KEY_EFFECT_LIST: ["Aus", "Meteor Shower", "Gradual Change", "Flash"],
+        KEY_EFFECT_STATE_TOPIC: light_options[KEY_STATE_TOPIC].format(light_id=light_id),
+        KEY_EFFECT_VALUE_TEMPLATE: "{%if value_json.effect==1%}Meteor Shower{%elif value_json.effect==2%}Gradual Change{%elif value_json.effect==3%}Flash{%else%}Aus{%endif%}",
+        KEY_COLOR_TEMP_TEMPLATE: "{%if value_json.ison and value_json.mode==^white^%}{{1000000|multiply(1/(value_json.temp|float))|round(0)}}{%else%}0{%endif%}",
         KEY_MAX_MIREDS: light_options[KEY_MAX_MIREDS],
         KEY_MIN_MIREDS: light_options[KEY_MIN_MIREDS],
         KEY_UNIQUE_ID: unique_id,
