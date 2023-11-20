@@ -3297,7 +3297,7 @@ for light_id, light_options in color_lights.items():
             "{%if effect is defined%}"
             "{%if effect==^Meteor Shower^%},^effect^:1"
             "{%elif effect==^Gradual Change^%},^effect^:2"
-            "{%elif effect==^Flash^%},^effect^:4"
+            "{%elif effect==^Flash^%},^effect^:3"
             "{%else%},^effect^:0"
             "{%endif%}"
             "{%else%},^effect^:0"
@@ -3328,7 +3328,6 @@ for light_id, light_options in color_lights.items():
     }
 
     mqtt_publish(config_topic, payload, retain, json=True)
-    
 
     # color light's binary sensors
     for sensor, sensor_options in light_binary_sensors.items():
