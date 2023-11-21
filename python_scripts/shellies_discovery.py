@@ -3313,7 +3313,7 @@ for light_id, light_options in color_lights.items():
         KEY_RED_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^%}{{value_json.red}}{%else%}0{%endif%}",
         KEY_GREEN_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^%}{{value_json.green}}{%else%}0{%endif%}",
         KEY_BLUE_TEMPLATE: "{%if value_json.ison and value_json.mode==^color^%}{{value_json.blue}}{%else%}0{%endif%}",
-        KEY_EFFECT_LIST: ["Aus", "Meteor Shower", "Gradual Change", "Flash"],
+        KEY_EFFECT_LIST: ["Off", "Meteor Shower", "Gradual Change", "Flash"],
         KEY_EFFECT_STATE_TOPIC: light_options[KEY_STATE_TOPIC].format(light_id=light_id),
         KEY_EFFECT_VALUE_TEMPLATE: "{%if value_json.effect==1%}Meteor Shower{%elif value_json.effect==2%}Gradual Change{%elif value_json.effect==3%}Flash{%else%}Aus{%endif%}",
         KEY_COLOR_TEMP_TEMPLATE: "{%if value_json.ison and value_json.mode==^white^%}{{1000000|multiply(1/(value_json.temp|float))|round(0)}}{%else%}0{%endif%}",
