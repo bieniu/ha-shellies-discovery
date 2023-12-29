@@ -26,7 +26,7 @@ MQTT integration must be configured in Home Assistant.
 - Shelly DUO
 - Shelly EM
 - Shelly Flood
-- Shelly Gas
+- Shelly Gas (with Valve Add-on)
 - Shelly H&T (battery or USB powered)
 - Shelly i3
 - Shelly Motion (battery or USB powered)
@@ -204,6 +204,8 @@ python_script:
         light-3-name: "Kitchen"
       shellyem-BB23CC45:
         force_update_sensors: true
+      shellygas-AABBCC332211:
+        valve_connected: true
       ignored_devices:
         - shelly1-DD0011
         - shellyem-EECC22
@@ -248,6 +250,7 @@ key | optional | type | default | possible values | description
 `use_fahrenheit` | True | boolean | `false` | `true`, `false` | whether the temperature sensor is configured in Fahrenheit for H&T, Flood, Motion2 or DW2
 `default_heating_temperature` | True | float | `20` | | default target temperature after changing from OFF to HEAT mode
 `minimal_valve_position` | True | int | `0` | | this value should be equal to the MINIMAL VALVE POSITION LIMIT from Shelly Valve configuration
+`valve_connected` | True | boolean | `false` | `true`, `false` | is the Valve Add-on connected to Shelly Gas
 
 [forum]: https://community.home-assistant.io/t/shellies-discovery-script/94048
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=popout
