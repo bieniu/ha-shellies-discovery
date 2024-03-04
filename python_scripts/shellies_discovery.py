@@ -1,4 +1,5 @@
 """This script adds MQTT discovery support for Shellies devices."""
+
 VERSION = "5.0.0"
 
 ATTR_ICON = "icon"
@@ -2904,9 +2905,9 @@ for relay_id in range(relays):
                 )
                 and sensor == SENSOR_OVERPOWER
             ):
-                payload[
-                    KEY_JSON_ATTRIBUTES_TOPIC
-                ] = f"~{sensor}/{relay_id}/{TOPIC_OVERPOWER_VALUE}"
+                payload[KEY_JSON_ATTRIBUTES_TOPIC] = (
+                    f"~{sensor}/{relay_id}/{TOPIC_OVERPOWER_VALUE}"
+                )
                 payload[KEY_JSON_ATTRIBUTES_TEMPLATE] = TPL_OVERPOWER_VALUE_TO_JSON
         else:
             payload = ""
