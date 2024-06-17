@@ -32,6 +32,7 @@ CONF_FORCE_UPDATE_SENSORS = "force_update_sensors"
 CONF_FRIENDLY_NAME = "friendly_name"
 CONF_FW_VER = "fw_ver"
 CONF_HOST = "host"
+CONF_HUMIDITY_TOPIC = "humidity_topic"
 CONF_ID = "id"
 CONF_IGNORE_DEVICE_MODEL = "ignore_device_model"
 CONF_IGNORED_DEVICES = "ignored_devices"
@@ -121,6 +122,7 @@ KEY_COMMAND_TEMPLATE = "cmd_tpl"
 KEY_COMMAND_TOPIC = "cmd_t"
 KEY_CONFIGURATION_URL = "cu"
 KEY_CONNECTIONS = "cns"
+KEY_CURRENT_HUMIDITY_TOPIC = "curr_hum_t"
 KEY_CURRENT_TEMPERATURE_TEMPLATE = "curr_temp_tpl"
 KEY_CURRENT_TEMPERATURE_TOPIC = "curr_temp_t"
 KEY_DEVICE = "dev"
@@ -2711,6 +2713,10 @@ if climate_entity_option:
         KEY_ORIGIN: origin_info,
         "~": default_topic,
     }
+
+    if device_config.get(CONF_HUMIDITY_TOPIC):
+        payload[KEY_CURRENT_HUMIDITY_TOPIC] = device_config[CONF_HUMIDITY_TOPIC]
+
     payload.update(climate_entity_option)
     if dev_id.lower() in ignored:
         payload = ""

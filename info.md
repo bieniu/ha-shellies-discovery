@@ -251,6 +251,7 @@ key | optional | type | default | possible values | description
 `default_heating_temperature` | True | float | `20` | | default target temperature after changing from OFF to HEAT mode
 `minimal_valve_position` | True | int | `0` | | this value should be equal to the MINIMAL VALVE POSITION LIMIT from Shelly Valve configuration
 `valve_connected` | True | boolean | `false` | `true`, `false` | is the Valve Add-on connected to Shelly Gas
+`humidity_topic` | True | string | | | Topic with humidity value ​​to display in the Shelly Valve climate entity
 
 [forum]: https://community.home-assistant.io/t/shellies-discovery-script/94048
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=popout
