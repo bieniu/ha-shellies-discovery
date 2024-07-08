@@ -32,7 +32,7 @@ jobs:
 
     - name: Lint with ruff
       run: |
-        ruff python_scripts
+        ruff check python_scripts
 
     - name: Check code formatting with ruff
       run: |
