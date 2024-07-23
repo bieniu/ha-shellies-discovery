@@ -132,6 +132,7 @@ KEY_EFFECT_COMMAND_TOPIC = "fx_cmd_t"
 KEY_EFFECT_LIST = "fx_list"
 KEY_EFFECT_STATE_TOPIC = "fx_stat_t"
 KEY_EFFECT_VALUE_TEMPLATE = "fx_val_tpl"
+KEY_EFFECT_TEMPLATE = "fx_tpl"
 KEY_ENABLED_BY_DEFAULT = "en"
 KEY_ENTITY_CATEGORY = "ent_cat"
 KEY_ENTITY_PICTURE = "ent_pic"
@@ -257,6 +258,7 @@ MODEL_SHELLYBUTTON1 = f"{ATTR_SHELLY} Button1"
 MODEL_SHELLYDIMMER = f"{ATTR_SHELLY} Dimmer"
 MODEL_SHELLYDIMMER2 = f"{ATTR_SHELLY} Dimmer 2"
 MODEL_SHELLYDUO = f"{ATTR_SHELLY} DUO"
+MODEL_SHELLYDUORGBW = f"{ATTR_SHELLY} Duo RGBW"
 MODEL_SHELLYDW = f"{ATTR_SHELLY} Door/Window"
 MODEL_SHELLYDW2 = f"{ATTR_SHELLY} Door/Window 2"
 MODEL_SHELLYEM = f"{ATTR_SHELLY} EM"
@@ -312,6 +314,9 @@ MODEL_SHELLYDIMMER2_PREFIX = "shellydimmer2"
 
 MODEL_SHELLYDUO_ID = "SHBDUO-1"  # Shelly Duo
 MODEL_SHELLYDUO_PREFIX = "shellybulbduo"
+
+MODEL_SHELLYDUORGBW_ID = "SHCB-1"  # Shelly Duo RGBW
+MODEL_SHELLYDUORGBW_PREFIX = "shellycolorbulb"
 
 MODEL_SHELLYDW_ID = "SHDW-1"  # Shelly Door/Window
 MODEL_SHELLYDW_PREFIX = "shellydw"
@@ -1232,6 +1237,7 @@ DEVICE_FIRMWARE_MAP = {
     MODEL_SHELLYDIMMER_ID: MIN_DIMMER_FIRMWARE_DATE,
     MODEL_SHELLYDIMMER2_ID: MIN_DIMMER_FIRMWARE_DATE,
     MODEL_SHELLYDUO_ID: MIN_FIRMWARE_DATE,
+    MODEL_SHELLYDUORGBW_ID: MIN_FIRMWARE_DATE,
     MODEL_SHELLYDW_ID: MIN_FIRMWARE_DATE,
     MODEL_SHELLYDW2_ID: MIN_FIRMWARE_DATE,
     MODEL_SHELLYEM_ID: MIN_FIRMWARE_DATE,
@@ -2259,6 +2265,24 @@ if model_id == MODEL_SHELLYDUO_ID or dev_id_prefix == MODEL_SHELLYDUO_PREFIX:
     buttons = {BUTTON_RESTART: OPTIONS_BUTTON_RESTART}
     updates = {UPDATE_FIRMWARE: OPTIONS_UPDATE_FIRMWARE}
 
+if model_id == MODEL_SHELLYDUORGBW_ID or dev_id_prefix == MODEL_SHELLYDUORGBW_PREFIX:
+    model = MODEL_SHELLYDUORGBW
+
+    rgbw_lights = 1
+
+    light_sensors = {
+        SENSOR_POWER: OPTIONS_SENSOR_LIGHT_POWER,
+        SENSOR_ENERGY: OPTIONS_SENSOR_LIGHT_ENERGY,
+    }
+    sensors = {
+        SENSOR_IP: OPTIONS_SENSOR_IP,
+        SENSOR_RSSI: OPTIONS_SENSOR_RSSI,
+        SENSOR_SSID: OPTIONS_SENSOR_SSID,
+        SENSOR_UPTIME: OPTIONS_SENSOR_UPTIME,
+    }
+    buttons = {BUTTON_RESTART: OPTIONS_BUTTON_RESTART}
+    updates = {UPDATE_FIRMWARE: OPTIONS_UPDATE_FIRMWARE}
+
 if model_id == MODEL_SHELLYVINTAGE_ID or dev_id_prefix == MODEL_SHELLYVINTAGE_PREFIX:
     model = MODEL_SHELLYVINTAGE
 
@@ -3252,6 +3276,39 @@ for light_id in range(rgbw_lights):
             KEY_QOS: qos,
             KEY_DEVICE: device_info,
             KEY_ORIGIN: origin_info,
+            "~": default_topic,
+        }
+    elif model == MODEL_SHELLYDUORGBW:
+        payload = {
+            KEY_SCHEMA: VALUE_TEMPLATE,
+            KEY_NAME: light_name,
+            KEY_AVAILABILITY: availability,
+            KEY_COMMAND_TOPIC: set_topic,
+            KEY_STATE_TOPIC: state_topic,
+            KEY_STATE_TEMPLATE: "{%if value_json.ison%}on{%else%}off{%endif%}",
+            KEY_BRIGHTNESS_STATE_TOPIC: status_topic,
+            KEY_BRIGHTNESS_TEMPLATE: "{{value_json.brightness|float|multiply(2.55)|round(0)}}",
+            KEY_BRIGHTNESS_COMMAND_TOPIC: set_topic,
+            KEY_BRIGHTNESS_COMMAND_TEMPLATE: "{^gain^:{{value|float|multiply(0.3922)|round(0)}}, ^brightness^:{{value|float|multiply(0.3922)|round(0)}}}",
+            KEY_EFFECT_COMMAND_TOPIC: set_topic,
+            KEY_EFFECT_COMMAND_TEMPLATE: "{ {%if value==^Off^%}^effect^:0{%elif value==^Meteor Shower^%}^effect^:1{%elif value==^Gradual Change^%}^effect^:2{%elif value==^Flash^%}^effect^:3{%endif%} }",
+            KEY_EFFECT_LIST: ["Off", "Meteor Shower", "Gradual Change", "Flash"],
+            KEY_EFFECT_STATE_TOPIC: status_topic,
+            KEY_EFFECT_TEMPLATE: "{%if value_json.effect==1%}Meteor Shower{%elif value_json.effect==2%}Gradual Change{%elif value_json.effect==3%}Flash{%else%}Off{%endif%}",
+            KEY_UNIQUE_ID: unique_id,
+            KEY_QOS: qos,
+            KEY_DEVICE: device_info,
+            KEY_ORIGIN: origin_info,
+            KEY_COLOR_TEMP_TEMPLATE: TPL_COLOR_TEMP_WHITE_LIGHT,
+            KEY_COMMAND_ON_TEMPLATE: f"{{^turn^:^on^{{%if red is defined and green is defined and blue is defined%}},^mode^:^color^,^red^:{{{{red}}}},^green^:{{{{green}}}},^blue^:{{{{blue}}}}{{%endif%}}{{%if brightness is defined%}},^brightness^:{{{{brightness|float|multiply(0.3922)|round}}}},^gain^:{{{{brightness|float|multiply(0.3922)|round}}}}{{%endif%}}{{%if color_temp is defined%}},^mode^:^white^,^temp^:{{{{(1000000/(color_temp|int))|round(0,^floor^)}}}}{{%endif%}}{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000), {max_transition})}}}}{{%endif%}}{{%if effect is defined%}},^effect^: {{%- if effect == ^Meteor Shower^ -%}}1{{%- elif effect == ^Gradual Change^ -%}}2{{%- elif effect == ^Flash^ -%}}3{{%- else -%}}0{{%- endif -%}}{{%- else -%}},^effect^: 0{{%endif%}} }}",
+            KEY_COMMAND_OFF_TEMPLATE: f"{{^turn^:^off^,^effect^:0{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000),{MAX_TRANSITION})}}}}{{%endif%}}}}",
+            KEY_COMMAND_TOPIC: set_topic,
+            KEY_MAX_MIREDS: 333,
+            KEY_MIN_MIREDS: 154,
+            KEY_STATE_TOPIC: status_topic,
+            "red_template": "{%if value_json.mode == ^color^%}{{value_json.red}}{%else%}{{ none }}{%endif%}",
+            "green_template": "{%if value_json.mode == ^color^%}{{value_json.green}}{%else%}{{ none }}{%endif%}",
+            "blue_template": "{%if value_json.mode == ^color^%}{{value_json.blue}}{%else%}{{ none }}{%endif%}",
             "~": default_topic,
         }
     else:
