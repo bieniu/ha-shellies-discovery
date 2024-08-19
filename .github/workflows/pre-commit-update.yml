@@ -2,25 +2,25 @@ name: Pre-commit auto-update
 on:
   schedule:
     # Run on fridays
-    - cron: "0 0 * * 5"
+    - cron: "0 0 * * 1"
 
 jobs:
   auto-update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-      
+
       - name: Install pre-commit
         run: pip install pre-commit
-      
+
       - name: Run pre-commit autoupdate
         run: pre-commit autoupdate
-      
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6.1.0
         with:
