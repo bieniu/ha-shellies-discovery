@@ -1,6 +1,6 @@
 """This script adds MQTT discovery support for Shellies devices."""
 
-VERSION = "5.1.0"
+VERSION = "5.2.0"
 
 ATTR_ICON = "icon"
 ATTR_MANUFACTURER = "Allterco Robotics"
@@ -157,6 +157,7 @@ KEY_MODE_COMMAND_TOPIC = "mode_cmd_t"
 KEY_MODE_STATE_TEMPLATE = "mode_stat_tpl"
 KEY_MODE_STATE_TOPIC = "mode_stat_t"
 KEY_MODEL = "mdl"
+KEY_MODEL_ID = "mdl_id"
 KEY_MODES = "modes"
 KEY_NAME = "name"
 KEY_OFF_DELAY = "off_dly"
@@ -2431,8 +2432,9 @@ device_info = {
     KEY_CONNECTIONS: [[KEY_MAC, format_mac(mac)]],
     KEY_NAME: device_name,
     KEY_MODEL: model,
+    KEY_MODEL_ID: model_id,
     KEY_SW_VERSION: fw_ver,
-    KEY_HW_VERSION: f"gen1 ({model_id})",
+    KEY_HW_VERSION: "gen1",
     KEY_MANUFACTURER: ATTR_MANUFACTURER,
     KEY_CONFIGURATION_URL: f"http://{host}/",
 }
