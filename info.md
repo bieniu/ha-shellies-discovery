@@ -24,6 +24,7 @@ MQTT integration must be configured in Home Assistant.
 - Shelly Door/Window
 - Shelly Door/Window 2
 - Shelly DUO
+- Shelly DUO RGBW
 - Shelly EM
 - Shelly Flood
 - Shelly Gas (with Valve Add-on)
