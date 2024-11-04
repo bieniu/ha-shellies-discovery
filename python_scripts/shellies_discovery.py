@@ -110,6 +110,9 @@ KEY_ACTION_TEMPLATE = "act_tpl"
 KEY_ACTION_TOPIC = "act_t"
 KEY_AUTOMATION_TYPE = "atype"
 KEY_AVAILABILITY = "avty"
+KEY_BLUE_TEMPLATE = "b_tpl"
+KEY_GREEN_TEMPLATE = "g_tpl"
+KEY_RED_TEMPLATE = "r_tpl"
 KEY_BRIGHTNESS_COMMAND_TEMPLATE = "bri_cmd_tpl"
 KEY_BRIGHTNESS_COMMAND_TOPIC = "bri_cmd_t"
 KEY_BRIGHTNESS_STATE_TOPIC = "bri_stat_t"
@@ -3283,15 +3286,13 @@ for light_id in range(rgbw_lights):
             KEY_SCHEMA: VALUE_TEMPLATE,
             KEY_NAME: light_name,
             KEY_AVAILABILITY: availability,
-            KEY_COMMAND_TOPIC: set_topic,
-            KEY_STATE_TOPIC: state_topic,
             KEY_STATE_TEMPLATE: "{%if value_json.ison%}on{%else%}off{%endif%}",
             KEY_BRIGHTNESS_STATE_TOPIC: status_topic,
-            KEY_BRIGHTNESS_TEMPLATE: "{{value_json.gain|float|multiply(2.55)|round(0)}}",
+            KEY_BRIGHTNESS_TEMPLATE: "{%if value_json.mode==^color^%}{{value_json.gain|float|multiply(2.55)|round(0)}}{%else%}{{value_json.brightness|float|multiply(2.55)|round(0)}}{%endif%}",
             KEY_BRIGHTNESS_COMMAND_TOPIC: set_topic,
-            KEY_BRIGHTNESS_COMMAND_TEMPLATE: "{^gain^:{{value|float|multiply(0.3922)|round(0)}}, ^brightness^:{{value|float|multiply(0.3922)|round(0)}}}",
+            KEY_BRIGHTNESS_COMMAND_TEMPLATE: "{^gain^:{{value|float|multiply(0.3922)|round(0)}},^brightness^:{{value|float|multiply(0.3922)|round(0)}}}",
             KEY_EFFECT_COMMAND_TOPIC: set_topic,
-            KEY_EFFECT_COMMAND_TEMPLATE: "{ {%if value==^Off^%}^effect^:0{%elif value==^Meteor Shower^%}^effect^:1{%elif value==^Gradual Change^%}^effect^:2{%elif value==^Flash^%}^effect^:3{%endif%} }",
+            KEY_EFFECT_COMMAND_TEMPLATE: "{{%if value==^Off^%}^effect^:0{%elif value==^Meteor Shower^%}^effect^:1{%elif value==^Gradual Change^%}^effect^:2{%elif value==^Flash^%}^effect^:3{%endif%}}",
             KEY_EFFECT_LIST: ["Off", "Meteor Shower", "Gradual Change", "Flash"],
             KEY_EFFECT_STATE_TOPIC: status_topic,
             KEY_EFFECT_TEMPLATE: "{%if value_json.effect==1%}Meteor Shower{%elif value_json.effect==2%}Gradual Change{%elif value_json.effect==3%}Flash{%else%}Off{%endif%}",
@@ -3299,16 +3300,16 @@ for light_id in range(rgbw_lights):
             KEY_QOS: qos,
             KEY_DEVICE: device_info,
             KEY_ORIGIN: origin_info,
-            KEY_COLOR_TEMP_TEMPLATE: TPL_COLOR_TEMP_WHITE_LIGHT,
-            KEY_COMMAND_ON_TEMPLATE: f"{{^turn^:^on^{{%if red is defined and green is defined and blue is defined%}},^mode^:^color^,^red^:{{{{red}}}},^green^:{{{{green}}}},^blue^:{{{{blue}}}}{{%endif%}}{{%if brightness is defined%}},^brightness^:{{{{brightness|float|multiply(0.3922)|round}}}},^gain^:{{{{brightness|float|multiply(0.3922)|round}}}}{{%endif%}}{{%if color_temp is defined%}},^mode^:^white^,^temp^:{{{{(1000000/(color_temp|int))|round(0,^floor^)}}}}{{%endif%}}{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000), {MAX_TRANSITION})}}}}{{%endif%}}{{%if effect is defined%}},^effect^: {{%- if effect == ^Meteor Shower^ -%}}1{{%- elif effect == ^Gradual Change^ -%}}2{{%- elif effect == ^Flash^ -%}}3{{%- else -%}}0{{%- endif -%}}{{%- else -%}},^effect^: 0{{%endif%}} }}",
+            KEY_COLOR_TEMP_TEMPLATE: "{{(1000000/(value_json.temp|int))|round(0,^floor^)}}",
+            KEY_COMMAND_ON_TEMPLATE: f"{{^turn^:^on^{{%if red is defined and green is defined and blue is defined%}},^mode^:^color^,^red^:{{{{red}}}},^green^:{{{{green}}}},^blue^:{{{{blue}}}}{{%endif%}}{{%if brightness is defined%}},^brightness^:{{{{brightness|float|multiply(0.3922)|round}}}},^gain^:{{{{brightness|float|multiply(0.3922)|round}}}}{{%endif%}}{{%if color_temp is defined%}},^mode^:^white^,^temp^:{{{{(1000000/(color_temp|int))|round(0,^floor^)}}}}{{%endif%}}{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000),{MAX_TRANSITION})}}}}{{%endif%}}{{%if effect is defined%}},^effect^:{{%if effect==^Meteor Shower^%}}1{{%elif effect==^Gradual Change^%}}2{{%elif effect==^Flash^%}}3{{%else%}}0{{%endif%}}{{%else%}},^effect^:0{{%endif%}}}}",
             KEY_COMMAND_OFF_TEMPLATE: f"{{^turn^:^off^,^effect^:0{{%if transition is defined%}},^transition^:{{{{min(transition|multiply(1000),{MAX_TRANSITION})}}}}{{%endif%}}}}",
             KEY_COMMAND_TOPIC: set_topic,
             KEY_MAX_MIREDS: 333,
             KEY_MIN_MIREDS: 154,
             KEY_STATE_TOPIC: status_topic,
-            "red_template": "{%if value_json.mode == ^color^%}{{value_json.red}}{%else%}{{ none }}{%endif%}",
-            "green_template": "{%if value_json.mode == ^color^%}{{value_json.green}}{%else%}{{ none }}{%endif%}",
-            "blue_template": "{%if value_json.mode == ^color^%}{{value_json.blue}}{%else%}{{ none }}{%endif%}",
+            KEY_RED_TEMPLATE: "{%if value_json.mode==^color^%}{{value_json.red}}{%else%}{{none}}{%endif%}",
+            KEY_GREEN_TEMPLATE: "{%if value_json.mode==^color^%}{{value_json.green}}{%else%}{{none}}{%endif%}",
+            KEY_BLUE_TEMPLATE: "{%if value_json.mode==^color^%}{{value_json.blue}}{%else%}{{none}}{%endif%}",
             "~": default_topic,
         }
     else:
