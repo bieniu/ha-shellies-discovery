@@ -6,6 +6,7 @@
 [![Community Forum][forum-shield]][forum]
 [![Buy me a coffee][buy-me-a-coffee-shield]][buy-me-a-coffee]
 [![PayPal_Me][paypal-me-shield]][paypal-me]
+[![Revolut.Me][revolut-me-shield]][revolut-me]
 
 ![Screenshot](https://github.com/bieniu/ha-shellies-discovery/blob/master/images/shellies-integration.png?raw=true)
 
@@ -289,3 +290,5 @@ key | optional | type | default | possible values | description
 [paypal-me]: https://www.paypal.me/bieniu79
 [hacs-shield]: https://img.shields.io/badge/HACS-Default-orange.svg
 [hacs]: https://hacs.xyz/docs/default_repositories
+[revolut-me-shield]: https://img.shields.io/static/v1.svg?label=%20&message=Revolut&logo=revolut
+[revolut-me]: https://revolut.me/maciejbieniek
