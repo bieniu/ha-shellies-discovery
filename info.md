@@ -78,138 +78,138 @@ python_script:
 # automations.yaml file
 - id: shellies_announce
   alias: 'Shellies Announce'
-  trigger:
-    - platform: homeassistant
+  triggers:
+    - trigger: homeassistant
       event: start
-    - platform: time_pattern
+    - trigger: time_pattern
       hours: "/1"  # Modifying this if you are using Shelly Motion can drain your device's battery quickly.
-  action:
-    service: mqtt.publish
-    data:
-      topic: shellies/command
-      payload: announce
+  actions:
+    - action: mqtt.publish
+      data:
+        topic: shellies/command
+        payload: announce
 
 - id: 'shellies_discovery'
   alias: 'Shellies Discovery'
   mode: queued
   max: 999
-  trigger:
-    platform: mqtt
-    topic: shellies/announce
-  condition:
+  triggers:
+    - trigger: mqtt
+      topic: shellies/announce
+  conditions:
     - condition: template
       value_template: "{{ trigger.payload_json.gen is not defined }}"
-  action:
-    service: python_script.shellies_discovery
-    data:
-      id: '{{ trigger.payload_json.id }}'
-      mac: '{{ trigger.payload_json.mac }}'
-      fw_ver: '{{ trigger.payload_json.fw_ver }}'
-      model: '{{ trigger.payload_json.model | default }}'
-      mode: '{{ trigger.payload_json.mode | default }}'
-      host: '{{ trigger.payload_json.ip }}'
+  actions:
+    - action: python_script.shellies_discovery
+      data:
+        id: '{{ trigger.payload_json.id }}'
+        mac: '{{ trigger.payload_json.mac }}'
+        fw_ver: '{{ trigger.payload_json.fw_ver }}'
+        model: '{{ trigger.payload_json.model | default }}'
+        mode: '{{ trigger.payload_json.mode | default }}'
+        host: '{{ trigger.payload_json.ip }}'
 ```
 
 ## Custom configuration example
 
 ```yaml
-# in configuration.yaml file
+# configuration.yaml file
 python_script:
 
-# in automation.yaml file
+# automations.yaml file
 - id: shellies_announce
   alias: 'Shellies Announce'
-  trigger:
-    - platform: homeassistant
+  triggers:
+    - trigger: homeassistant
       event: start
-    - platform: time_pattern
+    - trigger: time_pattern
       hours: "/1"  # Modifying this if you are using Shelly Motion can drain your device's battery quickly.
-  action:
-    service: mqtt.publish
-    data:
-      topic: shellies/command
-      payload: announce
+  actions:
+    - actions: mqtt.publish
+      data:
+        topic: shellies/command
+        payload: announce
 
 - id: 'shellies_discovery'
   alias: 'Shellies Discovery'
   mode: queued
   max: 999
-  trigger:
-    platform: mqtt
-    topic: shellies/announce
-  condition:
+  triggers:
+    - trigger: mqtt
+      topic: shellies/announce
+  conditions:
     - condition: template
       value_template: "{{ trigger.payload_json.gen is not defined }}"
-  action:
-    service: python_script.shellies_discovery
-    data:
-      id: '{{ trigger.payload_json.id }}'
-      mac: '{{ trigger.payload_json.mac }}'
-      fw_ver: '{{ trigger.payload_json.fw_ver }}'
-      model: '{{ trigger.payload_json.model | default }}'
-      mode: '{{ trigger.payload_json.mode | default }}'
-      host: '{{ trigger.payload_json.ip }}'
-      discovery_prefix: 'hass'
-      qos: 2
-      shellytrv-84FD75:
-        default_heating_temperature: 21
-      shelly1-AABB9900:
-        relay-0: "light"
-        ext-temperature-0: true
-        ext-temperature-1: true
-        ext-temperature-2: true
-        force_update_sensors: true
-        ext-switch: true
-      shelly1pm-aabb9911:
-        ext-temperature-0: true
-        ext-humidity-0: true
-        push_off_delay: false
-        force_update_sensors: true
-      shelly1l-ddbb9911:
-        ext-temperature-0: true
-        ext-temperature-1: true
-        ext-temperature-2: true
-        ext-humidity-0: true
-      shellyswitch-123409FF:
-        relay-0: "fan"
-        relay-0-name: "Bathroom Fan"
-        relay-1: "light"
-        relay-1-name: "Livingroom Light"
-      shellyswitch-123409cc:
-        relay-1: "fan"
-      shellydimmer-883409cc:
-        light-0-name: "Bedroom Lamp"
-      shellyswitch25-334455AA:
-        roller-0-name: "Garage"
-        roller-0-class: "garage"
-      shellyplug-s-CCBBCCAA:
-        relay-0: "light"
-        force_update_sensors: true
-      shellyht-11AA00CCDD:
-        force_update_sensors: true
-        expire_after: 500
-      shellyht-11AA00CCEE:
-        powered: "battery"
-      shellybutton1-112200CCFF:
-        powered: "ac"
-      shellymotionsensor-113300CCFF:
-        powered: "ac"
-      shellyswitch2-AA4455AA:
-        position_template: "{{ '{% if value | float < 30 %}0{% else %}{{ value }}{% endif %}' }}"
-        set_position_template: "{{ '{%if position | float < 30 %}0{% else %}{{ position }}{% endif %}' }}"
-      shellyht-11AA00CCFF:
-        powered: "ac"
-      shellyrgbw2-AA123FF32:
-        light-1-name: "Living room"
-        light-2-name: "Bedroom"
-        light-3-name: "Kitchen"
-      shellyem-BB23CC45:
-        force_update_sensors: true
-      shellygas-AABBCC332211:
-        valve_connected: true
-      ignored_devices:
-        - shelly1-DD0011
-        - shellyem-EECC22
+  actions:
+    - action: python_script.shellies_discovery
+      data:
+        id: '{{ trigger.payload_json.id }}'
+        mac: '{{ trigger.payload_json.mac }}'
+        fw_ver: '{{ trigger.payload_json.fw_ver }}'
+        model: '{{ trigger.payload_json.model | default }}'
+        mode: '{{ trigger.payload_json.mode | default }}'
+        host: '{{ trigger.payload_json.ip }}'
+        discovery_prefix: 'hass'
+        qos: 2
+        shellytrv-84FD75:
+          default_heating_temperature: 21
+        shelly1-AABB9900:
+          relay-0: "light"
+          ext-temperature-0: true
+          ext-temperature-1: true
+          ext-temperature-2: true
+          force_update_sensors: true
+          ext-switch: true
+        shelly1pm-aabb9911:
+          ext-temperature-0: true
+          ext-humidity-0: true
+          push_off_delay: false
+          force_update_sensors: true
+        shelly1l-ddbb9911:
+          ext-temperature-0: true
+          ext-temperature-1: true
+          ext-temperature-2: true
+          ext-humidity-0: true
+        shellyswitch-123409FF:
+          relay-0: "fan"
+          relay-0-name: "Bathroom Fan"
+          relay-1: "light"
+          relay-1-name: "Livingroom Light"
+        shellyswitch-123409cc:
+          relay-1: "fan"
+        shellydimmer-883409cc:
+          light-0-name: "Bedroom Lamp"
+        shellyswitch25-334455AA:
+          roller-0-name: "Garage"
+          roller-0-class: "garage"
+        shellyplug-s-CCBBCCAA:
+          relay-0: "light"
+          force_update_sensors: true
+        shellyht-11AA00CCDD:
+          force_update_sensors: true
+          expire_after: 500
+        shellyht-11AA00CCEE:
+          powered: "battery"
+        shellyht-11AA00CCFF:
+          powered: "ac"
+        shellyswitch2-AA4455AA:
+          position_template: "{{ '{% if value | float < 30 %}0{% else %}{{ value }}{% endif %}' }}"
+          set_position_template: "{{ '{%if position | float < 30 %}0{% else %}{{ position }}{% endif %}' }}"
+        shellybutton1-112200CCFF:
+          powered: "ac"
+        shellymotionsensor-113300CCFF:
+          powered: "ac"
+        shellyrgbw2-AA123FF32:
+          light-1-name: "Living room"
+          light-2-name: "Bedroom"
+          light-3-name: "Kitchen"
+        shellyem-BB23CC45:
+          force_update_sensors: true
+        shellygas-AABBCC332211:
+          valve_connected: true
+        ignored_devices:
+          - shelly1-DD0011
+          - shellyem-EECC22
 ```
 
 ## Battery powered devices
