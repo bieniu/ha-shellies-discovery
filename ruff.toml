@@ -16,7 +16,6 @@ lint.ignore = [
     "FBT002",   # Boolean default value in function definition
     "FBT003",   # Boolean positional value in function call
     "INP001",   # Add an `__init__.py`
-    "ISC001",   # Single line implicit string concatenation
     "TRY003",   # Avoid specifying long messages outside the exception class
 ]
 
