@@ -15,18 +15,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Find Version
-        id: version
-        run: |
-          declare -i newpost
-          version=$(cat python_scripts/shellies_discovery.py | grep 'VERSION' | head -1 |  sed -n 's/VERSION = "\(.*\)"/\1/p')
-          echo Version from shellies_discovery.py: $version
-          echo "::set-output name=version::$version"
-
       - name: Run Release Drafter
         uses: release-drafter/release-drafter@v6.1.0
-        with:
-          tag: ${{ steps.version.outputs.version }}
-          name: Version ${{ steps.version.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -8,15 +8,17 @@ jobs:
   auto-update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout the repository
+        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5.4.0
         with:
-          python-version: "3.x"
+          enable-cache: true
+          python-version: 3.13
 
       - name: Install pre-commit
-        run: pip install pre-commit
+        run: uv pip install pre-commit
 
       - name: Run pre-commit autoupdate
         run: pre-commit autoupdate
