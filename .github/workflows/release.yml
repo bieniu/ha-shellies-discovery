@@ -12,16 +12,22 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Set package version
+        run: |
+          version="${{ github.event.release.tag_name }}"
+          cd "${{ github.workspace }}/python_scripts"
+          sed -i "s/^VERSION = \".*\"/VERSION = \"${version}\"/" shellies_discovery.py
+
       - name: ZIP files
         run: |
-          cd /home/runner/work/ha-shellies-discovery/ha-shellies-discovery/python_scripts
+          cd "${{ github.workspace }}/python_scripts"
           zip shellies-discovery.zip -r ./
 
       - name: Upload zip to release
         uses: svenstaro/upload-release-action@2.9.0
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: /home/runner/work/ha-shellies-discovery/ha-shellies-discovery/python_scripts/shellies-discovery.zip
+          file: "${{ github.workspace }}/python_scripts/shellies-discovery.zip"
           asset_name: shellies-discovery.zip
           tag: ${{ github.ref }}
           overwrite: true

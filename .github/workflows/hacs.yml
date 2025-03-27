@@ -1,4 +1,4 @@
-name: Validate with HACS
+name: HACS Action
 
 on:
   push:
@@ -16,9 +16,8 @@ jobs:
         uses: "actions/checkout@v4"
         with:
           fetch-depth: 2
-          
-      - name: HACS Validation
+
+      - name: HACS Action
         uses: hacs/action@22.5.0
         with:
           category: "python_script"
-          github_token: ${{ secrets.GITHUB_TOKEN }}

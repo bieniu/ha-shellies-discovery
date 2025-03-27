@@ -19,22 +19,17 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v4
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v5.4.0
       with:
-        python-version: ${{ matrix.python-version }}
-        cache: pip
-        cache-dependency-path: requirements-test.txt
+        enable-cache: true
+        python-version: 3.13
 
     - name: Install dependencies
-      run: |
-        pip install uv
-        uv pip install --system -r requirements-test.txt
+      run: uv pip install -r requirements-test.txt
 
     - name: Lint with ruff
-      run: |
-        ruff check python_scripts
+      run: ruff check python_scripts
 
     - name: Check code formatting with ruff
-      run: |
-        ruff format --check python_scripts
+      run: ruff format --check python_scripts
