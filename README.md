@@ -148,7 +148,7 @@ python_script:
     - trigger: time_pattern
       hours: "/1"  # Modifying this if you are using Shelly Motion can drain your device's battery quickly.
   actions:
-    - actions: mqtt.publish
+    - action: mqtt.publish
       data:
         topic: shellies/command
         payload: announce
