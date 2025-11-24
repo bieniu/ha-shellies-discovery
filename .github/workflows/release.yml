@@ -24,7 +24,7 @@ jobs:
           zip shellies-discovery.zip -r ./
 
       - name: Upload zip to release
-        uses: svenstaro/upload-release-action@2.11.2
+        uses: svenstaro/upload-release-action@2.11.3
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: "${{ github.workspace }}/python_scripts/shellies-discovery.zip"
