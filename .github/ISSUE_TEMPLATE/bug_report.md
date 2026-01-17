@@ -20,9 +20,9 @@ assignees: ''
 
 
 **Versions:**
- - Home Assistant: 
- - Shellies Discovery: 
- - Shelly device firmware: 
+ - Home Assistant: <!-- Version -->
+ - Shellies Discovery: <!-- Version -->
+ - Shelly device firmware: <!-- Version -->
 
 **Shellies Discovery automation:**
 <!--
