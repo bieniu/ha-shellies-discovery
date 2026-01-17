@@ -33,3 +33,6 @@ jobs:
 
     - name: Check code formatting with ruff
       run: ruff format --check python_scripts
+
+    - name: Run prek
+      run: prek run end-of-file-fixer trailing-whitespace check-added-large-files check-yaml check-json check-toml mixed-line-ending --all-files
