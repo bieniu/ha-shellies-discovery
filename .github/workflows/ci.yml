@@ -1,4 +1,7 @@
-name: Lint
+name: CI
+
+permissions:
+  contents: read
 
 on:
   push:
@@ -10,10 +13,6 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version:
-          - "3.13"
 
     steps:
     - name: Check out repository

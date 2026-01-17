@@ -8,18 +8,24 @@ repos:
         files: ^((python_scripts)/.+)?[^/]+\.py$
       - id: ruff-format
         files: ^((python_scripts)/.+)?[^/]+\.py$
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+  - repo: builtin
     hooks:
-      - id: check-toml
-      - id: check-json
-      - id: check-yaml
       - id: end-of-file-fixer
-      - id: mixed-line-ending
       - id: trailing-whitespace
-      - id: pretty-format-json
-        args:
-          - --no-sort-keys
+      - id: check-added-large-files
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: detect-private-key
+      - id: mixed-line-ending
       - id: no-commit-to-branch
         args:
           - --branch=master
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: pretty-format-json
+        args:
+          - --no-sort-keys
+          - --indent=4
+          - --autofix
