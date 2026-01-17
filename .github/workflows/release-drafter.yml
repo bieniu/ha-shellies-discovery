@@ -8,6 +8,9 @@ on:
 jobs:
   update_release_draft:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
     name: Release Drafter
     steps:
       - name: Checkout the repository
@@ -16,6 +19,6 @@ jobs:
           fetch-depth: 0
 
       - name: Run Release Drafter
-        uses: release-drafter/release-drafter@v6.1.0
+        uses: release-drafter/release-drafter@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
