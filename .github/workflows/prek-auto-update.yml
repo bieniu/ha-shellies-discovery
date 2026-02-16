@@ -20,7 +20,7 @@ jobs:
         with:
           enable-cache: true
           activate-environment: true
-          python-version: 3.13
+          python-version: 3.14
 
       - name: Install prek
         run: uv pip install prek
