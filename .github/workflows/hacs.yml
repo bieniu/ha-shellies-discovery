@@ -16,11 +16,11 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: Check out repository
-        uses: "actions/checkout@v7"
+        uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1"  # v7.0.1
         with:
           fetch-depth: 2
 
       - name: HACS Action
-        uses: hacs/action@22.5.0
+        uses: hacs/action@d556e736723344f83838d08488c983a15381059a  # 22.5.0
         with:
           category: "python_script"
