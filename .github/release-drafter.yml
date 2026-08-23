@@ -1,5 +1,8 @@
-name-template: "$RESOLVED_VERSION"
+name-template: "Version $RESOLVED_VERSION"
 tag-template: "$RESOLVED_VERSION"
+
+change-template: "- #$NUMBER $TITLE @$AUTHOR"
+sort-direction: ascending
 
 categories:
   - title: "🚨 Breaking changes"
@@ -31,6 +34,7 @@ categories:
       labels:
         - "maintenance"
         - "ci"
+        - "tests"
 
   - title: "📚 Documentation"
     semver-increment: "patch"
@@ -49,6 +53,8 @@ categories:
     semver-increment: "patch"
 
 template: |
+  [![Downloads for this release](https://img.shields.io/github/downloads/bieniu/ha-shellies-discovery/$RESOLVED_VERSION/total.svg)](https://github.com/bieniu/ha-shellies-discovery/releases/$RESOLVED_VERSION)
+  
   ## What's changed
 
   $CHANGES
