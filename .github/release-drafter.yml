@@ -54,7 +54,7 @@ categories:
 
 template: |
   [![Downloads for this release](https://img.shields.io/github/downloads/bieniu/ha-shellies-discovery/$RESOLVED_VERSION/total.svg)](https://github.com/bieniu/ha-shellies-discovery/releases/$RESOLVED_VERSION)
-  
+
   ## What's changed
 
   $CHANGES
