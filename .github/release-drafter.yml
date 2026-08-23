@@ -1,60 +1,54 @@
-name-template: "Version $RESOLVED_VERSION"
+name-template: "$RESOLVED_VERSION"
 tag-template: "$RESOLVED_VERSION"
-
-change-template: "- #$NUMBER $TITLE @$AUTHOR"
-sort-direction: ascending
 
 categories:
   - title: "🚨 Breaking changes"
-    label: "breaking-change"
+    semver-increment: "major"
+    when:
+      label: "breaking-change"
 
   - title: "✨ New features"
-    label: "new-feature"
+    semver-increment: "minor"
+    when:
+      label: "new-feature"
 
   - title: "🐛 Bug fixes"
-    label: "bugfix"
+    semver-increment: "patch"
+    when:
+      label: "bugfix"
 
   - title: "🚀 Enhancements"
-    labels:
-      - "enhancement"
-      - "refactor"
-      - "performance"
+    semver-increment: "patch"
+    when:
+      labels:
+        - "enhancement"
+        - "refactor"
+        - "performance"
 
   - title: "🧰 Maintenance"
-    labels:
-      - "maintenance"
-      - "ci"
+    semver-increment: "patch"
+    when:
+      labels:
+        - "maintenance"
+        - "ci"
 
   - title: "📚 Documentation"
-    labels:
-      - "documentation"
+    semver-increment: "patch"
+    when:
+      labels:
+        - "documentation"
 
   - title: "⬆️ Dependency updates"
+    semver-increment: "patch"
     collapse-after: 1
-    labels:
-      - "dependencies"
+    when:
+      labels:
+        - "dependencies"
 
-version-resolver:
-  major:
-    labels:
-      - "breaking-change"
-  minor:
-    labels:
-      - "new-feature"
-  patch:
-    labels:
-      - "bugfix"
-      - "ci"
-      - "dependencies"
-      - "documentation"
-      - "enhancement"
-      - "performance"
-      - "refactor"
-  default: patch
+  - type: "version-resolver"
+    semver-increment: "patch"
 
 template: |
-  [![Downloads for this release](https://img.shields.io/github/downloads/bieniu/ha-shellies-discovery/$RESOLVED_VERSION/total.svg)](https://github.com/bieniu/ha-shellies-discovery/releases/$RESOLVED_VERSION)
-
   ## What's changed
 
   $CHANGES
